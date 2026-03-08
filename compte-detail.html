@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compte — InfoCompta</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 2rem;
+      padding: 2.5rem 0 5rem;
+      align-items: start;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 1rem; }
+
+    .meta-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+    }
+    .meta-card h4 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+    .meta-row { display: flex; flex-direction: column; gap: 0.65rem; }
+    .meta-item { font-size: 0.82rem; }
+    .meta-item .meta-key { color: var(--muted); font-size: 0.72rem; display: block; margin-bottom: 0.1rem; }
+    .meta-item .meta-val { color: var(--text); font-weight: 500; }
+
+    .badge-sens {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+      text-transform: uppercase;
+    }
+    .badge-D { background: rgba(26,46,74,0.08); color: var(--navy); }
+    .badge-C { background: rgba(184,150,62,0.12); color: var(--gold); }
+    .badge-DC { background: rgba(100,100,100,0.08); color: #555; }
+
+    .nav-buttons { display: flex; flex-direction: column; gap: 0.5rem; }
+    .nav-btn {
+      display: block;
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 0.55rem 1rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: all 0.15s;
+      border: 1.5px solid var(--border);
+      color: var(--muted);
+    }
+    .nav-btn:hover { border-color: var(--navy); color: var(--navy); background: rgba(26,46,74,0.04); }
+    .nav-btn.primary { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .nav-btn.primary:hover { background: var(--navy-lt); }
+
+    .comptes-lies-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+    .compte-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      font-family: 'Courier New', monospace;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--navy);
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .compte-tag:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+    /* ── CONTENU PRINCIPAL ── */
+    .detail-content { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .content-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .content-section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 1rem 1.6rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .content-section-header .icon { font-size: 1rem; }
+    .content-section-header h3 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+    .content-section-body { padding: 1.4rem 1.6rem; }
+    .content-section-body p { font-size: 0.9rem; line-height: 1.75; color: #333; }
+    .content-section-body ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.4rem; }
+    .content-section-body ul li { font-size: 0.83rem; color: #333; padding: 0.4rem 0.7rem; background: var(--bg); border-radius: 3px; border-left: 3px solid var(--border); line-height: 1.5; }
+
+    /* Tableaux débit / crédit */
+    .dc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .dc-col { }
+    .dc-col-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.8rem;
+      border-radius: 3px;
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .dc-title-debit { background: rgba(26,46,74,0.07); color: var(--navy); }
+    .dc-title-credit { background: rgba(184,150,62,0.12); color: var(--gold); }
+    .dc-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .dc-col ul li {
+      font-size: 0.83rem;
+      color: #333;
+      padding: 0.45rem 0.7rem;
+      background: var(--bg);
+      border-radius: 3px;
+      border-left: 3px solid var(--border);
+      line-height: 1.5;
+    }
+    .dc-col.debit ul li { border-left-color: var(--navy); }
+    .dc-col.credit ul li { border-left-color: var(--gold); }
+
+    /* Références */
+    .ref-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.3rem; }
+    .ref-tag {
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.25rem 0.75rem;
+      background: rgba(26,46,74,0.06);
+      color: var(--navy);
+      border-radius: 3px;
+      border: 1px solid rgba(26,46,74,0.12);
+    }
+
+    /* Pas de données */
+    .no-data {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--muted);
+    }
+    .no-data .no-data-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .no-data h2 { color: var(--muted); font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .no-data p { font-size: 0.88rem; }
+
+    /* Hero detail */
+    .hero-detail {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-lt) 100%);
+      padding: 2.5rem 0 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-detail::after {
+      content: '';
+      position: absolute; right: -60px; top: -60px;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: rgba(184,150,62,0.07);
+      pointer-events: none;
+    }
+    .hero-detail .breadcrumb {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.05em;
+    }
+    .hero-detail .breadcrumb a { color: rgba(255,255,255,0.55); text-decoration: none; }
+    .hero-detail .breadcrumb a:hover { color: var(--gold-lt); }
+    .hero-detail .code-badge {
+      display: inline-block;
+      font-family: 'Courier New', monospace;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--gold-lt);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .hero-detail h1 { color: #fff; font-size: clamp(1.1rem, 2.5vw, 1.6rem); margin-bottom: 0.3rem; }
+    .hero-detail .classe-label { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+
+    @media (max-width: 840px) {
+      .detail-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .dc-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Info<span>Compta</span></a>
+  <nav>
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="Plan comptable.html" class="active">Plan Comptable</a></li>
+      <li><a href="documents.html">Documents</a></li>
+      <li><a href="A propos.html">A propos</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero-detail" id="heroDetail">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="index.html">Accueil</a> &rsaquo;
+      <a href="Plan comptable.html">Plan Comptable</a> &rsaquo;
+      <span id="breadCode">—</span>
+    </div>
+    <div class="code-badge" id="heroCode">—</div>
+    <h1 id="heroLibelle">Chargement…</h1>
+    <p class="classe-label" id="heroClasse"></p>
+  </div>
+</div>
+
+<main>
+  <div class="container">
+    <div class="detail-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+
+        <div class="meta-card">
+          <h4>Informations</h4>
+          <div class="meta-row">
+            <div class="meta-item">
+              <span class="meta-key">Nature</span>
+              <span class="meta-val" id="metaNature">—</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-key">Sens normal</span>
+              <span id="metaSens">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="meta-card" id="sideLies" style="display:none">
+          <h4>Comptes liés</h4>
+          <div class="comptes-lies-list" id="comptes-lies"></div>
+        </div>
+
+        <div class="meta-card" id="sideRef" style="display:none">
+          <h4>Références</h4>
+          <div class="ref-list" id="textes-ref"></div>
+        </div>
+
+        <div class="nav-buttons">
+          <a href="Plan comptable.html" class="nav-btn primary">← Retour au plan comptable</a>
+          <a href="contact.html" class="nav-btn">✉ Suggérer une correction</a>
+        </div>
+
+      </aside>
+
+      <!-- CONTENU -->
+      <div class="detail-content" id="detailContent">
+        <!-- Rempli dynamiquement par JS -->
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2026 <strong>InfoCompta</strong>. Tous droits réservés.</p>
+</footer>
+
+<script src="comptes-data.js"></script>
+<script>
+  // Récupère le code depuis l'URL : compte-detail.html?code=101
+  const params = new URLSearchParams(window.location.search);
+  const code   = params.get('code') || '';
+  const compte = comptesData[code];
+
+  // Met à jour le titre de la page
+  document.title = compte ? `Compte ${code} — InfoCompta` : `Compte introuvable — InfoCompta`;
+
+  // ── HERO ──
+  document.getElementById('breadCode').textContent = code || '?';
+  document.getElementById('heroCode').textContent  = code || '?';
+
+  if (compte) {
+    document.getElementById('heroLibelle').textContent = compte.libelle;
+    document.getElementById('heroClasse').textContent  = compte.classe || '';
+    document.getElementById('metaNature').textContent  = compte.nature || '—';
+
+    // Badge sens
+    const sensEl = document.getElementById('metaSens');
+    const s = (compte.sens || '').toLowerCase();
+    const badgeClass = s.includes('débiteur') && s.includes('créditeur') ? 'DC'
+                     : s.includes('débiteur') ? 'D' : 'C';
+    sensEl.innerHTML = `<span class="badge-sens badge-${badgeClass}">${compte.sens}</span>`;
+
+    // Comptes liés
+    if (compte.comptes_lies && compte.comptes_lies.length) {
+      document.getElementById('sideLies').style.display = 'block';
+      const cl = document.getElementById('comptes-lies');
+      compte.comptes_lies.forEach(c => {
+        const a = document.createElement('a');
+        a.href = `compte-detail.html?code=${c}`;
+        a.className = 'compte-tag';
+        a.textContent = c;
+        cl.appendChild(a);
+      });
+    }
+
+    // Références
+    if (compte.textes_ref && compte.textes_ref.length) {
+      document.getElementById('sideRef').style.display = 'block';
+      const rl = document.getElementById('textes-ref');
+      compte.textes_ref.forEach(r => {
+        const span = document.createElement('span');
+        span.className = 'ref-tag';
+        span.textContent = r;
+        rl.appendChild(span);
+      });
+    }
+
+    // ── SECTIONS DE CONTENU ──
+    const content = document.getElementById('detailContent');
+
+    // 0. Contenu / Description
+    if (compte.contenu) {
+      content.appendChild(buildSection('📌', 'Contenu & Description',
+        `<p>${compte.contenu}</p>`));
+    }
+
+    // 0b. Subdivisions
+    if (compte.subdivisions && Object.keys(compte.subdivisions).length) {
+      const rows = Object.entries(compte.subdivisions).map(([c,l]) =>
+        `<div class="line" style="display:grid;grid-template-columns:90px 1fr;gap:1rem;padding:0.3rem 0.5rem;border-bottom:1px solid var(--border);">
+          <a href="compte-detail.html?code=${c}" style="font-family:'Courier New',monospace;font-size:0.8rem;font-weight:600;color:var(--gold);text-decoration:none;">${c}</a>
+          <span style="font-size:0.83rem;color:#333;">${l}</span>
+        </div>`).join('');
+      content.appendChild(buildSection('🗂', 'Subdivisions', rows));
+    }
+
+    // 1. Mouvements Débit / Crédit
+    const fct = compte.fonctionnement || {};
+    if ((fct.debit && fct.debit.length) || (fct.credit && fct.credit.length)) {
+      const dcHTML = `
+        <div class="dc-grid">
+          <div class="dc-col debit">
+            <div class="dc-col-title dc-title-debit">⬇ Débit (emplois)</div>
+            <ul>${(fct.debit||[]).map(i=>`<li>${i}</li>`).join('')}</ul>
+          </div>
+          <div class="dc-col credit">
+            <div class="dc-col-title dc-title-credit">⬆ Crédit (ressources)</div>
+            <ul>${(fct.credit||[]).map(i=>`<li>${i}</li>`).join('')}</ul>
+          </div>
+        </div>`;
+      content.appendChild(buildSection('🔁', 'Fonctionnement — Mouvements du compte', dcHTML));
+    }
+
+    // 2. Commentaires
+    if (compte.commentaires) {
+      const cText = compte.commentaires.replace(/\n/g, '<br><br>');
+      content.appendChild(buildSection('💬', 'Commentaires & règles pratiques',
+        `<p style="white-space:pre-line;">${cText}</p>`));
+    }
+
+    // 3. Exclusions
+    if (compte.exclusions) {
+      const exList = (compte.exclusions.comptes||[]).map(c=>`<li>${c}</li>`).join('');
+      const exHTML = `<p style="margin-bottom:0.8rem;">${compte.exclusions.texte||''}</p>
+        ${exList ? `<p style="font-size:0.78rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem;">Comptes à utiliser à la place :</p><ul>${exList}</ul>` : ''}`;
+      content.appendChild(buildSection('🚫', 'Exclusions', exHTML));
+    }
+
+    // 4. Éléments de contrôle
+    if (compte.controle && compte.controle.length) {
+      const ctrlHTML = `<ul>${compte.controle.map(c=>`<li>${c}</li>`).join('')}</ul>`;
+      content.appendChild(buildSection('✅', 'Éléments de contrôle', ctrlHTML));
+    }
+
+  } else {
+    // ── PAS DE DONNÉES ──
+    document.getElementById('heroLibelle').textContent = 'Compte non référencé';
+    document.getElementById('heroClasse').textContent  = '';
+
+    const content = document.getElementById('detailContent');
+    content.innerHTML = `
+      <div class="no-data">
+        <div class="no-data-icon">🔍</div>
+        <h2>Aucune fiche disponible</h2>
+        <p>Le compte <strong>${code}</strong> n'a pas encore de fiche détaillée dans notre base.</p>
+        <p style="margin-top:0.5rem;">Vous pouvez nous soumettre le contenu via la page Contact, nous l'intégrerons rapidement.</p>
+        <div style="margin-top:1.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+          <a href="Plan comptable.html" class="btn">← Retour au plan</a>
+          <a href="contact.html" class="btn btn-outline">Nous contacter</a>
+        </div>
+      </div>`;
+  }
+
+  // ── HELPER ──
+  function buildSection(icon, title, bodyHTML) {
+    const sec = document.createElement('div');
+    sec.className = 'content-section';
+    sec.innerHTML = `
+      <div class="content-section-header">
+        <span class="icon">${icon}</span>
+        <h3>${title}</h3>
+      </div>
+      <div class="content-section-body">${bodyHTML}</div>`;
+    return sec;
+  }
+</script>
+</body>
+</html>

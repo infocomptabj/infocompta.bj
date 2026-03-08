@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Comptable — InfoCompta</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .pc-toolbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 0;
+      position: sticky;
+      top: 64px;
+      z-index: 90;
+    }
+    .pc-toolbar .container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .pc-search {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      outline: none;
+      width: 260px;
+      transition: border-color 0.2s;
+    }
+    .pc-search:focus { border-color: var(--gold); }
+    .pc-search::placeholder { color: var(--muted); }
+
+    .class-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .tab {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      padding: 0.3rem 0.8rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .tab:hover { border-color: var(--gold); color: var(--gold); }
+    .tab.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+    .pc-lines { padding: 1.5rem 0 4rem; }
+    .line {
+      display: grid;
+      grid-template-columns: 110px 1fr 28px;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.28rem 0.75rem;
+      border-left: 2px solid transparent;
+      transition: background 0.12s, border-color 0.12s;
+    }
+    .line:hover { background: var(--surface); border-left-color: var(--gold); }
+    .line.hidden { display: none; }
+
+    .info-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px; height: 24px;
+      font-size: 0.75rem;
+      border-radius: 50%;
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--muted);
+      text-decoration: none;
+      opacity: 0;
+      transition: opacity 0.15s, background 0.15s, color 0.15s, border-color 0.15s;
+      flex-shrink: 0;
+    }
+    .line:hover .info-btn { opacity: 1; }
+    .info-btn:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+    .line[data-level="1"] { margin-top: 2rem; padding-top: 0.65rem; padding-bottom: 0.65rem; border-top: 1px solid var(--border); }
+    .line[data-level="1"] .lcode { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: var(--navy) !important; }
+    .line[data-level="1"] .llabel { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: var(--navy) !important; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    .line[data-level="2"] { margin-top: 0.8rem; }
+    .line[data-level="2"] .lcode { font-size: 0.88rem; font-weight: 600; color: var(--navy); }
+    .line[data-level="2"] .llabel { font-size: 0.85rem; font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .line[data-level="3"] .lcode { font-size: 0.83rem; color: var(--gold); font-weight: 600; }
+    .line[data-level="3"] .llabel { font-size: 0.83rem; color: var(--text); }
+
+    .line[data-level="4"] { padding-left: 1.2rem; }
+    .line[data-level="4"] .lcode { font-size: 0.78rem; color: var(--muted) !important; }
+    .line[data-level="4"] .llabel { font-size: 0.78rem; color: #555; }
+
+    .line[data-level="5"] { padding-left: 2.4rem; }
+    .line[data-level="5"] .lcode { font-size: 0.74rem; color: #bbb !important; }
+    .line[data-level="5"] .llabel { font-size: 0.74rem; color: #888; }
+
+    .lcode { text-align: right; color: var(--muted); }
+    .llabel { color: var(--text); }
+
+    .count-bar {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: right;
+      margin-top: 2rem;
+      letter-spacing: 0.05em;
+    }
+    mark { background: rgba(184,150,62,0.2); color: var(--gold); padding: 0 1px; border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Info<span>Compta</span></a>
+  <nav>
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="Plan comptable.html" class="active">Plan Comptable</a></li>
+      <li><a href="documents.html">Documents</a></li>
+      <li><a href="A propos.html">A propos</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- HERO SM -->
+<section class="hero-sm">
+  <div class="container">
+    <p class="section-label" style="color:var(--gold-lt);">OHADA · 9 Classes</p>
+    <h1>Plan Comptable Général</h1>
+    <p>Recherchez et naviguez dans l'intégralité du plan comptable OHADA.</p>
+  </div>
+</section>
+
+<!-- TOOLBAR -->
+<div class="pc-toolbar">
+  <div class="container">
+    <input class="pc-search" type="text" id="search" placeholder="Rechercher code ou libellé…" oninput="filterLines(this.value)">
+    <div class="class-tabs">
+      <button class="tab active" onclick="filterClass('all',this)">Tout</button>
+      <button class="tab" onclick="filterClass('1',this)">1 · Ressources</button>
+      <button class="tab" onclick="filterClass('2',this)">2 · Immobilisé</button>
+      <button class="tab" onclick="filterClass('3',this)">3 · Stocks</button>
+      <button class="tab" onclick="filterClass('4',this)">4 · Tiers</button>
+      <button class="tab" onclick="filterClass('5',this)">5 · Trésorerie</button>
+      <button class="tab" onclick="filterClass('6',this)">6 · Charges</button>
+      <button class="tab" onclick="filterClass('7',this)">7 · Produits</button>
+      <button class="tab" onclick="filterClass('8',this)">8 · Autres</button>
+      <button class="tab" onclick="filterClass('9',this)">9 · Engagements</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGNES -->
+<div class="pc-lines">
+  <div class="container">
+    <div id="lines"></div>
+    <p class="count-bar" id="count"></p>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2026 <strong>InfoCompta</strong>. Tous droits réservés.</p>
+</footer>
+
+<script src="Plan Comptable.js"></script>
+</body>
+</html>

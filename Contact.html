@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — InfoCompta</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 3rem;
+      align-items: start;
+      padding: 3rem 0 4rem;
+    }
+    .info-block { display: flex; flex-direction: column; gap: 1.5rem; }
+    .info-item { display: flex; gap: 1rem; align-items: flex-start; }
+    .info-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      background: rgba(184,150,62,0.1);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .info-item h4 { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; font-family:'DM Sans',sans-serif; }
+    .info-item p { font-size: 0.9rem; color: var(--text); }
+
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.2rem;
+      box-shadow: var(--shadow);
+    }
+    .success-msg {
+      background: rgba(46,120,70,0.08);
+      border: 1px solid rgba(46,120,70,0.2);
+      color: #2e7846;
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      font-size: 0.88rem;
+      display: none;
+      margin-bottom: 1.2rem;
+    }
+
+    @media (max-width: 720px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Info<span>Compta</span></a>
+  <nav>
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="Plan Comptable.html">Plan Comptable</a></li>
+      <li><a href="documents.html">Documents</a></li>
+      <li><a href="A propos.html">A propos</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero-sm">
+  <div class="container">
+    <p class="section-label" style="color:var(--gold-lt);">Nous joindre</p>
+    <h1>Contact</h1>
+    <p>Une question, une suggestion ? Écrivez-nous, nous vous répondons rapidement.</p>
+  </div>
+</section>
+
+<main>
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- INFOS -->
+      <div class="info-block">
+        <div>
+          <p class="section-label">Coordonnées</p>
+          <h2 style="margin-bottom:1.5rem;">Parlons-nous</h2>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📧</div>
+          <div>
+            <h4>Email</h4>
+            <p>infocomptabj@gmail.com</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div>
+            <h4>Adresse</h4>
+            <p>Abomey Calavi, Bénin</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📞</div>
+          <div>
+            <h4>Téléphone</h4>
+            <p>+229 01 91 09 09 91</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">🕐</div>
+          <div>
+            <h4>Horaires</h4>
+            <p>Lun – Ven : 8h00 – 17h30<br>Sam : 9h00 – 13h00</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORMULAIRE -->
+      <div class="form-card">
+        <h3 style="margin-bottom:1.5rem;">Envoyer un message</h3>
+        <div class="success-msg" id="successMsg">✅ Votre message a bien été envoyé. Nous vous répondrons dans les plus brefs délais.</div>
+        <div class="form-group">
+          <label for="nom">Nom complet</label>
+          <input type="text" id="nom" placeholder="Jean Koffi">
+        </div>
+        <div class="form-group">
+          <label for="email">Adresse email</label>
+          <input type="email" id="email" placeholder="jean.koffi@exemple.bj">
+        </div>
+        <div class="form-group">
+          <label for="sujet">Sujet</label>
+          <select id="sujet">
+            <option value="">— Choisir un sujet —</option>
+            <option>Question sur le plan comptable</option>
+            <option>Problème technique</option>
+            <option>Suggestion d'amélioration</option>
+            <option>Partenariat</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" placeholder="Décrivez votre demande…"></textarea>
+        </div>
+        <button class="btn" onclick="submitForm()" style="width:100%;justify-content:center;">Envoyer le message</button>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2026 <strong>InfoCompta</strong>. Tous droits réservés.</p>
+</footer>
+
+<script>
+function submitForm() {
+  const nom = document.getElementById('nom').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const msg = document.getElementById('message').value.trim();
+  if (!nom || !email || !msg) { alert('Veuillez remplir tous les champs obligatoires.'); return; }
+  document.getElementById('successMsg').style.display = 'block';
+  document.getElementById('nom').value = '';
+  document.getElementById('email').value = '';
+  document.getElementById('sujet').value = '';
+  document.getElementById('message').value = '';
+}
+</script>
+</body>
+</html>
