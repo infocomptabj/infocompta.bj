@@ -4,7 +4,278 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Compte — InfoCompta</title>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+/* =============================================
+   InfoCompta — Styles partagés
+   Palette : blanc cassé, bleu marine, or doux
+   ============================================= */
+
+   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+   :root {
+     --bg:        #f7f6f2;
+     --surface:   #ffffff;
+     --navy:      #1a2e4a;
+     --navy-lt:   #2a4265;
+     --gold:      #b8963e;
+     --gold-lt:   #d4af6a;
+     --text:      #1e1e1e;
+     --muted:     #7a7a7a;
+     --border:    #e2ddd6;
+     --radius:    4px;
+     --shadow:    0 2px 16px rgba(26,46,74,0.08);
+     --transition: 0.2s ease;
+   }
+   
+   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+   
+   html { scroll-behavior: smooth; }
+   
+   body {
+     background: var(--bg);
+     color: var(--text);
+     font-family: 'DM Sans', sans-serif;
+     font-weight: 400;
+     font-size: 16px;
+     line-height: 1.7;
+     min-height: 100vh;
+     display: flex;
+     flex-direction: column;
+   }
+   
+   /* ── HEADER ── */
+   header {
+     background: var(--navy);
+     padding: 0 3rem;
+     position: sticky;
+     top: 0;
+     z-index: 100;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     height: 64px;
+     box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+   }
+   
+   .logo {
+     font-family: 'Cormorant Garamond', serif;
+     font-size: 1.55rem;
+     font-weight: 700;
+     color: #fff;
+     text-decoration: none;
+     letter-spacing: 0.02em;
+   }
+   
+   .logo span { color: var(--gold-lt); }
+   
+   nav ul {
+     list-style: none;
+     display: flex;
+     gap: 0.25rem;
+   }
+   
+   nav ul li a {
+     color: rgba(255,255,255,0.72);
+     text-decoration: none;
+     font-size: 0.82rem;
+     font-weight: 500;
+     letter-spacing: 0.07em;
+     text-transform: uppercase;
+     padding: 0.45rem 1rem;
+     border-radius: var(--radius);
+     transition: color var(--transition), background var(--transition);
+     display: block;
+   }
+   
+   nav ul li a:hover {
+     color: #fff;
+     background: rgba(255,255,255,0.08);
+   }
+   
+   nav ul li a.active {
+     color: var(--gold-lt);
+     background: rgba(184,150,62,0.12);
+   }
+   
+   /* ── MAIN ── */
+   main { flex: 1; }
+   
+   /* ── FOOTER ── */
+   footer {
+     background: var(--navy);
+     color: rgba(255,255,255,0.45);
+     text-align: center;
+     font-size: 0.78rem;
+     padding: 1.4rem 2rem;
+     letter-spacing: 0.05em;
+   }
+   
+   footer strong { color: var(--gold-lt); font-weight: 500; }
+   
+   /* ── UTILITAIRES ── */
+   .container {
+     max-width: 1080px;
+     margin: 0 auto;
+     padding: 0 2.5rem;
+   }
+   
+   .btn {
+     display: inline-block;
+     background: var(--gold);
+     color: #fff;
+     text-decoration: none;
+     font-size: 0.82rem;
+     font-weight: 500;
+     letter-spacing: 0.08em;
+     text-transform: uppercase;
+     padding: 0.7rem 1.8rem;
+     border-radius: var(--radius);
+     transition: background var(--transition), transform var(--transition);
+     border: none;
+     cursor: pointer;
+   }
+   
+   .btn:hover { background: var(--gold-lt); transform: translateY(-1px); }
+   
+   .btn-outline {
+     background: transparent;
+     border: 1.5px solid var(--navy);
+     color: var(--navy);
+   }
+   
+   .btn-outline:hover { background: var(--navy); color: #fff; }
+   
+   .section-label {
+     font-size: 0.72rem;
+     font-weight: 500;
+     letter-spacing: 0.15em;
+     text-transform: uppercase;
+     color: var(--gold);
+     margin-bottom: 0.6rem;
+   }
+   
+   h1, h2, h3, h4 {
+     font-family: 'Cormorant Garamond', serif;
+     font-weight: 700;
+     line-height: 1.2;
+     color: var(--navy);
+   }
+   
+   h1 { font-size: clamp(2rem, 4vw, 3rem); }
+   h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+   h3 { font-size: 1.3rem; }
+   
+   p { color: #444; }
+   
+   .card {
+     background: var(--surface);
+     border: 1px solid var(--border);
+     border-radius: var(--radius);
+     padding: 1.8rem;
+     box-shadow: var(--shadow);
+     transition: transform var(--transition), box-shadow var(--transition);
+   }
+   
+   .card:hover {
+     transform: translateY(-3px);
+     box-shadow: 0 6px 28px rgba(26,46,74,0.13);
+   }
+   
+   .divider {
+     border: none;
+     border-top: 1px solid var(--border);
+     margin: 3rem 0;
+   }
+   
+   /* ── PAGE HERO ── */
+   .hero {
+     background: linear-gradient(135deg, var(--navy) 0%, var(--navy-lt) 100%);
+     color: #fff;
+     padding: 5rem 0 4.5rem;
+     position: relative;
+     overflow: hidden;
+   }
+   
+   .hero::after {
+     content: '';
+     position: absolute;
+     right: -80px;
+     top: -80px;
+     width: 400px;
+     height: 400px;
+     border-radius: 50%;
+     background: rgba(184,150,62,0.08);
+     pointer-events: none;
+   }
+   
+   .hero .section-label { color: var(--gold-lt); }
+   .hero h1 { color: #fff; margin-bottom: 1rem; }
+   .hero p { color: rgba(255,255,255,0.72); font-size: 1.05rem; max-width: 560px; }
+   .hero .actions { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+   
+   /* ── PAGE HERO SMALL (sous-pages) ── */
+   .hero-sm {
+     background: linear-gradient(135deg, var(--navy) 0%, var(--navy-lt) 100%);
+     padding: 3rem 0;
+     color: #fff;
+   }
+   .hero-sm h1 { color: #fff; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+   .hero-sm p { color: rgba(255,255,255,0.65); margin-top: 0.5rem; }
+   
+   /* ── GRILLES ── */
+   .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+   .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+   
+   /* ── ICON BADGE ── */
+   .icon-badge {
+     width: 44px; height: 44px;
+     background: rgba(184,150,62,0.12);
+     border-radius: 8px;
+     display: flex; align-items: center; justify-content: center;
+     font-size: 1.3rem;
+     margin-bottom: 1rem;
+   }
+   
+   /* ── FORMULAIRE ── */
+   .form-group { margin-bottom: 1.3rem; }
+   .form-group label {
+     display: block;
+     font-size: 0.8rem;
+     font-weight: 500;
+     letter-spacing: 0.06em;
+     text-transform: uppercase;
+     color: var(--navy);
+     margin-bottom: 0.4rem;
+   }
+   .form-group input,
+   .form-group textarea,
+   .form-group select {
+     width: 100%;
+     background: var(--bg);
+     border: 1.5px solid var(--border);
+     color: var(--text);
+     font-family: 'DM Sans', sans-serif;
+     font-size: 0.9rem;
+     padding: 0.65rem 0.9rem;
+     border-radius: var(--radius);
+     outline: none;
+     transition: border-color var(--transition);
+   }
+   .form-group input:focus,
+   .form-group textarea:focus,
+   .form-group select:focus { border-color: var(--gold); }
+   .form-group textarea { resize: vertical; min-height: 130px; }
+   
+   /* ── RESPONSIVE ── */
+   @media (max-width: 720px) {
+     header { padding: 0 1.2rem; }
+     .logo { font-size: 1.2rem; }
+     nav ul li a { padding: 0.4rem 0.6rem; font-size: 0.75rem; }
+     .container { padding: 0 1.2rem; }
+     .hero { padding: 3.5rem 0 3rem; }
+   }
+   
+</style>
   <style>
 
     .detail-layout {
@@ -216,9 +487,9 @@
   <nav>
     <ul>
       <li><a href="index.html">Accueil</a></li>
-      <li><a href="Plan comptable.html" class="active">Plan Comptable</a></li>
+      <li><a href="plan-comptable.html" class="active">Plan Comptable</a></li>
       <li><a href="documents.html">Documents</a></li>
-      <li><a href="A propos.html">A propos</a></li>
+      <li><a href="a-propos.html">A propos</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
@@ -229,7 +500,7 @@
   <div class="container">
     <div class="breadcrumb">
       <a href="index.html">Accueil</a> &rsaquo;
-      <a href="Plan comptable.html">Plan Comptable</a> &rsaquo;
+      <a href="plan-comptable.html">Plan Comptable</a> &rsaquo;
       <span id="breadCode">—</span>
     </div>
     <div class="code-badge" id="heroCode">—</div>
@@ -270,7 +541,7 @@
         </div>
 
         <div class="nav-buttons">
-          <a href="Plan comptable.html" class="nav-btn primary">← Retour au plan comptable</a>
+          <a href="plan-comptable.html" class="nav-btn primary">← Retour au plan comptable</a>
           <a href="contact.html" class="nav-btn">✉ Suggérer une correction</a>
         </div>
 
@@ -410,7 +681,7 @@
         <p>Le compte <strong>${code}</strong> n'a pas encore de fiche détaillée dans notre base.</p>
         <p style="margin-top:0.5rem;">Vous pouvez nous soumettre le contenu via la page Contact, nous l'intégrerons rapidement.</p>
         <div style="margin-top:1.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-          <a href="Plan comptable.html" class="btn">← Retour au plan</a>
+          <a href="plan-comptable.html" class="btn">← Retour au plan</a>
           <a href="contact.html" class="btn btn-outline">Nous contacter</a>
         </div>
       </div>`;
