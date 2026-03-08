@@ -275,13 +275,123 @@
      .hero { padding: 3.5rem 0 3rem; }
    }
    
+
+  /* ══════════════════════════════════════
+     RESPONSIVE MOBILE — Menu hamburger
+  ══════════════════════════════════════ */
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px 6px;
+    background: none;
+    border: none;
+    z-index: 200;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .hamburger span {
+    display: block;
+    width: 26px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── MOBILE : tout écran < 1024px ── */
+  @media (max-width: 1023px) {
+    header {
+      padding: 0 1rem;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { font-size: 1.2rem; }
+
+    /* Cacher la nav, montrer le hamburger */
+    nav { display: none !important; }
+    nav.open { display: block !important; }
+    .hamburger { display: flex; }
+
+    /* Menu déroulant plein écran */
+    nav {
+      position: fixed !important;
+      top: 56px !important;
+      left: 0 !important;
+      right: 0 !important;
+      background: var(--navy) !important;
+      border-top: 1px solid rgba(255,255,255,0.1) !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35) !important;
+      z-index: 99 !important;
+    }
+    nav ul {
+      flex-direction: column !important;
+      gap: 0 !important;
+      padding: 0.3rem 0 !important;
+    }
+    nav ul li a {
+      padding: 1rem 1.5rem !important;
+      font-size: 0.9rem !important;
+      border-radius: 0 !important;
+      border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+      letter-spacing: 0.05em !important;
+      display: block !important;
+    }
+    nav ul li:last-child a { border-bottom: none !important; }
+    nav ul li a:hover { background: rgba(255,255,255,0.07) !important; }
+    nav ul li a.active {
+      color: var(--gold-lt) !important;
+      background: rgba(184,150,62,0.12) !important;
+    }
+
+    /* Contenu */
+    .container { padding: 0 1rem; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 1rem; }
+    .card { padding: 1.2rem; }
+
+    /* Hero principal */
+    .hero { padding: 2.5rem 0 2rem; }
+    .hero h1 { font-size: 1.7rem; line-height: 1.25; }
+    .hero p { font-size: 0.92rem; }
+    .hero .actions { flex-direction: column; gap: 0.7rem; }
+    .hero .actions a { text-align: center; width: 100%; box-sizing: border-box; }
+
+    /* Hero SM */
+    .hero-sm { padding: 1.8rem 0; }
+    .hero-sm h1 { font-size: 1.4rem; }
+    .hero-sm p { font-size: 0.88rem; }
+
+    footer { font-size: 0.75rem; padding: 1rem; }
+    .btn { padding: 0.65rem 1.3rem; font-size: 0.78rem; }
+  }
+
+  @media (max-width: 400px) {
+    .hero h1 { font-size: 1.4rem; }
+    .logo { font-size: 1rem; }
+  }
+    .logo { font-size: 1rem; }
+  }
+    .logo { font-size: 1.1rem; }
+  }
+
 </style>
 </head>
 <body>
 
 <header>
   <a href="index.html" class="logo">Info<span>Compta</span></a>
-  <nav>
+<button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+    <nav>
     <ul>
       <li><a href="index.html" class="active">Accueil</a></li>
       <li><a href="plan-comptable.html">Plan Comptable</a></li>
@@ -349,7 +459,7 @@
 
   <!-- CTA -->
   <section style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:3.5rem 0;">
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;" class="cta-flex">
       <div>
         <h2 style="margin-bottom:0.4rem;">Prêt à commencer ?</h2>
         <p>Consultez le plan comptable ou contactez-nous pour en savoir plus.</p>
@@ -366,6 +476,38 @@
 <footer>
   <p>&copy; 2026 <strong>InfoCompta</strong>. Tous droits réservés.</p>
 </footer>
+
+
+<script>
+  (function() {
+    var btn = document.getElementById('hamburgerBtn');
+    var nav = document.querySelector('nav');
+    if (!btn || !nav) return;
+
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+
+    // Fermer au clic sur un lien
+    nav.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+      });
+    });
+
+    // Fermer au clic en dehors
+    document.addEventListener('click', function(e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+      }
+    });
+  })();
+</script>
 
 </body>
 </html>
