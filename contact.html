@@ -532,12 +532,15 @@
   <p>&copy; 2026 <strong>InfoCompta</strong>. Tous droits réservés.</p>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-  // Initialisation EmailJS avec votre clé publique
-  emailjs.init("NtodYs2-Zcd0piqIG");
+  // ══════════════════════════════════════════
+  // FORMSPREE — remplacez VOTRE_FORM_ID ci-dessous
+  // par votre ID obtenu sur formspree.io
+  // Exemple : https://formspree.io/f/xpwzabcd
+  // ══════════════════════════════════════════
+  const FORMSPREE_ID = 'VOTRE_FORM_ID';
 
-  function submitForm() {
+  async function submitForm() {
     const nom     = document.getElementById('nom').value.trim();
     const email   = document.getElementById('email').value.trim();
     const sujet   = document.getElementById('sujet').value;
@@ -547,7 +550,6 @@
     const errorMsg   = document.getElementById('errorMsg');
     const btn        = document.getElementById('submitBtn');
 
-    // Masquer les messages précédents
     successMsg.style.display = 'none';
     errorMsg.style.display   = 'none';
 
@@ -564,34 +566,40 @@
       return;
     }
 
-    // État chargement
     btn.disabled = true;
     btn.textContent = 'Envoi en cours…';
 
-    // Envoi via EmailJS
-    emailjs.send("service_infocompta", "template_contact", {
-      from_name:    nom,
-      from_email:   email,
-      sujet:        sujet || 'Aucun sujet',
-      message:      message,
-      to_email:     "infocomptabj@gmail.com"
-    }).then(function() {
-      // Succès
-      successMsg.style.display = 'block';
-      successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      document.getElementById('nom').value     = '';
-      document.getElementById('email').value   = '';
-      document.getElementById('sujet').value   = '';
-      document.getElementById('message').value = '';
-      btn.textContent = 'Envoyer le message';
-      btn.disabled = false;
-    }, function(error) {
-      // Erreur
-      errorMsg.textContent = '❌ Erreur d\'envoi. Veuillez réessayer ou écrire directement à infocomptabj@gmail.com';
+    try {
+      const res = await fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          nom:     nom,
+          email:   email,
+          sujet:   sujet || 'Aucun sujet',
+          message: message
+        })
+      });
+
+      if (res.ok) {
+        successMsg.style.display = 'block';
+        successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        document.getElementById('nom').value     = '';
+        document.getElementById('email').value   = '';
+        document.getElementById('sujet').value   = '';
+        document.getElementById('message').value = '';
+      } else {
+        const data = await res.json();
+        errorMsg.textContent = '❌ Erreur d\'envoi. Veuillez réessayer ou écrire à infocomptabj@gmail.com';
+        errorMsg.style.display = 'block';
+      }
+    } catch(e) {
+      errorMsg.textContent = '❌ Erreur réseau. Veuillez réessayer ou écrire à infocomptabj@gmail.com';
       errorMsg.style.display = 'block';
-      btn.textContent = 'Envoyer le message';
-      btn.disabled = false;
-    });
+    }
+
+    btn.textContent = 'Envoyer le message';
+    btn.disabled = false;
   }
 </script>
 
