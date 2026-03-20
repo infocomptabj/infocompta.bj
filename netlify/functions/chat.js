@@ -1,11 +1,8 @@
 // netlify/functions/chat.js
-// Proxy sécurisé utilisant Google Gemini 2.0 Flash (gratuit)
-// Dossier : netlify/functions/chat.js
-// La clé API reste côté serveur — jamais exposée au navigateur
+// VERSION DEBUG — Identifie précisément pourquoi Gemini ne répond pas
 
 exports.handler = async function(event, context) {
 
-  // Autoriser les requêtes OPTIONS (CORS preflight)
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
@@ -18,122 +15,126 @@ exports.handler = async function(event, context) {
     };
   }
 
-  // Autoriser uniquement les requêtes POST
   if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ error: 'Méthode non autorisée' })
-    };
+    return { statusCode: 405, body: JSON.stringify({ error: 'Méthode non autorisée' }) };
   }
 
-  // Récupérer la clé API Gemini depuis les variables d'environnement Netlify
+  // ── TEST 1 : Clé API présente ? ──
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return {
-      statusCode: 500,
-      headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({ error: 'Clé API Gemini manquante. Ajoutez GEMINI_API_KEY dans les variables d\'environnement Netlify.' })
-    };
-  }
-
-  try {
-    // Lire le body envoyé par le widget
-    const body = JSON.parse(event.body);
-
-    // Extraire le system prompt et les messages
-    const systemPrompt = body.system || '';
-    const messages     = body.messages || [];
-
-    // ── Construire l'historique au format Gemini ──
-    // Le widget envoie des messages user/assistant alternés.
-    // Gemini attend des rôles "user" et "model" (pas "assistant").
-    const geminiContents = messages.map(m => ({
-      role:  m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.content }]
-    }));
-
-    // ── Appel à l'API Gemini 2.0 Flash (modèle gratuit le plus récent) ──
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-      {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          // Instruction système : contexte OHADA d'InfoCompta
-          system_instruction: {
-            parts: [{ text: systemPrompt }]
-          },
-          // Historique de la conversation
-          contents: geminiContents,
-          // Paramètres de génération
-          generationConfig: {
-            maxOutputTokens: 1200,
-            temperature:     0.7
-          },
-          // Paramètres de sécurité assouplis pour le contexte comptable
-          safetySettings: [
-            { category: 'HARM_CATEGORY_HARASSMENT',        threshold: 'BLOCK_ONLY_HIGH' },
-            { category: 'HARM_CATEGORY_HATE_SPEECH',       threshold: 'BLOCK_ONLY_HIGH' },
-            { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
-            { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' }
-          ]
-        })
-      }
-    );
-
-    // Vérifier le statut HTTP de l'API Gemini
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error('Erreur API Gemini :', response.status, errText);
-      return {
-        statusCode: 502,
-        headers: { 'Access-Control-Allow-Origin': '*' },
-        body: JSON.stringify({
-          error: `Erreur API Gemini (${response.status}) : ${errText}`
-        })
-      };
-    }
-
-    const data = await response.json();
-
-    // ── Extraire le texte de la réponse Gemini ──
-    // Structure : data.candidates[0].content.parts[0].text
-    let text = '';
-    try {
-      text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    } catch (_) {
-      text = '';
-    }
-
-    // Cas où Gemini bloque la réponse pour raisons de sécurité
-    if (!text) {
-      const finishReason = data?.candidates?.[0]?.finishReason || 'UNKNOWN';
-      if (finishReason === 'SAFETY') {
-        text = "Je ne peux pas répondre à cette question. Veuillez reformuler.";
-      } else {
-        text = "Désolé, je n'ai pas pu générer de réponse. Veuillez réessayer.";
-      }
-    }
-
-    // ── Retourner la réponse au format compatible avec le widget InfoCompta ──
-    // Le widget attend : { content: [{ type: 'text', text: '...' }] }
-    return {
       statusCode: 200,
-      headers: {
-        'Content-Type':                'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
+      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        content: [{ type: 'text', text: text }]
+        content: [{ type: 'text', text: '🔴 ERREUR CONFIG : La variable GEMINI_API_KEY est absente.\n\n→ Netlify : Site settings → Environment variables → Ajoutez GEMINI_API_KEY avec votre clé Google AI Studio.' }]
       })
     };
+  }
 
-  } catch (error) {
-    console.error('Erreur proxy chat :', error);
+  let body;
+  try {
+    body = JSON.parse(event.body);
+  } catch (e) {
     return {
-      statusCode: 500,
-      headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({ error: 'Erreur proxy : ' + error.message })
+      statusCode: 200,
+      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: [{ type: 'text', text: '🔴 ERREUR : Corps de la requête invalide.' }] })
     };
   }
+
+  const systemPrompt = (body.system || 'Tu es un assistant comptable OHADA.').slice(0, 3000);
+  const messages     = body.messages || [];
+
+  const geminiContents = messages.map(m => ({
+    role:  m.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: String(m.content).slice(0, 2000) }]
+  }));
+
+  if (geminiContents.length === 0) {
+    geminiContents.push({ role: 'user', parts: [{ text: 'Bonjour' }] });
+  }
+
+  // ── Essai sur plusieurs modèles Gemini (du plus récent au plus ancien) ──
+  const modelsToTry = [
+    'gemini-2.0-flash',
+    'gemini-1.5-flash',
+    'gemini-1.5-flash-latest'
+  ];
+
+  const diagnostics = [];
+
+  for (const model of modelsToTry) {
+    try {
+      const payload = {
+        system_instruction: { parts: [{ text: systemPrompt }] },
+        contents: geminiContents,
+        generationConfig: { maxOutputTokens: 800, temperature: 0.7 }
+      };
+
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }
+      );
+
+      const raw = await res.text();
+
+      if (!res.ok) {
+        diagnostics.push(`❌ ${model} → HTTP ${res.status} : ${raw.slice(0, 200)}`);
+        continue;
+      }
+
+      let data;
+      try { data = JSON.parse(raw); } catch (e) {
+        diagnostics.push(`❌ ${model} → Réponse non-JSON`);
+        continue;
+      }
+
+      const text         = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      const finishReason = data?.candidates?.[0]?.finishReason;
+
+      if (text && text.trim()) {
+        // ✅ Succès
+        return {
+          statusCode: 200,
+          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+          body: JSON.stringify({ content: [{ type: 'text', text }] })
+        };
+      }
+
+      if (finishReason === 'SAFETY') {
+        return {
+          statusCode: 200,
+          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+          body: JSON.stringify({ content: [{ type: 'text', text: 'Je ne peux pas répondre à cette question. Veuillez reformuler.' }] })
+        };
+      }
+
+      diagnostics.push(`⚠️ ${model} → Réponse vide (finishReason: ${finishReason}) | candidates: ${JSON.stringify(data?.candidates).slice(0, 150)}`);
+
+    } catch (err) {
+      diagnostics.push(`❌ ${model} → Exception : ${err.message}`);
+    }
+  }
+
+  // ── Retourner le diagnostic complet ──
+  return {
+    statusCode: 200,
+    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    body: JSON.stringify({
+      content: [{
+        type: 'text',
+        text: [
+          '🔴 DIAGNOSTIC — Aucun modèle n\'a fonctionné :',
+          '',
+          ...diagnostics,
+          '',
+          '💡 Solutions :',
+          '1. Clé API invalide → Générez une nouvelle clé sur aistudio.google.com',
+          '2. API désactivée → Activez "Generative Language API" dans Google Cloud Console',
+          '3. Quota dépassé → Vérifiez votre quota sur aistudio.google.com',
+          '4. Copiez ce message et envoyez-le pour aide'
+        ].join('\n')
+      }]
+    })
+  };
 };
