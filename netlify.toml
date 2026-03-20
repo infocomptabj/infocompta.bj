@@ -1,0 +1,15 @@
+# netlify.toml
+# Fichier de configuration Netlify — à placer à la racine de votre dépôt GitHub
+
+[build]
+  # Dossier contenant vos fichiers HTML (laisser vide si à la racine)
+  publish = "."
+
+  # Dossier des fonctions serverless
+  functions = "netlify/functions"
+
+# Redirige tous les appels /api/chat vers la Netlify Function
+[[redirects]]
+  from   = "/api/chat"
+  to     = "/.netlify/functions/chat"
+  status = 200
