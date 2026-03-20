@@ -1,6 +1,6 @@
 // netlify/functions/chat.js
-// Proxy sécurisé entre votre site et l'API Anthropic.
-// La clé API n'est JAMAIS exposée au navigateur — elle reste ici côté serveur.
+// Proxy sécurisé utilisant Google Gemini (gratuit)
+// La clé API reste côté serveur — jamais exposée au navigateur
 
 exports.handler = async function(event, context) {
 
@@ -12,42 +12,70 @@ exports.handler = async function(event, context) {
     };
   }
 
-  // Récupérer la clé API depuis les variables d'environnement Netlify
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  // Récupérer la clé API Gemini depuis les variables d'environnement Netlify
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Clé API manquante. Vérifiez vos variables d\'environnement Netlify.' })
+      body: JSON.stringify({ error: 'Clé API Gemini manquante.' })
     };
   }
 
   try {
-    // Transmettre la requête à l'API Anthropic
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type':      'application/json',
-        'x-api-key':         apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: event.body  // on transmet tel quel le body envoyé par le widget
-    });
+    // Lire le body envoyé par le widget
+    const body = JSON.parse(event.body);
+
+    // Extraire le system prompt et les messages
+    const systemPrompt = body.system || '';
+    const messages     = body.messages || [];
+
+    // Construire l'historique au format Gemini
+    const geminiContents = messages.map(m => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }]
+    }));
+
+    // Appel à l'API Gemini
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system_instruction: {
+            parts: [{ text: systemPrompt }]
+          },
+          contents: geminiContents,
+          generationConfig: {
+            maxOutputTokens: 1200,
+            temperature: 0.7
+          }
+        })
+      }
+    );
 
     const data = await response.json();
 
+    // Extraire le texte de la réponse Gemini
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text
+      || "Désolé, je n'ai pas pu générer de réponse.";
+
+    // Retourner au format compatible avec le widget
     return {
-      statusCode: response.status,
+      statusCode: 200,
       headers: {
         'Content-Type':                'application/json',
-        'Access-Control-Allow-Origin': '*'  // autorise votre site à appeler cette fonction
+        'Access-Control-Allow-Origin': '*'
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify({
+        content: [{ type: 'text', text: text }]
+      })
     };
 
   } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Erreur interne du proxy : ' + error.message })
+      body: JSON.stringify({ error: 'Erreur proxy : ' + error.message })
     };
   }
 };
