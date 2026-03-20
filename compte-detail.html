@@ -328,6 +328,9 @@ p  { color: #444; }
     </div>
     <button class="ic-close" onclick="icToggle()">✕</button>
   </div>
+  <div style="padding:5px 12px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;justify-content:flex-end;">
+    <button onclick="icClearHistory()" style="font-size:10px;color:var(--muted);background:none;border:none;cursor:pointer;padding:2px 6px;border-radius:3px;transition:background 0.15s;" onmouseover="this.style.background='var(--surface)'" onmouseout="this.style.background='none'">🗑 Effacer la conversation</button>
+  </div>
   <div class="ic-chips" id="ic-chips">
     <!-- Chips générées dynamiquement selon le compte affiché -->
     <div class="ic-chip" onclick="icChip(this)">📊 Ce compte</div>
@@ -502,9 +505,35 @@ const IC_MODEL       = 'claude-sonnet-4-20250514';
 const IC_MAX_TOKENS  = 1200;
 const IC_HISTORY_MAX = 14;
 
+// ── État ───────────────────────────────────────────────────────
 let icOpen   = false;
 let icBusy   = false;
-const icHist = [];
+
+// ── Persistance localStorage ────────────────────────────────────
+const IC_STORAGE_KEY = 'infocompta_chat_history';
+const IC_MAX_STORED  = 20;
+
+function icSaveHistory(hist) {
+  try {
+    localStorage.setItem(IC_STORAGE_KEY, JSON.stringify(hist.slice(-IC_MAX_STORED)));
+  } catch(e) {}
+}
+
+function icLoadHistory() {
+  try {
+    const raw = localStorage.getItem(IC_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch(e) { return []; }
+}
+
+function icClearHistory() {
+  try { localStorage.removeItem(IC_STORAGE_KEY); } catch(e) {}
+  document.getElementById('ic-messages').innerHTML = '';
+  icHist.length = 0;
+  icAppend('ai', 'Bonjour 👋 Je suis l\'assistant comptable d\'<strong>InfoCompta</strong>.<br><br>Comment puis-je vous aider ?', 'InfoCompta · Plan OHADA intégré');
+}
+
+const icHist = icLoadHistory();
 
 // Contexte compte courant (injecté automatiquement dans chaque message)
 const IC_CURRENT_CODE = (new URLSearchParams(window.location.search)).get('code') || '';
@@ -550,9 +579,6 @@ function icSystem() {
     : '';
   return `Tu es l'assistant comptable officiel du site InfoCompta, spécialisé dans le Système Comptable OHADA.${currentLabel}
 
-## Devise obligatoire
-Utilise EXCLUSIVEMENT le Franc CFA (FCFA) dans tous tes exemples et montants. N'utilise JAMAIS l'euro (€), le dollar ($) ou toute autre devise. Exemple : écris "500 000 FCFA" et non "500 €". Les montants courants en contexte OHADA Bénin : salaire moyen ~150 000 FCFA, ordinateur ~300 000 FCFA, véhicule ~8 000 000 FCFA, bâtiment ~50 000 000 FCFA.
-
 ## Sources de connaissance
 
 ### 1. Plan comptable OHADA d'InfoCompta (PRIORITÉ ABSOLUE)
@@ -572,11 +598,27 @@ Pour les questions de contexte (fiscalité, réglementation, pratiques professio
 5. Terminer par : "📂 Source : plan OHADA InfoCompta" ou "🌐 Source : connaissances générales + recherche web".`;
 }
 
+let icRestored = false;
 function icToggle() {
   icOpen = !icOpen;
   document.getElementById('ic-panel').classList.toggle('open', icOpen);
   document.getElementById('ic-notif').style.display = icOpen ? 'none' : 'block';
-  if (icOpen) setTimeout(() => document.getElementById('ic-input').focus(), 320);
+  if (icOpen) {
+    if (!icRestored) {
+      icRestored = true;
+      if (icHist.length > 0) {
+        document.getElementById('ic-messages').innerHTML = '';
+        icHist.forEach(m => {
+          if (m.role === 'user') {
+            icAppend('user', m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;'));
+          } else {
+            icAppend('ai', icFormat(m.content), '📂 Source : plan OHADA InfoCompta');
+          }
+        });
+      }
+    }
+    setTimeout(() => document.getElementById('ic-input').focus(), 320);
+  }
 }
 function icResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 100) + 'px'; }
 function icKey(e)     { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); icSend(); } }
@@ -622,6 +664,7 @@ async function icSend() {
   input.value = ''; input.style.height = 'auto';
   icAppend('user', text.replace(/</g,'&lt;').replace(/>/g,'&gt;'));
   icHist.push({ role: 'user', content: text });
+  icSaveHistory(icHist);
 
   const relevant = icFindRelevant(text);
   let enriched = text;
@@ -676,6 +719,7 @@ async function icSend() {
     icAppend('ai', icFormat(replyText), usedWeb ? '🌐 Plan OHADA InfoCompta + recherche web' : '📂 Source : plan OHADA InfoCompta');
     icHist.push({ role: 'assistant', content: replyText });
     if (icHist.length > IC_HISTORY_MAX) icHist.splice(0, icHist.length - IC_HISTORY_MAX);
+    icSaveHistory(icHist);
 
   } catch(err) {
     icRemoveTyping();
