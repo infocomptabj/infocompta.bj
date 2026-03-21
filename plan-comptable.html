@@ -489,8 +489,71 @@ function icFindRelevant(question) {
 }
 
 // ── Prompt système ──────────────────────────────────────────────
+function icBuildDocsContext() {
+  if (typeof DOCS_CONTEXT === 'undefined') return '(données fiscales non chargées)';
+  try {
+    const cgi = DOCS_CONTEXT.cgi || {};
+    const sys = DOCS_CONTEXT.syscohada || {};
+    let ctx = '';
+
+    const is = cgi.IS;
+    if (is) {
+      ctx += `**IS — Impôt sur les Sociétés**\n`;
+      ctx += `Taux : ${(is.taux||[]).map(t=>`${t.cas} → ${t.taux}`).join(' | ')}\n`;
+      ctx += `Report déficit : ${is.report_deficitaire||'N/A'}\n`;
+      ctx += `Déclarations : ${(is.declaration_paiement||[]).map(d=>`${d.obligation} (${d.echeance})`).join(' | ')}\n`;
+      ctx += `Charges déductibles : ${(is.charges_deductibles||[]).join(' ; ')}\n\n`;
+    }
+
+    const iba = cgi.IBA;
+    if (iba) {
+      ctx += `**IBA — Impôt sur les Bénéfices d'Affaires**\n`;
+      ctx += `Taux : ${(iba.taux||[]).map(t=>`${t.cas} → ${t.taux}`).join(' | ')}\n`;
+      ctx += `Exonérations : ${(iba.exonerations||[]).join(' ; ')}\n\n`;
+    }
+
+    const tva = cgi.TVA;
+    if (tva) {
+      ctx += `**TVA**\n`;
+      if (tva.taux_normal)            ctx += `Taux normal : ${tva.taux_normal}\n`;
+      if (tva.taux_reduit)            ctx += `Taux réduit : ${tva.taux_reduit}\n`;
+      if (tva.seuil_assujettissement) ctx += `Seuil assujettissement : ${tva.seuil_assujettissement}\n`;
+      if (tva.exonerations)           ctx += `Exonérations principales : ${(tva.exonerations||[]).slice(0,5).join(' ; ')}\n`;
+      ctx += '\n';
+    }
+
+    const skip = ['IS','IBA','TVA','meta'];
+    for (const key of Object.keys(cgi)) {
+      if (skip.includes(key)) continue;
+      const item = cgi[key];
+      if (typeof item !== 'object') continue;
+      const taux = item.taux || item.taux_normal || item.taux_unique || '';
+      const def  = item.definition || item.description || '';
+      ctx += `**${key}**\n`;
+      if (def)  ctx += `${String(def).slice(0,200)}\n`;
+      if (taux) ctx += `Taux : ${Array.isArray(taux) ? taux.map(t=>`${t.cas||t.tranche||''} → ${t.taux}`).join(' | ') : taux}\n`;
+      ctx += '\n';
+    }
+
+    if (sys.meta) {
+      ctx += `**SYSCOHADA Révisé**\nRéférence : ${sys.meta.titre||''} — ${sys.meta.edition||''}\n`;
+    }
+    const applications = sys.applications || sys.cas_pratiques || [];
+    if (applications.length) {
+      ctx += `Applications disponibles : ${applications.slice(0,5).map(a=>a.titre||a.cas||'').join(' | ')}\n`;
+    }
+
+    return ctx.slice(0, 7000);
+  } catch(e) {
+    return '(erreur lors de la lecture des données fiscales)';
+  }
+}
+
 function icSystem() {
-  return `Tu es l'assistant comptable officiel du site InfoCompta, spécialisé dans le Système Comptable OHADA.
+  return `Tu es l'assistant comptable officiel du site InfoCompta, spécialisé dans le Système Comptable OHADA et la fiscalité béninoise.
+
+## Devise obligatoire
+Utilise EXCLUSIVEMENT le Franc CFA (FCFA) dans tous tes exemples et montants. N'utilise JAMAIS l'euro (€), le dollar ($) ou toute autre devise.
 
 ## Sources de connaissance
 
@@ -500,15 +563,20 @@ Ne jamais inventer ni utiliser une source externe pour les codes de comptes.
 
 ${icBuildContext()}
 
-### 2. Connaissances générales & recherche web (SECONDAIRE)
-Pour les questions de contexte (fiscalité, réglementation, pratiques professionnelles), tu peux utiliser tes connaissances générales ou effectuer une recherche web, en signalant que cela dépasse les données du site.
+### 2. Fiscalité & réglementation Bénin — CGI 2026 + SYSCOHADA (PRIORITÉ HAUTE)
+Pour toute question fiscale (IS, IBA, TVA, retenues à la source, patente, etc.), utilise EN PRIORITÉ les données officielles ci-dessous.
+
+${icBuildDocsContext()}
+
+### 3. Connaissances générales & recherche web (SECONDAIRE)
+Si une question dépasse les deux sources ci-dessus, utilise tes connaissances générales ou effectue une recherche web, en le signalant clairement.
 
 ## Règles
 1. Toujours répondre en **français**, ton professionnel et pédagogique.
 2. Citer les comptes entre crochets : [401], [101], etc. — ils deviendront des liens cliquables.
 3. Rester concis, structuré, avec des listes courtes si nécessaire.
 4. Si un compte n'est pas dans les données du site, le dire clairement.
-5. Terminer par : "📂 Source : plan OHADA InfoCompta" ou "🌐 Source : connaissances générales + recherche web".`;
+5. Terminer par : "📂 Source : plan OHADA InfoCompta" ou "📋 Source : CGI Bénin 2026 / SYSCOHADA InfoCompta" ou "🌐 Source : connaissances générales + recherche web".`;
 }
 
 // ── UI ──────────────────────────────────────────────────────────
