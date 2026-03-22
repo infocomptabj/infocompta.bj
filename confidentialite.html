@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script src="auth-init.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Politique de Confidentialité — InfoCompta</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --bg:        #f7f6f2;
+  --surface:   #ffffff;
+  --navy:      #1a2e4a;
+  --navy-lt:   #2a4265;
+  --gold:      #b8963e;
+  --gold-lt:   #d4af6a;
+  --gold-pale: #f5edd8;
+  --text:      #1e1e1e;
+  --muted:     #7a7a7a;
+  --border:    #e2ddd6;
+  --radius:    4px;
+  --shadow:    0 2px 16px rgba(26,46,74,0.08);
+  --transition: 0.2s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; font-weight: 700; color: var(--navy); line-height: 1.2; }
+p { color: #444; }
+a { text-decoration: none; color: var(--gold); }
+a:hover { color: var(--navy); }
+
+/* HEADER */
+header {
+  background: var(--navy);
+  padding: 0 3rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+}
+.logo { font-family: 'Cormorant Garamond', serif; font-size: 1.55rem; font-weight: 700; color: #fff; text-decoration: none; letter-spacing: 0.02em; }
+.logo span { color: var(--gold-lt); }
+nav ul { list-style: none; display: flex; gap: 0.25rem; }
+nav ul li a { color: rgba(255,255,255,0.72); text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; padding: 0.45rem 1rem; border-radius: var(--radius); transition: color var(--transition), background var(--transition); display: block; }
+nav ul li a:hover  { color: #fff; background: rgba(255,255,255,0.08); }
+nav ul li a.active { color: var(--gold-lt); background: rgba(184,150,62,0.12); }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px 6px; background: none; border: none; z-index: 200; margin-left: auto; flex-shrink: 0; }
+.hamburger span { display: block; width: 26px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.3s ease; transform-origin: center; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+main { flex: 1; }
+footer { background: var(--navy); color: rgba(255,255,255,0.45); text-align: center; font-size: 0.78rem; padding: 1.4rem 2rem; letter-spacing: 0.05em; }
+footer strong { color: var(--gold-lt); font-weight: 500; }
+
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem; }
+.section-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+
+/* HERO */
+.hero-sm { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-lt) 100%); padding: 3rem 0; color: #fff; }
+.hero-sm h1 { color: #fff; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+.hero-sm p  { color: rgba(255,255,255,0.65); margin-top: 0.5rem; font-size: 0.95rem; }
+
+/* CONTENU */
+.content-wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 4rem 2.5rem;
+}
+
+.update-badge {
+  display: inline-block;
+  background: var(--gold-pale);
+  border: 1px solid rgba(184,150,62,0.3);
+  color: var(--gold);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 30px;
+  margin-bottom: 2.5rem;
+}
+
+.policy-section {
+  margin-bottom: 2.8rem;
+}
+.policy-section h2 {
+  font-size: 1.35rem;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.policy-section h2 .num {
+  width: 28px; height: 28px;
+  background: var(--navy);
+  color: var(--gold-lt);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.policy-section p {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 0.8rem;
+}
+.policy-section ul {
+  list-style: none;
+  margin: 0.5rem 0 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.policy-section ul li {
+  font-size: 0.92rem;
+  color: #444;
+  padding-left: 1.2rem;
+  position: relative;
+  line-height: 1.7;
+}
+.policy-section ul li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.65em;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.highlight-box {
+  background: var(--gold-pale);
+  border: 1px solid rgba(184,150,62,0.25);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  font-size: 0.88rem;
+  color: var(--navy);
+  line-height: 1.6;
+}
+
+.contact-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  margin-top: 1rem;
+}
+.contact-card p { margin-bottom: 0.3rem; font-size: 0.9rem; }
+.contact-card strong { color: var(--navy); }
+
+/* RESPONSIVE */
+@media (max-width: 1023px) {
+  header { padding: 0 1rem; height: 56px; }
+  .logo  { font-size: 1.2rem; }
+  nav { display: none !important; }
+  nav.open { display: block !important; position: fixed !important; top: 56px !important; left: 0 !important; right: 0 !important; background: var(--navy) !important; border-top: 1px solid rgba(255,255,255,0.1) !important; box-shadow: 0 8px 32px rgba(0,0,0,0.35) !important; z-index: 99 !important; }
+  nav.open ul { flex-direction: column !important; gap: 0 !important; padding: 0.3rem 0 !important; }
+  nav.open ul li a { padding: 1rem 1.5rem !important; font-size: 0.9rem !important; border-radius: 0 !important; border-bottom: 1px solid rgba(255,255,255,0.06) !important; display: block !important; }
+  .hamburger { display: flex; }
+  .content-wrap { padding: 2.5rem 1.2rem; }
+}
+@media (max-width: 600px) {
+  .hero-sm { padding: 2rem 0; }
+  .hero-sm h1 { font-size: 1.4rem; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Info<span>Compta</span></a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <nav>
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="plan-comptable.html">Plan Comptable</a></li>
+      <li><a href="documents.html">Documents</a></li>
+      <li><a href="offres.html">Nos offres</a></li>
+      <li><a href="a-propos.html">À propos</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="auth.html">Connexion</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero-sm">
+    <div class="container">
+      <p class="section-label" style="color:var(--gold-lt);">Transparence & confiance</p>
+      <h1>Politique de Confidentialité</h1>
+      <p>Comment InfoCompta collecte, utilise et protège vos données personnelles.</p>
+    </div>
+  </section>
+
+  <div class="content-wrap">
+
+    <div class="update-badge">Dernière mise à jour : Mars 2026</div>
+
+    <!-- INTRO -->
+    <div class="policy-section">
+      <p>La présente politique de confidentialité décrit la manière dont <strong>InfoCompta</strong>, plateforme éditée et gérée par <strong>GNIMAVO Prince Kaldinx Wilson</strong>, collecte, utilise et protège les informations personnelles des utilisateurs du site <strong>infocompta-bj.vercel.app</strong>.</p>
+      <p>En créant un compte et en utilisant nos services, vous acceptez les pratiques décrites dans ce document. Nous vous encourageons à le lire attentivement.</p>
+    </div>
+
+    <!-- 1 -->
+    <div class="policy-section">
+      <h2><span class="num">1</span> Responsable du traitement</h2>
+      <div class="contact-card">
+        <p><strong>Responsable :</strong> GNIMAVO Prince Kaldinx Wilson</p>
+        <p><strong>Plateforme :</strong> InfoCompta</p>
+        <p><strong>Site web :</strong> infocompta-bj.vercel.app</p>
+        <p><strong>Zone d'activité :</strong> Bénin — Afrique de l'Ouest (espace OHADA)</p>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="policy-section">
+      <h2><span class="num">2</span> Données collectées</h2>
+      <p>Lors de votre inscription et de l'utilisation de la plateforme, nous collectons uniquement les données strictement nécessaires au fonctionnement du service :</p>
+      <ul>
+        <li><strong>Nom complet</strong> — pour personnaliser votre expérience sur la plateforme</li>
+        <li><strong>Adresse email</strong> — pour l'identification, la connexion et les communications relatives à votre compte</li>
+        <li><strong>Mot de passe</strong> — stocké de manière chiffrée et sécurisée via Supabase. Nous n'avons jamais accès à votre mot de passe en clair</li>
+      </ul>
+      <div class="highlight-box">
+        Nous ne collectons aucune donnée bancaire, aucune donnée sensible et n'utilisons aucun cookie de traçage publicitaire.
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="policy-section">
+      <h2><span class="num">3</span> Finalité du traitement</h2>
+      <p>Vos données personnelles sont utilisées exclusivement dans les buts suivants :</p>
+      <ul>
+        <li>Créer et gérer votre compte utilisateur sur InfoCompta</li>
+        <li>Vous permettre de vous connecter de manière sécurisée</li>
+        <li>Afficher votre nom dans l'interface de la plateforme</li>
+        <li>Vous envoyer des emails liés à votre compte (confirmation d'inscription, réinitialisation de mot de passe)</li>
+        <li>Assurer la sécurité et le bon fonctionnement de la plateforme</li>
+      </ul>
+      <p>Vos données ne sont <strong>jamais vendues, louées ou cédées</strong> à des tiers à des fins commerciales.</p>
+    </div>
+
+    <!-- 4 -->
+    <div class="policy-section">
+      <h2><span class="num">4</span> Hébergement et sécurité</h2>
+      <p>Vos données sont hébergées et sécurisées par les prestataires suivants :</p>
+      <ul>
+        <li><strong>Supabase</strong> — base de données et authentification. Les mots de passe sont chiffrés selon les standards bcrypt. Supabase est conforme aux normes SOC 2 Type II.</li>
+        <li><strong>Vercel</strong> — hébergement du site web, avec chiffrement HTTPS sur toutes les communications.</li>
+      </ul>
+      <div class="highlight-box">
+        Toutes les transmissions de données entre votre navigateur et nos serveurs sont chiffrées via le protocole HTTPS (TLS).
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="policy-section">
+      <h2><span class="num">5</span> Durée de conservation</h2>
+      <p>Vos données personnelles sont conservées aussi longtemps que votre compte est actif sur InfoCompta. En cas de suppression de votre compte, vos données sont effacées de nos systèmes dans un délai maximum de <strong>30 jours</strong>.</p>
+    </div>
+
+    <!-- 6 -->
+    <div class="policy-section">
+      <h2><span class="num">6</span> Vos droits</h2>
+      <p>Conformément aux principes de protection des données personnels applicables dans l'espace OHADA et aux bonnes pratiques internationales, vous disposez des droits suivants :</p>
+      <ul>
+        <li><strong>Droit d'accès</strong> — consulter les données personnelles que nous détenons sur vous</li>
+        <li><strong>Droit de rectification</strong> — corriger vos informations si elles sont inexactes</li>
+        <li><strong>Droit à l'effacement</strong> — demander la suppression de votre compte et de vos données</li>
+        <li><strong>Droit d'opposition</strong> — vous opposer à certains traitements de vos données</li>
+        <li><strong>Droit à la portabilité</strong> — recevoir vos données dans un format structuré</li>
+      </ul>
+      <p>Pour exercer l'un de ces droits, contactez-nous via la page <a href="contact.html">Contact</a>.</p>
+    </div>
+
+    <!-- 7 -->
+    <div class="policy-section">
+      <h2><span class="num">7</span> Cookies</h2>
+      <p>InfoCompta utilise uniquement des cookies techniques essentiels au fonctionnement de la plateforme, notamment pour maintenir votre session de connexion active. Ces cookies ne sont pas utilisés à des fins publicitaires ou de traçage.</p>
+      <p>Aucun cookie tiers de suivi marketing n'est installé sur votre navigateur.</p>
+    </div>
+
+    <!-- 8 -->
+    <div class="policy-section">
+      <h2><span class="num">8</span> Modifications de la politique</h2>
+      <p>InfoCompta se réserve le droit de modifier la présente politique de confidentialité à tout moment. En cas de modification substantielle, vous serez informé par email ou via un avis visible sur la plateforme. La date de dernière mise à jour est indiquée en haut de cette page.</p>
+    </div>
+
+    <!-- 9 -->
+    <div class="policy-section">
+      <h2><span class="num">9</span> Contact</h2>
+      <p>Pour toute question relative à cette politique de confidentialité ou pour exercer vos droits, vous pouvez nous contacter :</p>
+      <div class="contact-card">
+        <p><strong>Responsable :</strong> GNIMAVO Prince Kaldinx Wilson</p>
+        <p><strong>Via le formulaire :</strong> <a href="contact.html">Page Contact</a></p>
+        <p><strong>Site :</strong> infocompta-bj.vercel.app</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2026 <strong>InfoCompta</strong>. Tous droits réservés.</p>
+</footer>
+
+<script>
+  (function() {
+    var btn = document.getElementById('hamburgerBtn');
+    var nav = document.querySelector('nav');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+    });
+    nav.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+      });
+    });
+    document.addEventListener('click', function(e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
