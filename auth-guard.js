@@ -6,7 +6,7 @@
 
 (function() {
   const SUPABASE_URL = 'https://lmivfisdmuqbspvmvdzh.supabase.co';
-  const SUPABASE_KEY = 'VOTRE_PUBLISHABLE_KEY_ICI';
+  const SUPABASE_KEY = 'sb_publishable_kCfhrFPVec2MkCl0xe4N-w_QXHgc0Gp';
 
   // Masquer immédiatement le header et le body
   // pour éviter le flash visuel
