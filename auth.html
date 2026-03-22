@@ -200,7 +200,7 @@
     if(!email||!email.includes('@'))return showMsg('Entrez une adresse email valide.','error');
     hideMsg();setLoading('btnForgot','spinnerForgot',true);
     try {
-      const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:'https://infocomptabj.netlify.app/auth.html'});
+      const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:'https://infocompta-bj.vercel.app/auth.html'});
       if(error)throw error;
       showMsg('Lien envoyé ! Vérifiez votre boîte email.','success');
     } catch(e){showMsg('Erreur : '+e.message,'error');}
