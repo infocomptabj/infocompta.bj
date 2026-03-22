@@ -739,10 +739,10 @@ footer a { color: var(--gold-lt); }
 }
 .modal-amount-sub { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
 
-.op-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.4rem; }
+.op-tabs { display: flex; gap: 0.5rem; margin-bottom: 0; }
 .op-tab {
   flex: 1;
-  padding: 0.65rem 0.4rem;
+  padding: 0.7rem 0.4rem;
   border: 1.5px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
@@ -750,21 +750,51 @@ footer a { color: var(--gold-lt); }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 500;
   color: var(--muted);
   transition: all var(--transition);
 }
-.op-tab:hover { border-color: var(--navy); color: var(--navy); }
+.op-tab:hover { border-color: var(--navy); color: var(--navy); transform: translateY(-1px); }
 .op-tab.tab-mtn  { border-color: #f59e0b; background: #fffbeb; color: #92400e; }
 .op-tab.tab-moov { border-color: #2563eb; background: #eff6ff; color: #1e40af; }
 .op-tab.tab-feda { border-color: #7c3aed; background: #f5f3ff; color: #5b21b6; }
-.op-tab-emoji { font-size: 1.3rem; }
+.op-tab img { width: 36px; height: 36px; object-fit: contain; border-radius: 6px; }
+.op-tab svg { width: 36px; height: 36px; }
 
-.op-panel { display: none; }
+/* Panneau caché par défaut — s'anime à l'ouverture */
+.op-panel {
+  display: none;
+  margin-top: 1rem;
+  animation: slideDown 0.22s ease both;
+}
 .op-panel.visible { display: block; }
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Indicateur réseau sélectionné */
+.op-selected-bar {
+  display: none;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--radius);
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-top: 0.8rem;
+}
+.op-selected-bar.visible { display: flex; }
+.bar-mtn  { background: #fffbeb; border: 1px solid #f59e0b; color: #92400e; }
+.bar-moov { background: #eff6ff; border: 1px solid #2563eb; color: #1e40af; }
+.bar-feda { background: #f5f3ff; border: 1px solid #7c3aed; color: #5b21b6; }
+.bar-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.bar-mtn  .bar-dot { background: #f59e0b; }
+.bar-moov .bar-dot { background: #2563eb; }
+.bar-feda .bar-dot { background: #7c3aed; }
 
 .pay-steps { display: flex; flex-direction: column; gap: 0.7rem; }
 .pay-step {
@@ -1297,31 +1327,72 @@ footer a { color: var(--gold-lt); }
         <div class="modal-amount-sub" id="modalFreq">Paiement mensuel</div>
       </div>
       <div class="op-tabs">
-        <button class="op-tab tab-mtn" id="tabMTN" onclick="switchOp('mtn')"><span class="op-tab-emoji">🟡</span>MTN MoMo</button>
-        <button class="op-tab" id="tabMoov" onclick="switchOp('moov')"><span class="op-tab-emoji">🔵</span>Moov Africa</button>
-        <button class="op-tab" id="tabFeda" onclick="switchOp('feda')"><span class="op-tab-emoji">💳</span>FedaPay</button>
+
+        <!-- MTN MoMo -->
+        <button class="op-tab" id="tabMTN" onclick="switchOp('mtn')">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="36" height="36" rx="8" fill="#FFCC00"/>
+            <text x="18" y="14" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="7" font-weight="900" fill="#1a1a1a">MTN</text>
+            <text x="18" y="24" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" font-weight="700" fill="#1a1a1a">MoMo</text>
+            <rect x="6" y="26" width="24" height="3" rx="1.5" fill="#1a1a1a"/>
+          </svg>
+          MTN MoMo
+        </button>
+
+        <!-- Moov Africa -->
+        <button class="op-tab" id="tabMoov" onclick="switchOp('moov')">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="36" height="36" rx="8" fill="#0055A4"/>
+            <circle cx="18" cy="15" r="7" fill="none" stroke="#fff" stroke-width="2"/>
+            <circle cx="18" cy="15" r="3" fill="#fff"/>
+            <text x="18" y="28" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" font-weight="700" fill="#fff">MOOV</text>
+          </svg>
+          Moov Africa
+        </button>
+
+        <!-- FedaPay -->
+        <button class="op-tab" id="tabFeda" onclick="switchOp('feda')">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="36" height="36" rx="8" fill="#6D28D9"/>
+            <rect x="7" y="11" width="22" height="14" rx="3" fill="none" stroke="#fff" stroke-width="1.8"/>
+            <rect x="7" y="15" width="22" height="4" fill="#fff" opacity="0.3"/>
+            <rect x="10" y="19" width="6" height="2.5" rx="1" fill="#fff"/>
+            <text x="18" y="30" text-anchor="middle" font-family="Arial,sans-serif" font-size="5" font-weight="700" fill="#fff">FEDAPAY</text>
+          </svg>
+          FedaPay
+        </button>
+
       </div>
-      <!-- MTN -->
-      <div class="op-panel visible pay-steps" id="panelMTN">
-        <div class="pay-step"><div class="step-n">1</div><div><div class="step-title">Composez</div><div class="step-desc">Menu MTN MoMo : <span class="step-code">*880#</span></div></div></div>
-        <div class="pay-step"><div class="step-n">2</div><div><div class="step-title">Paiement marchand → option 3</div></div></div>
+
+      <!-- Barre réseau sélectionné -->
+      <div class="op-selected-bar" id="opSelectedBar"></div>
+
+      <!-- MTN Panel -->
+      <div class="op-panel pay-steps" id="panelMTN">
+        <div class="pay-step"><div class="step-n">1</div><div><div class="step-title">Composez le menu MTN MoMo</div><div class="step-desc">Tapez <span class="step-code">*880#</span> sur votre téléphone MTN</div></div></div>
+        <div class="pay-step"><div class="step-n">2</div><div><div class="step-title">Paiement marchand</div><div class="step-desc">Choisissez l'option <strong>3 — Paiement marchand</strong></div></div></div>
         <div class="pay-step"><div class="step-n">3</div><div><div class="step-title">Numéro InfoCompta (MTN)</div><span class="step-phone">📞 +229 XX XX XX XX</span></div></div>
-        <div class="pay-step"><div class="step-n gold-n">4</div><div><div class="step-title">Montant & confirmation</div><div class="step-desc">Envoyer <strong id="mtnAmt">3 500</strong> FCFA puis envoyez la capture à <strong>contact@infocompta.bj</strong></div></div></div>
+        <div class="pay-step"><div class="step-n gold-n">4</div><div><div class="step-title">Montant & confirmation</div><div class="step-desc">Envoyez <strong id="mtnAmt">3 500</strong> FCFA puis partagez la capture à <strong>contact@infocompta.bj</strong></div></div></div>
       </div>
-      <!-- Moov -->
+
+      <!-- Moov Panel -->
       <div class="op-panel pay-steps" id="panelMoov">
-        <div class="pay-step"><div class="step-n" style="background:#2563eb">1</div><div><div class="step-title">Composez</div><div class="step-desc">Menu Moov Money : <span class="step-code">*155#</span></div></div></div>
-        <div class="pay-step"><div class="step-n" style="background:#2563eb">2</div><div><div class="step-title">Transfert d'argent → option 1</div></div></div>
+        <div class="pay-step"><div class="step-n" style="background:#2563eb">1</div><div><div class="step-title">Composez le menu Moov Money</div><div class="step-desc">Tapez <span class="step-code">*155#</span> sur votre téléphone Moov</div></div></div>
+        <div class="pay-step"><div class="step-n" style="background:#2563eb">2</div><div><div class="step-title">Transfert d'argent</div><div class="step-desc">Choisissez l'option <strong>1 — Transfert d'argent</strong></div></div></div>
         <div class="pay-step"><div class="step-n" style="background:#2563eb">3</div><div><div class="step-title">Numéro InfoCompta (Moov)</div><span class="step-phone">📞 +229 XX XX XX XX</span></div></div>
-        <div class="pay-step"><div class="step-n gold-n">4</div><div><div class="step-title">Montant & confirmation</div><div class="step-desc">Envoyer <strong id="moovAmt">3 500</strong> FCFA puis envoyez la capture à <strong>contact@infocompta.bj</strong></div></div></div>
+        <div class="pay-step"><div class="step-n gold-n">4</div><div><div class="step-title">Montant & confirmation</div><div class="step-desc">Envoyez <strong id="moovAmt">3 500</strong> FCFA puis partagez la capture à <strong>contact@infocompta.bj</strong></div></div></div>
       </div>
-      <!-- FedaPay -->
-      <div class="op-panel pay-steps" id="panelFeda">
-        <div class="pay-step"><div class="step-n" style="background:#7c3aed">1</div><div><div class="step-title">Paiement en ligne sécurisé</div><div class="step-desc">FedaPay accepte MTN MoMo, Moov Africa et cartes bancaires.</div></div></div>
-        <div class="pay-step"><div class="step-n" style="background:#7c3aed">2</div><div><div class="step-title">Accès activé automatiquement</div><div class="step-desc">Votre fichier ou accès est livré après confirmation FedaPay.</div></div></div>
+
+      <!-- FedaPay Panel -->
+      <div class="op-panel" id="panelFeda">
+        <div class="pay-steps">
+          <div class="pay-step"><div class="step-n" style="background:#6D28D9">1</div><div><div class="step-title">Paiement en ligne sécurisé</div><div class="step-desc">FedaPay accepte MTN MoMo, Moov Africa et cartes bancaires internationales.</div></div></div>
+          <div class="pay-step"><div class="step-n" style="background:#6D28D9">2</div><div><div class="step-title">Accès activé automatiquement</div><div class="step-desc">Votre accès est livré immédiatement après confirmation du paiement.</div></div></div>
+        </div>
         <div class="fedapay-wrap">
-          <!-- REMPLACE href PAR TON VRAI LIEN FEDAPAY -->
-          <a href="https://fedapay.com" target="_blank" rel="noopener" class="btn-fedapay" id="fedaLink">🔐 Payer via FedaPay — <span id="fedaAmt">3 500</span> FCFA</a>
+          <a href="https://fedapay.com" target="_blank" rel="noopener" class="btn-fedapay" id="fedaLink">
+            🔐 Payer via FedaPay — <span id="fedaAmt">3 500</span> FCFA
+          </a>
           <div class="feda-secure">🔒 Paiement sécurisé · Certifié HTTPS</div>
         </div>
       </div>
@@ -1332,7 +1403,7 @@ footer a { color: var(--gold-lt); }
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   (function(){
     var btn=document.getElementById('hamburgerBtn'),nav=document.getElementById('mainNav');
     if(!btn||!nav)return;
@@ -1351,7 +1422,12 @@ footer a { color: var(--gold-lt); }
     document.getElementById('mtnAmt').textContent=amount;
     document.getElementById('moovAmt').textContent=amount;
     document.getElementById('fedaAmt').textContent=amount;
-    switchOp('mtn');
+    /* Réinitialiser — aucun réseau sélectionné à l'ouverture */
+    ['tabMTN','tabMoov','tabFeda'].forEach(function(id){document.getElementById(id).className='op-tab';});
+    ['panelMTN','panelMoov','panelFeda'].forEach(function(id){document.getElementById(id).classList.remove('visible');});
+    var bar=document.getElementById('opSelectedBar');
+    bar.className='op-selected-bar';
+    bar.innerHTML='';
     document.getElementById('payModal').classList.add('open');
     document.body.style.overflow='hidden';
   }
@@ -1359,17 +1435,27 @@ footer a { color: var(--gold-lt); }
   function closeIfOverlay(e){if(e.target===document.getElementById('payModal'))closeModal();}
   function switchOp(op){
     ['tabMTN','tabMoov','tabFeda'].forEach(function(id){document.getElementById(id).className='op-tab';});
-    ['panelMTN','panelMoov','panelFeda'].forEach(function(id){document.getElementById(id).classList.remove('visible');});
-    if(op==='mtn'){document.getElementById('tabMTN').classList.add('tab-mtn');document.getElementById('panelMTN').classList.add('visible');}
-    else if(op==='moov'){document.getElementById('tabMoov').classList.add('tab-moov');document.getElementById('panelMoov').classList.add('visible');}
-    else{document.getElementById('tabFeda').classList.add('tab-feda');document.getElementById('panelFeda').classList.add('visible');}
+    ['panelMTN','panelMoov','panelFeda'].forEach(function(id){
+      var p=document.getElementById(id);
+      p.classList.remove('visible');
+    });
+    var bar=document.getElementById('opSelectedBar');
+    bar.className='op-selected-bar';
+
+    if(op==='mtn'){
+      document.getElementById('tabMTN').classList.add('tab-mtn');
+      var p=document.getElementById('panelMTN'); p.classList.add('visible');
+      bar.classList.add('visible','bar-mtn');
+      bar.innerHTML='<span class="bar-dot"></span> Procédure MTN MoMo sélectionnée';
+    } else if(op==='moov'){
+      document.getElementById('tabMoov').classList.add('tab-moov');
+      var p=document.getElementById('panelMoov'); p.classList.add('visible');
+      bar.classList.add('visible','bar-moov');
+      bar.innerHTML='<span class="bar-dot"></span> Procédure Moov Africa sélectionnée';
+    } else {
+      document.getElementById('tabFeda').classList.add('tab-feda');
+      var p=document.getElementById('panelFeda'); p.classList.add('visible');
+      bar.classList.add('visible','bar-feda');
+      bar.innerHTML='<span class="bar-dot"></span> Paiement FedaPay sélectionné';
+    }
   }
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
-</script>
-</body>
-<!-- ================================================================
-   STYLE/CSS APPLIQUE A L'OFFRE ET AU BAS DE L'ACCUEIL POUR LA MONETISATION
-================================================================ -->
-
-
-</html>
