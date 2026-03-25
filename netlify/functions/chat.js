@@ -59,6 +59,8 @@ exports.handler = async function(event, context) {
     };
   }
 
+  // ── FIX : on ignore "model" et "tools" envoyés par le frontend (format Anthropic)
+  //          et on utilise toujours llama-3.3-70b-versatile (Groq)
   const systemPrompt = (body.system   || 'Tu es un assistant comptable OHADA spécialisé.').slice(0, 4000);
   const messages     = (body.messages || []).slice(-14);
 
@@ -91,11 +93,11 @@ exports.handler = async function(event, context) {
         'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model:       'llama-3.3-70b-versatile', // Modèle gratuit le plus puissant
+        model:       'llama-3.3-70b-versatile',
         max_tokens:  1024,
         temperature: 0.7,
         messages: [
-          { role: 'system', content: systemPrompt }, // System prompt en premier
+          { role: 'system', content: systemPrompt },
           ...cleanMessages
         ]
       })
@@ -136,7 +138,7 @@ exports.handler = async function(event, context) {
       };
     }
 
-    // ── Succès : retourner au format attendu par le widget ──
+    // ── Succès : retourner au format attendu par le widget frontend ──
     return {
       statusCode: 200,
       headers: {
