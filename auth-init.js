@@ -6,7 +6,7 @@
 ══════════════════════════════════════════════════ */
 (function () {
   const SUPABASE_URL = 'https://lmivfisdmuqbspvmvdzh.supabase.co';
-  const SUPABASE_KEY = 'VOTRE_PUBLISHABLE_KEY_ICI';
+  const SUPABASE_KEY = 'sb_publishable_kCfhrFPVec2MkCl0xe4N-w_QXHgc0Gp';
 
   /* ── 1. Masquer la page immédiatement ── */
   const mask = document.createElement('style');
