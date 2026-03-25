@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <script src="auth-init.js"></script>
+  <script src="auth-guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plan Comptable — InfoCompta</title>
@@ -673,14 +673,11 @@ async function icSend() {
   );
 
   try {
-    const resp = await fetch('/api/chat', {   /* ← remplacer par votre endpoint proxy */
+    const resp = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: IC_MODEL,
-        max_tokens: IC_MAX_TOKENS,
-        system: icSystem(),
-        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        system:   icSystem(),
         messages: msgs
       })
     });
