@@ -83,7 +83,140 @@ const comptesData = {
           debit: "101 – Capital social",
           credit: "13 – Résultat net : Perte"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 58",
+          titre: "Libération intégrale des apports à la constitution",
+          enonce: "Constitution d'une SA. Capital entièrement libéré dès la souscription. Nominal 10 000 F, prime 2 000 F par action.",
+          ecritures: [
+            {
+              libelle: "Souscription + versement intégral (numéraire)",
+              debit: "4612 – Associés, apports en numéraire",
+              credit: "1013 – Capital versé non amorti + 1051 – Prime d'émission"
+            },
+            {
+              libelle: "Règlement en trésorerie",
+              debit: "52 – Banques",
+              credit: "4612 – Associés, apports en numéraire"
+            },
+          ],
+        },
+        {
+          ref: "App. 59",
+          titre: "Libération fractionnée du capital",
+          enonce: "Capital souscrit libéré à 50 % à la constitution. Appel du solde ultérieurement.",
+          ecritures: [
+            {
+              libelle: "Promesse d'apport — fraction non appelée",
+              debit: "109 – Capital souscrit non appelé",
+              credit: "1011 – Capital souscrit non appelé"
+            },
+            {
+              libelle: "Appel de fonds — personnalisation créance actionnaire",
+              debit: "467 – Actionnaires, restant dû sur capital appelé",
+              credit: "109 – Capital souscrit non appelé"
+            },
+            {
+              libelle: "Virement 1011 → 1012 (appelé non versé)",
+              debit: "1011",
+              credit: "1012 – Capital appelé non versé"
+            },
+            {
+              libelle: "Libération effective — versement par les actionnaires",
+              debit: "52 – Banques",
+              credit: "1013 – Capital versé non amorti"
+            },
+          ],
+        },
+        {
+          ref: "App. 60",
+          titre: "Augmentation de capital en numéraire",
+          enonce: "Émission de nouvelles actions avec prime d'émission. Frais imputés sur la prime.",
+          ecritures: [
+            {
+              libelle: "Souscription — prix d'émission total",
+              debit: "4612 – Associés, apports en numéraire",
+              credit: "1013 – Capital (nominal) + 1051 – Prime d'émission"
+            },
+            {
+              libelle: "Versement",
+              debit: "52 – Banques",
+              credit: "4612 – Associés, apports en numéraire"
+            },
+            {
+              libelle: "Frais d'augmentation imputés sur la prime",
+              debit: "105 – Primes liées aux capitaux propres",
+              credit: "78 – Transferts de charges d'exploitation"
+            },
+          ],
+        },
+        {
+          ref: "App. 61",
+          titre: "Augmentation par incorporation de réserves",
+          enonce: "L'AGE incorpore réserves facultatives et prime d'émission dans le capital social.",
+          ecritures: [
+            {
+              libelle: "Incorporation de réserves et prime au capital",
+              debit: "118 – Réserves facultatives + 105 – Primes",
+              credit: "101 – Capital social"
+            },
+          ],
+          commentaire: "Aucun flux de trésorerie. Le capital nominal augmente d'autant que les réserves/primes incorporées diminuent.",
+        },
+        {
+          ref: "App. 62",
+          titre: "Réduction de capital par imputation des pertes",
+          enonce: "L'AGE réduit le capital pour absorber les pertes en report à nouveau débiteur.",
+          ecritures: [
+            {
+              libelle: "Absorption des pertes par réduction de capital",
+              debit: "101 – Capital social",
+              credit: "129 – Report à nouveau débiteur"
+            },
+          ],
+        },
+        {
+          ref: "App. 63",
+          titre: "Réduction de capital par remboursement aux actionnaires",
+          enonce: "L'AGE réduit le capital et rembourse le nominal aux actionnaires.",
+          ecritures: [
+            {
+              libelle: "Constatation du remboursement dû",
+              debit: "101 – Capital social",
+              credit: "4619 – Associés, capital à rembourser"
+            },
+            {
+              libelle: "Versement aux actionnaires",
+              debit: "4619 – Associés, capital à rembourser",
+              credit: "52 – Banques"
+            },
+          ],
+        },
+        {
+          ref: "App. 64",
+          titre: "Amortissement du capital — actions de jouissance",
+          enonce: "La société rembourse par anticipation le nominal par prélèvement sur réserves. Les actions deviennent des actions de jouissance (compte 1014).",
+          ecritures: [
+            {
+              libelle: "Prélèvement sur réserves pour amortissement",
+              debit: "118 – Réserves facultatives",
+              credit: "465 – Associés, dividendes à payer"
+            },
+            {
+              libelle: "Transfert 1013 → 1014 (actions de jouissance)",
+              debit: "1013 – Capital versé non amorti",
+              credit: "1014 – Capital versé amorti"
+            },
+            {
+              libelle: "Versement aux actionnaires",
+              debit: "465 – Associés, dividendes à payer",
+              credit: "52 – Banques"
+            },
+          ],
+          commentaire: "Le capital nominal au bilan reste inchangé. Seule la subdivision 1013→1014 change.",
+        },
+    ],
   },
 
   "1011": {
@@ -556,7 +689,47 @@ const comptesData = {
           debit: "11 – Réserves",
           credit: "465 – Associés, dividendes à payer"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 65",
+          titre: "Affectation du résultat bénéficiaire",
+          enonce: "Bénéfice N = 500 000. Réserve légale 25 000 (5 %), réserves facultatives 100 000, dividendes 300 000, report à nouveau 75 000.",
+          ecritures: [
+            {
+              libelle: "Virement bénéfice en instance d'affectation",
+              debit: "131 – Résultat net : Bénéfice",
+              credit: "1301 – Résultat en instance d'affectation"
+            },
+            {
+              libelle: "Dotation réserve légale (5 % du bénéfice)",
+              debit: "1301",
+              credit: "111 – Réserve légale"
+            },
+            {
+              libelle: "Dotation réserves facultatives",
+              debit: "1301",
+              credit: "118 – Réserves facultatives"
+            },
+            {
+              libelle: "Dividendes mis en distribution",
+              debit: "1301",
+              credit: "465 – Associés, dividendes à payer"
+            },
+            {
+              libelle: "Report à nouveau (solde)",
+              debit: "1301",
+              credit: "121 – Report à nouveau créditeur"
+            },
+            {
+              libelle: "Versement des dividendes",
+              debit: "465 – Associés, dividendes à payer",
+              credit: "52 – Banques"
+            },
+          ],
+          commentaire: "Réserve légale obligatoire à 5 % du bénéfice jusqu'à 20 % du capital (AUSC art. 143). Cesser dès que le plafond est atteint.",
+        },
+    ],
   },
 
   "111": {
@@ -746,7 +919,67 @@ const comptesData = {
           debit: "14 – Subventions d'investissement",
           credit: "865 – Reprises de subventions d'investissement"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 66",
+          titre: "Subvention d'investissement — comptabilisation et reprises",
+          enonce: "Subvention d'équipement État : 5 000 000 F pour matériel amortissable sur 5 ans (linéaire 20 %).",
+          ecritures: [
+            {
+              libelle: "Notification (droit acquis)",
+              debit: "4494 – État, subventions d'équipement à recevoir",
+              credit: "141 – Subventions d'équipement A"
+            },
+            {
+              libelle: "Encaissement",
+              debit: "52 – Banques",
+              credit: "4494 – État, subventions d'équipement à recevoir"
+            },
+            {
+              libelle: "Reprise annuelle (1 000 000 F = 1/5 × 5 000 000)",
+              debit: "141 – Subventions d'équipement A",
+              credit: "865 – Reprises de subventions d'investissement"
+            },
+          ],
+          commentaire: "Quote-part reprise = amortissement exercice × (subvention / coût immob.). Pour immob. non amortissables : 1/10 par an ou durée d'inaliénabilité.",
+        },
+        {
+          ref: "App. 67",
+          titre: "Subvention d'exploitation",
+          enonce: "Prime d'embauche État 150 000 F + subvention organisme international 80 000 F.",
+          ecritures: [
+            {
+              libelle: "Subvention d'exploitation État à recevoir",
+              debit: "4495 – État, subventions d'exploitation à recevoir",
+              credit: "718 – Autres subventions d'exploitation"
+            },
+            {
+              libelle: "Encaissement",
+              debit: "52 – Banques",
+              credit: "4495"
+            },
+            {
+              libelle: "Subvention organisme international",
+              debit: "4582 – Organismes internationaux, subventions à recevoir",
+              credit: "718 – Autres subventions d'exploitation"
+            },
+          ],
+          commentaire: "Distinguer : 14 (immob.), 71 (charges courantes / insuffisance prix), 88 (pertes exceptionnelles). L'acte d'octroi est déterminant.",
+        },
+        {
+          ref: "App. 68",
+          titre: "Subvention d'équilibre",
+          enonce: "Subvention exceptionnelle État pour compenser une perte H.A.O. : 2 000 000 F.",
+          ecritures: [
+            {
+              libelle: "Encaissement subvention d'équilibre",
+              debit: "52 – Banques",
+              credit: "881 – Subventions d'équilibre — État"
+            },
+          ],
+        },
+    ],
   },
 
   "15": {
@@ -807,7 +1040,55 @@ const comptesData = {
           debit: "15 – Provisions réglementées",
           credit: "861 – Reprises de provisions réglementées"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 16",
+          titre: "Plus-value à réinvestir",
+          enonce: "Cession d'un bâtiment : plus-value nette 3 000 000 F. Engagement de réemploi pris dans le délai légal.",
+          ecritures: [
+            {
+              libelle: "Engagement de réemploi de la plus-value",
+              debit: "851 – Dotations H.A.O. aux provisions réglementées",
+              credit: "152 – Plus-values de cession à réinvestir"
+            },
+            {
+              libelle: "Reprise intégrale si non réinvesti dans le délai légal",
+              debit: "152 – Plus-values de cession à réinvestir",
+              credit: "861 – Reprises de provisions réglementées"
+            },
+            {
+              libelle: "Reprise partielle annuelle si réinvestissement effectué",
+              debit: "152 – Plus-values de cession à réinvestir",
+              credit: "861 – Reprises de provisions réglementées"
+            },
+          ],
+          commentaire: "Reprise partielle annuelle = différence entre amortissement global de l'immob. acquise et amortissement sur le coût net de la plus-value.",
+        },
+        {
+          ref: "App. 18",
+          titre: "Amortissements dérogatoires",
+          enonce: "Matériel 1 200 000 F, durée 5 ans. Amortissement fiscal N : 400 000 ; économique : 240 000. Complément dérogatoire = 160 000 F.",
+          ecritures: [
+            {
+              libelle: "Amortissement économique normal",
+              debit: "6813 – Dotations aux amortissements immob. corporelles",
+              credit: "284 – Amortissements du matériel"
+            },
+            {
+              libelle: "Complément dérogatoire (surplus fiscal)",
+              debit: "851 – Dotations H.A.O. aux provisions réglementées",
+              credit: "151 – Amortissements dérogatoires"
+            },
+            {
+              libelle: "Reprise dérogatoire (quand amort. fiscal < amort. éco.)",
+              debit: "151 – Amortissements dérogatoires",
+              credit: "861 – Reprises de provisions réglementées"
+            },
+          ],
+          commentaire: "Compte 68 = dépréciation économique uniquement. Le surplus fiscal transite exclusivement par 851/151/861, jamais par 681.",
+        },
+    ],
   },
 
   "16": {
@@ -1059,7 +1340,62 @@ const comptesData = {
           debit: "191 – Provisions pour litiges",
           credit: "791 – Reprises de provisions d'exploitation"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 20",
+          titre: "Provisions pour risques et charges — constitution et reprises",
+          enonce: "N : risque CT exploitation 10, garanties clients 20, pertes de change 11, pensions 27, impôts H.A.O. 8, amendes 2. N+1 : reprises partielles sur garanties, pertes de change, impôts.",
+          ecritures: [
+            {
+              libelle: "Provision risque à court terme (< 1 an)",
+              debit: "6591 – Charges provisionnées d'exploitation",
+              credit: "4991 – Risques provisionnés"
+            },
+            {
+              libelle: "Provision pour garanties données aux clients",
+              debit: "6911 – Dotations aux provisions d'exploitation",
+              credit: "192 – Provisions pour garanties clients"
+            },
+            {
+              libelle: "Provision pour pertes de change",
+              debit: "6971 – Dotations aux provisions financières",
+              credit: "194 – Provisions pour pertes de change"
+            },
+            {
+              libelle: "Provision pour pensions et retraites",
+              debit: "6911 – Dotations aux provisions d'exploitation",
+              credit: "196 – Provisions pour pensions"
+            },
+            {
+              libelle: "Provision pour impôts H.A.O. (> 1 an)",
+              debit: "854 – Dotations aux provisions risques H.A.O.",
+              credit: "195 – Provisions pour impôts"
+            },
+            {
+              libelle: "Provision pour amendes et pénalités",
+              debit: "6911 – Dotations aux provisions d'exploitation",
+              credit: "1981 – Provisions pour amendes et pénalités"
+            },
+            {
+              libelle: "Reprise garanties clients (N+1)",
+              debit: "192 – Provisions pour garanties clients",
+              credit: "7911 – Reprises de provisions d'exploitation"
+            },
+            {
+              libelle: "Reprise pertes de change (N+1)",
+              debit: "194 – Provisions pour pertes de change",
+              credit: "7971 – Reprises de provisions financières"
+            },
+            {
+              libelle: "Reprise impôts H.A.O. (N+1)",
+              debit: "195 – Provisions pour impôts",
+              credit: "864 – Reprises de provisions H.A.O."
+            },
+          ],
+          commentaire: "Provisions < 1 an : 659/499. Provisions > 1 an : 691 ou 697 / 19. Reprise toujours symétrique au compte de dotation utilisé.",
+        },
+    ],
   },
 
   /* ═══════════════════════════════════════════════════════════════
@@ -1549,7 +1885,49 @@ const comptesData = {
           debit: "697 – Dotations aux provisions financières",
           credit: "296 – Provisions pour dépréciation des titres de participation"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 48",
+          titre: "Acquisition d'un portefeuille de titres diversifié",
+          enonce: "Commission 1,5 %. 05/06 : 5 000 actions SICAV cotées à 12 000 F (placement CT). 09/06 : 2 500 actions non cotées, 80 % du capital à 16 000 F (participation). 16/06 : 1 500 obligations durables à 20 000 F (TIAP).",
+          ecritures: [
+            {
+              libelle: "05/06 — Acquisition SICAV (placement court terme)",
+              debit: "5022 – Actions cotées : 60 000 000 + 5026 – Frais acquisition : 900 000",
+              credit: "521 – Banques : 60 900 000"
+            },
+            {
+              libelle: "09/06 — Prise de participation (contrôle exclusif 80 %)",
+              debit: "261 – Titres participation contrôle exclusif : 40 600 000",
+              credit: "521 – Banques : 40 600 000"
+            },
+            {
+              libelle: "16/06 — Titres immobilisés de portefeuille (TIAP)",
+              debit: "2741 – TIAP : 30 450 000",
+              credit: "521 – Banques : 30 450 000"
+            },
+          ],
+          commentaire: "Frais acquisition titres participation inclus dans 261. Pour titres placement : 5026 ou 6311. La nature de l'intention détermine le classement.",
+        },
+        {
+          ref: "App. 49",
+          titre: "Versement restant à effectuer sur titres non libérés",
+          enonce: "Entité A souscrit 20 000 actions B (nominal 10 000 F, prime 2 000 F), libérées à 50 % le 01/05/N. Frais 1 000 000 F. Libération solde le 08/11/N.",
+          ecritures: [
+            {
+              libelle: "01/05/N — Souscription avec libération 50 %",
+              debit: "2746 – Titres immobilisés : 241 000 000 + 472 – Versements restant : 100 000 000",
+              credit: "521 – Banques : 141 000 000"
+            },
+            {
+              libelle: "08/11/N — Libération de la deuxième moitié",
+              debit: "472 – Versements restant à effectuer : 100 000 000",
+              credit: "521 – Banques : 100 000 000"
+            },
+          ],
+        },
+    ],
   },
 
   "27": {
@@ -1720,7 +2098,49 @@ const comptesData = {
           debit: "284 – Amortissements du matériel",
           credit: "24 – Matériel (valeur brute)"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 13",
+          titre: "Amortissement dégressif à taux décroissant",
+          enonce: "Machine-outil acquise le 01/01/N, coût 550 000 F, valeur résiduelle 50 000 F, durée 5 ans. Base amortissable = 500 000 F. Taux : 5/15, 4/15, 3/15, 2/15, 1/15.",
+          tableau: [
+            { date: "31/12/N", taux: "5/15", annuite: 166667, cumul: 166667, vcn: 383333 },
+            { date: "31/12/N+1", taux: "4/15", annuite: 133333, cumul: 300000, vcn: 250000 },
+            { date: "31/12/N+2", taux: "3/15", annuite: 100000, cumul: 400000, vcn: 150000 },
+            { date: "31/12/N+3", taux: "2/15", annuite: 66667, cumul: 466667, vcn: 83333 },
+            { date: "31/12/N+4", taux: "1/15", annuite: 33333, cumul: 500000, vcn: 50000 },
+          ],
+          ecritures: [
+            {
+              libelle: "Dotation exercice N (166 667 F)",
+              debit: "6813 – Dotations aux amortissements immob. corporelles",
+              credit: "284 – Amortissements du matériel"
+            },
+          ],
+          commentaire: "Formule : annuité = 2V(n+1-p) / n(n+1). Somme des taux = 1. La méthode répartit davantage la charge sur les premières années.",
+        },
+        {
+          ref: "App. 14",
+          titre: "Amortissement par unités d'oeuvre",
+          enonce: "Même machine (coût 550 000, VR 50 000). Unités fabriquées : N 150 000 / N+1 250 000 / N+2 250 000 / N+3 50 000 / N+4 50 000. Total = 750 000.",
+          tableau: [
+            { date: "31/12/N", unites: 150000, annuite: 100000, cumul: 100000, vcn: 450000 },
+            { date: "31/12/N+1", unites: 250000, annuite: 166667, cumul: 266667, vcn: 283333 },
+            { date: "31/12/N+2", unites: 250000, annuite: 166667, cumul: 433334, vcn: 116666 },
+            { date: "31/12/N+3", unites: 50000, annuite: 33333, cumul: 466667, vcn: 83333 },
+            { date: "31/12/N+4", unites: 50000, annuite: 33333, cumul: 500000, vcn: 50000 },
+          ],
+          ecritures: [
+            {
+              libelle: "Dotation exercice N (100 000 F)",
+              debit: "6813 – Dotations aux amortissements immob. corporelles",
+              credit: "284 – Amortissements du matériel"
+            },
+          ],
+          commentaire: "Annuité = base amortissable x (unités exercice / total unités). Reflète le rythme réel d'utilisation.",
+        },
+    ],
   },
 
   "29": {
@@ -2634,7 +3054,37 @@ const comptesData = {
           debit: "443 – État, TVA facturée",
           credit: "4452 – TVA récupérable (solde) + 52 – Banques (TVA nette)"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 7",
+          titre: "Centralisation de la TVA — déclarations trimestrielles",
+          enonce: "T1 : TVA récup. 44 (immob. 15 + achats 18 + transport 11), TVA collectée 60 (ventes 35 + livraisons SOI 6 + services 19). Dû = 16. T4 : récup. 40, collectée 35. Crédit TVA = 5.",
+          ecritures: [
+            {
+              libelle: "T1 — Compensation TVA récupérable",
+              debit: "4441 – État, TVA due : 44",
+              credit: "4451 : 15 + 4452 : 18 + 4453 : 11"
+            },
+            {
+              libelle: "T1 — Solde TVA collectée",
+              debit: "4431 : 35 + 4434 : 6 + 4432 : 19",
+              credit: "4441 – État, TVA due : 60"
+            },
+            {
+              libelle: "T1 — Règlement du solde dû (60 – 44 = 16)",
+              debit: "4441 – État, TVA due : 16",
+              credit: "52 – Banques : 16"
+            },
+            {
+              libelle: "T4 — Crédit de TVA à reporter (40 – 35 = 5)",
+              debit: "4449 – État, crédit TVA à reporter : 5",
+              credit: "4441 – État, TVA due : 5"
+            },
+          ],
+          commentaire: "Crédit de TVA (compte 4449) = TVA récupérable > TVA collectée. Reportable sur la déclaration suivante ou remboursable sous conditions.",
+        },
+    ],
   },
 
   "45": {
@@ -2810,7 +3260,93 @@ const comptesData = {
           debit: "478 – Écarts de conversion-Actif",
           credit: "411 – Clients (en devise réévalué)"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 21",
+          titre: "Charges constatées d'avance — fin d'exercice",
+          enonce: "Produits entretien non consommés 5, fournitures bureau non consommées 6, prime assurance 4 mois restants = 12, abonnement revue 3 mois restants = 4, intérêts payés d'avance 2 mois = 1. Total CCA = 28.",
+          ecritures: [
+            {
+              libelle: "Charges constatées d'avance (ensemble)",
+              debit: "476 – Charges constatées d'avance : 28",
+              credit: "6054 : 5 + 6055 : 6 + 6252 : 12 + 6265 : 4 + 6712 : 1"
+            },
+            {
+              libelle: "Marchds facturées non livrées (compte de passage)",
+              debit: "381 – Marchandises en cours de route : 20",
+              credit: "6031 – Variations des stocks : 20"
+            },
+          ],
+          commentaire: "Les achats facturés mais non livrés ne passent pas par 476 mais par les comptes de stocks en cours de route (381-388).",
+        },
+        {
+          ref: "App. 22",
+          titre: "Charges à payer — fin d'exercice",
+          enonce: "Marchandises livrées sans facture, salaires et cotisations non encore enregistrés, intérêts courus sur emprunt, impôts estimés.",
+          ecritures: [
+            {
+              libelle: "Factures non parvenues (marchds livrées)",
+              debit: "601 – Achats + 4455 – TVA récup. FNP",
+              credit: "408 – Fournisseurs, factures non parvenues"
+            },
+            {
+              libelle: "Congés à payer",
+              debit: "661 – Rémunérations directes",
+              credit: "4281 – Personnel, dettes pour congés à payer"
+            },
+            {
+              libelle: "Cotisations sociales sur congés",
+              debit: "664 – Charges sociales",
+              credit: "4382 – Organismes sociaux, charges sur congés"
+            },
+            {
+              libelle: "Intérêts courus sur emprunt",
+              debit: "671 – Intérêts des emprunts",
+              credit: "166 – Intérêts courus"
+            },
+            {
+              libelle: "Impôts estimés non encore connus",
+              debit: "641 – Impôts et taxes directs",
+              credit: "4486 – État, charges à payer"
+            },
+          ],
+        },
+        {
+          ref: "App. 23",
+          titre: "Produits constatés d'avance",
+          enonce: "Loyer trimestriel encaissé le 1er novembre N (3 mois = 30 F). Part N+1 = 10 F (1 mois).",
+          ecritures: [
+            {
+              libelle: "Encaissement du loyer trimestriel d'avance",
+              debit: "52 – Banques : 30",
+              credit: "7073 – Locations : 30"
+            },
+            {
+              libelle: "31/12/N — Régularisation part N+1",
+              debit: "7073 – Locations : 10",
+              credit: "477 – Produits constatés d'avance : 10"
+            },
+          ],
+        },
+        {
+          ref: "App. 24",
+          titre: "Produits à recevoir — fin d'exercice",
+          enonce: "Intérêts courus sur prêt personnel : 5 F. Prestation réalisée non encore facturée : 80 F.",
+          ecritures: [
+            {
+              libelle: "Intérêts courus sur prêt (non échus)",
+              debit: "2762 – Intérêts courus sur prêts personnel : 5",
+              credit: "771 – Intérêts de prêts : 5"
+            },
+            {
+              libelle: "Prestation réalisée — facture à établir",
+              debit: "4181 – Clients, factures à établir : 80",
+              credit: "706 – Services vendus : 80"
+            },
+          ],
+        },
+    ],
   },
 
   "48": {
@@ -3019,7 +3555,27 @@ const comptesData = {
           debit: "679 – Charges provisionnées financières",
           credit: "590 – Dépréciations des titres de placement"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 51",
+          titre: "Cession de titres de placement — méthode PEPS",
+          enonce: "Portefeuille D : 1 000 t. x 12 000 (01/04/N-1) + 500 t. x 12 500 (01/09/N-1) + 1 200 t. x 11 000 (01/04/N) + 300 t. x 10 000 (01/07/N). Dépréciation N-1 : 175 000. Cession 2 500 titres au 01/09/N : 29 000 000 F.",
+          ecritures: [
+            {
+              libelle: "31/12/N-1 — Dépréciation portefeuille",
+              debit: "6795 – Charges provisionnées sur titres placement : 175 000",
+              credit: "590 – Dépréciations titres de placement : 175 000"
+            },
+            {
+              libelle: "01/09/N — Cession (PEPS : valeur entrée 29 250 000)",
+              debit: "4721 – Créances sur cessions titres : 29 000 000 + 677 – Pertes sur cessions : 250 000",
+              credit: "50 – Titres de placement : 29 250 000"
+            },
+          ],
+          commentaire: "PEPS : 1 000x12 000 + 500x12 500 + 1 000x11 000 = 29 250 000 F. Perte = 29 250 000 – 29 000 000 = 250 000 F.",
+        },
+    ],
   },
 
   "51": {
@@ -3494,7 +4050,80 @@ const comptesData = {
           debit: "602 – Achats de matières premières",
           credit: "52 – Banques"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 1",
+          titre: "Acquisition de matériels et fournitures de bureau",
+          enonce: "Facture A : caisse enregistreuse 300 (immob.), ordinateurs 2 000 (marchds), papier 500 (90 marchds + 10 non stockées). Transport 10 %, TVA 10 % récupérable.",
+          ecritures: [
+            {
+              libelle: "Matériel bureautique (caisse + transport = 330)",
+              debit: "2443 – Matériel bureautique : 330",
+              credit: ""
+            },
+            {
+              libelle: "Achats marchds ordinateurs (2 000 + transport = 2 200)",
+              debit: "6011.26 – Achats de marchandises : 2 200",
+              credit: ""
+            },
+            {
+              libelle: "Achats marchds papier (450 + transport = 495)",
+              debit: "6011.17 – Achats de marchandises : 495",
+              credit: ""
+            },
+            {
+              libelle: "Fournitures bureau non stockables (50 + transport = 55)",
+              debit: "6055 – Fournitures non stockables : 55",
+              credit: ""
+            },
+            {
+              libelle: "TVA récup. sur immobilisations (330 x 10 %)",
+              debit: "4451 – TVA récup. sur immob. : 33",
+              credit: ""
+            },
+            {
+              libelle: "TVA récup. sur achats [(2 200+495+55) x 10 %]",
+              debit: "4452 – TVA récup. sur achats : 275",
+              credit: ""
+            },
+            {
+              libelle: "Fournisseur d'investissement (330 + 33)",
+              debit: "",
+              credit: "4812 – Fournisseurs d'investissements : 363"
+            },
+            {
+              libelle: "Fournisseur exploitation (marchandises + services)",
+              debit: "",
+              credit: "4011 – Fournisseurs : 3 025"
+            },
+          ],
+          commentaire: "SYSCOHADA recommande 4812 pour les immobilisations et 4011 pour les autres achats afin de faciliter le tableau des flux de trésorerie.",
+        },
+        {
+          ref: "App. 6",
+          titre: "Remise et retour de marchandises",
+          enonce: "Facture initiale (caisse 290, ordinateurs 2 000, papier avec remise 20 % = 400). Avoir : remise 10 % caisse (29) + reprise ordinateur défectueux (200).",
+          ecritures: [
+            {
+              libelle: "Chez fournisseur — facture de vente initiale",
+              debit: "4111 – Clients : 2 690",
+              credit: "7011.26 : 290 + 7021.26 : 2 000 + 7011.17 : 400"
+            },
+            {
+              libelle: "Chez fournisseur — avoir (remise + retour)",
+              debit: "7011.26 : 29 + 7021.26 : 200",
+              credit: "4111 – Clients : 229"
+            },
+            {
+              libelle: "Chez client — facture initiale",
+              debit: "2442 : 290 + 6011.26 : 2 000 + 6011.17 : 360 + 6055 : 40",
+              credit: "4812 : 290 + 4011 : 2 400"
+            },
+          ],
+          commentaire: "Les réductions incluses dans la facture initiale ne sont pas enregistrées séparément. Seules les factures d'AVOIR génèrent une écriture distincte.",
+        },
+    ],
   },
 
   "603": {
@@ -3539,7 +4168,72 @@ const comptesData = {
           debit: "31 – Marchandises (stock final)",
           credit: "6031 – Variations des stocks de marchandises"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 3",
+          titre: "Inventaire intermittent — stock de marchandises (stockage +1)",
+          enonce: "Stock début d'exercice = 10, stock fin d'exercice = 11. Variation = +1 (stockage).",
+          ecritures: [
+            {
+              libelle: "Annulation stock initial",
+              debit: "6031 – Variations des stocks de marchandises : 10",
+              credit: "31 – Marchandises : 10"
+            },
+            {
+              libelle: "Constatation stock final",
+              debit: "31 – Marchandises : 11",
+              credit: "6031 – Variations des stocks de marchandises : 11"
+            },
+            {
+              libelle: "OU écriture unique de variation (+1)",
+              debit: "31 – Marchandises : 1",
+              credit: "6031 – Variations des stocks de marchandises : 1"
+            },
+          ],
+          commentaire: "Solde créditeur 6031 = stockage → réduit les charges. Solde débiteur = déstockage → alourdit les charges. Figurent en soustraction dans le compte de résultat.",
+        },
+        {
+          ref: "App. 4",
+          titre: "Inventaire intermittent — stock de produits finis (déstockage -3)",
+          enonce: "Stock début d'exercice = 15, stock fin d'exercice = 12. Variation = -3 (déstockage).",
+          ecritures: [
+            {
+              libelle: "Annulation stock initial",
+              debit: "736 – Variations des stocks de produits finis : 15",
+              credit: "36 – Produits finis : 15"
+            },
+            {
+              libelle: "Constatation stock final",
+              debit: "36 – Produits finis : 12",
+              credit: "736 – Variations des stocks de produits finis : 12"
+            },
+            {
+              libelle: "OU écriture unique de déstockage (-3)",
+              debit: "736 – Variations des stocks de produits finis : 3",
+              credit: "36 – Produits finis : 3"
+            },
+          ],
+        },
+        {
+          ref: "App. 5",
+          titre: "Achat fournitures — régularisation fin d'exercice",
+          enonce: "Fournitures achetées 27/06/N pour 15 F (non stockées). Au 31/12/N il reste 3 F à consommer.",
+          ecritures: [
+            {
+              libelle: "27/06/N — Achat fournitures non stockables",
+              debit: "6055 – Fournitures de bureau non stockables : 15",
+              credit: "4011 – Fournisseurs : 15"
+            },
+            {
+              libelle: "31/12/N — Régularisation (stock résiduel)",
+              debit: "476 – Charges constatées d'avance : 3",
+              credit: "6055 – Fournitures de bureau non stockables : 3"
+            },
+          ],
+          commentaire: "Les biens physiquement non stockables (eau, électricité) ne peuvent pas être régularisés — leur consommation est nécessairement immédiate.",
+        },
+    ],
   },
 
   "61": {
@@ -3951,7 +4645,57 @@ const comptesData = {
           debit: "66 – Charges de personnel",
           credit: "78 – Transferts de charges d'exploitation"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 10",
+          titre: "Charges de personnel — bulletin de paie complet",
+          enonce: "Cadre national : appointements 110, prime 10, brut 120. Cot. salariales SS 12 + retraite 7 = 19. Impôt 5, saisie 20, acompte 40. Remboursement frais 2. Net 38. Cot. patronales SS 18 + retraite 11 = 29. Avantage en nature : loyer 8.",
+          ecritures: [
+            {
+              libelle: "Salaire brut (appointements + prime)",
+              debit: "6611 – Appointements : 110 + 6612 – Primes : 10",
+              credit: "422 – Personnel, rémunérations dues : 120"
+            },
+            {
+              libelle: "Cotisations salariales retenues",
+              debit: "422 – Personnel, rémunérations dues : 19",
+              credit: "431 – Sécurité sociale : 12 + 432 – Retraite complémentaire : 7"
+            },
+            {
+              libelle: "Retenues diverses (impôt + saisie + acompte)",
+              debit: "422 – Personnel, rémunérations dues : 65",
+              credit: "4212 – Acomptes : 40 + 4232 – Saisies-arrêts : 20 + 447 – Impôt retenu : 5"
+            },
+            {
+              libelle: "Remboursement de frais (fournitures justifiées)",
+              debit: "6055 – Fournitures non stockables : 2",
+              credit: "422 – Personnel, rémunérations dues : 2"
+            },
+            {
+              libelle: "Versement net à payer",
+              debit: "422 – Personnel, rémunérations dues : 36",
+              credit: "52 – Banques : 36"
+            },
+            {
+              libelle: "Charges patronales",
+              debit: "6641 – Charges sociales personnel national : 29",
+              credit: "431 – Sécurité sociale : 18 + 432 – Retraite complémentaire : 11"
+            },
+            {
+              libelle: "Avantage en nature — réception facture loyer",
+              debit: "622 – Locations et charges locatives : 8",
+              credit: "401 – Fournisseurs : 8"
+            },
+            {
+              libelle: "Avantage en nature — transfert en charges de personnel (clôture)",
+              debit: "6617 – Avantages en nature : 8",
+              credit: "781 – Transferts de charges d'exploitation : 8"
+            },
+          ],
+          commentaire: "Avantages en nature : d'abord comptabilisés dans leur compte par nature (622), puis transférés en charges personnel (6617) via 781 en fin d'exercice.",
+        },
+    ],
   },
 
   "67": {
@@ -4072,7 +4816,47 @@ const comptesData = {
           debit: "6872 – Dotations aux amortissements des primes de remboursement",
           credit: "206 – Primes de remboursement des obligations"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 17",
+          titre: "Dotations aux amortissements — schéma de clôture",
+          enonce: "En fin d'exercice, constater les dotations économiques et, si applicable, le complément dérogatoire fiscal.",
+          ecritures: [
+            {
+              libelle: "Dotation économique — immob. incorporelles",
+              debit: "6812 – Dotations amortissements immob. incorporelles",
+              credit: "281 – Amortissements des immob. incorporelles"
+            },
+            {
+              libelle: "Dotation économique — immob. corporelles",
+              debit: "6813 – Dotations amortissements immob. corporelles",
+              credit: "283/284 – Amortissements des immob. corporelles"
+            },
+            {
+              libelle: "Dotation économique — charges immobilisées (amort. direct)",
+              debit: "6811 – Dotations amortissements charges immobilisées",
+              credit: "201/202 – Charges immobilisées"
+            },
+            {
+              libelle: "Complément dérogatoire (surplus fiscal)",
+              debit: "851 – Dotations H.A.O. aux provisions réglementées",
+              credit: "151 – Amortissements dérogatoires"
+            },
+            {
+              libelle: "Reprise dérogatoire en fin de vie du bien",
+              debit: "151 – Amortissements dérogatoires",
+              credit: "861 – Reprises de provisions réglementées"
+            },
+            {
+              libelle: "Reprise sur révision de plan d'amortissement",
+              debit: "28 – Amortissements",
+              credit: "798 – Reprises d'amortissements"
+            },
+          ],
+          commentaire: "Compte 68 = dépréciation économique uniquement. Amortissements dérogatoires (surplus fiscal) : toujours via 851/151/861, jamais via 681.",
+        },
+    ],
   },
 
   "69": {
@@ -4223,7 +5007,22 @@ const comptesData = {
           debit: "57 – Caisse",
           credit: "706 – Services vendus"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 2",
+          titre: "Ventes de marchandises et de produits finis",
+          enonce: "Facture n°1 chez fournisseur A : caisse 300 (marchd), ordinateurs fabriqués 2 000 (prod. finis), papier 500 (marchd). Port facturé 280. TVA 10 % = 308. Net à payer = 3 388.",
+          ecritures: [
+            {
+              libelle: "Émission de la facture de vente globale",
+              debit: "4111 – Clients : 3 388",
+              credit: "7011.26 – Ventes marchds caisse : 300 + 7021.26 – Ventes prod. finis : 2 000 + 7011.17 – Ventes marchds papier : 500 + 7071 – Ports facturés : 280 + 4431 – TVA facturée : 308"
+            },
+          ],
+          commentaire: "Marchds vendues en l'état = 701. Produits fabriqués = 702 à 704. Escomptes de règlement : 673 (accordés) / 773 (obtenus), même s'ils figurent sur la facture.",
+        },
+    ],
   },
 
   "71": {
@@ -4269,7 +5068,37 @@ const comptesData = {
           debit: "52 – Banques",
           credit: "4495 – État, subventions d'exploitation à recevoir"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 9",
+          titre: "Subventions d'exploitation et d'équilibre",
+          enonce: "a) Aide Fonds de soutien exports : 80. b) Prime d'embauche État : 15. c) Subvention d'équilibre pour perte exceptionnelle : 50.",
+          ecritures: [
+            {
+              libelle: "Subvention sur exportations (droit acquis)",
+              debit: "4495 – État, subventions d'exploitation à recevoir : 80",
+              credit: "711 – Subventions sur produits à l'exportation : 80"
+            },
+            {
+              libelle: "Prime d'embauche (droit acquis)",
+              debit: "4495 – État, subventions d'exploitation à recevoir : 15",
+              credit: "718 – Autres subventions d'exploitation : 15"
+            },
+            {
+              libelle: "Encaissement des subventions d'exploitation",
+              debit: "52 – Banques",
+              credit: "4495 – État, subventions d'exploitation à recevoir"
+            },
+            {
+              libelle: "Subvention d'équilibre H.A.O. encaissée",
+              debit: "52 – Banques : 50",
+              credit: "881 – Subventions d'équilibre — État : 50"
+            },
+          ],
+          commentaire: "Subvention d'équilibre → compte 88, pas 71. Analyser l'acte d'octroi pour choisir entre 14, 71 et 88.",
+        },
+    ],
   },
 
   "72": {
@@ -4642,7 +5471,37 @@ const comptesData = {
           debit: "284 – Amortissements (solde complet)",
           credit: "24 – Matériel (valeur brute)"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 15",
+          titre: "Décomptabilisation d'un matériel informatique",
+          enonce: "Matériel : valeur brute 4 000 000 F, amortissements cumulés 3 200 000 F (dont complément exercice en cours 400 000 F). Prix de cession : 1 200 000 F.",
+          ecritures: [
+            {
+              libelle: "Amortissement complémentaire (01/01 → date cession)",
+              debit: "6813 – Dotations aux amortissements : 400 000",
+              credit: "284 – Amortissements du matériel : 400 000"
+            },
+            {
+              libelle: "Sortie valeur comptable nette (VCN = 4 M – 3,2 M = 800 000)",
+              debit: "284 – Amortissements : 3 200 000 + 812 – VCN cessions corporelles : 800 000",
+              credit: "244 – Matériel informatique : 4 000 000"
+            },
+            {
+              libelle: "Enregistrement du prix de cession",
+              debit: "485 – Créances sur cessions d'immob. : 1 200 000",
+              credit: "822 – Produits des cessions corporelles : 1 200 000"
+            },
+            {
+              libelle: "Encaissement",
+              debit: "52 – Banques : 1 200 000",
+              credit: "485 – Créances sur cessions d'immob. : 1 200 000"
+            },
+          ],
+          commentaire: "Résultat de cession = 822 (1 200 000) – 812 (800 000) = +400 000 F (plus-value). Cessions récurrentes → 654/754 au lieu de 81/82.",
+        },
+    ],
   },
 
   "82": {
@@ -4993,7 +5852,32 @@ const comptesData = {
           debit: "441 – État, impôt sur les bénéfices",
           credit: "52 – Banques"
         },
-      ]
+      ],
+    applications_pratiques: [
+        {
+          ref: "App. 8",
+          titre: "Impôt sur le bénéfice — acomptes et solde",
+          enonce: "4 acomptes : fév. 35, mai 45, sept. 40, nov. 40. Impôt dû au 31/12/N : 180. Solde = 180 – 160 = 20 F.",
+          ecritures: [
+            {
+              libelle: "Versement de chaque acompte",
+              debit: "441.n – État, impôt sur les bénéfices : montant",
+              credit: "52 – Banques : montant"
+            },
+            {
+              libelle: "Constatation de l'impôt dû au 31/12/N",
+              debit: "891 – Impôts sur les bénéfices de l'exercice : 180",
+              credit: "441.n – État, impôt sur les bénéfices : 180"
+            },
+            {
+              libelle: "Versement du solde (20 F)",
+              debit: "441.n – État, impôt sur les bénéfices : 20",
+              credit: "52 – Banques : 20"
+            },
+          ],
+          commentaire: "Le solde de 441 doit être nul après règlement du solde. Le compte 891 est viré en clôture au compte 13 – Résultat net de l'exercice.",
+        },
+    ],
   },
 
   /* ═══════════════════════════════════════════════════════════════
