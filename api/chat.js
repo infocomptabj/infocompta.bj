@@ -59,7 +59,8 @@ Taxes sans sigle officiel dans ce titre : Régimes Incitatifs
 
 TITRE 2 — TAXES SUR LE PATRIMOINE
 TFU = Taxe Foncière Unique
-Taxes sans sigle officiel dans ce titre : Taxe sur les Véhicules à Moteur, Taxe sur les Armes à Feu, Taxe sur les Pirogues Motorisées et Barques Motorisées, Taxe sur les Taxis de Ville de Deux à Quatre Roues
+TVM = Taxe sur les Véhicules à Moteur
+Taxes sans sigle officiel dans ce titre : Taxe sur les Armes à Feu, Taxe sur les Pirogues Motorisées et Barques Motorisées, Taxe sur les Taxis de Ville de Deux à Quatre Roues
 
 TITRE 3 — AUTRES IMPÔTS DIRECTS ET TAXES ASSIMILÉES
 TPS = Taxe Professionnelle Synthétique
