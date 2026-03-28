@@ -128,6 +128,14 @@ Pour toute question hors comptabilité/fiscalité : "Je suis spécialisé en com
     cleanMessages.unshift({ role: 'user', content: 'Bonjour' });
   }
 
+  // ── Injection de contexte fiscal avant le dernier message ──
+  if (cleanMessages.length > 0) {
+    const lastMsg = cleanMessages[cleanMessages.length - 1];
+    if (lastMsg.role === 'user') {
+      lastMsg.content = `[INSTRUCTION PRIORITAIRE: Consulte le référentiel fiscal CGI Bénin dans tes instructions système. Pour tout sigle (ex: VPS, TVA, TPS...), sa définition DOIT provenir uniquement de ce référentiel. VPS = Versement Patronal sur Salaires selon ce référentiel, pas Virtual Private Server.]\n\n${lastMsg.content}`;
+    }
+  }
+
   // ── Appel API Groq ──
   try {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
