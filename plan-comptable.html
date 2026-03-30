@@ -388,13 +388,13 @@ mark { background: rgba(184,150,62,0.2); color: var(--gold); padding: 0 1px; bor
       <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
     </button>
   </div>
-  <div class="ic-footer">Propulsé par <span>Claude AI</span> · Données OHADA <span>InfoCompta</span></div>
+  <div class="ic-footer">Propulsé par <span>Groq · Llama 3.3</span> · Données OHADA <span>InfoCompta</span></div>
 </div>
 
 <!-- Données OHADA + script plan comptable -->
 <script src="plan-comptable.js"></script>
 <script src="comptes-data.js"></script>
-<script src="docs-context.js"></script>
+<script src="Docs-context.js"></script>
 <!-- Script hamburger menu -->
 <script>
 (function() {
@@ -430,7 +430,7 @@ let icOpen   = false;
 let icBusy   = false;
 
 // ── Persistance localStorage ────────────────────────────────────
-const IC_STORAGE_KEY = 'infocompta_chat_history';
+const IC_STORAGE_KEY = 'infocompta_chat_plan_comptable';
 const IC_MAX_STORED  = 20; // Nombre max de messages stockés
 
 function icSaveHistory(hist) {
