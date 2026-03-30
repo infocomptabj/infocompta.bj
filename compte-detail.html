@@ -363,12 +363,12 @@ p  { color: #444; }
       <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
     </button>
   </div>
-  <div class="ic-footer">Propulsé par <span>Claude AI</span> · Données OHADA <span>InfoCompta</span></div>
+  <div class="ic-footer">Propulsé par <span>Groq · Llama 3.3</span> · Données OHADA <span>InfoCompta</span></div>
 </div>
 
 <!-- Données OHADA -->
 <script src="comptes-data.js"></script>
-<script src="docs-context.js"></script>
+<script src="Docs-context.js"></script>
 <!-- Script fiche compte -->
 <script>
 const params = new URLSearchParams(window.location.search);
@@ -512,7 +512,9 @@ let icOpen   = false;
 let icBusy   = false;
 
 // ── Persistance localStorage ────────────────────────────────────
-const IC_STORAGE_KEY = 'infocompta_chat_history';
+// Clé unique par compte : évite de mélanger les historiques entre fiches
+const _icCode = (new URLSearchParams(window.location.search)).get('code') || 'unknown';
+const IC_STORAGE_KEY = 'infocompta_chat_compte_' + _icCode;
 const IC_MAX_STORED  = 20;
 
 function icSaveHistory(hist) {
