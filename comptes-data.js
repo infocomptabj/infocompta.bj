@@ -5452,3 +5452,13 @@ const comptesData = {
   }
 
 };
+
+// Export pour Node.js / Vercel serverless (chat.js fait await import('../comptes-data.js'))
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = comptesData;
+}
+// Export ES module
+if (typeof exports !== 'undefined') {
+  exports.default = comptesData;
+  exports.comptesData = comptesData;
+}
