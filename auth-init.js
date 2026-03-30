@@ -5,8 +5,14 @@
    Sans aucun flash visuel (FOUC)
 ══════════════════════════════════════════════════ */
 (function () {
-  const SUPABASE_URL = 'https://lmivfisdmuqbspvmvdzh.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_kCfhrFPVec2MkCl0xe4N-w_QXHgc0Gp';
+  // Lire les credentials depuis les meta-tags (injectées par le serveur / Vercel)
+  // Si les meta-tags sont absentes, on utilise les valeurs de fallback (développement local).
+  function getMeta(name, fallback) {
+    const el = document.querySelector('meta[name="' + name + '"]');
+    return (el && el.content) ? el.content : fallback;
+  }
+  const SUPABASE_URL = getMeta('supabase-url', 'https://lmivfisdmuqbspvmvdzh.supabase.co');
+  const SUPABASE_KEY = getMeta('supabase-key', 'sb_publishable_kCfhrFPVec2MkCl0xe4N-w_QXHgc0Gp');
 
   /* ── 1. Masquer la page immédiatement ── */
   const mask = document.createElement('style');
