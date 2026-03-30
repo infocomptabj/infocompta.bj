@@ -508,7 +508,7 @@
           <div class="info-icon">📧</div>
           <div>
             <h4>Email</h4>
-            <p>infocomptabj@gmail.com</p>
+            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3851565e575b5755484c595a52785f55595154165b5755">[email&#160;protected]</a></p>
           </div>
         </div>
 
@@ -619,12 +619,10 @@
      Pour changer de service, modifier la constante FORMSPREE_ID
      et adapter la fonction submitForm() en conséquence
 ============================================================ -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
-  /* -- Identifiant du formulaire Formspree -- */
-  /* Remplacer par votre ID obtenu sur formspree.io */
-  /* Exemple : const FORMSPREE_ID = 'xpwzabcd'; */
-  const FORMSPREE_ID = 'https://form.jotform.com/260666934614060';
+  /* -- URL directe du formulaire JotForm -- */
+  const JOTFORM_URL = 'https://form.jotform.com/260666934614060';
 
   async function submitForm() {
 
@@ -662,20 +660,21 @@
     btn.textContent = 'Envoi en cours…';
 
     try {
-      /* -- Envoi via Formspree -- */
-      const res = await fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+      /* -- Envoi via JotForm (application/x-www-form-urlencoded) -- */
+      const formData = new URLSearchParams();
+      formData.append('q3_nom',     nom);
+      formData.append('q4_email',   email);
+      formData.append('q5_sujet',   sujet || 'Aucun sujet');
+      formData.append('q6_message', message);
+
+      const res = await fetch(JOTFORM_URL, {
         method:  'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body:    JSON.stringify({
-          nom:     nom,
-          email:   email,
-          sujet:   sujet || 'Aucun sujet',
-          message: message
-        })
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body:    formData.toString()
       });
 
       if (res.ok) {
-        /* -- Succès : afficher le message de confirmation et vider le formulaire -- */
+        /* -- Succès -- */
         successMsg.style.display = 'block';
         successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         document.getElementById('nom').value     = '';
@@ -683,7 +682,6 @@
         document.getElementById('sujet').value   = '';
         document.getElementById('message').value = '';
       } else {
-        /* -- Erreur serveur -- */
         errorMsg.textContent   = '❌ Erreur d\'envoi. Veuillez réessayer ou écrire à infocomptabj@gmail.com';
         errorMsg.style.display = 'block';
       }
@@ -730,14 +728,4 @@
     });
 
     /* Fermer au clic en dehors du menu */
-    document.addEventListener('click', function(e) {
-      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
-        nav.classList.remove('open');
-        btn.classList.remove('open');
-      }
-    });
-  })();
-</script>
-
-</body>
-</html>
+    document.addEventListener('
