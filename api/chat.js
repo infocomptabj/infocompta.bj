@@ -140,6 +140,13 @@ export default async function handler(req, res) {
   const messages = (body.messages || []).slice(-14);
   const derniereQuestion = messages.filter(m => m.role === 'user').pop()?.content || '';
 
+  // ══ Récupération du system prompt enrichi envoyé par le frontend ══
+  // Le frontend construit un system prompt très riche (contexte OHADA + CGI + compte courant).
+  // On le conserve pour l'injecter dans le system prompt final du backend.
+  const frontendSystem = (typeof body.system === 'string' && body.system.trim())
+    ? body.system.trim()
+    : null;
+
   // ══ NIVEAU 1 — Sigles ══
   const siglesDetectes = detecterSigles(derniereQuestion);
   let contexteSignes = '';
@@ -171,8 +178,23 @@ export default async function handler(req, res) {
 
   const aDesContexte = contexteSignes || contexteComptes || contexteDocs;
 
-  // ══ Contruction du system prompt ══
-  const systemPrompt = `Tu es COMPTA, l'assistant comptable officiel d'InfoCompta (Bénin).
+  // ══ Construction du system prompt ══
+  // Si le frontend a envoyé son propre system prompt (riche en contexte de page),
+  // on l'utilise comme base et on y ajoute le contexte extrait côté serveur.
+  // Sinon, on construit un system prompt générique.
+  let systemPrompt;
+  if (frontendSystem) {
+    // Le frontend a déjà tout construit (contexte du compte courant, plan OHADA, CGI…).
+    // On se contente d'y ajouter les données extraites par le backend (sigles, comptes, docs)
+    // uniquement s'il y en a, pour éviter les doublons.
+    systemPrompt = frontendSystem;
+    if (aDesContexte) {
+      systemPrompt += '\n\n## DONNÉES COMPLÉMENTAIRES EXTRAITES PAR LE SERVEUR'
+        + contexteSignes + contexteComptes + contexteDocs;
+    }
+  } else {
+    // Aucun system prompt du frontend — on construit le nôtre.
+    systemPrompt = `Tu es COMPTA, l'assistant comptable officiel d'InfoCompta (Bénin).
 Tu es spécialisé en comptabilité OHADA (SYSCOHADA révisé) et fiscalité béninoise (CGI Bénin).
 
 ## ORDRE DE PRIORITÉ DES SOURCES
@@ -186,6 +208,7 @@ Tu es spécialisé en comptabilité OHADA (SYSCOHADA révisé) et fiscalité bé
 - Ne jamais inventer de taux, montants ou références légales.
 - Réponds toujours en français, de façon claire et structurée.
 ${aDesContexte ? '\n## DONNÉES EXTRAITES DE NOS FICHIERS OFFICIELS' + contexteSignes + contexteComptes + contexteDocs : ''}`;
+  }
 
   // ── Nettoyage messages ──
   const cleanMessages = [];
