@@ -520,44 +520,82 @@
         <div class="modal-amount-sub" id="modalFreq">Paiement mensuel</div>
       </div>
       <div class="op-tabs">
+
+        <!-- MTN MoMo -->
         <button class="op-tab" id="tabMTN" onclick="switchOp('mtn')">
-          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="36" rx="8" fill="#FFCC00"/><text x="18" y="14" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="7" font-weight="900" fill="#1a1a1a">MTN</text><text x="18" y="24" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" font-weight="700" fill="#1a1a1a">MoMo</text><rect x="6" y="26" width="24" height="3" rx="1.5" fill="#1a1a1a"/></svg>
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="36" height="36" rx="8" fill="#FFCC00"/>
+            <text x="18" y="14" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="7" font-weight="900" fill="#1a1a1a">MTN</text>
+            <text x="18" y="24" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" font-weight="700" fill="#1a1a1a">MoMo</text>
+            <rect x="6" y="26" width="24" height="3" rx="1.5" fill="#1a1a1a"/>
+          </svg>
           MTN MoMo
         </button>
+
+        <!-- Moov Africa -->
         <button class="op-tab" id="tabMoov" onclick="switchOp('moov')">
-          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="36" rx="8" fill="#0055A4"/><circle cx="18" cy="15" r="7" fill="none" stroke="#fff" stroke-width="2"/><circle cx="18" cy="15" r="3" fill="#fff"/><text x="18" y="28" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" font-weight="700" fill="#fff">MOOV</text></svg>
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="36" height="36" rx="8" fill="#0055A4"/>
+            <circle cx="18" cy="15" r="7" fill="none" stroke="#fff" stroke-width="2"/>
+            <circle cx="18" cy="15" r="3" fill="#fff"/>
+            <text x="18" y="28" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" font-weight="700" fill="#fff">MOOV</text>
+          </svg>
           Moov Africa
         </button>
+
+        <!-- FedaPay -->
         <button class="op-tab" id="tabFeda" onclick="switchOp('feda')">
-          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="36" height="36" rx="8" fill="#6D28D9"/><rect x="7" y="11" width="22" height="14" rx="3" fill="none" stroke="#fff" stroke-width="1.8"/><rect x="7" y="15" width="22" height="4" fill="#fff" opacity="0.3"/><rect x="10" y="19" width="6" height="2.5" rx="1" fill="#fff"/><text x="18" y="30" text-anchor="middle" font-family="Arial,sans-serif" font-size="5" font-weight="700" fill="#fff">FEDAPAY</text></svg>
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="36" height="36" rx="8" fill="#6D28D9"/>
+            <rect x="7" y="11" width="22" height="14" rx="3" fill="none" stroke="#fff" stroke-width="1.8"/>
+            <rect x="7" y="15" width="22" height="4" fill="#fff" opacity="0.3"/>
+            <rect x="10" y="19" width="6" height="2.5" rx="1" fill="#fff"/>
+            <text x="18" y="30" text-anchor="middle" font-family="Arial,sans-serif" font-size="5" font-weight="700" fill="#fff">FEDAPAY</text>
+          </svg>
           FedaPay
         </button>
+
       </div>
+
+      <!-- Barre réseau sélectionné -->
       <div class="op-selected-bar" id="opSelectedBar"></div>
+
+      <!-- MTN Panel -->
       <div class="op-panel pay-steps" id="panelMTN">
         <div class="pay-step"><div class="step-n">1</div><div><div class="step-title">Composez le menu MTN MoMo</div><div class="step-desc">Tapez <span class="step-code">*880#</span> sur votre téléphone MTN</div></div></div>
         <div class="pay-step"><div class="step-n">2</div><div><div class="step-title">Paiement marchand</div><div class="step-desc">Choisissez l'option <strong>3 — Paiement marchand</strong></div></div></div>
         <div class="pay-step"><div class="step-n">3</div><div><div class="step-title">Numéro InfoCompta (MTN)</div><span class="step-phone">📞 +229 XX XX XX XX</span></div></div>
-        <div class="pay-step"><div class="step-n gold-n">4</div><div><div class="step-title">Montant &amp; confirmation</div><div class="step-desc">Envoyez <strong id="mtnAmt">3 500</strong> FCFA puis partagez la capture à <strong>infocomptabj@gmail.com</strong></div></div></div>
+        <div class="pay-step"><div class="step-n gold-n">4</div><div><div class="step-title">Montant & confirmation</div><div class="step-desc">Envoyez <strong id="mtnAmt">3 500</strong> FCFA puis partagez la capture à <strong>contact@infocompta.bj</strong></div></div></div>
       </div>
+
+      <!-- Moov Panel -->
       <div class="op-panel pay-steps" id="panelMoov">
         <div class="pay-step"><div class="step-n" style="background:#2563eb">1</div><div><div class="step-title">Composez le menu Moov Money</div><div class="step-desc">Tapez <span class="step-code">*155#</span> sur votre téléphone Moov</div></div></div>
         <div class="pay-step"><div class="step-n" style="background:#2563eb">2</div><div><div class="step-title">Transfert d'argent</div><div class="step-desc">Choisissez l'option <strong>1 — Transfert d'argent</strong></div></div></div>
         <div class="pay-step"><div class="step-n" style="background:#2563eb">3</div><div><div class="step-title">Numéro InfoCompta (Moov)</div><span class="step-phone">📞 +229 XX XX XX XX</span></div></div>
-        <div class="pay-step"><div class="step-n gold-n">4</div><div><div class="step-title">Montant &amp; confirmation</div><div class="step-desc">Envoyez <strong id="moovAmt">3 500</strong> FCFA puis partagez la capture à <strong>infocomptabj@gmail.com</strong></div></div></div>
+        <div class="pay-step"><div class="step-n gold-n">4</div><div><div class="step-title">Montant & confirmation</div><div class="step-desc">Envoyez <strong id="moovAmt">3 500</strong> FCFA puis partagez la capture à <strong>contact@infocompta.bj</strong></div></div></div>
       </div>
+
+      <!-- FedaPay Panel -->
       <div class="op-panel" id="panelFeda">
         <div class="pay-steps">
           <div class="pay-step"><div class="step-n" style="background:#6D28D9">1</div><div><div class="step-title">Paiement en ligne sécurisé</div><div class="step-desc">FedaPay accepte MTN MoMo, Moov Africa et cartes bancaires internationales.</div></div></div>
-          <div class="pay-step"><div class="step-n" style="background:#6D28D9">2</div><div><div class="step-title">Accès activé automatiquement</div><div class="step-desc">Votre accès est livré immédiatement après confirmation.</div></div></div>
+          <div class="pay-step"><div class="step-n" style="background:#6D28D9">2</div><div><div class="step-title">Accès activé automatiquement</div><div class="step-desc">Votre accès est livré immédiatement après confirmation du paiement.</div></div></div>
         </div>
         <div class="fedapay-wrap">
-          <a href="https://fedapay.com" target="_blank" rel="noopener" class="btn-fedapay" id="fedaLink">🔐 Payer via FedaPay — <span id="fedaAmt">3 500</span> FCFA</a>
+          <a href="https://fedapay.com" target="_blank" rel="noopener" class="btn-fedapay" id="fedaLink">
+            🔐 Payer via FedaPay — <span id="fedaAmt">3 500</span> FCFA
+          </a>
           <div class="feda-secure">🔒 Paiement sécurisé · Certifié HTTPS</div>
         </div>
       </div>
     </div>
     <div class="modal-footer">
+      <button class="btn-modal-close" onclick="closeModal()">✕ Annuler</button>
+    </div>
+  </div>
+</div>
+  <div class="modal-footer">
       <button class="btn-modal-close" onclick="closeModal()">✕ Annuler</button>
     </div>
   </div>
