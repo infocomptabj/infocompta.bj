@@ -600,59 +600,62 @@
     </div>
   </div>
 </div>
-
 <script>
-(function(){
-  var btn=document.getElementById('hamburgerBtn'),nav=document.getElementById('mainNav');
-  if(!btn||!nav)return;
-  btn.addEventListener('click',function(e){e.stopPropagation();var o=nav.classList.toggle('open');btn.classList.toggle('open',o);});
-  nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');btn.classList.remove('open');});});
-  document.addEventListener('click',function(e){if(!nav.contains(e.target)&&e.target!==btn&&!btn.contains(e.target)){nav.classList.remove('open');btn.classList.remove('open');}});
-  var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.1});
-  document.querySelectorAll('.fade-in').forEach(function(el){obs.observe(el);});
-})();
+  (function(){
+    var btn=document.getElementById('hamburgerBtn'),nav=document.getElementById('mainNav');
+    if(!btn||!nav)return;
+    btn.addEventListener('click',function(e){e.stopPropagation();var o=nav.classList.toggle('open');btn.classList.toggle('open',o);});
+    nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');btn.classList.remove('open');});});
+    document.addEventListener('click',function(e){if(!nav.contains(e.target)&&e.target!==btn&&!btn.contains(e.target)){nav.classList.remove('open');btn.classList.remove('open');}});
+  })();
 
-function scrollSec(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
-function toggleFaq(el){el.parentElement.classList.toggle('open');}
+  function scrollSec(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+  function toggleFaq(el){el.parentElement.classList.toggle('open');}
 
-function openPayment(name,amount,freq){
-  document.getElementById('modalLabel').textContent=name+' · '+amount+' FCFA / '+freq;
-  document.getElementById('modalAmount').textContent=amount+' FCFA';
-  document.getElementById('modalFreq').textContent=freq==='achat unique'?'Achat unique':'Paiement '+freq;
-  document.getElementById('mtnAmt').textContent=amount;
-  document.getElementById('moovAmt').textContent=amount;
-  document.getElementById('fedaAmt').textContent=amount;
-  ['tabMTN','tabMoov','tabFeda'].forEach(function(id){document.getElementById(id).className='op-tab';});
-  ['panelMTN','panelMoov','panelFeda'].forEach(function(id){document.getElementById(id).classList.remove('visible');});
-  var bar=document.getElementById('opSelectedBar');
-  bar.className='op-selected-bar'; bar.innerHTML='';
-  document.getElementById('payModal').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeModal(){document.getElementById('payModal').classList.remove('open');document.body.style.overflow='';}
-function closeIfOverlay(e){if(e.target===document.getElementById('payModal'))closeModal();}
-function switchOp(op){
-  ['tabMTN','tabMoov','tabFeda'].forEach(function(id){document.getElementById(id).className='op-tab';});
-  ['panelMTN','panelMoov','panelFeda'].forEach(function(id){document.getElementById(id).classList.remove('visible');});
-  var bar=document.getElementById('opSelectedBar');
-  bar.className='op-selected-bar';
-  if(op==='mtn'){
-    document.getElementById('tabMTN').classList.add('tab-mtn');
-    document.getElementById('panelMTN').classList.add('visible');
-    bar.classList.add('visible','bar-mtn');
-    bar.innerHTML='<span class="bar-dot"></span> Procédure MTN MoMo sélectionnée';
-  } else if(op==='moov'){
-    document.getElementById('tabMoov').classList.add('tab-moov');
-    document.getElementById('panelMoov').classList.add('visible');
-    bar.classList.add('visible','bar-moov');
-    bar.innerHTML='<span class="bar-dot"></span> Procédure Moov Africa sélectionnée';
-  } else {
-    document.getElementById('tabFeda').classList.add('tab-feda');
-    document.getElementById('panelFeda').classList.add('visible');
-    bar.classList.add('visible','bar-feda');
-    bar.innerHTML='<span class="bar-dot"></span> FedaPay sélectionné';
+  function openPayment(name,amount,freq){
+    document.getElementById('modalLabel').textContent=name+' · '+amount+' FCFA / '+freq;
+    document.getElementById('modalAmount').textContent=amount+' FCFA';
+    document.getElementById('modalFreq').textContent=freq==='achat unique'?'Achat unique':'Paiement '+freq;
+    document.getElementById('mtnAmt').textContent=amount;
+    document.getElementById('moovAmt').textContent=amount;
+    document.getElementById('fedaAmt').textContent=amount;
+    /* Réinitialiser — aucun réseau sélectionné à l'ouverture */
+    ['tabMTN','tabMoov','tabFeda'].forEach(function(id){document.getElementById(id).className='op-tab';});
+    ['panelMTN','panelMoov','panelFeda'].forEach(function(id){document.getElementById(id).classList.remove('visible');});
+    var bar=document.getElementById('opSelectedBar');
+    bar.className='op-selected-bar';
+    bar.innerHTML='';
+    document.getElementById('payModal').classList.add('open');
+    document.body.style.overflow='hidden';
   }
-}
+  function closeModal(){document.getElementById('payModal').classList.remove('open');document.body.style.overflow='';}
+  function closeIfOverlay(e){if(e.target===document.getElementById('payModal'))closeModal();}
+  function switchOp(op){
+    ['tabMTN','tabMoov','tabFeda'].forEach(function(id){document.getElementById(id).className='op-tab';});
+    ['panelMTN','panelMoov','panelFeda'].forEach(function(id){
+      var p=document.getElementById(id);
+      p.classList.remove('visible');
+    });
+    var bar=document.getElementById('opSelectedBar');
+    bar.className='op-selected-bar';
+
+    if(op==='mtn'){
+      document.getElementById('tabMTN').classList.add('tab-mtn');
+      var p=document.getElementById('panelMTN'); p.classList.add('visible');
+      bar.classList.add('visible','bar-mtn');
+      bar.innerHTML='<span class="bar-dot"></span> Procédure MTN MoMo sélectionnée';
+    } else if(op==='moov'){
+      document.getElementById('tabMoov').classList.add('tab-moov');
+      var p=document.getElementById('panelMoov'); p.classList.add('visible');
+      bar.classList.add('visible','bar-moov');
+      bar.innerHTML='<span class="bar-dot"></span> Procédure Moov Africa sélectionnée';
+    } else {
+      document.getElementById('tabFeda').classList.add('tab-feda');
+      var p=document.getElementById('panelFeda'); p.classList.add('visible');
+      bar.classList.add('visible','bar-feda');
+      bar.innerHTML='<span class="bar-dot"></span> Paiement FedaPay sélectionné';
+    }
+  }
 </script>
 </body>
 </html>
