@@ -195,7 +195,7 @@ footer {
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 2rem;
   background: var(--gold);
   color: #fff;
   font-family: 'DM Sans', sans-serif;
