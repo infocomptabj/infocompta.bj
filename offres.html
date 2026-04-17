@@ -208,7 +208,7 @@
   position: fixed; inset: 0;
   background: rgba(15,31,53,0.6);
   backdrop-filter: blur(4px);
-  z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 1rem;
+  z-index: 500; display: flex; align-items: center; justify-content: center; padding: 1rem;
   opacity: 0; pointer-events: none; transition: opacity 0.22s;
 }
 .modal-overlay.open { opacity: 1; pointer-events: all; }
@@ -334,6 +334,15 @@
 }
 @media (max-width: 600px) {
   .tpl-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Fix z-index FedaPay popup ── */
+.fedapay-dialog-wrapper,
+.fedapay-dialog,
+#fedapay-checkout,
+iframe[src*="fedapay"],
+.fedapay-checkout-modal {
+  z-index: 9999 !important;
 }
   </style>
 </head>
