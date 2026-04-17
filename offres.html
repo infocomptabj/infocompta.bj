@@ -7,6 +7,8 @@
   <title>Nos offres — InfoCompta</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="infocompta-shared.css">
+  <!-- FedaPay Checkout SDK -->
+  <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
   <style>
 /* ── OFFRES PAGE ── */
 :root {
@@ -236,82 +238,82 @@
 .modal-amount-val { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--navy); }
 .modal-amount-sub { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
 
-/* ── Onglets des 3 modes ── */
-.op-tabs { display: flex; gap: 0.5rem; margin-bottom: 0; }
-.op-tab {
-  flex: 1; padding: 0.7rem 0.4rem;
-  border: 1.5px solid var(--border); border-radius: var(--radius);
-  background: var(--surface); cursor: pointer;
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 500;
-  color: var(--muted); transition: all var(--transition);
+/* ── Bouton FedaPay principal ── */
+.fedapay-main-btn {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #6D28D9, #7c3aed);
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: 0 4px 20px rgba(109,40,217,0.35);
+  margin-bottom: 1rem;
 }
-.op-tab:hover { border-color: var(--navy); color: var(--navy); }
-.op-tab.tab-mtn  { border-color: #f59e0b; background: #fffbeb; color: #92400e; }
-.op-tab.tab-moov { border-color: #2563eb; background: #eff6ff; color: #1e40af; }
-.op-tab.tab-feda { border-color: #7c3aed; background: #f5f3ff; color: #5b21b6; }
-.op-tab svg { width: 36px; height: 36px; }
+.fedapay-main-btn:hover {
+  background: linear-gradient(135deg, #5b21b6, #6D28D9);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(109,40,217,0.45);
+}
+.fedapay-main-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
 
-/* ── Barre de confirmation du mode sélectionné ── */
-.op-selected-bar {
+.fedapay-methods {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+  flex-wrap: wrap;
+}
+.feda-method-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+.badge-mtn  { background: #fffbeb; color: #92400e; border: 1px solid #fcd34d; }
+.badge-moov { background: #eff6ff; color: #1e40af; border: 1px solid #93c5fd; }
+.badge-card { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
+
+.feda-secure {
+  text-align: center;
+  font-size: 0.73rem;
+  color: var(--muted);
+  margin-top: 0.3rem;
+}
+
+/* ── Message de succès ── */
+.payment-success {
   display: none;
-  padding: 0.6rem 1rem; margin: 0.6rem 0;
-  border-radius: var(--radius); font-size: 0.8rem; font-weight: 500;
-  align-items: center; gap: 0.5rem;
+  text-align: center;
+  padding: 1.5rem;
+  background: #edf7f1;
+  border: 1px solid #a3d4b5;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
 }
-.op-selected-bar.visible { display: flex; }
-.bar-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.bar-mtn  { background: #fffbeb; color: #92400e; border: 1px solid #fcd34d; }
-.bar-mtn  .bar-dot { background: #f59e0b; }
-.bar-moov { background: #eff6ff; color: #1e40af; border: 1px solid #93c5fd; }
-.bar-moov .bar-dot { background: #3b82f6; }
-.bar-feda { background: #f5f3ff; color: #5b21b6; border: 1px solid #c4b5fd; }
-.bar-feda .bar-dot { background: #7c3aed; }
-
-/* ── Panels cachés par défaut — affichés uniquement quand .visible ── */
-.op-panel {
-  display: none;        /* CACHÉ par défaut */
-  margin-top: 0.4rem;
-}
-.op-panel.visible {
-  display: block;       /* VISIBLE seulement après clic sur le mode */
-}
-
-/* ── Steps à l'intérieur des panels ── */
-.pay-steps { display: flex; flex-direction: column; gap: 0.7rem; }
-.pay-step {
-  display: flex; gap: 0.8rem; align-items: flex-start;
-  background: var(--cream); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 0.9rem 1rem;
-}
-.step-n {
-  width: 24px; height: 24px; border-radius: 50%;
-  background: var(--navy); color: #fff;
-  font-size: 0.72rem; font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; margin-top: 1px;
-}
-.step-n.gold-n { background: var(--gold); }
-.step-title { font-size: 0.85rem; font-weight: 500; color: var(--navy); margin-bottom: 2px; }
-.step-desc  { font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
-.step-code  {
-  display: inline-block; background: var(--navy); color: var(--gold-lt);
-  font-family: monospace; font-size: 0.88rem;
-  padding: 2px 10px; border-radius: 3px; margin-top: 4px;
-}
-.step-phone { font-size: 0.95rem; font-weight: 700; color: var(--navy); margin-top: 3px; display: block; }
-
-/* ── FedaPay ── */
-.fedapay-wrap { margin-top: 0.8rem; }
-.btn-fedapay {
-  display: flex; width: 100%; align-items: center; justify-content: center; gap: 8px;
-  background: var(--navy); color: #fff; padding: 0.75rem; border-radius: var(--radius);
-  font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600;
-  letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none;
-  transition: background var(--transition); border: none; cursor: pointer;
-}
-.btn-fedapay:hover { background: var(--navy-lt); }
-.feda-secure { text-align: center; font-size: 0.73rem; color: var(--muted); margin-top: 0.5rem; }
+.payment-success.visible { display: block; }
+.payment-success .success-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.payment-success h4 { color: #1e5c37; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; margin-bottom: 0.3rem; }
+.payment-success p { color: #2d7a4f; font-size: 0.85rem; }
 
 .modal-footer { padding: 0 1.8rem 1.4rem; }
 .btn-modal-close {
@@ -332,8 +334,6 @@
 }
 @media (max-width: 600px) {
   .tpl-grid { grid-template-columns: 1fr; }
-  .op-tabs { gap: 0.3rem; }
-  .op-tab { padding: 0.5rem 0.2rem; font-size: 0.7rem; }
 }
   </style>
 </head>
@@ -416,7 +416,7 @@
             <li class="plan-feat"><span class="plan-feat-ok">✓</span> Export PDF &amp; Excel</li>
             <li class="plan-feat"><span class="plan-feat-ok">✓</span> Assistance prioritaire</li>
           </ul>
-          <button class="btn-plan btn-plan-gold" onclick="openPayment('Plan Pro','3 500','mensuel')">💳 Souscrire via Mobile Money</button>
+          <button class="btn-plan btn-plan-gold" onclick="openPayment('Plan Pro', 3500, 'mensuel')">💳 Souscrire via Mobile Money</button>
         </div>
         <div class="plan-card">
           <div class="plan-icon">🏢</div>
@@ -433,7 +433,7 @@
             <li class="plan-feat"><span class="plan-feat-ok">✓</span> Formation comptable incluse</li>
             <li class="plan-feat"><span class="plan-feat-ok">✓</span> Référencement annuaire</li>
           </ul>
-          <button class="btn-plan btn-plan-navy" onclick="openPayment('Plan Expert','8 000','mensuel')">💳 Souscrire via Mobile Money</button>
+          <button class="btn-plan btn-plan-navy" onclick="openPayment('Plan Expert', 8000, 'mensuel')">💳 Souscrire via Mobile Money</button>
         </div>
       </div>
     </div>
@@ -453,7 +453,7 @@
           <div class="tpl-body">
             <div class="tpl-name">Journal Comptable OHADA</div>
             <div class="tpl-desc">Modèle Excel avec formules automatiques, conforme au SYSCOHADA révisé.</div>
-            <div class="tpl-footer"><div><span class="tpl-price">2 500 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Journal Comptable OHADA','2 500','achat unique')">Acheter</button></div>
+            <div class="tpl-footer"><div><span class="tpl-price">2 500 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Journal Comptable OHADA', 2500, 'achat unique')">Acheter</button></div>
           </div>
         </div>
         <div class="tpl-card">
@@ -461,7 +461,7 @@
           <div class="tpl-body">
             <div class="tpl-name">Bilan + Compte de Résultat</div>
             <div class="tpl-desc">Pack états financiers annuels complets prêts à remplir et soumettre.</div>
-            <div class="tpl-footer"><div><span class="tpl-price">4 000 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Bilan + Compte de Résultat','4 000','achat unique')">Acheter</button></div>
+            <div class="tpl-footer"><div><span class="tpl-price">4 000 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Bilan + Compte de Résultat', 4000, 'achat unique')">Acheter</button></div>
           </div>
         </div>
         <div class="tpl-card">
@@ -469,7 +469,7 @@
           <div class="tpl-body">
             <div class="tpl-name">Modèle de Facture Pro</div>
             <div class="tpl-desc">Facture Word &amp; Excel personnalisable avec calcul TVA automatique.</div>
-            <div class="tpl-footer"><div><span class="tpl-price">1 500 FCFA</span><span class="tpl-format">DOCX</span></div><button class="btn-tpl" onclick="openPayment('Modèle de Facture Pro','1 500','achat unique')">Acheter</button></div>
+            <div class="tpl-footer"><div><span class="tpl-price">1 500 FCFA</span><span class="tpl-format">DOCX</span></div><button class="btn-tpl" onclick="openPayment('Modèle de Facture Pro', 1500, 'achat unique')">Acheter</button></div>
           </div>
         </div>
         <div class="tpl-card">
@@ -477,7 +477,7 @@
           <div class="tpl-body">
             <div class="tpl-name">Grand Livre Automatisé</div>
             <div class="tpl-desc">Grand livre Excel avec report automatique des soldes par compte.</div>
-            <div class="tpl-footer"><div><span class="tpl-price">3 000 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Grand Livre Automatisé','3 000','achat unique')">Acheter</button></div>
+            <div class="tpl-footer"><div><span class="tpl-price">3 000 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Grand Livre Automatisé', 3000, 'achat unique')">Acheter</button></div>
           </div>
         </div>
         <div class="tpl-card">
@@ -485,7 +485,7 @@
           <div class="tpl-body">
             <div class="tpl-name">Déclaration TVA Bénin</div>
             <div class="tpl-desc">Formulaire pré-rempli de déclaration TVA selon le CGI Bénin.</div>
-            <div class="tpl-footer"><div><span class="tpl-price">2 000 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Déclaration TVA Bénin','2 000','achat unique')">Acheter</button></div>
+            <div class="tpl-footer"><div><span class="tpl-price">2 000 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Déclaration TVA Bénin', 2000, 'achat unique')">Acheter</button></div>
           </div>
         </div>
         <div class="tpl-card">
@@ -493,7 +493,7 @@
           <div class="tpl-body">
             <div class="tpl-name">Tableau de Bord Financier</div>
             <div class="tpl-desc">Dashboard Excel avec graphiques pour suivre vos indicateurs clés.</div>
-            <div class="tpl-footer"><div><span class="tpl-price">3 500 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Tableau de Bord Financier','3 500','achat unique')">Acheter</button></div>
+            <div class="tpl-footer"><div><span class="tpl-price">3 500 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Tableau de Bord Financier', 3500, 'achat unique')">Acheter</button></div>
           </div>
         </div>
       </div>
@@ -525,7 +525,7 @@
       <div class="annuaire-cta">
         <h3>Vous êtes expert-comptable ou cabinet ?</h3>
         <p>Rejoignez l'annuaire InfoCompta et soyez visible auprès de centaines d'entreprises béninoises.</p>
-        <button class="btn" onclick="openPayment('Référencement Annuaire','5 000','annuel')">💳 Référencer mon cabinet — 5 000 FCFA / an</button>
+        <button class="btn" onclick="openPayment('Référencement Annuaire', 5000, 'annuel')">💳 Référencer mon cabinet — 5 000 FCFA / an</button>
       </div>
     </div>
   </section>
@@ -540,7 +540,7 @@
       <div class="faq-list fade-in">
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)">Comment fonctionne le paiement Mobile Money ?<span class="faq-arrow">▼</span></div>
-          <div class="faq-a">Choisissez votre offre, sélectionnez MTN MoMo ou Moov Africa, puis suivez les instructions. Vous pouvez aussi payer via FedaPay. L'accès est activé dans les 24h après confirmation.</div>
+          <div class="faq-a">Cliquez sur le bouton de paiement, la fenêtre FedaPay s'ouvre directement. Entrez votre numéro MTN MoMo ou Moov Africa, puis validez avec votre code secret. L'accès est activé automatiquement après confirmation.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)">Puis-je résilier mon abonnement à tout moment ?<span class="faq-arrow">▼</span></div>
@@ -573,19 +573,23 @@
 </footer>
 
 <!-- ══════════════════════════════════════
-     MODAL PAIEMENT
-     Comportement :
-     1. Ouverture → seuls les 3 onglets sont visibles, aucun panel
-     2. Clic sur un onglet → déplie les infos de CE mode uniquement
+     MODAL PAIEMENT FEDAPAY
 ══════════════════════════════════════ -->
 <div class="modal-overlay" id="payModal" onclick="closeIfOverlay(event)">
   <div class="modal">
     <div class="modal-header">
       <h3>Finaliser le paiement</h3>
-      <p>Choisissez votre mode de paiement</p>
+      <p>Paiement sécurisé via FedaPay</p>
       <div class="modal-plan-tag" id="modalLabel">Plan Pro · 3 500 FCFA / mensuel</div>
     </div>
     <div class="modal-body">
+
+      <!-- Message de succès (caché par défaut) -->
+      <div class="payment-success" id="paymentSuccess">
+        <div class="success-icon">✅</div>
+        <h4>Paiement effectué !</h4>
+        <p>Votre accès sera activé sous peu. Un email de confirmation vous sera envoyé.</p>
+      </div>
 
       <!-- Montant -->
       <div class="modal-amount">
@@ -593,134 +597,19 @@
         <div class="modal-amount-sub" id="modalFreq">Paiement mensuel</div>
       </div>
 
-      <!-- Les 3 onglets — toujours visibles -->
-      <div class="op-tabs">
-        <button class="op-tab" id="tabMTN" onclick="switchOp('mtn')">
-          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="36" height="36" rx="8" fill="#FFCC00"/>
-            <text x="18" y="14" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="7" font-weight="900" fill="#1a1a1a">MTN</text>
-            <text x="18" y="24" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" font-weight="700" fill="#1a1a1a">MoMo</text>
-            <rect x="6" y="26" width="24" height="3" rx="1.5" fill="#1a1a1a"/>
-          </svg>
-          MTN MoMo
-        </button>
-        <button class="op-tab" id="tabMoov" onclick="switchOp('moov')">
-          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="36" height="36" rx="8" fill="#0055A4"/>
-            <circle cx="18" cy="15" r="7" fill="none" stroke="#fff" stroke-width="2"/>
-            <circle cx="18" cy="15" r="3" fill="#fff"/>
-            <text x="18" y="28" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" font-weight="700" fill="#fff">MOOV</text>
-          </svg>
-          Moov Africa
-        </button>
-        <button class="op-tab" id="tabFeda" onclick="switchOp('feda')">
-          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="36" height="36" rx="8" fill="#6D28D9"/>
-            <rect x="7" y="11" width="22" height="14" rx="3" fill="none" stroke="#fff" stroke-width="1.8"/>
-            <rect x="7" y="15" width="22" height="4" fill="#fff" opacity="0.3"/>
-            <rect x="10" y="19" width="6" height="2.5" rx="1" fill="#fff"/>
-            <text x="18" y="30" text-anchor="middle" font-family="Arial,sans-serif" font-size="5" font-weight="700" fill="#fff">FEDAPAY</text>
-          </svg>
-          FedaPay
-        </button>
+      <!-- Modes de paiement acceptés -->
+      <div class="fedapay-methods">
+        <span class="feda-method-badge badge-mtn">📱 MTN MoMo</span>
+        <span class="feda-method-badge badge-moov">📱 Moov Africa</span>
+        <span class="feda-method-badge badge-card">💳 Carte bancaire</span>
       </div>
 
-      <!-- Barre de confirmation du mode sélectionné -->
-      <div class="op-selected-bar" id="opSelectedBar"></div>
+      <!-- Bouton principal FedaPay -->
+      <button class="fedapay-main-btn" id="fedaPayBtn" onclick="payWithFedaPay()">
+        🔐 Payer maintenant — <span id="fedaAmt">3 500</span> FCFA
+      </button>
 
-      <!-- Panel MTN — caché jusqu'au clic -->
-      <div class="op-panel" id="panelMTN">
-        <div class="pay-steps">
-          <div class="pay-step">
-            <div class="step-n">1</div>
-            <div>
-              <div class="step-title">Composez le menu MTN MoMo</div>
-              <div class="step-desc">Tapez <span class="step-code">*880#</span> sur votre téléphone MTN</div>
-            </div>
-          </div>
-          <div class="pay-step">
-            <div class="step-n">2</div>
-            <div>
-              <div class="step-title">Paiement marchand</div>
-              <div class="step-desc">Choisissez l'option <strong>3 — Paiement marchand</strong></div>
-            </div>
-          </div>
-          <div class="pay-step">
-            <div class="step-n">3</div>
-            <div>
-              <div class="step-title">Numéro InfoCompta (MTN)</div>
-              <span class="step-phone">📞 +229 XX XX XX XX</span>
-            </div>
-          </div>
-          <div class="pay-step">
-            <div class="step-n gold-n">4</div>
-            <div>
-              <div class="step-title">Montant &amp; confirmation</div>
-              <div class="step-desc">Envoyez <strong id="mtnAmt">3 500</strong> FCFA puis partagez la capture à <strong>infocomptabj@gmail.com</strong></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Panel Moov — caché jusqu'au clic -->
-      <div class="op-panel" id="panelMoov">
-        <div class="pay-steps">
-          <div class="pay-step">
-            <div class="step-n" style="background:#2563eb">1</div>
-            <div>
-              <div class="step-title">Composez le menu Moov Money</div>
-              <div class="step-desc">Tapez <span class="step-code">*155#</span> sur votre téléphone Moov</div>
-            </div>
-          </div>
-          <div class="pay-step">
-            <div class="step-n" style="background:#2563eb">2</div>
-            <div>
-              <div class="step-title">Transfert d'argent</div>
-              <div class="step-desc">Choisissez l'option <strong>1 — Transfert d'argent</strong></div>
-            </div>
-          </div>
-          <div class="pay-step">
-            <div class="step-n" style="background:#2563eb">3</div>
-            <div>
-              <div class="step-title">Numéro InfoCompta (Moov)</div>
-              <span class="step-phone">📞 +229 XX XX XX XX</span>
-            </div>
-          </div>
-          <div class="pay-step">
-            <div class="step-n gold-n">4</div>
-            <div>
-              <div class="step-title">Montant &amp; confirmation</div>
-              <div class="step-desc">Envoyez <strong id="moovAmt">3 500</strong> FCFA puis partagez la capture à <strong>infocomptabj@gmail.com</strong></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Panel FedaPay — caché jusqu'au clic -->
-      <div class="op-panel" id="panelFeda">
-        <div class="pay-steps">
-          <div class="pay-step">
-            <div class="step-n" style="background:#6D28D9">1</div>
-            <div>
-              <div class="step-title">Paiement en ligne sécurisé</div>
-              <div class="step-desc">FedaPay accepte MTN MoMo, Moov Africa et cartes bancaires internationales.</div>
-            </div>
-          </div>
-          <div class="pay-step">
-            <div class="step-n" style="background:#6D28D9">2</div>
-            <div>
-              <div class="step-title">Accès activé automatiquement</div>
-              <div class="step-desc">Votre accès est livré immédiatement après confirmation.</div>
-            </div>
-          </div>
-        </div>
-        <div class="fedapay-wrap">
-          <a href="https://fedapay.com" target="_blank" rel="noopener" class="btn-fedapay" id="fedaLink">
-            🔐 Payer via FedaPay — <span id="fedaAmt">3 500</span> FCFA
-          </a>
-          <div class="feda-secure">🔒 Paiement sécurisé · Certifié HTTPS</div>
-        </div>
-      </div>
+      <div class="feda-secure">🔒 Paiement 100% sécurisé · Certifié par FedaPay · HTTPS</div>
 
     </div>
     <div class="modal-footer">
@@ -730,6 +619,7 @@
 </div>
 
 <script>
+// ── Navigation & animations ──
 (function(){
   var btn=document.getElementById('hamburgerBtn'),nav=document.getElementById('mainNav');
   if(!btn||!nav)return;
@@ -740,30 +630,34 @@
   document.querySelectorAll('.fade-in').forEach(function(el){obs.observe(el);});
 })();
 
-function scrollSec(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
-function toggleFaq(el){el.parentElement.classList.toggle('open');}
+function scrollSec(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+function toggleFaq(el){ el.parentElement.classList.toggle('open'); }
 
+// ── Variables globales pour le paiement ──
+var currentAmount = 0;
+var currentLabel  = '';
+
+// ── Ouvrir la modal ──
 function openPayment(name, amount, freq) {
-  // Mettre à jour les textes
-  document.getElementById('modalLabel').textContent = name + ' · ' + amount + ' FCFA / ' + freq;
-  document.getElementById('modalAmount').textContent = amount + ' FCFA';
-  document.getElementById('modalFreq').textContent = freq === 'achat unique' ? 'Achat unique' : 'Paiement ' + freq;
-  document.getElementById('mtnAmt').textContent = amount;
-  document.getElementById('moovAmt').textContent = amount;
-  document.getElementById('fedaAmt').textContent = amount;
+  currentLabel  = name;
+  currentAmount = amount;
 
-  // Réinitialiser tous les onglets et panels (rien d'ouvert à l'ouverture)
-  ['tabMTN','tabMoov','tabFeda'].forEach(function(id){ document.getElementById(id).className = 'op-tab'; });
-  ['panelMTN','panelMoov','panelFeda'].forEach(function(id){ document.getElementById(id).classList.remove('visible'); });
-  var bar = document.getElementById('opSelectedBar');
-  bar.className = 'op-selected-bar';
-  bar.innerHTML = '';
+  var amountFormatted = amount.toLocaleString('fr-FR');
+  document.getElementById('modalLabel').textContent  = name + ' · ' + amountFormatted + ' FCFA / ' + freq;
+  document.getElementById('modalAmount').textContent = amountFormatted + ' FCFA';
+  document.getElementById('modalFreq').textContent   = freq === 'achat unique' ? 'Achat unique' : 'Paiement ' + freq;
+  document.getElementById('fedaAmt').textContent     = amountFormatted;
 
-  // Ouvrir la modal
+  // Réinitialiser l'état
+  document.getElementById('paymentSuccess').classList.remove('visible');
+  document.getElementById('fedaPayBtn').disabled = false;
+  document.getElementById('fedaPayBtn').innerHTML = '🔐 Payer maintenant — <span id="fedaAmt">' + amountFormatted + '</span> FCFA';
+
   document.getElementById('payModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
+// ── Fermer la modal ──
 function closeModal() {
   document.getElementById('payModal').classList.remove('open');
   document.body.style.overflow = '';
@@ -773,30 +667,37 @@ function closeIfOverlay(e) {
   if (e.target === document.getElementById('payModal')) closeModal();
 }
 
-function switchOp(op) {
-  // Réinitialiser tous les onglets et fermer tous les panels
-  ['tabMTN','tabMoov','tabFeda'].forEach(function(id){ document.getElementById(id).className = 'op-tab'; });
-  ['panelMTN','panelMoov','panelFeda'].forEach(function(id){ document.getElementById(id).classList.remove('visible'); });
-  var bar = document.getElementById('opSelectedBar');
-  bar.className = 'op-selected-bar';
+// ── Lancer le paiement FedaPay ──
+function payWithFedaPay() {
+  var btn = document.getElementById('fedaPayBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Ouverture en cours…';
 
-  // Activer uniquement le mode sélectionné
-  if (op === 'mtn') {
-    document.getElementById('tabMTN').classList.add('tab-mtn');
-    document.getElementById('panelMTN').classList.add('visible');
-    bar.classList.add('visible', 'bar-mtn');
-    bar.innerHTML = '<span class="bar-dot"></span> Procédure MTN MoMo sélectionnée';
-  } else if (op === 'moov') {
-    document.getElementById('tabMoov').classList.add('tab-moov');
-    document.getElementById('panelMoov').classList.add('visible');
-    bar.classList.add('visible', 'bar-moov');
-    bar.innerHTML = '<span class="bar-dot"></span> Procédure Moov Africa sélectionnée';
-  } else {
-    document.getElementById('tabFeda').classList.add('tab-feda');
-    document.getElementById('panelFeda').classList.add('visible');
-    bar.classList.add('visible', 'bar-feda');
-    bar.innerHTML = '<span class="bar-dot"></span> FedaPay sélectionné';
-  }
+  FedaPay.init({
+    public_key: 'pk_live_k6jXbh4K74D8_5PWZKt6EuXU',
+    transaction: {
+      amount: currentAmount,
+      description: currentLabel,
+      currency: { iso: 'XOF' }
+    },
+    customer: {
+      email: ''
+    },
+    onComplete: function(resp) {
+      btn.disabled = false;
+      btn.innerHTML = '🔐 Payer maintenant — ' + currentAmount.toLocaleString('fr-FR') + ' FCFA';
+
+      if (resp.reason === FedaPay.DIALOG_DISMISSED) {
+        // L'utilisateur a fermé sans payer — on ne fait rien
+      } else {
+        // Paiement réussi
+        document.getElementById('paymentSuccess').classList.add('visible');
+        document.getElementById('fedaPayBtn').style.display = 'none';
+        // Fermeture automatique après 4 secondes
+        setTimeout(function(){ closeModal(); document.getElementById('fedaPayBtn').style.display = ''; }, 4000);
+      }
+    }
+  }).open();
 }
 </script>
 </body>
