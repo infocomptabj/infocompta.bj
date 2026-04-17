@@ -697,6 +697,10 @@ function payWithFedaPay() {
   btn.disabled = true;
   btn.textContent = '⏳ Ouverture en cours…';
 
+  // Fermer la modal d'abord pour éviter tout conflit z-index
+  document.getElementById('payModal').classList.remove('open');
+  document.body.style.overflow = '';
+
   try {
     var handler = FedaPay.init({
       public_key: 'pk_live_k6jXbh4K74D8_5PWZKt6EuXU',
@@ -708,10 +712,16 @@ function payWithFedaPay() {
       customer: { email: '' },
       onComplete: function(resp) {
         if (resp.reason === FedaPay.DIALOG_DISMISSED) {
+          // Rouvrir la modal si l'utilisateur annule
+          document.getElementById('payModal').classList.add('open');
+          document.body.style.overflow = 'hidden';
           resetBtn();
         } else {
+          // Paiement réussi — afficher message de succès
+          document.getElementById('payModal').classList.add('open');
+          document.body.style.overflow = 'hidden';
           document.getElementById('paymentSuccess').classList.add('visible');
-          btn.style.display = 'none';
+          document.getElementById('fedaPayBtn').style.display = 'none';
           setTimeout(function() {
             closeModal();
             document.getElementById('paymentSuccess').classList.remove('visible');
@@ -723,6 +733,9 @@ function payWithFedaPay() {
     handler.open();
   } catch(err) {
     console.error('FedaPay error:', err);
+    // Rouvrir la modal en cas d'erreur
+    document.getElementById('payModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
     resetBtn();
     alert('Une erreur est survenue. Réessayez ou contactez-nous à infocomptabj@gmail.com');
   }
