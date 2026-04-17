@@ -655,12 +655,13 @@ function openPayment(name, amount, freq) {
   document.getElementById('modalLabel').textContent  = name + ' · ' + amountFormatted + ' FCFA / ' + freq;
   document.getElementById('modalAmount').textContent = amountFormatted + ' FCFA';
   document.getElementById('modalFreq').textContent   = freq === 'achat unique' ? 'Achat unique' : 'Paiement ' + freq;
-  document.getElementById('fedaAmt').textContent     = amountFormatted;
 
   // Réinitialiser l'état
   document.getElementById('paymentSuccess').classList.remove('visible');
-  document.getElementById('fedaPayBtn').disabled = false;
-  document.getElementById('fedaPayBtn').innerHTML = '🔐 Payer maintenant — <span id="fedaAmt">' + amountFormatted + '</span> FCFA';
+  var fedaBtn = document.getElementById('fedaPayBtn');
+  fedaBtn.disabled = false;
+  fedaBtn.style.display = '';
+  fedaBtn.innerHTML = '🔐 Payer maintenant — ' + amountFormatted + ' FCFA';
 
   document.getElementById('payModal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -679,6 +680,7 @@ function closeIfOverlay(e) {
 // ── Réinitialiser le bouton ──
 function resetBtn() {
   var btn = document.getElementById('fedaPayBtn');
+  if (!btn) return;
   btn.disabled = false;
   btn.style.display = '';
   btn.innerHTML = '🔐 Payer maintenant — ' + currentAmount.toLocaleString('fr-FR') + ' FCFA';
