@@ -8,7 +8,6 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="infocompta-shared.css">
   <!-- FedaPay Checkout SDK -->
-  <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7" defer></script>
   <style>
 /* ── OFFRES PAGE ── */
 :root {
@@ -686,59 +685,72 @@ function resetBtn() {
   btn.innerHTML = '🔐 Payer maintenant — ' + currentAmount.toLocaleString('fr-FR') + ' FCFA';
 }
 
-// ── Lancer le paiement FedaPay ──
-function payWithFedaPay() {
-  if (typeof FedaPay === 'undefined') {
-    alert('Le module de paiement n\'est pas encore chargé. Vérifiez votre connexion internet et réessayez.');
+// ── Charger le SDK FedaPay dynamiquement ──
+function loadFedaPaySDK(callback) {
+  if (typeof FedaPay !== 'undefined') {
+    callback();
     return;
   }
-
-  var btn = document.getElementById('fedaPayBtn');
-  btn.disabled = true;
-  btn.textContent = '⏳ Ouverture en cours…';
-
-  // Fermer la modal d'abord pour éviter tout conflit z-index
-  document.getElementById('payModal').classList.remove('open');
-  document.body.style.overflow = '';
-
-  try {
-    var handler = FedaPay.init({
-      public_key: 'pk_live_k6jXbh4K74D8_5PWZKt6EuXU',
-      transaction: {
-        amount: currentAmount,
-        description: currentLabel,
-        currency: { iso: 'XOF' }
-      },
-      customer: { email: '' },
-      onComplete: function(resp) {
-        if (resp.reason === FedaPay.DIALOG_DISMISSED) {
-          // Rouvrir la modal si l'utilisateur annule
-          document.getElementById('payModal').classList.add('open');
-          document.body.style.overflow = 'hidden';
-          resetBtn();
-        } else {
-          // Paiement réussi — afficher message de succès
-          document.getElementById('payModal').classList.add('open');
-          document.body.style.overflow = 'hidden';
-          document.getElementById('paymentSuccess').classList.add('visible');
-          document.getElementById('fedaPayBtn').style.display = 'none';
-          setTimeout(function() {
-            closeModal();
-            document.getElementById('paymentSuccess').classList.remove('visible');
-            resetBtn();
-          }, 4000);
-        }
-      }
-    });
-    handler.open();
-  } catch(err) {
-    console.error('FedaPay error:', err);
-    // Rouvrir la modal en cas d'erreur
+  var script = document.createElement('script');
+  script.src = 'https://cdn.fedapay.com/checkout.js?v=1.1.7';
+  script.onload = function() {
+    console.log('FedaPay SDK chargé ✓');
+    setTimeout(callback, 300);
+  };
+  script.onerror = function() {
     document.getElementById('payModal').classList.add('open');
     document.body.style.overflow = 'hidden';
     resetBtn();
-    alert('Une erreur est survenue. Réessayez ou contactez-nous à infocomptabj@gmail.com');
-  }
+    alert('Impossible de charger le module de paiement. Vérifiez votre connexion et réessayez.');
+  };
+  document.head.appendChild(script);
+}
+
+// ── Lancer le paiement FedaPay ──
+function payWithFedaPay() {
+  var btn = document.getElementById('fedaPayBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Chargement…';
+
+  document.getElementById('payModal').classList.remove('open');
+  document.body.style.overflow = '';
+
+  loadFedaPaySDK(function() {
+    try {
+      FedaPay.init({
+        public_key: 'pk_live_k6jXbh4K74D8_5PWZKt6EuXU',
+        transaction: {
+          amount: currentAmount,
+          description: currentLabel,
+          currency: { iso: 'XOF' }
+        },
+        customer: { email: '' },
+        onComplete: function(resp) {
+          if (resp.reason === FedaPay.DIALOG_DISMISSED) {
+            document.getElementById('payModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+            resetBtn();
+          } else {
+            document.getElementById('payModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('paymentSuccess').classList.add('visible');
+            document.getElementById('fedaPayBtn').style.display = 'none';
+            setTimeout(function() {
+              closeModal();
+              document.getElementById('paymentSuccess').classList.remove('visible');
+              resetBtn();
+            }, 4000);
+          }
+        }
+      }).open();
+    } catch(err) {
+      console.error('FedaPay error:', err);
+      document.getElementById('payModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      resetBtn();
+      alert('Une erreur est survenue. Réessayez ou contactez infocomptabj@gmail.com');
+    }
+  });
 }
 </script>
 </body>
