@@ -697,25 +697,31 @@ function resetBtn() {
   btn.innerHTML = '🔐 Payer maintenant — ' + currentAmount.toLocaleString('fr-FR') + ' FCFA';
 }
 
-// ── Charger le SDK FedaPay dynamiquement ──
-function loadFedaPaySDK(callback) {
-  if (typeof FedaPay !== 'undefined') {
-    callback();
-    return;
+// ── Lancer le paiement FedaPay via nouvelle fenêtre ──
+function payWithFedaPay() {
+  var btn = document.getElementById('fedaPayBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Ouverture…';
+
+  // Construire l'URL FedaPay sandbox avec les paramètres
+  var baseUrl = 'https://sandbox-checkout.fedapay.com/pay';
+  var params = new URLSearchParams({
+    'public_key': 'pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg',
+    'amount': currentAmount,
+    'description': currentLabel,
+    'currency': 'XOF'
+  });
+
+  var payUrl = baseUrl + '?' + params.toString();
+  var payWindow = window.open(payUrl, '_blank', 'width=500,height=700,top=100,left=400');
+
+  if (!payWindow) {
+    // Si popup bloquée, ouvrir dans le même onglet
+    window.location.href = payUrl;
   }
-  var script = document.createElement('script');
-  script.src = 'https://cdn.fedapay.com/checkout.js?v=1.1.7';
-  script.onload = function() {
-    console.log('FedaPay SDK chargé ✓');
-    setTimeout(callback, 300);
-  };
-  script.onerror = function() {
-    document.getElementById('payModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-    resetBtn();
-    alert('Impossible de charger le module de paiement. Vérifiez votre connexion et réessayez.');
-  };
-  document.head.appendChild(script);
+
+  resetBtn();
+  closeModal();
 }
 
 // ── Lancer le paiement FedaPay ──
