@@ -335,22 +335,25 @@
   .tpl-grid { grid-template-columns: 1fr; }
 }
 
-/* ── Fix z-index FedaPay popup ── */
-[id^="fedapay_modal"],
-[id^="fedapay_iframe"],
-[id^="fedapay_form"],
-[id^="secured_id"],
-.fedapay-dialog-wrapper,
-.fedapay-dialog,
-#fedapay-checkout,
-iframe[src*="fedapay"],
-.fedapay-checkout-modal,
-div[style*="fedapay"] {
+/* ── Fix FedaPay iframe position & size ── */
+[id^="fedapay_iframe"] {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
   z-index: 99999 !important;
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
-  pointer-events: all !important;
+  border: none !important;
+  background: rgba(0,0,0,0.5) !important;
+}
+[id^="fedapay_modal"] {
+  z-index: 99999 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
   </style>
 </head>
