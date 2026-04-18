@@ -336,12 +336,21 @@
 }
 
 /* ── Fix z-index FedaPay popup ── */
+[id^="fedapay_modal"],
+[id^="fedapay_iframe"],
+[id^="fedapay_form"],
+[id^="secured_id"],
 .fedapay-dialog-wrapper,
 .fedapay-dialog,
 #fedapay-checkout,
 iframe[src*="fedapay"],
-.fedapay-checkout-modal {
-  z-index: 9999 !important;
+.fedapay-checkout-modal,
+div[style*="fedapay"] {
+  z-index: 99999 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: all !important;
 }
   </style>
 </head>
