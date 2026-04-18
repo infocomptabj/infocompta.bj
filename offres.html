@@ -759,6 +759,18 @@ function payWithFedaPay() {
       console.log('FedaPay widget créé:', widget);
       widget.open();
       console.log('FedaPay widget.open() appelé');
+      // Forcer le positionnement de l'iframe FedaPay
+      setTimeout(function fixFedaIframe() {
+        var iframes = document.querySelectorAll('[id^="fedapay_iframe"]');
+        if (iframes.length > 0) {
+          iframes.forEach(function(f) {
+            f.style.cssText = 'position:fixed !important;top:0 !important;left:0 !important;width:100vw !important;height:100vh !important;z-index:99999 !important;border:none !important;display:block !important;';
+            console.log('iframe repositionné:', f.id);
+          });
+        } else {
+          setTimeout(fixFedaIframe, 100);
+        }
+      }, 200);
     } catch(err) {
       console.error('FedaPay error:', err);
       document.getElementById('payModal').classList.add('open');
