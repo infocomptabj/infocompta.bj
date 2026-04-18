@@ -43,9 +43,15 @@ body {
   font-size: 16px;
   line-height: 1.7;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  /* ── IMPORTANT : display:block pour compatibilité FedaPay ──
+     display:flex causait un décalage de l'iframe FedaPay hors écran */
+  display: block;
   -webkit-font-smoothing: antialiased;
+}
+/* Garder le footer en bas grâce à grid sur html */
+html {
+  display: grid;
+  grid-template-rows: 1fr;
 }
 h1, h2, h3, h4 {
   font-family: 'Cormorant Garamond', serif;
@@ -255,7 +261,7 @@ footer {
 
 /* GRILLES */
 .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2.5rem; }
 
 /* FORMULAIRE */
 .form-group { margin-bottom: 1.3rem; }
