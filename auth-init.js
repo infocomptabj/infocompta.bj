@@ -17,13 +17,13 @@
   /* ── 1. Masquer la page immédiatement ── */
   const mask = document.createElement('style');
   mask.id = 'ic-mask';
-  mask.textContent = 'body{opacity:0!important}';
+  mask.textContent = 'body{opacity:0!important} [id^="fedapay"],[class*="fedapay"],[id^="secured"]{opacity:1!important;z-index:99999!important}';
   document.head.appendChild(mask);
 
   function reveal() {
     const m = document.getElementById('ic-mask');
     if (!m) return;
-    m.textContent = 'body{opacity:1!important;transition:opacity 0.18s ease}';
+    m.textContent = 'body{opacity:1!important;transition:opacity 0.18s ease} [id^="fedapay"],[class*="fedapay"],[id^="secured"]{opacity:1!important;z-index:99999!important}';
     setTimeout(() => m.remove(), 250);
   }
 
