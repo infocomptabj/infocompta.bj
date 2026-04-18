@@ -717,10 +717,8 @@ function payWithFedaPay() {
   document.body.style.overflow = '';
 
   loadFedaPaySDK(function() {
-    // Délai pour laisser la modal se fermer complètement
-    setTimeout(function() {
     try {
-      FedaPay.init({
+      var widget = FedaPay.init({
         public_key: 'pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg',
         transaction: {
           amount: currentAmount,
@@ -745,15 +743,17 @@ function payWithFedaPay() {
             }, 4000);
           }
         }
-      }).open();
+      });
+      console.log('FedaPay widget créé:', widget);
+      widget.open();
+      console.log('FedaPay widget.open() appelé');
     } catch(err) {
       console.error('FedaPay error:', err);
       document.getElementById('payModal').classList.add('open');
       document.body.style.overflow = 'hidden';
       resetBtn();
-      alert('Une erreur est survenue. Réessayez ou contactez infocomptabj@gmail.com');
+      alert('Erreur: ' + err.message);
     }
-    }, 400); // fin du setTimeout
   });
 }
 </script>
