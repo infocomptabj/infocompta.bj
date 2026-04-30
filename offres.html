@@ -686,49 +686,118 @@ function resetBtn() {
 }
 
 // ── Paiement FedaPay ──
+// ─────────────────────────────
+// STATE GLOBAL
+// ─────────────────────────────
+let currentAmount = 0;
+let currentLabel = "";
+
+// ─────────────────────────────
+// OUVERTURE MODAL
+// ─────────────────────────────
+function openPayment(name, amount, freq) {
+  currentLabel = name;
+  currentAmount = amount;
+
+  const formatted = amount.toLocaleString("fr-FR");
+
+  document.getElementById("modalLabel").textContent =
+    `${name} · ${formatted} FCFA / ${freq}`;
+
+  document.getElementById("modalAmount").textContent =
+    `${formatted} FCFA`;
+
+  document.getElementById("modalFreq").textContent =
+    freq === "achat unique" ? "Achat unique" : `Paiement ${freq}`;
+
+  // reset UI
+  document.getElementById("paymentSuccess").classList.remove("visible");
+
+  const btn = document.getElementById("fedaPayBtn");
+  btn.disabled = false;
+  btn.style.display = "flex";
+  btn.innerHTML = `🔐 Payer maintenant — ${formatted} FCFA`;
+
+  document.getElementById("payModal").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+// ─────────────────────────────
+// FERMETURE MODAL
+// ─────────────────────────────
+function closeModal() {
+  document.getElementById("payModal").classList.remove("open");
+  document.body.style.overflow = "auto";
+}
+
+function closeIfOverlay(e) {
+  if (e.target.id === "payModal") closeModal();
+}
+
+// ─────────────────────────────
+// RESET BUTTON
+// ─────────────────────────────
+function resetButton() {
+  const btn = document.getElementById("fedaPayBtn");
+  const formatted = currentAmount.toLocaleString("fr-FR");
+
+  btn.disabled = false;
+  btn.style.display = "flex";
+  btn.innerHTML = `🔐 Payer maintenant — ${formatted} FCFA`;
+}
+
+// ─────────────────────────────
+// FEDAPAY INIT PROPRE
+// ─────────────────────────────
 function payWithFedaPay() {
-  var btn = document.getElementById('fedaPayBtn');
+  const btn = document.getElementById("fedaPayBtn");
+
   btn.disabled = true;
-  btn.textContent = '⏳ Chargement...';
+  btn.innerHTML = "⏳ Initialisation...";
+
+  if (!window.FedaPay) {
+    alert("FedaPay n'est pas chargé correctement.");
+    resetButton();
+    return;
+  }
 
   try {
-    FedaPay.init({
-      public_key: 'pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg',
-
-      transaction: {
-        amount: currentAmount,
-        description: currentLabel,
-        currency: { iso: 'XOF' }
+    const transactionData = {
+      amount: currentAmount,
+      description: currentLabel,
+      currency: {
+        iso: "XOF"
       },
-
       customer: {
-        email: 'infocomptabj@gmail.com'
-      },
+        email: "infocomptabj@gmail.com"
+      }
+    };
 
-      onComplete: function(resp) {
-        resetBtn();
+    FedaPay.init({
+      public_key: "pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg",
+      transaction: transactionData,
 
-        if (resp.reason !== FedaPay.DIALOG_DISMISSED) {
-          document.getElementById('paymentSuccess').classList.add('visible');
-          document.getElementById('payModal').classList.add('open');
-          document.body.style.overflow = 'hidden';
+      onComplete: function (response) {
+        resetButton();
 
-          document.getElementById('fedaPayBtn').style.display = 'none';
+        if (response && response.reason !== FedaPay.DIALOG_DISMISSED) {
+          document.getElementById("paymentSuccess").classList.add("visible");
 
-          setTimeout(function() {
-            document.getElementById('paymentSuccess').classList.remove('visible');
-            resetBtn();
-          }, 4000);
+          setTimeout(() => {
+            document.getElementById("paymentSuccess").classList.remove("visible");
+            closeModal();
+          }, 3500);
         }
       }
     }).open();
 
   } catch (err) {
-    console.error(err);
-    resetBtn();
-    alert('Erreur FedaPay: ' + err.message);
+    console.error("FedaPay Error:", err);
+    alert("Erreur de paiement. Réessayez.");
+    resetButton();
   }
 }
 </script>
+<script src="https://cdn.fedapay.com/checkout.js" defer></script>
 </body>
 </html>
