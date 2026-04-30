@@ -1,363 +1,500 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="auth-init.js"></script>
-  <title>Nos offres — InfoCompta</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nos Offres — InfoCompta</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="infocompta-shared.css">
-  <!-- FedaPay Checkout SDK -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- SDK FedaPay -->
+  <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
+
   <style>
-/* ── OFFRES PAGE ── */
+/* ═══════════════════════════════════════
+   INFOCOMPTA — Design System v2
+   Palette : crème · marine profond · or
+   Typo    : Cormorant Garamond + DM Sans
+═══════════════════════════════════════ */
+
 :root {
-  --gold-xs: rgba(196,147,58,0.12);
+  --cream:      #FAF8F3;
+  --cream-dk:   #F2EFE7;
+  --surface:    #FFFFFF;
+  --navy:       #0F1F35;
+  --navy-mid:   #1a2e4a;
+  --navy-lt:    #243d5c;
+  --gold:       #C4933A;
+  --gold-lt:    #D9B060;
+  --gold-pale:  #F7EDD4;
+  --gold-line:  rgba(196,147,58,0.25);
+  --text:       #1a1a1a;
+  --text-md:    #444;
+  --muted:      #7a7a7a;
+  --border:     #E5E0D6;
+  --border-lt:  #EEEBE4;
+  --radius:     3px;
+  --radius-md:  8px;
+  --shadow:     0 2px 20px rgba(15,31,53,0.07);
+  --shadow-md:  0 8px 40px rgba(15,31,53,0.12);
+  --shadow-lg:  0 20px 60px rgba(15,31,53,0.18);
+  --transition: 0.22s ease;
 }
 
-/* HERO OFFRES */
-.offres-hero {
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--cream);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+  /* display:block pour compatibilité FedaPay iframe */
+  display: block;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--navy);
+}
+p { color: var(--text-md); }
+a { text-decoration: none; color: inherit; }
+main { flex: 1; }
+
+/* ═══════════ HEADER ═══════════ */
+header {
   background: var(--navy);
-  padding: 4.5rem 0 4rem;
+  padding: 0 3.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 66px;
+  box-shadow: 0 1px 0 rgba(196,147,58,0.2), 0 2px 20px rgba(0,0,0,0.25);
+}
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.01em;
+  flex-shrink: 0;
+}
+.logo span { color: var(--gold-lt); }
+
+nav ul { list-style: none; display: flex; align-items: center; gap: 0.1rem; }
+nav ul li a {
+  color: rgba(255,255,255,0.62);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius);
+  transition: color var(--transition), background var(--transition);
+  display: block;
+}
+nav ul li a:hover  { color: #fff; background: rgba(255,255,255,0.07); }
+nav ul li a.active { color: var(--gold-lt); }
+nav ul li a.nav-cta {
+  background: var(--gold);
+  color: #fff;
+  padding: 0.4rem 1.1rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  margin-left: 0.5rem;
+  transition: background var(--transition), transform var(--transition);
+}
+nav ul li a.nav-cta:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 8px 6px;
+  background: none;
+  border: none;
+  z-index: 300;
+  margin-left: auto;
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 1.5px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 2px;
+  transition: all 0.28s ease;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ═══════════ FOOTER ═══════════ */
+footer {
+  background: var(--navy);
+  border-top: 1px solid rgba(196,147,58,0.15);
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 2.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+}
+.footer-logo span { color: var(--gold-lt); }
+.footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.35); letter-spacing: 0.04em; }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { font-size: 0.78rem; color: rgba(255,255,255,0.4); transition: color var(--transition); }
+.footer-links a:hover { color: var(--gold-lt); }
+
+/* ═══════════ UTILITAIRES ═══════════ */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.8rem;
+}
+.eyebrow::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--gold);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.8rem 2rem;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  text-decoration: none;
+}
+.btn:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(196,147,58,0.35); }
+
+/* FADE-IN */
+.fade-in {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ═══════════ HERO SM ═══════════ */
+.hero-sm {
+  background: var(--navy);
+  padding: 3.5rem 0;
+  color: #fff;
   position: relative;
   overflow: hidden;
 }
-.offres-hero::before {
+.hero-sm::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 70% 60% at 80% 30%, rgba(196,147,58,0.08) 0%, transparent 60%);
+  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(196,147,58,0.07) 0%, transparent 60%);
+  pointer-events: none;
 }
-.offres-hero::after {
+.hero-sm::after {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
   background: linear-gradient(90deg, transparent, var(--gold) 30%, var(--gold-lt) 60%, transparent);
 }
-.offres-hero > .container { position: relative; z-index: 1; }
-.offres-hero h1 { color: #fff; font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 0.8rem; }
-.offres-hero > .container > p { color: rgba(255,255,255,0.6); font-size: 1rem; max-width: 540px; }
+.hero-sm > .container { position: relative; z-index: 1; }
+.hero-sm h1 { color: #fff; font-size: clamp(1.7rem, 3vw, 2.4rem); margin-bottom: 0.5rem; }
+.hero-sm p  { color: rgba(255,255,255,0.6); font-size: 0.95rem; }
 
-.hero-tabs { margin-top: 2rem; display: flex; gap: 0.4rem; flex-wrap: wrap; }
-.hero-tab {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.7);
-  padding: 0.5rem 1.4rem;
-  border-radius: 30px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  cursor: pointer;
-  transition: all var(--transition);
-}
-.hero-tab:hover, .hero-tab.active {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: #fff;
+/* ═══════════ PAGE OFFRES ═══════════ */
+.offers-page {
+  padding: 5rem 0 6rem;
 }
 
-/* ADS STRIP */
-.ads-strip { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; }
-.ads-slot { max-width: 728px; margin: 0 auto; min-height: 90px; background: var(--cream); border: 1.5px dashed var(--border); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.83rem; gap: 0.5rem; }
+.section-header {
+  margin-bottom: 3rem;
+  max-width: 560px;
+}
+.section-header h2 {
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  margin-bottom: 0.5rem;
+}
+.section-header p { font-size: 0.92rem; color: var(--muted); }
 
-/* SECTIONS */
-.offres-section { padding: 5rem 0; }
-.offres-section-alt { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.section-head { margin-bottom: 3rem; }
-.section-head h2 { margin-bottom: 0.5rem; font-size: clamp(1.6rem, 3vw, 2.2rem); }
-.section-head p { color: var(--muted); font-size: 0.92rem; max-width: 520px; }
+/* Grille des offres */
+.offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
 
-/* PLANS */
-.plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; align-items: start; }
-.plan-card {
+/* Carte individuelle */
+.offer-card {
   background: var(--surface);
   border: 1.5px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 2.2rem 2rem;
-  position: relative;
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-.plan-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-.plan-card.featured { background: var(--navy); border-color: var(--navy); color: #fff; }
-
-.plan-ribbon {
-  position: absolute; top: -1px; right: 1.2rem;
-  background: var(--gold); color: #fff;
-  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 4px 14px 5px; border-radius: 0 0 6px 6px;
-}
-.plan-icon { font-size: 1.8rem; margin-bottom: 1rem; }
-.plan-name { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
-.plan-card.featured .plan-name { color: var(--gold-lt); }
-.plan-price { font-family: 'Cormorant Garamond', serif; font-size: 2.6rem; font-weight: 700; color: var(--navy); line-height: 1; margin-bottom: 0.2rem; }
-.plan-card.featured .plan-price { color: var(--gold-lt); }
-.plan-price small { font-size: 1rem; font-weight: 400; }
-.plan-period { font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem; }
-.plan-card.featured .plan-period { color: rgba(255,255,255,0.5); }
-.plan-desc { font-size: 0.87rem; color: #555; margin-bottom: 1.4rem; line-height: 1.55; }
-.plan-card.featured .plan-desc { color: rgba(255,255,255,0.65); }
-.plan-divider { border: none; border-top: 1px solid var(--border); margin: 0 0 1.2rem; }
-.plan-card.featured .plan-divider { border-color: rgba(255,255,255,0.12); }
-.plan-features { list-style: none; margin-bottom: 1.8rem; display: flex; flex-direction: column; gap: 0.6rem; }
-.plan-feat { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.86rem; color: var(--text); }
-.plan-card.featured .plan-feat { color: rgba(255,255,255,0.8); }
-.plan-feat-ok { color: #2d7a4f; font-weight: 700; flex-shrink: 0; }
-.plan-feat-no { color: var(--muted); font-weight: 700; flex-shrink: 0; }
-.plan-feat.disabled { opacity: 0.45; }
-
-.btn-plan {
-  display: block; width: 100%; text-align: center;
-  padding: 0.75rem 1.2rem; border-radius: var(--radius);
-  font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600;
-  letter-spacing: 0.07em; text-transform: uppercase; cursor: pointer; border: none;
-  text-decoration: none; transition: all var(--transition);
-}
-.btn-plan:hover { transform: translateY(-1px); }
-.btn-plan-gold { background: var(--gold); color: #fff; }
-.btn-plan-gold:hover { background: var(--gold-lt); box-shadow: 0 4px 16px rgba(196,147,58,0.35); }
-.btn-plan-outline { background: transparent; border: 1.5px solid var(--border); color: var(--navy); }
-.btn-plan-outline:hover { border-color: var(--navy); background: var(--navy); color: #fff; }
-.btn-plan-navy { background: var(--cream); color: var(--navy); border: 1.5px solid rgba(255,255,255,0.15); }
-.btn-plan-navy:hover { background: #fff; }
-
-/* TEMPLATES */
-.tpl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.3rem; }
-.tpl-card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
-}
-.tpl-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--gold-line); }
-.tpl-thumb { height: 90px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
-.tpl-t1 { background: #eef2fa; } .tpl-t2 { background: #edf7f1; }
-.tpl-t3 { background: var(--gold-pale); } .tpl-t4 { background: #f0ecfb; }
-.tpl-t5 { background: #fdecea; } .tpl-t6 { background: #e6f4fb; }
-.tpl-body { padding: 1.2rem; }
-.tpl-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.3rem; }
-.tpl-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.45; margin-bottom: 1rem; }
-.tpl-footer { display: flex; align-items: center; justify-content: space-between; }
-.tpl-price { font-weight: 600; font-size: 1rem; color: var(--navy); }
-.tpl-format { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.07em; background: var(--gold-xs); color: var(--gold); padding: 2px 7px; border-radius: 3px; margin-left: 6px; text-transform: uppercase; }
-.btn-tpl {
-  background: var(--navy); color: #fff; border: none;
-  padding: 6px 16px; border-radius: var(--radius);
-  font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600;
-  letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
-  transition: background var(--transition);
-}
-.btn-tpl:hover { background: var(--navy-lt); }
-
-/* ANNUAIRE */
-.partners-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.3rem; margin-bottom: 2.5rem; }
-.partner-card {
-  background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-md);
-  padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start;
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-.partner-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-.partner-av { width: 48px; height: 48px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
-.av-navy { background: rgba(15,31,53,0.1); } .av-teal { background: rgba(13,148,136,0.1); } .av-gold { background: var(--gold-xs); }
-.partner-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
-.partner-role { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; }
-.partner-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-.p-tag { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; }
-.tag-navy  { background: rgba(15,31,53,0.08);  color: var(--navy); }
-.tag-gold  { background: var(--gold-xs); color: var(--gold); }
-.tag-green { background: rgba(45,122,79,0.1); color: #2d7a4f; }
-
-.annuaire-cta {
-  background: linear-gradient(135deg, var(--navy), var(--navy-lt));
-  border-radius: var(--radius-md); padding: 3rem 2.5rem; text-align: center;
-  color: #fff; position: relative; overflow: hidden;
-}
-.annuaire-cta::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(196,147,58,0.08) 0%, transparent 60%);
-}
-.annuaire-cta::after {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-.annuaire-cta > * { position: relative; z-index: 1; }
-.annuaire-cta h3 { color: #fff; font-size: 1.5rem; margin-bottom: 0.6rem; }
-.annuaire-cta p  { color: rgba(255,255,255,0.65); margin-bottom: 1.8rem; font-size: 0.92rem; max-width: 440px; margin-left: auto; margin-right: auto; }
-
-/* FAQ */
-.faq-list { max-width: 660px; display: flex; flex-direction: column; gap: 0.6rem; }
-.faq-item { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
-.faq-q {
-  padding: 1rem 1.3rem; font-family: 'DM Sans', sans-serif; font-weight: 500;
-  font-size: 0.9rem; cursor: pointer; display: flex; justify-content: space-between;
-  align-items: center; gap: 1rem; user-select: none; transition: background var(--transition);
-}
-.faq-q:hover { background: var(--cream); }
-.faq-arrow { color: var(--gold); font-size: 0.75rem; transition: transform 0.25s; }
-.faq-item.open .faq-arrow { transform: rotate(180deg); }
-.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s; font-size: 0.87rem; color: var(--muted); line-height: 1.65; padding: 0 1.3rem; }
-.faq-item.open .faq-a { max-height: 200px; padding: 0 1.3rem 1.1rem; }
-
-/* ══════════════════════════════════════
-   MODAL PAIEMENT
-══════════════════════════════════════ */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(15,31,53,0.6);
-  backdrop-filter: blur(4px);
-  z-index: 500; display: flex; align-items: center; justify-content: center; padding: 1rem;
-  opacity: 0; pointer-events: none; transition: opacity 0.22s;
-}
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal {
-  background: var(--surface); border-radius: var(--radius-md);
-  width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto;
-  box-shadow: var(--shadow-lg); transform: translateY(16px); transition: transform 0.22s;
-}
-.modal-overlay.open .modal { transform: translateY(0); }
-.modal-header {
-  background: linear-gradient(135deg, var(--navy), var(--navy-lt));
-  padding: 1.6rem 1.8rem 1.4rem; position: sticky; top: 0; z-index: 1;
-}
-.modal-header h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 0.2rem; }
-.modal-header p { font-size: 0.84rem; color: rgba(255,255,255,0.6); }
-.modal-plan-tag {
-  display: inline-block; margin-top: 0.7rem;
-  background: rgba(196,147,58,0.2); border: 1px solid rgba(212,175,106,0.4);
-  color: var(--gold-lt); font-size: 0.75rem; font-weight: 500;
-  padding: 2px 12px; border-radius: 20px; letter-spacing: 0.04em;
-}
-.modal-body { padding: 1.6rem 1.8rem; }
-.modal-amount {
-  text-align: center; background: var(--cream); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 1rem; margin-bottom: 1.4rem;
-}
-.modal-amount-val { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--navy); }
-.modal-amount-sub { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
-
-/* ── Bouton FedaPay principal ── */
-.fedapay-main-btn {
+  padding: 1.6rem;
   display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: linear-gradient(135deg, #6D28D9, #7c3aed);
-  color: #fff;
-  padding: 1rem 1.5rem;
-  border-radius: var(--radius);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.9rem;
+  flex-direction: column;
+  gap: 0.9rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+.offer-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.offer-card:hover {
+  border-color: var(--gold-line);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+.offer-card:hover::before { transform: scaleX(1); }
+
+/* Badge catégorie */
+.badge {
+  display: inline-block;
+  font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 30px;
+  background: var(--gold-pale);
+  color: var(--gold);
+  width: fit-content;
+  border: 1px solid var(--gold-line);
+}
+
+.offer-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.3;
+}
+
+.offer-desc {
+  font-size: 0.84rem;
+  color: var(--muted);
+  line-height: 1.65;
+  flex: 1;
+}
+
+.offer-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1;
+}
+.offer-price span {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 400;
+  margin-left: 3px;
+}
+
+.btn-buy {
+  display: block;
+  text-align: center;
+  padding: 0.65rem 0;
+  border-radius: var(--radius);
+  background: var(--gold);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   border: none;
   cursor: pointer;
-  transition: all var(--transition);
-  box-shadow: 0 4px 20px rgba(109,40,217,0.35);
-  margin-bottom: 1rem;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  width: 100%;
 }
-.fedapay-main-btn:hover {
-  background: linear-gradient(135deg, #5b21b6, #6D28D9);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(109,40,217,0.45);
-}
-.fedapay-main-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
+.btn-buy:hover {
+  background: var(--gold-lt);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(196,147,58,0.35);
 }
 
-.fedapay-methods {
-  display: flex;
+/* ═══════════ MODAL SUCCÈS ═══════════ */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,31,53,0.65);
+  z-index: 9999;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
-  margin-bottom: 0.6rem;
-  flex-wrap: wrap;
+  backdrop-filter: blur(3px);
 }
-.feda-method-badge {
+.modal-overlay.active { display: flex; }
+
+.modal-box {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border);
+  padding: 2.5rem 2rem;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+.modal-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-lt));
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.modal-icon { font-size: 2.8rem; margin-bottom: 1rem; }
+
+.modal-box h3 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: var(--navy);
+}
+.modal-box p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 1.8rem;
+  line-height: 1.6;
+}
+
+.modal-download {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.04em;
-}
-.badge-mtn  { background: #fffbeb; color: #92400e; border: 1px solid #fcd34d; }
-.badge-moov { background: #eff6ff; color: #1e40af; border: 1px solid #93c5fd; }
-.badge-card { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
-
-.feda-secure {
-  text-align: center;
-  font-size: 0.73rem;
-  color: var(--muted);
-  margin-top: 0.3rem;
-}
-
-/* ── Message de succès ── */
-.payment-success {
-  display: none;
-  text-align: center;
-  padding: 1.5rem;
-  background: #edf7f1;
-  border: 1px solid #a3d4b5;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background: var(--gold);
+  color: #fff;
   border-radius: var(--radius);
-  margin-bottom: 1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-bottom: 0.75rem;
+  transition: background var(--transition), transform var(--transition);
 }
-.payment-success.visible { display: block; }
-.payment-success .success-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-.payment-success h4 { color: #1e5c37; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; margin-bottom: 0.3rem; }
-.payment-success p { color: #2d7a4f; font-size: 0.85rem; margin-bottom: 1rem; }
-.btn-download {
-  display: inline-flex; align-items: center; gap: 0.45rem;
-  background: var(--navy); color: #fff;
-  padding: 0.6rem 1.6rem; border-radius: var(--radius);
-  font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600;
-  letter-spacing: 0.07em; text-transform: uppercase; text-decoration: none;
-  transition: background var(--transition);
-}
-.btn-download:hover { background: var(--navy-lt); }
+.modal-download:hover { background: var(--gold-lt); transform: translateY(-1px); }
 
-.modal-footer { padding: 0 1.8rem 1.4rem; }
-.btn-modal-close {
-  width: 100%; padding: 0.6rem; background: transparent;
-  border: 1.5px solid var(--border); border-radius: var(--radius);
-  font-family: 'DM Sans', sans-serif; font-size: 0.82rem; color: var(--muted);
-  cursor: pointer; transition: background var(--transition);
+.modal-close {
+  display: block;
+  margin: 0.5rem auto 0;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  transition: color var(--transition);
 }
-.btn-modal-close:hover { background: var(--cream); color: var(--text); }
+.modal-close:hover { color: var(--navy); }
 
+/* ═══════════ RESPONSIVE ═══════════ */
 @media (max-width: 1023px) {
-  .offres-section { padding: 3.5rem 0; }
-  .plans-grid { grid-template-columns: 1fr; }
-  .tpl-grid { grid-template-columns: 1fr 1fr; }
-  .partners-grid { grid-template-columns: 1fr; }
-  .offres-hero { padding: 3rem 0; }
-  .annuaire-cta { padding: 2rem 1.5rem; }
+  header { padding: 0 1.2rem; height: 58px; }
+  .logo  { font-size: 1.3rem; }
+  nav { display: none !important; }
+  nav.open {
+    display: block !important;
+    position: fixed !important;
+    top: 58px !important;
+    left: 0 !important; right: 0 !important;
+    background: var(--navy) !important;
+    border-top: 1px solid rgba(196,147,58,0.2) !important;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4) !important;
+    z-index: 199 !important;
+  }
+  nav.open ul { flex-direction: column !important; gap: 0 !important; padding: 0.5rem 0 !important; }
+  nav.open ul li a {
+    padding: 1rem 1.8rem !important;
+    font-size: 0.85rem !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+    display: block !important;
+  }
+  nav.open ul li a.nav-cta {
+    margin: 0.7rem 1.2rem !important;
+    border-radius: var(--radius) !important;
+    text-align: center !important;
+  }
+  .hamburger { display: flex; }
+  .container { padding: 0 1.2rem; }
+  .hero-sm { padding: 2.5rem 0; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
+  .offers-page { padding: 3.5rem 0 4rem; }
 }
-@media (max-width: 600px) {
-  .tpl-grid { grid-template-columns: 1fr; }
+@media (max-width: 640px) {
+  .hero-sm h1 { font-size: 1.4rem; }
+  .offers-grid { grid-template-columns: 1fr; }
 }
-
-/* ── Fix FedaPay : body flex cause iframe hors écran ── */
-body {
-  display: block !important;
-  flex-direction: unset !important;
-}
-/* Garder le footer en bas */
-main { min-height: calc(100vh - 66px - 80px); }
   </style>
 </head>
 <body>
 
+<!-- ── HEADER ── -->
 <header>
   <a href="index.html" class="logo">Info<span>Compta</span></a>
-  <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
   <nav id="mainNav">
     <ul>
       <li><a href="index.html">Accueil</a></li>
@@ -373,209 +510,25 @@ main { min-height: calc(100vh - 66px - 80px); }
 
 <main>
 
-  <section class="offres-hero">
+  <!-- ── HERO ── -->
+  <section class="hero-sm">
     <div class="container">
-      <p class="eyebrow" style="color:var(--gold-lt);">💳 Paiement Mobile Money disponible</p>
-      <h1>Nos offres pour votre<br>comptabilité OHADA</h1>
-      <p>Plans d'abonnement, templates professionnels et annuaire d'experts — tout pour gérer vos finances au Bénin.</p>
-      <div class="hero-tabs">
-        <button class="hero-tab active" onclick="scrollSec('plans')">Abonnements</button>
-        <button class="hero-tab" onclick="scrollSec('templates')">Templates</button>
-        <button class="hero-tab" onclick="scrollSec('annuaire')">Annuaire</button>
-      </div>
+      <p class="eyebrow">Nos services</p>
+      <h1>Nos offres</h1>
+      <p>Téléchargement instantané après paiement sécurisé via FedaPay</p>
     </div>
   </section>
 
-  <div class="ads-strip">
-    <div class="ads-slot">📢 Espace publicitaire — Remplacez ce bloc par votre code <strong>Google AdSense</strong></div>
-  </div>
-
-  <!-- PLANS -->
-  <section class="offres-section offres-section-alt" id="plans">
+  <!-- ── GRILLE DES OFFRES ── -->
+  <section class="offers-page">
     <div class="container">
-      <div class="section-head fade-in">
-        <p class="eyebrow">Abonnements</p>
-        <h2>Choisissez votre plan</h2>
-        <p>Accédez aux outils comptables OHADA adaptés à votre activité. Paiement Mobile Money accepté.</p>
-      </div>
-      <div class="plans-grid fade-in">
-        <div class="plan-card">
-          <div class="plan-icon">🆓</div>
-          <div class="plan-name">Gratuit</div>
-          <div class="plan-price">0 <small>FCFA</small></div>
-          <div class="plan-period">Pour toujours · Aucune carte requise</div>
-          <p class="plan-desc">Découvrez InfoCompta et accédez aux bases de la comptabilité OHADA sans engagement.</p>
-          <hr class="plan-divider">
-          <ul class="plan-features">
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Plan comptable OHADA complet</li>
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Recherche de comptes</li>
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> 1 document stocké</li>
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Support par email</li>
-            <li class="plan-feat disabled"><span class="plan-feat-no">✗</span> Rapports financiers</li>
-            <li class="plan-feat disabled"><span class="plan-feat-no">✗</span> Templates inclus</li>
-          </ul>
-          <a href="plan-comptable.html" class="btn-plan btn-plan-outline">Commencer gratuitement</a>
-        </div>
-        <div class="plan-card featured">
-          <div class="plan-ribbon">⭐ Populaire</div>
-          <div class="plan-icon">💼</div>
-          <div class="plan-name">Pro</div>
-          <div class="plan-price">3 500 <small>FCFA</small></div>
-          <div class="plan-period">par mois · Résiliable à tout moment</div>
-          <p class="plan-desc">Pour les PME et entrepreneurs qui veulent gérer leur comptabilité efficacement.</p>
-          <hr class="plan-divider">
-          <ul class="plan-features">
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Tout le plan Gratuit</li>
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Documents illimités</li>
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Rapports financiers avancés</li>
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> 3 templates comptables inclus</li>
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Export PDF &amp; Excel</li>
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Assistance prioritaire</li>
-          </ul>
-          <button class="btn-plan btn-plan-gold" onclick="openPayment('Plan Pro', 3500, 'mensuel')">💳 Souscrire via Mobile Money</button>
-        </div>
-        <div class="plan-card">
-          <div class="plan-icon">🏢</div>
-          <div class="plan-name">Expert</div>
-          <div class="plan-price">8 000 <small>FCFA</small></div>
-          <div class="plan-period">par mois · Pour cabinets &amp; experts</div>
-          <p class="plan-desc">Pour les experts-comptables et cabinets gérant plusieurs clients simultanément.</p>
-          <hr class="plan-divider">
-          <ul class="plan-features">
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Tout le plan Pro</li>
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Multi-entreprises</li>
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Accès tous les templates</li>
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Accès API</li>
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Formation comptable incluse</li>
-            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Référencement annuaire</li>
-          </ul>
-          <button class="btn-plan btn-plan-navy" onclick="openPayment('Plan Expert', 8000, 'mensuel')">💳 Souscrire via Mobile Money</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TEMPLATES -->
-  <section class="offres-section" id="templates">
-    <div class="container">
-      <div class="section-head fade-in">
-        <p class="eyebrow">Modèles prêts à l'emploi</p>
-        <h2>Templates comptables</h2>
-        <p>Conformes au SYSCOHADA révisé — téléchargement après confirmation du paiement.</p>
-      </div>
-      <div class="tpl-grid fade-in">
-        <div class="tpl-card">
-          <div class="tpl-thumb tpl-t1">📊</div>
-          <div class="tpl-body">
-            <div class="tpl-name">Journal Comptable OHADA</div>
-            <div class="tpl-desc">Modèle Excel avec formules automatiques, conforme au SYSCOHADA révisé.</div>
-            <div class="tpl-footer"><div><span class="tpl-price">2 500 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Journal Comptable OHADA', 2500, 'achat unique', 'https://LIEN-TELECHARGEMENT-DOC-1.com')">Acheter</button></div>
-          </div>
-        </div>
-        <div class="tpl-card">
-          <div class="tpl-thumb tpl-t2">📋</div>
-          <div class="tpl-body">
-            <div class="tpl-name">Bilan + Compte de Résultat</div>
-            <div class="tpl-desc">Pack états financiers annuels complets prêts à remplir et soumettre.</div>
-            <div class="tpl-footer"><div><span class="tpl-price">4 000 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Bilan + Compte de Résultat', 4000, 'achat unique', 'https://LIEN-TELECHARGEMENT-DOC-2.com')">Acheter</button></div>
-          </div>
-        </div>
-        <div class="tpl-card">
-          <div class="tpl-thumb tpl-t3">🧾</div>
-          <div class="tpl-body">
-            <div class="tpl-name">Modèle de Facture Pro</div>
-            <div class="tpl-desc">Facture Word &amp; Excel personnalisable avec calcul TVA automatique.</div>
-            <div class="tpl-footer"><div><span class="tpl-price">1 500 FCFA</span><span class="tpl-format">DOCX</span></div><button class="btn-tpl" onclick="openPayment('Modèle de Facture Pro', 1500, 'achat unique', 'https://LIEN-TELECHARGEMENT-DOC-3.com')">Acheter</button></div>
-          </div>
-        </div>
-        <div class="tpl-card">
-          <div class="tpl-thumb tpl-t4">📒</div>
-          <div class="tpl-body">
-            <div class="tpl-name">Grand Livre Automatisé</div>
-            <div class="tpl-desc">Grand livre Excel avec report automatique des soldes par compte.</div>
-            <div class="tpl-footer"><div><span class="tpl-price">3 000 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Grand Livre Automatisé', 3000, 'achat unique', 'https://LIEN-TELECHARGEMENT-DOC-4.com')">Acheter</button></div>
-          </div>
-        </div>
-        <div class="tpl-card">
-          <div class="tpl-thumb tpl-t5">📑</div>
-          <div class="tpl-body">
-            <div class="tpl-name">Déclaration TVA Bénin</div>
-            <div class="tpl-desc">Formulaire pré-rempli de déclaration TVA selon le CGI Bénin.</div>
-            <div class="tpl-footer"><div><span class="tpl-price">2 000 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Déclaration TVA Bénin', 2000, 'achat unique', 'https://LIEN-TELECHARGEMENT-DOC-5.com')">Acheter</button></div>
-          </div>
-        </div>
-        <div class="tpl-card">
-          <div class="tpl-thumb tpl-t6">📈</div>
-          <div class="tpl-body">
-            <div class="tpl-name">Tableau de Bord Financier</div>
-            <div class="tpl-desc">Dashboard Excel avec graphiques pour suivre vos indicateurs clés.</div>
-            <div class="tpl-footer"><div><span class="tpl-price">3 500 FCFA</span><span class="tpl-format">XLSX</span></div><button class="btn-tpl" onclick="openPayment('Tableau de Bord Financier', 3500, 'achat unique', 'https://LIEN-TELECHARGEMENT-DOC-6.com')">Acheter</button></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ANNUAIRE -->
-  <section class="offres-section offres-section-alt" id="annuaire">
-    <div class="container">
-      <div class="section-head fade-in">
-        <p class="eyebrow">Experts certifiés</p>
-        <h2>Annuaire des experts</h2>
-        <p>Trouvez un expert-comptable certifié au Bénin ou référencez votre cabinet auprès de nos utilisateurs.</p>
-      </div>
-      <div class="partners-grid fade-in">
-        <div class="partner-card">
-          <div class="partner-av av-navy">👨‍💼</div>
-          <div><div class="partner-name">Cabinet ABC Conseils</div><div class="partner-role">Expert-comptable · Cotonou, Bénin</div><div class="partner-tags"><span class="p-tag tag-navy">Audit</span><span class="p-tag tag-green">Fiscalité</span></div></div>
-        </div>
-        <div class="partner-card">
-          <div class="partner-av av-teal">👩‍💼</div>
-          <div><div class="partner-name">Fiduciaire OHADA Pro</div><div class="partner-role">Commissaire aux comptes · Porto-Novo</div><div class="partner-tags"><span class="p-tag tag-navy">PME</span><span class="p-tag tag-gold">Start-up</span></div></div>
-        </div>
-        <div class="partner-card">
-          <div class="partner-av av-gold">🏢</div>
-          <div><div class="partner-name">GFC Bénin</div><div class="partner-role">Cabinet comptable · Parakou</div><div class="partner-tags"><span class="p-tag tag-green">Paie &amp; RH</span><span class="p-tag tag-navy">Bilan</span></div></div>
-        </div>
-      </div>
-      <div class="annuaire-cta">
-        <h3>Vous êtes expert-comptable ou cabinet ?</h3>
-        <p>Rejoignez l'annuaire InfoCompta et soyez visible auprès de centaines d'entreprises béninoises.</p>
-        <button class="btn" onclick="openPayment('Référencement Annuaire', 5000, 'annuel')">💳 Référencer mon cabinet — 5 000 FCFA / an</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="offres-section" id="faq">
-    <div class="container">
-      <div class="section-head fade-in">
-        <p class="eyebrow">Aide</p>
-        <h2>Questions fréquentes</h2>
-      </div>
-      <div class="faq-list fade-in">
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">Comment fonctionne le paiement Mobile Money ?<span class="faq-arrow">▼</span></div>
-          <div class="faq-a">Cliquez sur le bouton de paiement, la fenêtre FedaPay s'ouvre directement. Entrez votre numéro MTN MoMo ou Moov Africa, puis validez avec votre code secret. L'accès est activé automatiquement après confirmation.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">Puis-je résilier mon abonnement à tout moment ?<span class="faq-arrow">▼</span></div>
-          <div class="faq-a">Oui, résiliation possible à tout moment par email. Vous conservez l'accès jusqu'à la fin de la période en cours.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">Comment recevoir mes templates après achat ?<span class="faq-arrow">▼</span></div>
-          <div class="faq-a">Après confirmation du paiement, vous recevrez un email avec le lien de téléchargement dans un délai maximum de 2h. Vérifiez vos spams.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">Les templates sont-ils conformes au SYSCOHADA révisé ?<span class="faq-arrow">▼</span></div>
-          <div class="faq-a">Oui, tous nos templates sont conformes au SYSCOHADA révisé en vigueur dans les États membres, dont le Bénin.</div>
-        </div>
-      </div>
+      <div class="offers-grid fade-in" id="offersGrid"></div>
     </div>
   </section>
 
 </main>
 
+<!-- ── FOOTER ── -->
 <footer>
   <div class="footer-inner">
     <div class="footer-logo">Info<span>Compta</span></div>
@@ -588,183 +541,161 @@ main { min-height: calc(100vh - 66px - 80px); }
   </div>
 </footer>
 
-<!-- ══════════════════════════════════════
-     MODAL PAIEMENT FEDAPAY
-══════════════════════════════════════ -->
-<div class="modal-overlay" id="payModal" onclick="closeIfOverlay(event)">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>Finaliser le paiement</h3>
-      <p>Paiement sécurisé via FedaPay</p>
-      <div class="modal-plan-tag" id="modalLabel">Plan Pro · 3 500 FCFA / mensuel</div>
-    </div>
-    <div class="modal-body">
-
-      <!-- Message de succès (caché par défaut) -->
-      <div class="payment-success" id="paymentSuccess">
-        <div class="success-icon">✅</div>
-        <h4>Paiement effectué !</h4>
-        <p id="successMsg">Votre accès sera activé sous peu. Un email de confirmation vous sera envoyé.</p>
-        <a id="downloadBtn" href="#" class="btn-download" download style="display:none;">⬇ Télécharger le document</a>
-      </div>
-
-      <!-- Montant -->
-      <div class="modal-amount">
-        <div class="modal-amount-val" id="modalAmount">3 500 FCFA</div>
-        <div class="modal-amount-sub" id="modalFreq">Paiement mensuel</div>
-      </div>
-
-      <!-- Modes de paiement acceptés -->
-      <div class="fedapay-methods">
-        <span class="feda-method-badge badge-mtn">📱 MTN MoMo</span>
-        <span class="feda-method-badge badge-moov">📱 Moov Africa</span>
-        <span class="feda-method-badge badge-card">💳 Carte bancaire</span>
-      </div>
-
-      <!-- Bouton principal FedaPay -->
-      <button class="fedapay-main-btn" id="fedaPayBtn" onclick="payWithFedaPay()">
-        🔐 Payer maintenant — <span id="fedaAmt">3 500</span> FCFA
-      </button>
-
-      <div class="feda-secure">🔒 Paiement 100% sécurisé · Certifié par FedaPay · HTTPS</div>
-
-    </div>
-    <div class="modal-footer">
-      <button class="btn-modal-close" onclick="closeModal()">✕ Annuler</button>
-    </div>
+<!-- Modal après paiement réussi -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal-box">
+    <div class="modal-icon">✅</div>
+    <h3>Paiement réussi !</h3>
+    <p>Merci pour votre achat. Cliquez ci-dessous pour télécharger votre document.</p>
+    <a id="downloadLink" href="#" class="modal-download" download>⬇ Télécharger le document</a>
+    <button class="modal-close" onclick="closeModal()">Fermer</button>
   </div>
 </div>
 
 <script>
-// ── Navigation & animations ──
-(function(){
-  var btn=document.getElementById('hamburgerBtn'),nav=document.getElementById('mainNav');
-  if(!btn||!nav)return;
-  btn.addEventListener('click',function(e){e.stopPropagation();var o=nav.classList.toggle('open');btn.classList.toggle('open',o);});
-  nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');btn.classList.remove('open');});});
-  document.addEventListener('click',function(e){if(!nav.contains(e.target)&&e.target!==btn&&!btn.contains(e.target)){nav.classList.remove('open');btn.classList.remove('open');}});
-  var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.1});
-  document.querySelectorAll('.fade-in').forEach(function(el){obs.observe(el);});
-})();
+// ================================================================
+// CONFIGURATION — À MODIFIER SELON VOS DOCUMENTS
+// ================================================================
+const FEDAPAY_PUBLIC_KEY = "pk_sandbox_VOTRE_CLE_PUBLIQUE"; // ← Remplacez par votre clé FedaPay
+const FEDAPAY_ENV = "sandbox"; // ← "sandbox" pour test, "live" pour production
 
-function scrollSec(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
-function toggleFaq(el){ el.parentElement.classList.toggle('open'); }
+const offers = [
+  {
+    badge: "Juridique",
+    title: "Modèle de contrat de travail CDI",
+    price: 2500,
+    devise: "XOF",
+    desc: "Contrat conforme au droit béninois, prêt à personnaliser.",
+    downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-1.com"
+  },
+  {
+    badge: "Comptabilité",
+    title: "Plan comptable OHADA commenté",
+    price: 3500,
+    devise: "XOF",
+    desc: "Document complet avec notes explicatives et exemples pratiques.",
+    downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-2.com"
+  },
+  {
+    badge: "Business",
+    title: "Template de plan d'affaires",
+    price: 4000,
+    devise: "XOF",
+    desc: "Structure complète pour présenter votre projet à des investisseurs.",
+    downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-3.com"
+  },
+  {
+    badge: "Académique",
+    title: "Guide de rédaction de mémoire",
+    price: 1500,
+    devise: "XOF",
+    desc: "Méthodologie et modèles pour rédiger un mémoire de qualité.",
+    downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-4.com"
+  },
+  {
+    badge: "Immobilier",
+    title: "Contrat de bail d'habitation",
+    price: 2000,
+    devise: "XOF",
+    desc: "Modèle légal de contrat de location pour propriétaires et locataires.",
+    downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-5.com"
+  },
+  {
+    badge: "RH",
+    title: "Kit de fiches de paie OHADA",
+    price: 5000,
+    devise: "XOF",
+    desc: "Pack de 12 modèles mensuels avec calculs automatiques intégrés.",
+    downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-6.com"
+  }
+];
+// ================================================================
 
-// ── Variables globales pour le paiement ──
-var currentAmount      = 0;
-var currentLabel       = '';
-var currentDownloadUrl = ''; // lien de téléchargement (documents uniquement)
+// Génération des cartes
+const grid = document.getElementById('offersGrid');
+offers.forEach((o, index) => {
+  const card = document.createElement('div');
+  card.className = 'offer-card';
+  card.innerHTML = `
+    <span class="badge">${o.badge}</span>
+    <p class="offer-title">${o.title}</p>
+    <p class="offer-desc">${o.desc}</p>
+    <p class="offer-price">${o.price.toLocaleString('fr-FR')} <span>${o.devise === 'XOF' ? 'FCFA' : o.devise}</span></p>
+    <button class="btn-buy" onclick="payerDocument(${index})">Acheter &amp; Télécharger</button>
+  `;
+  grid.appendChild(card);
+});
 
-// ── Ouvrir la modal ──
-function openPayment(name, amount, freq, downloadUrl) {
-  currentLabel       = name;
-  currentAmount      = amount;
-  currentDownloadUrl = downloadUrl || '';
-
-  var amountFormatted = amount.toLocaleString('fr-FR');
-  document.getElementById('modalLabel').textContent  = name + ' · ' + amountFormatted + ' FCFA / ' + freq;
-  document.getElementById('modalAmount').textContent = amountFormatted + ' FCFA';
-  document.getElementById('modalFreq').textContent   = freq === 'achat unique' ? 'Achat unique' : 'Paiement ' + freq;
-
-  // Réinitialiser l'état
-  document.getElementById('paymentSuccess').classList.remove('visible');
-  document.getElementById('downloadBtn').style.display = 'none';
-  document.getElementById('downloadBtn').href = '#';
-  var fedaBtn = document.getElementById('fedaPayBtn');
-  fedaBtn.disabled = false;
-  fedaBtn.style.display = '';
-  fedaBtn.innerHTML = '🔐 Payer maintenant — ' + amountFormatted + ' FCFA';
-
-  document.getElementById('payModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-// ── Fermer la modal ──
-function closeModal() {
-  document.getElementById('payModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function closeIfOverlay(e) {
-  if (e.target === document.getElementById('payModal')) closeModal();
-}
-
-// ── Réinitialiser le bouton ──
-function resetBtn() {
-  var btn = document.getElementById('fedaPayBtn');
-  if (!btn) return;
-  btn.disabled = false;
-  btn.style.display = '';
-  btn.innerHTML = '🔐 Payer maintenant — ' + currentAmount.toLocaleString('fr-FR') + ' FCFA';
-}
-
-// ── Paiement FedaPay ──
-function payWithFedaPay() {
-  var btn = document.getElementById('fedaPayBtn');
-  btn.disabled = true;
-  btn.textContent = '⏳ Chargement...';
-  closeModal();
-
-  // Supprimer l'ancien script FedaPay s'il existe
-  var oldScript = document.querySelector('script[src*="fedapay"]');
-  if (oldScript) oldScript.parentNode.removeChild(oldScript);
-
-  var script = document.createElement('script');
-  script.src = 'https://cdn.fedapay.com/checkout.js?v=1.1.7';
-
-  script.onload = function() {
-    setTimeout(function() {
-      try {
-        FedaPay.init({
-          public_key: 'pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg',
-          transaction: {
-            amount: currentAmount,
-            description: currentLabel,
-            currency: { iso: 'XOF' }
-          },
-          customer: { email: '' },
-          onComplete: function(resp) {
-            resetBtn();
-            if (resp.reason !== FedaPay.DIALOG_DISMISSED) {
-              document.getElementById('payModal').classList.add('open');
-              document.body.style.overflow = 'hidden';
-              document.getElementById('fedaPayBtn').style.display = 'none';
-
-              // Si c'est un document → afficher le bouton de téléchargement
-              if (currentDownloadUrl) {
-                document.getElementById('successMsg').textContent = 'Votre document est prêt. Cliquez ci-dessous pour le télécharger.';
-                var dlBtn = document.getElementById('downloadBtn');
-                dlBtn.href = currentDownloadUrl;
-                dlBtn.style.display = 'inline-flex';
-              } else {
-                document.getElementById('successMsg').textContent = 'Votre accès sera activé sous peu. Un email de confirmation vous sera envoyé.';
-                document.getElementById('downloadBtn').style.display = 'none';
-              }
-
-              document.getElementById('paymentSuccess').classList.add('visible');
-              setTimeout(function() {
-                closeModal();
-                document.getElementById('paymentSuccess').classList.remove('visible');
-                resetBtn();
-              }, 6000);
-            }
-          }
-        }).open();
-      } catch(err) {
-        console.error('FedaPay error:', err);
-        resetBtn();
-        alert('Erreur: ' + err.message);
+// Lancement du popup FedaPay
+function payerDocument(index) {
+  const doc = offers[index];
+  FedaPay.init({
+    public_key: FEDAPAY_PUBLIC_KEY,
+    transaction: {
+      amount: doc.price,
+      description: doc.title
+    },
+    currency: { iso: doc.devise },
+    onComplete: function(resp) {
+      if (resp.reason === FedaPay.DIALOG_DISMISSED) {
+        console.log("Paiement annulé.");
+      } else {
+        ouvrirModal(doc.downloadUrl);
       }
-    }, 300);
-  };
-
-  script.onerror = function() {
-    resetBtn();
-    alert('Impossible de charger FedaPay. Vérifiez votre connexion.');
-  };
-
-  document.head.appendChild(script);
+    }
+  }).open();
 }
+
+function ouvrirModal(url) {
+  document.getElementById('downloadLink').href = url;
+  document.getElementById('successModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('successModal').classList.remove('active');
+}
+
+// ── Hamburger ──
+(function () {
+  var btn = document.getElementById('hamburgerBtn');
+  var nav = document.getElementById('mainNav');
+  if (btn && nav) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      }
+    });
+  }
+
+  // Scroll fade-in
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(function (el) {
+    observer.observe(el);
+  });
+})();
 </script>
+
 </body>
 </html>
