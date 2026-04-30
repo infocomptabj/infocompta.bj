@@ -356,3 +356,12 @@ footer {
   .hero-sm h1 { font-size: 1.4rem; }
   .btn { padding: 0.7rem 1.5rem; font-size: 0.74rem; }
 }
+/* ═══════════ fedapay en avant sur la page ═══════════ */
+iframe[src*="fedapay"] {
+  position: fixed !important;
+  z-index: 999999 !important;
+}
+
+body {
+  overflow-x: hidden;
+}
