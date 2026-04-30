@@ -686,50 +686,80 @@ function resetBtn() {
 }
 
 // ── Paiement FedaPay ──
-function payWithFedaPay() {
-  const btn = document.getElementById("fedaPayBtn");
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test FedaPay</title>
 
-  btn.disabled = true;
-  btn.innerHTML = "⏳ Ouverture paiement...";
+  <!-- SDK FedaPay -->
+  <script src="https://cdn.fedapay.com/checkout.js" defer></script>
 
+  <style>
+    body {
+      font-family: Arial;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      background: #f5f5f5;
+    }
+
+    button {
+      padding: 15px 25px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #6D28D9;
+      color: white;
+      border: none;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+<button onclick="pay()">Tester paiement FedaPay</button>
+
+<script>
+function pay() {
   if (!window.FedaPay) {
-    alert("FedaPay non chargé. Recharge la page.");
-    resetBtn();
+    alert("FedaPay non chargé !");
     return;
   }
 
   try {
-    const checkout = FedaPay.checkout({
+    FedaPay.init({
       public_key: "pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg",
 
       transaction: {
-        amount: currentAmount,
-        description: currentLabel,
+        amount: 1000,
+        description: "Test paiement",
         currency: { iso: "XOF" }
       },
 
       customer: {
-        email: "infocomptabj@gmail.com"
+        email: "test@example.com"
+      },
+
+      onComplete: function (resp) {
+        if (resp && resp.reason !== "DIALOG_DISMISSED") {
+          alert("Paiement réussi !");
+        } else {
+          alert("Paiement annulé");
+        }
       }
-    });
+    }).open();
 
-    checkout.open();
-
-    checkout.on("complete", function (result) {
-      resetBtn();
-
-      if (result && result.reason !== "DIALOG_DISMISSED") {
-        document.getElementById("paymentSuccess").classList.add("visible");
-        setTimeout(closeModal, 2500);
-      }
-    });
-
-  } catch (err) {
-    console.error(err);
-    alert("Erreur paiement FedaPay");
-    resetBtn();
+  } catch (e) {
+    console.error(e);
+    alert("Erreur FedaPay: " + e.message);
   }
 }
+</script>
+
+</body>
+</html>
 </script>
 <script src="https://cdn.fedapay.com/checkout.js" defer></script>  
 </body>
