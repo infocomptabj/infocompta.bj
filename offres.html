@@ -690,54 +690,43 @@ function payWithFedaPay() {
   const btn = document.getElementById("fedaPayBtn");
 
   btn.disabled = true;
-  btn.innerHTML = "⏳ Ouverture du paiement...";
+  btn.innerHTML = "⏳ Ouverture paiement...";
 
-  // sécurité timeout (IMPORTANT)
-  const timeout = setTimeout(() => {
-    alert("Le service de paiement met trop de temps à répondre. Réessayez.");
+  if (!window.FedaPay) {
+    alert("FedaPay non chargé. Recharge la page.");
     resetBtn();
-  }, 8000);
+    return;
+  }
 
   try {
-    if (!window.FedaPay) {
-      clearTimeout(timeout);
-      alert("FedaPay n'est pas chargé. Vérifie la connexion internet.");
-      resetBtn();
-      return;
-    }
-
-    const amount = currentAmount;
-    const label = currentLabel;
-
-    FedaPay.init({
+    const checkout = FedaPay.checkout({
       public_key: "pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg",
 
       transaction: {
-        amount: amount,
-        description: label,
+        amount: currentAmount,
+        description: currentLabel,
         currency: { iso: "XOF" }
       },
 
       customer: {
         email: "infocomptabj@gmail.com"
-      },
-
-      onComplete: function (res) {
-        clearTimeout(timeout);
-        resetBtn();
-
-        if (res && res.reason !== FedaPay.DIALOG_DISMISSED) {
-          document.getElementById("paymentSuccess").classList.add("visible");
-          setTimeout(closeModal, 3000);
-        }
       }
+    });
 
-    }).open();
+    checkout.open();
 
-  } catch (e) {
-    clearTimeout(timeout);
-    console.error("FedaPay error:", e);
-    alert("Erreur de paiement. Réessayez.");
+    checkout.on("complete", function (result) {
+      resetBtn();
+
+      if (result && result.reason !== "DIALOG_DISMISSED") {
+        document.getElementById("paymentSuccess").classList.add("visible");
+        setTimeout(closeModal, 2500);
+      }
+    });
+
+  } catch (err) {
+    console.error(err);
+    alert("Erreur paiement FedaPay");
     resetBtn();
   }
 }
