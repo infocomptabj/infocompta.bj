@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Nos Offres</title>
+
+  <!-- SDK FedaPay -->
+  <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -98,12 +102,78 @@
       color: #fff;
       font-size: 13px;
       font-weight: 600;
-      text-decoration: none;
+      border: none;
+      cursor: pointer;
       transition: background 0.2s;
+      width: 100%;
     }
 
     .btn-buy:hover {
       background: #0C447C;
+    }
+
+    /* Modal de succès */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .modal-icon {
+      font-size: 48px;
+      margin-bottom: 1rem;
+    }
+
+    .modal-box h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #111;
+    }
+
+    .modal-box p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-download {
+      display: inline-block;
+      padding: 10px 24px;
+      background: #185FA5;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .modal-close {
+      display: block;
+      margin-top: 10px;
+      background: none;
+      border: none;
+      color: #888;
+      cursor: pointer;
+      font-size: 13px;
     }
   </style>
 </head>
@@ -116,73 +186,130 @@
 
   <div class="offers-grid" id="offersGrid"></div>
 
+  <!-- Modal après paiement réussi -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal-box">
+      <div class="modal-icon">✅</div>
+      <h3>Paiement réussi !</h3>
+      <p>Merci pour votre achat. Cliquez ci-dessous pour télécharger votre document.</p>
+      <a id="downloadLink" href="#" class="modal-download" download>⬇ Télécharger le document</a>
+      <button class="modal-close" onclick="closeModal()">Fermer</button>
+    </div>
+  </div>
+
   <script>
-    // =============================================
-    // MODIFIEZ CE TABLEAU POUR GÉRER VOS DOCUMENTS
-    // =============================================
+    // ================================================================
+    // CONFIGURATION — À MODIFIER SELON VOS DOCUMENTS
+    // ================================================================
+    const FEDAPAY_PUBLIC_KEY = "pk_sandbox_VOTRE_CLE_PUBLIQUE"; // ← Remplacez par votre clé FedaPay
+    const FEDAPAY_ENV = "sandbox"; // ← "sandbox" pour test, "live" pour production
+
     const offers = [
       {
         badge: "Juridique",
         title: "Modèle de contrat de travail CDI",
-        price: "2 500",
-        devise: "FCFA",
+        price: 2500,          // Montant en nombre (sans espace)
+        devise: "XOF",        // Devise FedaPay (XOF = FCFA)
         desc: "Contrat conforme au droit béninois, prêt à personnaliser.",
-        link: "https://LIEN-FEDAPAY-DOCUMENT-1.com"  // ← Remplacez par le vrai lien FedaPay
+        downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-1.com" // ← Lien réel après paiement
       },
       {
         badge: "Comptabilité",
         title: "Plan comptable OHADA commenté",
-        price: "3 500",
-        devise: "FCFA",
+        price: 3500,
+        devise: "XOF",
         desc: "Document complet avec notes explicatives et exemples pratiques.",
-        link: "https://LIEN-FEDAPAY-DOCUMENT-2.com"  // ← Remplacez par le vrai lien FedaPay
+        downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-2.com"
       },
       {
         badge: "Business",
         title: "Template de plan d'affaires",
-        price: "4 000",
-        devise: "FCFA",
+        price: 4000,
+        devise: "XOF",
         desc: "Structure complète pour présenter votre projet à des investisseurs.",
-        link: "https://LIEN-FEDAPAY-DOCUMENT-3.com"  // ← Remplacez par le vrai lien FedaPay
+        downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-3.com"
       },
       {
         badge: "Académique",
         title: "Guide de rédaction de mémoire",
-        price: "1 500",
-        devise: "FCFA",
+        price: 1500,
+        devise: "XOF",
         desc: "Méthodologie et modèles pour rédiger un mémoire de qualité.",
-        link: "https://LIEN-FEDAPAY-DOCUMENT-4.com"  // ← Remplacez par le vrai lien FedaPay
+        downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-4.com"
       },
       {
         badge: "Immobilier",
         title: "Contrat de bail d'habitation",
-        price: "2 000",
-        devise: "FCFA",
+        price: 2000,
+        devise: "XOF",
         desc: "Modèle légal de contrat de location pour propriétaires et locataires.",
-        link: "https://LIEN-FEDAPAY-DOCUMENT-5.com"  // ← Remplacez par le vrai lien FedaPay
+        downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-5.com"
       },
       {
         badge: "RH",
         title: "Kit de fiches de paie OHADA",
-        price: "5 000",
-        devise: "FCFA",
+        price: 5000,
+        devise: "XOF",
         desc: "Pack de 12 modèles mensuels avec calculs automatiques intégrés.",
-        link: "https://LIEN-FEDAPAY-DOCUMENT-6.com"  // ← Remplacez par le vrai lien FedaPay
+        downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-6.com"
       }
     ];
-    // =============================================
+    // ================================================================
 
+    // Génération des cartes
     const grid = document.getElementById('offersGrid');
-    offers.forEach(o => {
-      grid.innerHTML += `
-        <div class="offer-card">
-          <span class="badge">${o.badge}</span>
-          <p class="offer-title">${o.title}</p>
-          <p class="offer-desc">${o.desc}</p>
-          <p class="offer-price">${o.price} <span>${o.devise}</span></p>
-          <a class="btn-buy" href="${o.link}" target="_blank">Acheter &amp; Télécharger</a>
-        </div>`;
+    offers.forEach((o, index) => {
+      const card = document.createElement('div');
+      card.className = 'offer-card';
+      card.innerHTML = `
+        <span class="badge">${o.badge}</span>
+        <p class="offer-title">${o.title}</p>
+        <p class="offer-desc">${o.desc}</p>
+        <p class="offer-price">${o.price.toLocaleString('fr-FR')} <span>${o.devise === 'XOF' ? 'FCFA' : o.devise}</span></p>
+        <button class="btn-buy" onclick="payerDocument(${index})">Acheter &amp; Télécharger</button>
+      `;
+      grid.appendChild(card);
     });
+
+    // Lancement du popup FedaPay
+    function payerDocument(index) {
+      const doc = offers[index];
+
+      FedaPay.init({
+        public_key: FEDAPAY_PUBLIC_KEY,
+        transaction: {
+          amount: doc.price,
+          description: doc.title
+        },
+        customer: {
+          // Optionnel : vous pouvez collecter l'email du client ici
+          // email: "client@email.com"
+        },
+        currency: {
+          iso: doc.devise
+        },
+        onComplete: function(resp) {
+          if (resp.reason === FedaPay.DIALOG_DISMISSED) {
+            // Paiement annulé ou fenêtre fermée
+            console.log("Paiement annulé.");
+          } else {
+            // Paiement réussi → afficher le lien de téléchargement
+            ouvrirModal(doc.downloadUrl);
+          }
+        }
+      }).open();
+    }
+
+    // Afficher la modal avec le lien de téléchargement
+    function ouvrirModal(url) {
+      document.getElementById('downloadLink').href = url;
+      document.getElementById('successModal').classList.add('active');
+    }
+
+    // Fermer la modal
+    function closeModal() {
+      document.getElementById('successModal').classList.remove('active');
+    }
   </script>
 
 </body>
