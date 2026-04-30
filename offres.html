@@ -686,69 +686,6 @@ function resetBtn() {
 }
 
 // ── Paiement FedaPay ──
-// ─────────────────────────────
-// STATE GLOBAL
-// ─────────────────────────────
-let currentAmount = 0;
-let currentLabel = "";
-
-// ─────────────────────────────
-// OUVERTURE MODAL
-// ─────────────────────────────
-function openPayment(name, amount, freq) {
-  currentLabel = name;
-  currentAmount = amount;
-
-  const formatted = amount.toLocaleString("fr-FR");
-
-  document.getElementById("modalLabel").textContent =
-    `${name} · ${formatted} FCFA / ${freq}`;
-
-  document.getElementById("modalAmount").textContent =
-    `${formatted} FCFA`;
-
-  document.getElementById("modalFreq").textContent =
-    freq === "achat unique" ? "Achat unique" : `Paiement ${freq}`;
-
-  // reset UI
-  document.getElementById("paymentSuccess").classList.remove("visible");
-
-  const btn = document.getElementById("fedaPayBtn");
-  btn.disabled = false;
-  btn.style.display = "flex";
-  btn.innerHTML = `🔐 Payer maintenant — ${formatted} FCFA`;
-
-  document.getElementById("payModal").classList.add("open");
-  document.body.style.overflow = "hidden";
-}
-
-// ─────────────────────────────
-// FERMETURE MODAL
-// ─────────────────────────────
-function closeModal() {
-  document.getElementById("payModal").classList.remove("open");
-  document.body.style.overflow = "auto";
-}
-
-function closeIfOverlay(e) {
-  if (e.target.id === "payModal") closeModal();
-}
-
-// ─────────────────────────────
-// RESET BUTTON
-// ─────────────────────────────
-function resetButton() {
-  const btn = document.getElementById("fedaPayBtn");
-  const formatted = currentAmount.toLocaleString("fr-FR");
-
-  btn.disabled = false;
-  btn.style.display = "flex";
-  btn.innerHTML = `🔐 Payer maintenant — ${formatted} FCFA`;
-}
-
-// ─────────────────────────────
-// FEDAPAY INIT PROPRE
-// ─────────────────────────────
 function payWithFedaPay() {
   const btn = document.getElementById("fedaPayBtn");
 
@@ -765,12 +702,8 @@ function payWithFedaPay() {
     const transactionData = {
       amount: currentAmount,
       description: currentLabel,
-      currency: {
-        iso: "XOF"
-      },
-      customer: {
-        email: "infocomptabj@gmail.com"
-      }
+      currency: { iso: "XOF" },
+      customer: { email: "infocomptabj@gmail.com" }
     };
 
     FedaPay.init({
@@ -792,12 +725,11 @@ function payWithFedaPay() {
     }).open();
 
   } catch (err) {
-    console.error("FedaPay Error:", err);
-    alert("Erreur de paiement. Réessayez.");
+    console.error(err);
+    alert("Erreur de paiement");
     resetButton();
   }
 }
 </script>
-<script src="https://cdn.fedapay.com/checkout.js" defer></script>
 </body>
 </html>
