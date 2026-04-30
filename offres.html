@@ -688,10 +688,14 @@ function resetBtn() {
 // ── Paiement FedaPay ──
 function payWithFedaPay() {
 
-  // 🔥 fermer la modal proprement
+  var btn = document.getElementById('fedaPayBtn');
+  btn.disabled = true;
+
+  // 🔴 étape 1 : fermer la modal
   document.getElementById('payModal').classList.remove('open');
   document.body.style.overflow = '';
 
+  // 🔴 étape 2 : attendre que le DOM soit clean
   setTimeout(function () {
 
     FedaPay.init({
@@ -706,9 +710,11 @@ function payWithFedaPay() {
       },
       onComplete: function(resp) {
 
+        btn.disabled = false;
+
         if (resp.reason !== FedaPay.DIALOG_DISMISSED) {
 
-          // afficher succès
+          // 🔥 réouvrir la modal avec succès
           document.getElementById('paymentSuccess').classList.add('visible');
           document.getElementById('payModal').classList.add('open');
 
@@ -716,7 +722,7 @@ function payWithFedaPay() {
       }
     }).open();
 
-  }, 150); // ⚠️ important
+  }, 200); // ⚠️ important (150–300 ms)
 }
 </script>
 </body>
