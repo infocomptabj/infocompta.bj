@@ -45,13 +45,13 @@ body {
   min-height: 100vh;
   /* ── IMPORTANT : display:block pour compatibilité FedaPay ──
      display:flex causait un décalage de l'iframe FedaPay hors écran */
-  display: block;
+  display: flex;
+  flex-direction: column;
   -webkit-font-smoothing: antialiased;
 }
-/* Garder le footer en bas grâce à grid sur html */
+/* Footer toujours collé en bas */
 html {
-  display: grid;
-  grid-template-rows: 1fr;
+  height: 100%;
 }
 h1, h2, h3, h4 {
   font-family: 'Cormorant Garamond', serif;
@@ -61,7 +61,7 @@ h1, h2, h3, h4 {
 }
 p { color: var(--text-md); }
 a { text-decoration: none; color: inherit; }
-main { flex: 1; }
+main { flex: 1 0 auto; }
 
 /* ═══════════ HEADER ═══════════ */
 header {
@@ -138,6 +138,7 @@ nav ul li a.nav-cta:hover { background: var(--gold-lt); transform: translateY(-1
 
 /* ═══════════ FOOTER ═══════════ */
 footer {
+  flex-shrink: 0;
   background: var(--navy);
   border-top: 1px solid rgba(196,147,58,0.15);
 }
@@ -355,15 +356,4 @@ footer {
 @media (max-width: 640px) {
   .hero-sm h1 { font-size: 1.4rem; }
   .btn { padding: 0.7rem 1.5rem; font-size: 0.74rem; }
-}
-/* ═══════════ fedapay en avant sur la page ═══════════ */
-iframe[src*="fedapay"] {
-  position: fixed !important;
-  inset: 0 !important;
-  margin: auto !important;
-  z-index: 999999 !important;
-}
-
-body {
-  overflow-x: hidden;
 }
