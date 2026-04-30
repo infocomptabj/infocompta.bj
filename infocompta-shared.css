@@ -359,6 +359,8 @@ footer {
 /* ═══════════ fedapay en avant sur la page ═══════════ */
 iframe[src*="fedapay"] {
   position: fixed !important;
+  inset: 0 !important;
+  margin: auto !important;
   z-index: 999999 !important;
 }
 
