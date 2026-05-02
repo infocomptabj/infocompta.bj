@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════
    infocompta-shared.css — Design System v2
-   Palette : Autorité Bleue (#1B3A6B · #2D6BE4 · #E8F0FD · #27AE60)
+   Palette : Marine & Ambre (#042C53 · #BA7517 · #FAEEDA · #1D9E75)
    Typo    : Inter 400 / 500 / 700
    À inclure sur toutes les pages (remplace les styles inline)
 ═══════════════════════════════════════════════════════ */
@@ -10,26 +10,26 @@
 /* ═══════════ VARIABLES ═══════════ */
 :root {
   --cream:      #F5F6FA;
-  --cream-dk:   #E8F0FD;
+  --cream-dk:   #FAEEDA;
   --surface:    #FFFFFF;
-  --navy:       #1B3A6B;
-  --navy-mid:   #1e4580;
-  --navy-lt:    #2450a0;
-  --gold:       #2D6BE4;
-  --gold-lt:    #5B8EEC;
-  --gold-pale:  #E8F0FD;
-  --gold-line:  rgba(45,107,228,0.25);
-  --success:    #27AE60;
+  --navy:       #042C53;
+  --navy-mid:   #0a3d6e;
+  --navy-lt:    #185FA5;
+  --gold:       #BA7517;
+  --gold-lt:    #EF9F27;
+  --gold-pale:  #FAEEDA;
+  --gold-line:  rgba(186,117,23,0.25);
+  --success:    #1D9E75;
   --text:       #1a1a1a;
   --text-md:    #444;
   --muted:      #7a7a7a;
-  --border:     #C9D8F5;
-  --border-lt:  #E8F0FD;
+  --border:     #E8D5B0;
+  --border-lt:  #FAEEDA;
   --radius:     3px;
   --radius-md:  8px;
-  --shadow:     0 2px 20px rgba(27,58,107,0.07);
-  --shadow-md:  0 8px 40px rgba(27,58,107,0.12);
-  --shadow-lg:  0 20px 60px rgba(27,58,107,0.18);
+  --shadow:     0 2px 20px rgba(4,44,83,0.07);
+  --shadow-md:  0 8px 40px rgba(4,44,83,0.12);
+  --shadow-lg:  0 20px 60px rgba(4,44,83,0.18);
   --transition: 0.22s ease;
 }
 
@@ -75,7 +75,7 @@ header {
   align-items: center;
   justify-content: space-between;
   height: 66px;
-  box-shadow: 0 1px 0 rgba(45,107,228,0.2), 0 2px 20px rgba(0,0,0,0.25);
+  box-shadow: 0 1px 0 rgba(186,117,23,0.2), 0 2px 20px rgba(0,0,0,0.25);
 }
 .logo {
   font-family: 'Inter', sans-serif;
@@ -141,7 +141,7 @@ nav ul li a.nav-cta:hover { background: var(--gold-lt); transform: translateY(-1
 footer {
   flex-shrink: 0;
   background: var(--navy);
-  border-top: 1px solid rgba(45,107,228,0.15);
+  border-top: 1px solid rgba(186,117,23,0.15);
 }
 .footer-inner {
   max-width: 1100px;
@@ -218,7 +218,7 @@ footer {
   transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
   text-decoration: none;
 }
-.btn:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(45,107,228,0.35); }
+.btn:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(186,117,23,0.35); }
 .btn-ghost { background: transparent; border: 1.5px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.9); }
 .btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.6); box-shadow: none; }
 .btn-outline-navy { background: transparent; border: 1.5px solid var(--navy); color: var(--navy); }
@@ -247,7 +247,7 @@ footer {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(45,107,228,0.1) 0%, transparent 60%);
+  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(186,117,23,0.1) 0%, transparent 60%);
   pointer-events: none;
 }
 .hero-sm::after {
@@ -294,7 +294,7 @@ footer {
 .form-group textarea:focus,
 .form-group select:focus {
   border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(45,107,228,0.12);
+  box-shadow: 0 0 0 3px rgba(186,117,23,0.12);
 }
 .form-group textarea { resize: vertical; min-height: 130px; }
 
@@ -330,7 +330,7 @@ footer {
     top: 58px !important;
     left: 0 !important; right: 0 !important;
     background: var(--navy) !important;
-    border-top: 1px solid rgba(45,107,228,0.2) !important;
+    border-top: 1px solid rgba(186,117,23,0.2) !important;
     box-shadow: 0 12px 40px rgba(0,0,0,0.4) !important;
     z-index: 199 !important;
   }
@@ -386,8 +386,8 @@ footer {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(45,107,228,0.1) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 70% at 10% 80%, rgba(45,107,228,0.06) 0%, transparent 50%);
+    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(186,117,23,0.1) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 70% at 10% 80%, rgba(186,117,23,0.06) 0%, transparent 50%);
   pointer-events: none;
 }
 .hero-grid {
@@ -417,8 +417,8 @@ footer {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(45,107,228,0.12);
-  border: 1px solid rgba(45,107,228,0.25);
+  background: rgba(186,117,23,0.12);
+  border: 1px solid rgba(186,117,23,0.25);
   color: var(--gold-lt);
   font-size: 0.7rem;
   font-weight: 600;
@@ -480,12 +480,12 @@ footer {
 }
 .hero-stat-card:hover {
   background: rgba(255,255,255,0.08);
-  border-color: rgba(45,107,228,0.3);
+  border-color: rgba(186,117,23,0.3);
 }
 .stat-icon {
   width: 44px; height: 44px;
-  background: rgba(45,107,228,0.12);
-  border: 1px solid rgba(45,107,228,0.2);
+  background: rgba(186,117,23,0.12);
+  border: 1px solid rgba(186,117,23,0.2);
   border-radius: var(--radius);
   display: flex; align-items: center; justify-content: center;
   font-size: 1.2rem;
@@ -576,7 +576,7 @@ footer {
   right: -100px; top: -100px;
   width: 500px; height: 500px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(45,107,228,0.04) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(186,117,23,0.04) 0%, transparent 70%);
   pointer-events: none;
 }
 .offers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
@@ -638,7 +638,7 @@ footer {
   right: -80px; top: -80px;
   width: 320px; height: 320px;
   border-radius: 50%;
-  background: rgba(45,107,228,0.1);
+  background: rgba(186,117,23,0.1);
   pointer-events: none;
 }
 .cta-banner > * { position: relative; z-index: 1; }
