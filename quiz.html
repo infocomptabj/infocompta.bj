@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="auth-init.js"></script>
+  <title>Quiz — InfoCompta</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="infocompta-shared.css">
+  <style>
+/* ═══════════ PAGE QUIZ ═══════════ */
+.quiz-page { padding: 4rem 0 6rem; }
+
+/* ── FILTRES ── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+.filter-btn {
+  padding: 0.4rem 1.1rem;
+  border-radius: 30px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+.filter-btn.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--gold-lt);
+}
+
+/* ── GRILLE DES CARTES ── */
+.quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.4rem;
+}
+
+.quiz-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  position: relative;
+}
+.quiz-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--gold-line); }
+
+.quiz-card-top {
+  background: var(--navy);
+  padding: 1.6rem 1.5rem 1.3rem;
+  position: relative;
+  overflow: hidden;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.quiz-card-top::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 90% 10%, rgba(196,147,58,0.12) 0%, transparent 60%);
+}
+.quiz-card-top::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-lt), transparent);
+}
+.quiz-card-icon {
+  font-size: 1.6rem;
+  position: absolute;
+  top: 1rem; right: 1.2rem;
+  opacity: 0.35;
+}
+.quiz-card-theme {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-lt);
+  margin-bottom: 0.3rem;
+  position: relative;
+  z-index: 1;
+}
+.quiz-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+  position: relative;
+  z-index: 1;
+}
+
+.quiz-card-body { padding: 1.2rem 1.5rem 1.4rem; }
+.quiz-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.quiz-card-meta span { display: flex; align-items: center; gap: 0.3rem; }
+.quiz-card-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.1rem; }
+
+.level-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 9px;
+  border-radius: 20px;
+  border: 1px solid;
+}
+.level-debutant  { background: #edf7f1; border-color: #a3d4b5; color: #1e5c37; }
+.level-intermediaire { background: #fff8e6; border-color: #f0c46a; color: #7a4f00; }
+.level-avance    { background: #fdecea; border-color: #f5b8b3; color: #8b2020; }
+
+.btn-start {
+  width: 100%;
+  padding: 0.6rem;
+  background: var(--gold);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+}
+.btn-start:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+/* ── MODAL QUIZ ── */
+.quiz-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,31,53,0.7);
+  z-index: 9000;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  padding: 1rem;
+}
+.quiz-modal.open { display: flex; }
+
+.quiz-panel {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  animation: popIn 0.25s ease;
+}
+@keyframes popIn { from { opacity:0; transform:scale(0.96) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }
+
+.quiz-panel-header {
+  background: var(--navy);
+  padding: 1.5rem 1.8rem 1.3rem;
+  position: relative;
+  overflow: hidden;
+}
+.quiz-panel-header::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-lt), transparent);
+}
+.quiz-panel-theme {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-lt);
+  margin-bottom: 0.3rem;
+}
+.quiz-panel-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+}
+.quiz-close {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: rgba(255,255,255,0.6);
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition), color var(--transition);
+}
+.quiz-close:hover { background: rgba(255,255,255,0.2); color: #fff; }
+
+/* Barre de progression */
+.quiz-progress-bar {
+  height: 3px;
+  background: var(--border);
+}
+.quiz-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-lt));
+  transition: width 0.4s ease;
+}
+
+.quiz-body { padding: 2rem 1.8rem; }
+
+.quiz-counter {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+.quiz-question {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+  margin-bottom: 1.6rem;
+}
+
+.quiz-options { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1.5rem; }
+.quiz-option {
+  padding: 0.85rem 1.1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--cream);
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.5;
+  transition: border-color var(--transition), background var(--transition);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+.quiz-option:hover:not(.disabled) { border-color: var(--gold); background: var(--gold-pale); }
+.quiz-option.selected { border-color: var(--gold); background: var(--gold-pale); }
+.quiz-option.correct  { border-color: #27ae60; background: #edf7f1; color: #1e5c37; }
+.quiz-option.wrong    { border-color: #e74c3c; background: #fdecea; color: #8b2020; }
+.quiz-option.disabled { cursor: default; }
+.opt-letter {
+  width: 22px; height: 22px; min-width: 22px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  opacity: 0.6;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.quiz-explanation {
+  background: var(--gold-pale);
+  border: 1px solid var(--gold-line);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 0.9rem 1.1rem;
+  font-size: 0.84rem;
+  color: var(--navy);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  display: none;
+}
+.quiz-explanation.show { display: block; }
+.quiz-explanation strong { color: var(--gold); }
+
+.quiz-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+}
+.btn-quiz-nav {
+  padding: 0.65rem 1.5rem;
+  border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-quiz-next {
+  background: var(--gold);
+  color: #fff;
+}
+.btn-quiz-next:hover { background: var(--gold-lt); transform: translateY(-1px); }
+.btn-quiz-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* ── RÉSULTATS ── */
+.quiz-results { padding: 2rem 1.8rem; text-align: center; }
+.result-score-circle {
+  width: 110px; height: 110px;
+  border-radius: 50%;
+  border: 4px solid var(--gold);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  margin: 0 auto 1.5rem;
+  background: var(--gold-pale);
+}
+.result-score-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1;
+}
+.result-score-total { font-size: 0.75rem; color: var(--muted); }
+.result-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+}
+.result-msg { font-size: 0.88rem; color: var(--muted); margin-bottom: 2rem; }
+
+.result-corrections { text-align: left; margin-bottom: 2rem; }
+.result-corrections h4 {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.result-corrections h4::before { content:''; display:block; width:20px; height:1px; background:var(--gold); }
+
+.correction-item {
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius);
+  margin-bottom: 0.6rem;
+  border: 1px solid;
+  font-size: 0.83rem;
+  line-height: 1.55;
+}
+.correction-item.ok   { background: #edf7f1; border-color: #a3d4b5; }
+.correction-item.nok  { background: #fdecea; border-color: #f5b8b3; }
+.correction-item .ci-q { font-weight: 600; color: var(--navy); margin-bottom: 0.3rem; }
+.correction-item .ci-a { font-size: 0.8rem; color: var(--muted); }
+.correction-item .ci-a span { font-weight: 600; }
+.correction-item .ci-a .good { color: #1e5c37; }
+.correction-item .ci-a .bad  { color: #8b2020; }
+
+.result-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--muted);
+}
+.empty-state p { font-size: 0.9rem; margin-top: 0.5rem; }
+
+@media (max-width: 1023px) { .quiz-page { padding: 2.5rem 0 4rem; } }
+@media (max-width: 640px)  {
+  .quiz-grid { grid-template-columns: 1fr; }
+  .quiz-body { padding: 1.5rem 1.2rem; }
+  .quiz-results { padding: 1.5rem 1.2rem; }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Info<span>Compta</span></a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  <nav id="mainNav">
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="plan-comptable.html">Plan Comptable</a></li>
+      <li><a href="documents.html">Documents</a></li>
+      <li><a href="quiz.html" class="active">Quiz</a></li>
+      <li><a href="offres.html">Nos offres</a></li>
+      <li><a href="a-propos.html">À propos</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="auth.html" class="nav-cta">Connexion</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero-sm">
+  <div class="container">
+    <p class="eyebrow" style="color:var(--gold-lt);">Testez vos connaissances</p>
+    <h1>Quiz Comptables</h1>
+    <p>Évaluez votre maîtrise du plan OHADA, de la fiscalité béninoise et des écritures comptables.</p>
+  </div>
+</section>
+
+<main>
+  <section class="quiz-page">
+    <div class="container">
+
+      <!-- FILTRES -->
+      <div class="filter-bar fade-in" id="filterBar">
+        <button class="filter-btn active" data-theme="all">Tous</button>
+        <button class="filter-btn" data-theme="plan">Plan Comptable</button>
+        <button class="filter-btn" data-theme="fiscalite">Fiscalité CGI</button>
+        <button class="filter-btn" data-theme="ecritures">Écritures</button>
+        <button class="filter-btn" data-theme="documents">Documents</button>
+      </div>
+
+      <!-- GRILLE -->
+      <div class="quiz-grid fade-in" id="quizGrid"></div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Info<span>Compta</span></div>
+    <div class="footer-links">
+      <a href="confidentialite.html">Confidentialité</a>
+      <a href="contact.html">Contact</a>
+      <a href="a-propos.html">À propos</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 InfoCompta — Tous droits réservés</p>
+  </div>
+</footer>
+
+<!-- MODAL QUIZ -->
+<div class="quiz-modal" id="quizModal">
+  <div class="quiz-panel" id="quizPanel">
+    <div class="quiz-panel-header">
+      <div class="quiz-panel-theme" id="modalTheme"></div>
+      <div class="quiz-panel-title" id="modalTitle"></div>
+      <button class="quiz-close" onclick="closeQuiz()">✕</button>
+    </div>
+    <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="progressFill"></div></div>
+
+    <!-- VUE QUESTION -->
+    <div id="viewQuestion" class="quiz-body">
+      <div class="quiz-counter" id="qCounter"></div>
+      <div class="quiz-question" id="qText"></div>
+      <div class="quiz-options" id="qOptions"></div>
+      <div class="quiz-explanation" id="qExplanation"></div>
+      <div class="quiz-nav">
+        <button class="btn-quiz-nav btn-quiz-next" id="btnNext" onclick="nextQuestion()" disabled>
+          Suivant →
+        </button>
+      </div>
+    </div>
+
+    <!-- VUE RÉSULTATS -->
+    <div id="viewResults" class="quiz-results" style="display:none;">
+      <div class="result-score-circle">
+        <div class="result-score-num" id="resScore"></div>
+        <div class="result-score-total" id="resTotal"></div>
+      </div>
+      <div class="result-title" id="resTitle"></div>
+      <div class="result-msg" id="resMsg"></div>
+      <div class="result-corrections">
+        <h4>Corrections détaillées</h4>
+        <div id="resCorrections"></div>
+      </div>
+      <div class="result-actions">
+        <button class="btn btn-outline-navy" onclick="restartQuiz()">🔁 Recommencer</button>
+        <button class="btn" onclick="closeQuiz()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   DONNÉES — Quiz InfoCompta
+   Ajoutez/modifiez les questions ici
+══════════════════════════════════════════════ */
+const QUIZZES = [
+
+  /* ── 1. PLAN COMPTABLE ── */
+  {
+    id: 'pc-bases',
+    theme: 'plan',
+    themeLabel: 'Plan Comptable OHADA',
+    icon: '📋',
+    title: 'Les bases du SYSCOHADA',
+    desc: 'Maîtrisez la structure des 9 classes du plan comptable OHADA révisé.',
+    level: 'debutant',
+    questions: [
+      {
+        q: "Combien de classes comporte le plan comptable OHADA (SYSCOHADA révisé) ?",
+        opts: ["7 classes", "8 classes", "9 classes", "10 classes"],
+        answer: 2,
+        expl: "Le SYSCOHADA révisé comporte <strong>9 classes</strong> : classes 1 à 8 pour les comptes de bilan et de résultat, et la classe 9 pour la comptabilité analytique."
+      },
+      {
+        q: "Dans quelle classe du SYSCOHADA se trouvent les capitaux propres ?",
+        opts: ["Classe 1", "Classe 2", "Classe 3", "Classe 4"],
+        answer: 0,
+        expl: "La <strong>Classe 1 — Comptes de ressources durables</strong> regroupe les capitaux propres, les dettes financières et les provisions pour risques."
+      },
+      {
+        q: "Le compte 401 dans le SYSCOHADA correspond à :",
+        opts: ["Clients", "Fournisseurs", "Banques", "Personnel"],
+        answer: 1,
+        expl: "Le compte <strong>401 — Fournisseurs</strong> enregistre les dettes envers les fournisseurs de biens et services. Les clients sont en classe 4 également mais au compte 411."
+      },
+      {
+        q: "Quelle classe regroupe les comptes de trésorerie ?",
+        opts: ["Classe 4", "Classe 5", "Classe 6", "Classe 7"],
+        answer: 1,
+        expl: "La <strong>Classe 5 — Comptes de trésorerie</strong> regroupe les disponibilités : caisse (571), banques (521), chèques postaux (531), etc."
+      },
+      {
+        q: "Le résultat net de l'exercice est la différence entre :",
+        opts: ["Actif et Passif", "Produits (classe 7) et Charges (classe 6)", "Capitaux propres et Dettes", "Immobilisations et Stocks"],
+        answer: 1,
+        expl: "Le résultat net = <strong>Produits (classe 7) − Charges (classe 6)</strong>. Un résultat positif est un bénéfice, négatif une perte."
+      }
+    ]
+  },
+
+  /* ── 2. PLAN COMPTABLE AVANCÉ ── */
+  {
+    id: 'pc-avance',
+    theme: 'plan',
+    themeLabel: 'Plan Comptable OHADA',
+    icon: '📊',
+    title: 'Comptes spécifiques OHADA',
+    desc: 'Approfondissez votre connaissance des comptes particuliers du SYSCOHADA.',
+    level: 'avance',
+    questions: [
+      {
+        q: "Le compte 211 « Terrains » appartient à quelle classe ?",
+        opts: ["Classe 1", "Classe 2", "Classe 3", "Classe 5"],
+        answer: 1,
+        expl: "Le compte <strong>211 — Terrains</strong> est en <strong>Classe 2 — Comptes d'actif immobilisé</strong>. La classe 2 regroupe toutes les immobilisations (corporelles, incorporelles et financières)."
+      },
+      {
+        q: "Quel compte enregistre les amortissements des immobilisations corporelles ?",
+        opts: ["Compte 28x", "Compte 29x", "Compte 39x", "Compte 49x"],
+        answer: 0,
+        expl: "Les <strong>comptes 28x</strong> enregistrent les amortissements des immobilisations. Ex : 2812 pour l'amortissement des matériels et outillages. Les 29x sont pour les dépréciations d'immobilisations."
+      },
+      {
+        q: "Le compte 6011 correspond à :",
+        opts: ["Achats de marchandises", "Achats de matières premières", "Variation de stocks", "Frais de transport"],
+        answer: 1,
+        expl: "Le compte <strong>6011 — Achats de matières premières</strong> enregistre les achats destinés à la production. Le 6010 est pour les achats de marchandises revendues en l'état."
+      },
+      {
+        q: "Dans le SYSCOHADA, le compte 701 enregistre :",
+        opts: ["Ventes de marchandises", "Ventes de produits finis", "Prestations de services", "Produits accessoires"],
+        answer: 1,
+        expl: "Le compte <strong>701 — Ventes de produits finis</strong> enregistre les ventes de produits issus de la fabrication. Le 700 est pour les ventes de marchandises, le 706 pour les prestations de services."
+      },
+      {
+        q: "Quel est le solde normal du compte Fournisseurs (401) ?",
+        opts: ["Débiteur", "Créditeur", "Il n'a pas de solde normal", "Nul en fin d'exercice"],
+        answer: 1,
+        expl: "Le compte <strong>401 — Fournisseurs</strong> a un solde normalement <strong>créditeur</strong>, car il représente une dette envers le fournisseur. Il est débité lors du paiement et crédité lors de la réception de la facture."
+      }
+    ]
+  },
+
+  /* ── 3. FISCALITÉ CGI BÉNIN ── */
+  {
+    id: 'fisc-tva',
+    theme: 'fiscalite',
+    themeLabel: 'Fiscalité CGI Bénin',
+    icon: '🏛️',
+    title: 'TVA au Bénin',
+    desc: 'Taux, exonérations et mécanismes de la TVA selon le CGI béninois.',
+    level: 'intermediaire',
+    questions: [
+      {
+        q: "Quel est le taux normal de la TVA au Bénin ?",
+        opts: ["15%", "16%", "18%", "20%"],
+        answer: 2,
+        expl: "Le taux normal de la <strong>TVA au Bénin est de 18%</strong> selon le Code Général des Impôts (CGI) béninois. C'est le taux applicable à la majorité des opérations imposables."
+      },
+      {
+        q: "Lequel de ces produits est exonéré de TVA au Bénin ?",
+        opts: ["Matériaux de construction", "Produits pétroliers", "Médicaments et produits pharmaceutiques", "Équipements informatiques"],
+        answer: 2,
+        expl: "Les <strong>médicaments et produits pharmaceutiques</strong> sont exonérés de TVA au Bénin. Cette exonération vise à rendre les soins de santé accessibles à tous."
+      },
+      {
+        q: "La TVA collectée par une entreprise est comptabilisée au :",
+        opts: ["Compte 4451 — TVA facturée", "Compte 4452 — TVA récupérable", "Compte 4454 — TVA due", "Compte 6551 — Taxes"],
+        answer: 0,
+        expl: "La <strong>TVA collectée (facturée)</strong> sur les ventes est enregistrée au <strong>compte 4451 — TVA facturée sur ventes</strong>. C'est une dette envers l'État, donc un compte créditeur."
+      },
+      {
+        q: "Quelle est la périodicité de déclaration de la TVA pour les entreprises relevant du régime réel normal au Bénin ?",
+        opts: ["Annuelle", "Trimestrielle", "Mensuelle", "Semestrielle"],
+        answer: 2,
+        expl: "Les entreprises du régime réel normal effectuent une déclaration de TVA <strong>mensuelle</strong>, à déposer avant le 15 du mois suivant, accompagnée du paiement correspondant."
+      },
+      {
+        q: "Le droit à déduction de la TVA ne s'applique pas aux :",
+        opts: ["Achats de matières premières", "Frais de transport de marchandises", "Dépenses de logement et restauration des dirigeants", "Acquisitions de matériel de production"],
+        answer: 2,
+        expl: "Les <strong>dépenses de logement, de restauration et de réception</strong> sont exclues du droit à déduction de TVA au Bénin, car elles sont considérées comme des dépenses à caractère personnel."
+      }
+    ]
+  },
+
+  /* ── 4. FISCALITÉ — IMPÔTS DIRECTS ── */
+  {
+    id: 'fisc-is',
+    theme: 'fiscalite',
+    themeLabel: 'Fiscalité CGI Bénin',
+    icon: '📑',
+    title: 'Impôt sur les Sociétés',
+    desc: 'Taux, assiette et obligations déclaratives de l\'IS au Bénin.',
+    level: 'avance',
+    questions: [
+      {
+        q: "Quel est le taux de l'Impôt sur les Sociétés (IS) au Bénin ?",
+        opts: ["25%", "28%", "30%", "35%"],
+        answer: 2,
+        expl: "Le taux de l'<strong>Impôt sur les Sociétés au Bénin est de 30%</strong> selon le CGI. Ce taux s'applique sur le bénéfice imposable de l'exercice."
+      },
+      {
+        q: "La contribution des patentes au Bénin est calculée sur la base de :",
+        opts: ["Le chiffre d'affaires uniquement", "La valeur locative des locaux professionnels", "Le bénéfice net", "Le capital social"],
+        answer: 1,
+        expl: "La <strong>contribution des patentes</strong> est assise sur la <strong>valeur locative des locaux professionnels</strong>. C'est un impôt local dû par toute personne exerçant une activité commerciale ou industrielle."
+      },
+      {
+        q: "L'acompte d'IS au Bénin est payé :",
+        opts: ["En une seule fois en fin d'année", "En 3 versements trimestriels", "En 12 mensualités", "En 2 versements semestriels"],
+        answer: 1,
+        expl: "L'acompte d'IS est versé en <strong>3 fractions trimestrielles</strong> (avril, juillet, octobre), chacune égale à 1/3 de l'impôt de l'exercice précédent. Le solde est réglé lors du dépôt de la déclaration annuelle."
+      },
+      {
+        q: "Quelle charge n'est PAS déductible de l'assiette de l'IS au Bénin ?",
+        opts: ["Salaires versés aux employés", "Intérêts des emprunts bancaires", "Amendes et pénalités fiscales", "Dotations aux amortissements"],
+        answer: 2,
+        expl: "Les <strong>amendes, pénalités et majorations fiscales</strong> ne sont pas déductibles du résultat imposable. Elles ne constituent pas des charges d'exploitation normales mais des sanctions."
+      },
+      {
+        q: "Le minimum de perception de l'IS au Bénin s'applique lorsque :",
+        opts: ["L'entreprise réalise un bénéfice", "L'entreprise est déficitaire ou son IS calculé est inférieur au minimum", "L'entreprise est en liquidation", "Le chiffre d'affaires dépasse 1 milliard de FCFA"],
+        answer: 1,
+        expl: "Le <strong>minimum de perception</strong> garantit un impôt minimum même en cas de déficit ou de faible bénéfice. Il est calculé sur le chiffre d'affaires et l'entreprise paie le montant le plus élevé entre l'IS calculé et le minimum."
+      }
+    ]
+  },
+
+  /* ── 5. ÉCRITURES COMPTABLES ── */
+  {
+    id: 'ecr-bases',
+    theme: 'ecritures',
+    themeLabel: 'Écritures Comptables',
+    icon: '✍️',
+    title: 'Écritures de base',
+    desc: 'Passez les écritures courantes : achats, ventes, règlements.',
+    level: 'debutant',
+    questions: [
+      {
+        q: "Lors d'un achat de marchandises à crédit (HT : 500 000 FCFA, TVA 18%), on crédite :",
+        opts: ["Le compte 601 — Achats de marchandises", "Le compte 4011 — Fournisseurs", "Le compte 5211 — Banque", "Le compte 4451 — TVA collectée"],
+        answer: 1,
+        expl: "À l'achat à crédit, on <strong>débite</strong> le compte 601 (achat) et 4452 (TVA déductible), et on <strong>crédite le compte 4011 — Fournisseurs</strong> pour le montant TTC (590 000 FCFA)."
+      },
+      {
+        q: "Lors du règlement d'un fournisseur par virement bancaire, on :",
+        opts: [
+          "Débite 4011 Fournisseurs / Crédite 5211 Banque",
+          "Débite 5211 Banque / Crédite 4011 Fournisseurs",
+          "Débite 601 Achats / Crédite 5211 Banque",
+          "Débite 4011 Fournisseurs / Crédite 401 Fournisseurs"
+        ],
+        answer: 0,
+        expl: "Le règlement d'un fournisseur <strong>diminue la dette</strong> (débit 4011) et <strong>diminue la banque</strong> (crédit 5211). Principe : on débite ce qui diminue au passif et crédite ce qui diminue à l'actif."
+      },
+      {
+        q: "La vente de marchandises en espèces (HT 200 000 FCFA, TVA 18%) génère une écriture avec :",
+        opts: [
+          "Débit 5711 Caisse 236 000 / Crédit 7011 Ventes 200 000 et 4451 TVA 36 000",
+          "Débit 7011 Ventes / Crédit 5711 Caisse",
+          "Débit 4111 Clients / Crédit 7011 Ventes",
+          "Débit 5711 Caisse / Crédit 6011 Achats"
+        ],
+        answer: 0,
+        expl: "La vente en espèces : <strong>Débit 5711 Caisse 236 000</strong> (encaissement TTC) / <strong>Crédit 7011 Ventes 200 000</strong> (produit HT) et <strong>Crédit 4451 TVA collectée 36 000</strong> (TVA due à l'État)."
+      },
+      {
+        q: "L'écriture de dotation aux amortissements d'un équipement se traduit par :",
+        opts: [
+          "Débit 681 Dotations / Crédit 28x Amortissements",
+          "Débit 28x Amortissements / Crédit 681 Dotations",
+          "Débit 21x Immobilisations / Crédit 681 Dotations",
+          "Débit 681 Dotations / Crédit 21x Immobilisations"
+        ],
+        answer: 0,
+        expl: "<strong>Débit 681 — Dotations aux amortissements</strong> (charge) / <strong>Crédit 28x — Amortissements</strong> (compte de correction à l'actif). L'immobilisation reste au bilan à sa valeur brute, la dépréciation est portée dans le compte d'amortissement."
+      },
+      {
+        q: "Quelle est la règle fondamentale de la partie double en comptabilité ?",
+        opts: [
+          "Toute recette doit être compensée par une dépense",
+          "Le total des débits doit toujours égaler le total des crédits",
+          "Tout actif doit être financé par un passif de même montant",
+          "Les charges doivent toujours être inférieures aux produits"
+        ],
+        answer: 1,
+        expl: "La <strong>partie double</strong> stipule que pour toute opération, le <strong>total des débits = total des crédits</strong>. C'est le principe fondateur de la comptabilité en partie double, garantissant l'équilibre permanent du bilan."
+      }
+    ]
+  },
+
+  /* ── 6. DOCUMENTS COMPTABLES ── */
+  {
+    id: 'doc-pieces',
+    theme: 'documents',
+    themeLabel: 'Documents & Pièces',
+    icon: '📁',
+    title: 'Pièces justificatives',
+    desc: 'Identifiez et maîtrisez les documents obligatoires en comptabilité OHADA.',
+    level: 'debutant',
+    questions: [
+      {
+        q: "Quel document est obligatoire pour enregistrer un achat en comptabilité ?",
+        opts: ["Un bon de commande", "Une facture fournisseur", "Un devis", "Un bon de livraison"],
+        answer: 1,
+        expl: "La <strong>facture fournisseur</strong> est la pièce justificative obligatoire pour enregistrer un achat. Elle doit mentionner : identité des parties, date, désignation, prix HT, TVA et total TTC."
+      },
+      {
+        q: "Les états financiers annuels obligatoires selon le SYSCOHADA comprennent :",
+        opts: [
+          "Bilan + Compte de résultat uniquement",
+          "Bilan + Compte de résultat + TAFIRE + Notes annexes",
+          "Bilan + Tableau des flux de trésorerie",
+          "Compte de résultat + Tableau de bord"
+        ],
+        answer: 1,
+        expl: "Le SYSCOHADA impose 4 états financiers : <strong>Bilan, Compte de résultat, TAFIRE</strong> (Tableau Financier des Ressources et Emplois) et <strong>Notes annexes</strong>. Le système normal comprend aussi l'État supplémentaire statistique (ESS)."
+      },
+      {
+        q: "La durée légale de conservation des documents comptables au Bénin est de :",
+        opts: ["3 ans", "5 ans", "7 ans", "10 ans"],
+        answer: 3,
+        expl: "Les livres comptables et documents justificatifs doivent être conservés pendant <strong>10 ans</strong> selon le droit OHADA (Acte Uniforme relatif au droit commercial général)."
+      },
+      {
+        q: "Le Grand Livre est :",
+        opts: [
+          "Un registre légal obligatoire listant toutes les opérations par date",
+          "Un registre regroupant tous les comptes avec leurs mouvements débits/crédits",
+          "Un document récapitulant uniquement les soldes de fin d'exercice",
+          "Un livre réservé aux grandes entreprises"
+        ],
+        answer: 1,
+        expl: "Le <strong>Grand Livre</strong> est un registre obligatoire qui regroupe <strong>tous les comptes</strong> de l'entreprise avec le détail de leurs mouvements (débits et crédits). Il permet de suivre l'historique de chaque compte."
+      },
+      {
+        q: "Une note de débit envoyée par un client signifie :",
+        opts: [
+          "Le client demande une réduction de prix sur une facture",
+          "Le client réclame le remboursement d'un trop-perçu",
+          "Le client informe d'un retard de livraison",
+          "Le client confirme la réception de marchandises"
+        ],
+        answer: 1,
+        expl: "Une <strong>note de débit</strong> (ou avis de débit) émise par un client signifie qu'il <strong>réclame un remboursement</strong> ou une correction — par exemple suite à un retour de marchandises défectueuses ou une erreur de facturation."
+      }
+    ]
+  }
+];
+
+/* ══════════════════════════════════════════════
+   ÉTAT GLOBAL DU QUIZ EN COURS
+══════════════════════════════════════════════ */
+let currentQuiz   = null;
+let currentQ      = 0;
+let answers       = [];   // index de la réponse choisie pour chaque question
+
+/* ══════════════════════════════════════════════
+   RENDU DES CARTES
+══════════════════════════════════════════════ */
+function renderCards(theme = 'all') {
+  const grid = document.getElementById('quizGrid');
+  const list = theme === 'all' ? QUIZZES : QUIZZES.filter(q => q.theme === theme);
+  if (!list.length) {
+    grid.innerHTML = '<div class="empty-state"><p>Aucun quiz disponible pour ce thème pour l\'instant.</p></div>';
+    return;
+  }
+  grid.innerHTML = list.map(quiz => {
+    const lvlLabel = { debutant: 'Débutant', intermediaire: 'Intermédiaire', avance: 'Avancé' }[quiz.level];
+    return `
+    <div class="quiz-card" onclick="openQuiz('${quiz.id}')">
+      <div class="quiz-card-top">
+        <div class="quiz-card-icon">${quiz.icon}</div>
+        <div class="quiz-card-theme">${quiz.themeLabel}</div>
+        <div class="quiz-card-title">${quiz.title}</div>
+      </div>
+      <div class="quiz-card-body">
+        <div class="quiz-card-meta">
+          <span>❓ ${quiz.questions.length} questions</span>
+          <span class="level-badge level-${quiz.level}">${lvlLabel}</span>
+        </div>
+        <div class="quiz-card-desc">${quiz.desc}</div>
+        <button class="btn-start">Commencer →</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════
+   OUVRIR UN QUIZ
+══════════════════════════════════════════════ */
+function openQuiz(id) {
+  currentQuiz = QUIZZES.find(q => q.id === id);
+  currentQ    = 0;
+  answers     = new Array(currentQuiz.questions.length).fill(null);
+
+  document.getElementById('modalTheme').textContent = currentQuiz.themeLabel;
+  document.getElementById('modalTitle').textContent = currentQuiz.title;
+  document.getElementById('viewQuestion').style.display = 'block';
+  document.getElementById('viewResults').style.display  = 'none';
+  document.getElementById('quizModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  renderQuestion();
+}
+
+function closeQuiz() {
+  document.getElementById('quizModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ══════════════════════════════════════════════
+   AFFICHER UNE QUESTION
+══════════════════════════════════════════════ */
+function renderQuestion() {
+  const q     = currentQuiz.questions[currentQ];
+  const total = currentQuiz.questions.length;
+  const letters = ['A', 'B', 'C', 'D'];
+
+  document.getElementById('qCounter').textContent = `Question ${currentQ + 1} / ${total}`;
+  document.getElementById('qText').textContent    = q.q;
+  document.getElementById('progressFill').style.width = ((currentQ) / total * 100) + '%';
+
+  const expl = document.getElementById('qExplanation');
+  expl.className = 'quiz-explanation';
+  expl.innerHTML = '';
+
+  document.getElementById('btnNext').disabled = true;
+
+  const optsDiv = document.getElementById('qOptions');
+  optsDiv.innerHTML = q.opts.map((opt, i) => `
+    <div class="quiz-option" onclick="selectOption(${i})" id="opt-${i}">
+      <span class="opt-letter">${letters[i]}</span>
+      <span>${opt}</span>
+    </div>`).join('');
+}
+
+/* ══════════════════════════════════════════════
+   SÉLECTIONNER UNE RÉPONSE
+══════════════════════════════════════════════ */
+function selectOption(idx) {
+  const q     = currentQuiz.questions[currentQ];
+  const opts  = document.querySelectorAll('.quiz-option');
+
+  // Déjà répondu
+  if (opts[0].classList.contains('disabled')) return;
+
+  answers[currentQ] = idx;
+
+  opts.forEach(o => o.classList.add('disabled'));
+  opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+  if (idx !== q.answer) opts[q.answer].classList.add('correct');
+
+  const expl = document.getElementById('qExplanation');
+  expl.innerHTML = (idx === q.answer ? '✅ ' : '❌ ') + q.expl;
+  expl.classList.add('show');
+
+  const isLast = currentQ === currentQuiz.questions.length - 1;
+  const btn = document.getElementById('btnNext');
+  btn.disabled = false;
+  btn.textContent = isLast ? 'Voir les résultats →' : 'Suivant →';
+}
+
+/* ══════════════════════════════════════════════
+   QUESTION SUIVANTE / RÉSULTATS
+══════════════════════════════════════════════ */
+function nextQuestion() {
+  if (currentQ < currentQuiz.questions.length - 1) {
+    currentQ++;
+    renderQuestion();
+    document.getElementById('quizPanel').scrollTop = 0;
+  } else {
+    showResults();
+  }
+}
+
+/* ══════════════════════════════════════════════
+   RÉSULTATS
+══════════════════════════════════════════════ */
+function showResults() {
+  const total  = currentQuiz.questions.length;
+  const score  = answers.filter((a, i) => a === currentQuiz.questions[i].answer).length;
+  const pct    = Math.round(score / total * 100);
+
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('viewQuestion').style.display = 'none';
+  document.getElementById('viewResults').style.display  = 'block';
+
+  document.getElementById('resScore').textContent = score;
+  document.getElementById('resTotal').textContent = '/ ' + total;
+
+  let title, msg;
+  if (pct >= 80) { title = 'Excellent !';    msg = 'Vous maîtrisez très bien ce sujet. Continuez ainsi !'; }
+  else if (pct >= 60) { title = 'Bien joué !'; msg = 'Bonne maîtrise globale. Quelques points à revoir.'; }
+  else if (pct >= 40) { title = 'À retravailler'; msg = 'Des lacunes existent. Consultez vos cours et recommencez.'; }
+  else { title = 'Insuffisant';   msg = 'Ce sujet nécessite une révision approfondie. Courage !'; }
+
+  document.getElementById('resTitle').textContent = title;
+  document.getElementById('resMsg').textContent   = msg;
+
+  const letters = ['A', 'B', 'C', 'D'];
+  const corrDiv = document.getElementById('resCorrections');
+  corrDiv.innerHTML = currentQuiz.questions.map((q, i) => {
+    const chosen  = answers[i];
+    const ok      = chosen === q.answer;
+    return `
+    <div class="correction-item ${ok ? 'ok' : 'nok'}">
+      <div class="ci-q">${ok ? '✅' : '❌'} Q${i+1}. ${q.q}</div>
+      <div class="ci-a">
+        ${!ok && chosen !== null ? `Votre réponse : <span class="bad">${letters[chosen]}. ${q.opts[chosen]}</span><br>` : ''}
+        Bonne réponse : <span class="good">${letters[q.answer]}. ${q.opts[q.answer]}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('quizPanel').scrollTop = 0;
+}
+
+function restartQuiz() {
+  openQuiz(currentQuiz.id);
+}
+
+/* ══════════════════════════════════════════════
+   FILTRES
+══════════════════════════════════════════════ */
+document.getElementById('filterBar').addEventListener('click', function(e) {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards(btn.dataset.theme);
+});
+
+/* Fermer modal en cliquant l'overlay */
+document.getElementById('quizModal').addEventListener('click', function(e) {
+  if (e.target === this) closeQuiz();
+});
+
+/* ══════════════════════════════════════════════
+   HAMBURGER + FADE-IN
+══════════════════════════════════════════════ */
+(function(){
+  var btn=document.getElementById('hamburgerBtn'), nav=document.getElementById('mainNav');
+  if(!btn||!nav)return;
+  btn.addEventListener('click',function(e){e.stopPropagation();var o=nav.classList.toggle('open');btn.classList.toggle('open',o);});
+  nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');btn.classList.remove('open');});});
+  document.addEventListener('click',function(e){if(!nav.contains(e.target)&&e.target!==btn&&!btn.contains(e.target)){nav.classList.remove('open');btn.classList.remove('open');}});
+  var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(function(el){obs.observe(el);});
+})();
+
+/* Rendu initial */
+renderCards();
+</script>
+</body>
+</html>
