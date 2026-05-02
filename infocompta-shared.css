@@ -43,8 +43,8 @@ body {
   font-size: 16px;
   line-height: 1.7;
   min-height: 100vh;
-  /* ── IMPORTANT : display:block pour compatibilité FedaPay ──
-     display:flex causait un décalage de l'iframe FedaPay hors écran */
+  /* ── IMPORTANT : display:flex pour coller le footer en bas ──
+     compatible FedaPay grâce aux surcharges z-index dans auth-init.js */
   display: flex;
   flex-direction: column;
   -webkit-font-smoothing: antialiased;
@@ -53,6 +53,17 @@ body {
 html {
   height: 100%;
 }
+
+/* ═══════════ POLICE SANS-SERIF GLOBALE ═══════════ */
+/* Toutes les balises texte héritent de DM Sans (sans-serif).
+   Seuls les titres h1–h4 et les éléments de marque gardent Cormorant Garamond. */
+*, *::before, *::after {
+  font-family: inherit;
+}
+input, textarea, select, button {
+  font-family: 'DM Sans', sans-serif;
+}
+
 h1, h2, h3, h4 {
   font-family: 'Cormorant Garamond', serif;
   font-weight: 700;
@@ -141,6 +152,8 @@ footer {
   flex-shrink: 0;
   background: var(--navy);
   border-top: 1px solid rgba(196,147,58,0.15);
+  /* Centrage horizontal du contenu */
+  text-align: center;
 }
 .footer-inner {
   max-width: 1100px;
@@ -148,9 +161,9 @@ footer {
   padding: 2.5rem 2.5rem 2rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.5rem 3rem;
 }
 .footer-logo {
   font-family: 'Cormorant Garamond', serif;
@@ -351,7 +364,7 @@ footer {
   .hero-sm { padding: 2.5rem 0; }
   .hero-sm h1 { font-size: 1.6rem; }
   .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 1rem; }
-  .footer-inner { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
+  .footer-inner { flex-direction: column; align-items: center; gap: 1rem; text-align: center; }
 }
 @media (max-width: 640px) {
   .hero-sm h1 { font-size: 1.4rem; }
