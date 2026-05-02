@@ -342,6 +342,101 @@ footer strong { color: var(--gold-lt); font-weight: 500; }
   .auth-right { padding: 2.5rem 1.4rem; }
   header { height: 58px; }
 }
+
+/* FORM 2 COLONNES (inscription) */
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+.form-group select {
+  width: 100%;
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  appearance: none;
+  cursor: pointer;
+}
+.form-group select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(196,147,58,0.12);
+}
+
+/* Notice email activation */
+.reg-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background: var(--gold-pale);
+  border: 1px solid rgba(196,147,58,0.3);
+  border-radius: var(--radius);
+  padding: 0.7rem 0.9rem;
+  font-size: 0.8rem;
+  color: #5a3e10;
+  margin-bottom: 1.3rem;
+  line-height: 1.5;
+}
+.reg-notice svg { flex-shrink: 0; margin-top: 2px; stroke: var(--gold); }
+
+/* Label optionnel */
+.opt-label { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--muted); font-size: 0.7rem; }
+
+/* Checkbox CGU */
+.cgu-check { margin-top: 0.8rem; }
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+.checkbox-label input[type="checkbox"] { display: none; }
+.checkmark {
+  width: 17px; height: 17px;
+  min-width: 17px;
+  border: 1.5px solid var(--border);
+  border-radius: 3px;
+  background: var(--cream);
+  margin-top: 2px;
+  transition: background var(--transition), border-color var(--transition);
+  display: flex; align-items: center; justify-content: center;
+}
+.checkbox-label input:checked + .checkmark {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.checkbox-label input:checked + .checkmark::after {
+  content: "";
+  display: block;
+  width: 4px; height: 8px;
+  border: 2px solid #fff;
+  border-top: none; border-left: none;
+  transform: rotate(45deg) translateY(-1px);
+}
+.checkbox-label a { color: var(--gold); }
+.checkbox-label a:hover { color: var(--navy); }
+
+/* Message sécurité bas de formulaire */
+.reg-secure {
+  font-size: 0.73rem;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 1rem;
+  line-height: 1.5;
+}
+.reg-secure strong { color: var(--navy); }
+
+@media (max-width: 480px) {
+  .form-row-2 { grid-template-columns: 1fr; }
+}
   </style>
 </head>
 <body>
@@ -430,32 +525,92 @@ footer strong { color: var(--gold-lt); font-weight: 500; }
       <div id="formRegister" style="display:none;">
         <h2 class="form-title">Créer un compte</h2>
         <p class="form-sub">Rejoignez InfoCompta gratuitement</p>
-        <div class="form-group">
-          <label for="regName">Nom complet</label>
-          <input type="text" id="regName" placeholder="Jean Dupont" autocomplete="name">
+
+        <div class="reg-notice">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Après inscription, vous recevrez un <strong>lien d'activation</strong> dans votre boîte mail.
         </div>
-        <div class="form-group">
-          <label for="regEmail">Adresse email</label>
-          <input type="email" id="regEmail" placeholder="vous@exemple.com" autocomplete="email">
-        </div>
-        <div class="form-group">
-          <label for="regPass">Mot de passe</label>
-          <div class="pass-wrap">
-            <input type="password" id="regPass" placeholder="Min. 8 caractères" oninput="checkStrength(this.value)" autocomplete="new-password">
-            <button type="button" class="pass-toggle" onclick="togglePass('regPass',this)" tabindex="-1">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="regPrenom">Prénom *</label>
+            <input type="text" id="regPrenom" placeholder="Jean" autocomplete="given-name">
           </div>
-          <div class="strength-wrap">
-            <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
-            <p class="strength-label" id="strengthLabel"></p>
+          <div class="form-group">
+            <label for="regNom">Nom *</label>
+            <input type="text" id="regNom" placeholder="Dupont" autocomplete="family-name">
           </div>
         </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="regEmail">Email *</label>
+            <input type="email" id="regEmail" placeholder="vous@exemple.com" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="regPhone">Téléphone <span class="opt-label">(optionnel)</span></label>
+            <input type="tel" id="regPhone" placeholder="+229 01 00 00 00" autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regPays">Pays *</label>
+          <select id="regPays" autocomplete="country">
+            <option value="">— Sélectionnez votre pays —</option>
+            <option value="BJ" selected>🇧🇯 Bénin</option>
+            <option value="TG">🇹🇬 Togo</option>
+            <option value="CI">🇨🇮 Côte d'Ivoire</option>
+            <option value="SN">🇸🇳 Sénégal</option>
+            <option value="CM">🇨🇲 Cameroun</option>
+            <option value="BF">🇧🇫 Burkina Faso</option>
+            <option value="ML">🇲🇱 Mali</option>
+            <option value="NE">🇳🇪 Niger</option>
+            <option value="GN">🇬🇳 Guinée</option>
+            <option value="GA">🇬🇦 Gabon</option>
+            <option value="CG">🇨🇬 Congo</option>
+            <option value="CD">🇨🇩 RD Congo</option>
+            <option value="OTHER">🌍 Autre pays OHADA</option>
+          </select>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="regPass">Mot de passe *</label>
+            <div class="pass-wrap">
+              <input type="password" id="regPass" placeholder="Min. 8 caractères" oninput="checkStrength(this.value)" autocomplete="new-password">
+              <button type="button" class="pass-toggle" onclick="togglePass('regPass',this)" tabindex="-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regPassConfirm">Confirmer *</label>
+            <div class="pass-wrap">
+              <input type="password" id="regPassConfirm" placeholder="Répétez" autocomplete="new-password">
+              <button type="button" class="pass-toggle" onclick="togglePass('regPassConfirm',this)" tabindex="-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="strength-wrap">
+          <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+          <p class="strength-label" id="strengthLabel"></p>
+        </div>
+
+        <div class="form-group cgu-check">
+          <label class="checkbox-label">
+            <input type="checkbox" id="regCgu">
+            <span class="checkmark"></span>
+            <span>J'accepte la <a href="confidentialite.html">politique de confidentialité</a> *</span>
+          </label>
+        </div>
+
         <button class="btn-auth" id="btnRegister" onclick="doRegister()">
           <span class="spinner" id="spinnerRegister"></span>
           Créer mon compte
         </button>
-        <p class="cgu">En créant un compte, vous acceptez nos <a href="#">conditions d'utilisation</a> et notre <a href="confidentialite.html">politique de confidentialité</a>.</p>
+        <p class="reg-secure">🔒 Vos données sont <strong>chiffrées</strong>. Accès uniquement après validation e-mail.</p>
       </div>
 
       <!-- MOT DE PASSE OUBLIÉ -->
