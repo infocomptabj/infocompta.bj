@@ -3,274 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="auth-init.js"></script>
   <title>Nos Offres — InfoCompta</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="infocompta-shared.css">
 
   <!-- SDK FedaPay -->
   <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
 
   <style>
-/* ═══════════════════════════════════════
-   INFOCOMPTA — Design System v2
-   Palette : crème · marine profond · or
-   Typo    : Cormorant Garamond + DM Sans
-═══════════════════════════════════════ */
-
-:root {
-  --cream:      #FAF8F3;
-  --cream-dk:   #F2EFE7;
-  --surface:    #FFFFFF;
-  --navy:       #0F1F35;
-  --navy-mid:   #1a2e4a;
-  --navy-lt:    #243d5c;
-  --gold:       #C4933A;
-  --gold-lt:    #D9B060;
-  --gold-pale:  #F7EDD4;
-  --gold-line:  rgba(196,147,58,0.25);
-  --text:       #1a1a1a;
-  --text-md:    #444;
-  --muted:      #7a7a7a;
-  --border:     #E5E0D6;
-  --border-lt:  #EEEBE4;
-  --radius:     3px;
-  --radius-md:  8px;
-  --shadow:     0 2px 20px rgba(15,31,53,0.07);
-  --shadow-md:  0 8px 40px rgba(15,31,53,0.12);
-  --shadow-lg:  0 20px 60px rgba(15,31,53,0.18);
-  --transition: 0.22s ease;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
-
-body {
-  background: var(--cream);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 400;
-  line-height: 1.7;
-  min-height: 100vh;
-  /* display:block pour compatibilité FedaPay iframe */
-  display: block;
-  -webkit-font-smoothing: antialiased;
-}
-
-h1, h2, h3, h4 {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 700;
-  line-height: 1.15;
-  color: var(--navy);
-}
-p { color: var(--text-md); }
-a { text-decoration: none; color: inherit; }
-main { flex: 1; }
-
-/* ═══════════ HEADER ═══════════ */
-header {
-  background: var(--navy);
-  padding: 0 3.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 66px;
-  box-shadow: 0 1px 0 rgba(196,147,58,0.2), 0 2px 20px rgba(0,0,0,0.25);
-}
-.logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.01em;
-  flex-shrink: 0;
-}
-.logo span { color: var(--gold-lt); }
-
-nav ul { list-style: none; display: flex; align-items: center; gap: 0.1rem; }
-nav ul li a {
-  color: rgba(255,255,255,0.62);
-  font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.45rem 0.95rem;
-  border-radius: var(--radius);
-  transition: color var(--transition), background var(--transition);
-  display: block;
-}
-nav ul li a:hover  { color: #fff; background: rgba(255,255,255,0.07); }
-nav ul li a.active { color: var(--gold-lt); }
-nav ul li a.nav-cta {
-  background: var(--gold);
-  color: #fff;
-  padding: 0.4rem 1.1rem;
-  border-radius: var(--radius);
-  font-weight: 500;
-  margin-left: 0.5rem;
-  transition: background var(--transition), transform var(--transition);
-}
-nav ul li a.nav-cta:hover { background: var(--gold-lt); transform: translateY(-1px); }
-
-/* Hamburger */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  padding: 8px 6px;
-  background: none;
-  border: none;
-  z-index: 300;
-  margin-left: auto;
-}
-.hamburger span {
-  display: block;
-  width: 24px;
-  height: 1.5px;
-  background: rgba(255,255,255,0.85);
-  border-radius: 2px;
-  transition: all 0.28s ease;
-  transform-origin: center;
-}
-.hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-/* ═══════════ FOOTER ═══════════ */
-footer {
-  background: var(--navy);
-  border-top: 1px solid rgba(196,147,58,0.15);
-}
-.footer-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2.5rem 2.5rem 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-.footer-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: rgba(255,255,255,0.5);
-}
-.footer-logo span { color: var(--gold-lt); }
-.footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.35); letter-spacing: 0.04em; }
-.footer-links { display: flex; gap: 1.5rem; }
-.footer-links a { font-size: 0.78rem; color: rgba(255,255,255,0.4); transition: color var(--transition); }
-.footer-links a:hover { color: var(--gold-lt); }
-
-/* ═══════════ UTILITAIRES ═══════════ */
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 2.5rem;
-}
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 0.8rem;
-}
-.eyebrow::before {
-  content: '';
-  display: block;
-  width: 20px;
-  height: 1px;
-  background: var(--gold);
-  flex-shrink: 0;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--gold);
-  color: #fff;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.8rem 2rem;
-  border-radius: var(--radius);
-  border: none;
-  cursor: pointer;
-  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
-  text-decoration: none;
-}
-.btn:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(196,147,58,0.35); }
-
-/* FADE-IN */
-.fade-in {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-.fade-in.visible { opacity: 1; transform: translateY(0); }
-
-/* ═══════════ HERO SM ═══════════ */
-.hero-sm {
-  background: var(--navy);
-  padding: 3.5rem 0;
-  color: #fff;
-  position: relative;
-  overflow: hidden;
-}
-.hero-sm::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(196,147,58,0.07) 0%, transparent 60%);
-  pointer-events: none;
-}
-.hero-sm::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold) 30%, var(--gold-lt) 60%, transparent);
-}
-.hero-sm > .container { position: relative; z-index: 1; }
-.hero-sm h1 { color: #fff; font-size: clamp(1.7rem, 3vw, 2.4rem); margin-bottom: 0.5rem; }
-.hero-sm p  { color: rgba(255,255,255,0.6); font-size: 0.95rem; }
-
 /* ═══════════ PAGE OFFRES ═══════════ */
-.offers-page {
-  padding: 5rem 0 6rem;
-}
+.offers-page { padding: 5rem 0 6rem; }
 
-.section-header {
-  margin-bottom: 3rem;
-  max-width: 560px;
-}
-.section-header h2 {
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
-  margin-bottom: 0.5rem;
-}
-.section-header p { font-size: 0.92rem; color: var(--muted); }
-
-/* Grille des offres */
 .offers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.25rem;
 }
 
-/* Carte individuelle */
 .offer-card {
   background: var(--surface);
   border: 1.5px solid var(--border);
@@ -293,14 +43,9 @@ footer {
   transform-origin: left;
   transition: transform 0.3s ease;
 }
-.offer-card:hover {
-  border-color: var(--gold-line);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-4px);
-}
+.offer-card:hover { border-color: var(--gold-line); box-shadow: var(--shadow-md); transform: translateY(-4px); }
 .offer-card:hover::before { transform: scaleX(1); }
 
-/* Badge catégorie */
 .badge {
   display: inline-block;
   font-size: 0.68rem;
@@ -323,12 +68,7 @@ footer {
   line-height: 1.3;
 }
 
-.offer-desc {
-  font-size: 0.84rem;
-  color: var(--muted);
-  line-height: 1.65;
-  flex: 1;
-}
+.offer-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.65; flex: 1; }
 
 .offer-price {
   font-family: 'Cormorant Garamond', serif;
@@ -362,11 +102,7 @@ footer {
   transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
   width: 100%;
 }
-.btn-buy:hover {
-  background: var(--gold-lt);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(196,147,58,0.35);
-}
+.btn-buy:hover { background: var(--gold-lt); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(196,147,58,0.35); }
 
 /* ═══════════ MODAL SUCCÈS ═══════════ */
 .modal-overlay {
@@ -402,18 +138,8 @@ footer {
 }
 
 .modal-icon { font-size: 2.8rem; margin-bottom: 1rem; }
-
-.modal-box h3 {
-  font-size: 1.4rem;
-  margin-bottom: 0.5rem;
-  color: var(--navy);
-}
-.modal-box p {
-  font-size: 0.88rem;
-  color: var(--muted);
-  margin-bottom: 1.8rem;
-  line-height: 1.6;
-}
+.modal-box h3 { font-size: 1.4rem; margin-bottom: 0.5rem; color: var(--navy); }
+.modal-box p { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.8rem; line-height: 1.6; }
 
 .modal-download {
   display: inline-flex;
@@ -447,49 +173,12 @@ footer {
 }
 .modal-close:hover { color: var(--navy); }
 
-/* ═══════════ RESPONSIVE ═══════════ */
-@media (max-width: 1023px) {
-  header { padding: 0 1.2rem; height: 58px; }
-  .logo  { font-size: 1.3rem; }
-  nav { display: none !important; }
-  nav.open {
-    display: block !important;
-    position: fixed !important;
-    top: 58px !important;
-    left: 0 !important; right: 0 !important;
-    background: var(--navy) !important;
-    border-top: 1px solid rgba(196,147,58,0.2) !important;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.4) !important;
-    z-index: 199 !important;
-  }
-  nav.open ul { flex-direction: column !important; gap: 0 !important; padding: 0.5rem 0 !important; }
-  nav.open ul li a {
-    padding: 1rem 1.8rem !important;
-    font-size: 0.85rem !important;
-    border-radius: 0 !important;
-    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
-    display: block !important;
-  }
-  nav.open ul li a.nav-cta {
-    margin: 0.7rem 1.2rem !important;
-    border-radius: var(--radius) !important;
-    text-align: center !important;
-  }
-  .hamburger { display: flex; }
-  .container { padding: 0 1.2rem; }
-  .hero-sm { padding: 2.5rem 0; }
-  .footer-inner { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
-  .offers-page { padding: 3.5rem 0 4rem; }
-}
-@media (max-width: 640px) {
-  .hero-sm h1 { font-size: 1.4rem; }
-  .offers-grid { grid-template-columns: 1fr; }
-}
+@media (max-width: 1023px) { .offers-page { padding: 3.5rem 0 4rem; } }
+@media (max-width: 640px)  { .offers-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
 <header>
   <a href="index.html" class="logo">Info<span>Compta</span></a>
   <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
@@ -508,27 +197,22 @@ footer {
   </nav>
 </header>
 
+<section class="hero-sm">
+  <div class="container">
+    <p class="eyebrow" style="color:var(--gold-lt);">Nos services</p>
+    <h1>Nos offres</h1>
+    <p>Téléchargement instantané après paiement sécurisé via FedaPay</p>
+  </div>
+</section>
+
 <main>
-
-  <!-- ── HERO ── -->
-  <section class="hero-sm">
-    <div class="container">
-      <p class="eyebrow">Nos services</p>
-      <h1>Nos offres</h1>
-      <p>Téléchargement instantané après paiement sécurisé via FedaPay</p>
-    </div>
-  </section>
-
-  <!-- ── GRILLE DES OFFRES ── -->
   <section class="offers-page">
     <div class="container">
       <div class="offers-grid fade-in" id="offersGrid"></div>
     </div>
   </section>
-
 </main>
 
-<!-- ── FOOTER ── -->
 <footer>
   <div class="footer-inner">
     <div class="footer-logo">Info<span>Compta</span></div>
@@ -541,7 +225,6 @@ footer {
   </div>
 </footer>
 
-<!-- Modal après paiement réussi -->
 <div class="modal-overlay" id="successModal">
   <div class="modal-box">
     <div class="modal-icon">✅</div>
@@ -553,65 +236,18 @@ footer {
 </div>
 
 <script>
-// ================================================================
-// CONFIGURATION — À MODIFIER SELON VOS DOCUMENTS
-// ================================================================
-const FEDAPAY_PUBLIC_KEY = "pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg"; // ← Remplacez par votre clé FedaPay
-const FEDAPAY_ENV = "sandbox"; // ← "sandbox" pour test, "live" pour production
+const FEDAPAY_PUBLIC_KEY = "pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg";
+const FEDAPAY_ENV = "sandbox";
 
 const offers = [
-  {
-    badge: "Juridique",
-    title: "Modèle de contrat de travail CDI",
-    price: 2500,
-    devise: "XOF",
-    desc: "Contrat conforme au droit béninois, prêt à personnaliser.",
-    downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-1.com"
-  },
-  {
-    badge: "Comptabilité",
-    title: "Plan comptable OHADA commenté",
-    price: 3500,
-    devise: "XOF",
-    desc: "Document complet avec notes explicatives et exemples pratiques.",
-    downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-2.com"
-  },
-  {
-    badge: "Business",
-    title: "Template de plan d'affaires",
-    price: 4000,
-    devise: "XOF",
-    desc: "Structure complète pour présenter votre projet à des investisseurs.",
-    downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-3.com"
-  },
-  {
-    badge: "Académique",
-    title: "Guide de rédaction de mémoire",
-    price: 1500,
-    devise: "XOF",
-    desc: "Méthodologie et modèles pour rédiger un mémoire de qualité.",
-    downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-4.com"
-  },
-  {
-    badge: "Immobilier",
-    title: "Contrat de bail d'habitation",
-    price: 2000,
-    devise: "XOF",
-    desc: "Modèle légal de contrat de location pour propriétaires et locataires.",
-    downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-5.com"
-  },
-  {
-    badge: "RH",
-    title: "Kit de fiches de paie OHADA",
-    price: 5000,
-    devise: "XOF",
-    desc: "Pack de 12 modèles mensuels avec calculs automatiques intégrés.",
-    downloadUrl: "https://LIEN-TELECHARGEMENT-DOCUMENT-6.com"
-  }
+  { badge:"Juridique",    title:"Modèle de contrat de travail CDI",  price:2500, devise:"XOF", desc:"Contrat conforme au droit béninois, prêt à personnaliser.",                              downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-1.com" },
+  { badge:"Comptabilité", title:"Plan comptable OHADA commenté",      price:3500, devise:"XOF", desc:"Document complet avec notes explicatives et exemples pratiques.",                        downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-2.com" },
+  { badge:"Business",     title:"Template de plan d'affaires",        price:4000, devise:"XOF", desc:"Structure complète pour présenter votre projet à des investisseurs.",                    downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-3.com" },
+  { badge:"Académique",   title:"Guide de rédaction de mémoire",      price:1500, devise:"XOF", desc:"Méthodologie et modèles pour rédiger un mémoire de qualité.",                           downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-4.com" },
+  { badge:"Immobilier",   title:"Contrat de bail d'habitation",       price:2000, devise:"XOF", desc:"Modèle légal de contrat de location pour propriétaires et locataires.",                  downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-5.com" },
+  { badge:"RH",           title:"Kit de fiches de paie OHADA",        price:5000, devise:"XOF", desc:"Pack de 12 modèles mensuels avec calculs automatiques intégrés.",                       downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-6.com" }
 ];
-// ================================================================
 
-// Génération des cartes
 const grid = document.getElementById('offersGrid');
 offers.forEach((o, index) => {
   const card = document.createElement('div');
@@ -626,22 +262,15 @@ offers.forEach((o, index) => {
   grid.appendChild(card);
 });
 
-// Lancement du popup FedaPay
 function payerDocument(index) {
   const doc = offers[index];
   FedaPay.init({
     public_key: FEDAPAY_PUBLIC_KEY,
-    transaction: {
-      amount: doc.price,
-      description: doc.title
-    },
+    transaction: { amount: doc.price, description: doc.title },
     currency: { iso: doc.devise },
     onComplete: function(resp) {
-      if (resp.reason === FedaPay.DIALOG_DISMISSED) {
-        console.log("Paiement annulé.");
-      } else {
-        ouvrirModal(doc.downloadUrl);
-      }
+      if (resp.reason === FedaPay.DIALOG_DISMISSED) { console.log("Paiement annulé."); }
+      else { ouvrirModal(doc.downloadUrl); }
     }
   }).open();
 }
@@ -650,12 +279,10 @@ function ouvrirModal(url) {
   document.getElementById('downloadLink').href = url;
   document.getElementById('successModal').classList.add('active');
 }
-
 function closeModal() {
   document.getElementById('successModal').classList.remove('active');
 }
 
-// ── Hamburger ──
 (function () {
   var btn = document.getElementById('hamburgerBtn');
   var nav = document.getElementById('mainNav');
@@ -667,33 +294,20 @@ function closeModal() {
       btn.setAttribute('aria-expanded', isOpen);
     });
     nav.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () {
-        nav.classList.remove('open');
-        btn.classList.remove('open');
-        btn.setAttribute('aria-expanded', false);
-      });
+      a.addEventListener('click', function () { nav.classList.remove('open'); btn.classList.remove('open'); btn.setAttribute('aria-expanded', false); });
     });
     document.addEventListener('click', function (e) {
       if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
-        nav.classList.remove('open');
-        btn.classList.remove('open');
-        btn.setAttribute('aria-expanded', false);
+        nav.classList.remove('open'); btn.classList.remove('open'); btn.setAttribute('aria-expanded', false);
       }
     });
   }
-
-  // Scroll fade-in
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
     });
   }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-in').forEach(function (el) {
-    observer.observe(el);
-  });
+  document.querySelectorAll('.fade-in').forEach(function (el) { observer.observe(el); });
 })();
 </script>
 
