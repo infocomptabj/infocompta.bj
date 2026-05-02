@@ -1,34 +1,35 @@
 /* ═══════════════════════════════════════════════════════
    infocompta-shared.css — Design System v2
-   Palette : crème · marine profond · or
-   Typo    : Cormorant Garamond + DM Sans
+   Palette : Autorité Bleue (#1B3A6B · #2D6BE4 · #E8F0FD · #27AE60)
+   Typo    : Inter 400 / 500 / 700
    À inclure sur toutes les pages (remplace les styles inline)
 ═══════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* ═══════════ VARIABLES ═══════════ */
 :root {
-  --cream:      #FAF8F3;
-  --cream-dk:   #F2EFE7;
+  --cream:      #F5F6FA;
+  --cream-dk:   #E8F0FD;
   --surface:    #FFFFFF;
-  --navy:       #0F1F35;
-  --navy-mid:   #1a2e4a;
-  --navy-lt:    #243d5c;
-  --gold:       #C4933A;
-  --gold-lt:    #D9B060;
-  --gold-pale:  #F7EDD4;
-  --gold-line:  rgba(196,147,58,0.25);
+  --navy:       #1B3A6B;
+  --navy-mid:   #1e4580;
+  --navy-lt:    #2450a0;
+  --gold:       #2D6BE4;
+  --gold-lt:    #5B8EEC;
+  --gold-pale:  #E8F0FD;
+  --gold-line:  rgba(45,107,228,0.25);
+  --success:    #27AE60;
   --text:       #1a1a1a;
   --text-md:    #444;
   --muted:      #7a7a7a;
-  --border:     #E5E0D6;
-  --border-lt:  #EEEBE4;
+  --border:     #C9D8F5;
+  --border-lt:  #E8F0FD;
   --radius:     3px;
   --radius-md:  8px;
-  --shadow:     0 2px 20px rgba(15,31,53,0.07);
-  --shadow-md:  0 8px 40px rgba(15,31,53,0.12);
-  --shadow-lg:  0 20px 60px rgba(15,31,53,0.18);
+  --shadow:     0 2px 20px rgba(27,58,107,0.07);
+  --shadow-md:  0 8px 40px rgba(27,58,107,0.12);
+  --shadow-lg:  0 20px 60px rgba(27,58,107,0.18);
   --transition: 0.22s ease;
 }
 
@@ -38,13 +39,13 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--cream);
   color: var(--text);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.7;
   min-height: 100vh;
-  /* ── IMPORTANT : display:flex pour coller le footer en bas ──
-     compatible FedaPay grâce aux surcharges z-index dans auth-init.js */
+  /* ── IMPORTANT : display:block pour compatibilité FedaPay ──
+     display:flex causait un décalage de l'iframe FedaPay hors écran */
   display: flex;
   flex-direction: column;
   -webkit-font-smoothing: antialiased;
@@ -53,19 +54,8 @@ body {
 html {
   height: 100%;
 }
-
-/* ═══════════ POLICE SANS-SERIF GLOBALE ═══════════ */
-/* Toutes les balises texte héritent de DM Sans (sans-serif).
-   Seuls les titres h1–h4 et les éléments de marque gardent Cormorant Garamond. */
-*, *::before, *::after {
-  font-family: inherit;
-}
-input, textarea, select, button {
-  font-family: 'DM Sans', sans-serif;
-}
-
 h1, h2, h3, h4 {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
   line-height: 1.15;
   color: var(--navy);
@@ -85,10 +75,10 @@ header {
   align-items: center;
   justify-content: space-between;
   height: 66px;
-  box-shadow: 0 1px 0 rgba(196,147,58,0.2), 0 2px 20px rgba(0,0,0,0.25);
+  box-shadow: 0 1px 0 rgba(45,107,228,0.2), 0 2px 20px rgba(0,0,0,0.25);
 }
 .logo {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.6rem;
   font-weight: 700;
   color: #fff;
@@ -151,9 +141,7 @@ nav ul li a.nav-cta:hover { background: var(--gold-lt); transform: translateY(-1
 footer {
   flex-shrink: 0;
   background: var(--navy);
-  border-top: 1px solid rgba(196,147,58,0.15);
-  /* Centrage horizontal du contenu */
-  text-align: center;
+  border-top: 1px solid rgba(45,107,228,0.15);
 }
 .footer-inner {
   max-width: 1100px;
@@ -161,12 +149,12 @@ footer {
   padding: 2.5rem 2.5rem 2rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 1.5rem 3rem;
+  gap: 1rem;
 }
 .footer-logo {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   color: rgba(255,255,255,0.5);
@@ -218,7 +206,7 @@ footer {
   gap: 0.5rem;
   background: var(--gold);
   color: #fff;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -230,11 +218,11 @@ footer {
   transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
   text-decoration: none;
 }
-.btn:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(196,147,58,0.35); }
+.btn:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(45,107,228,0.35); }
 .btn-ghost { background: transparent; border: 1.5px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.9); }
 .btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.6); box-shadow: none; }
 .btn-outline-navy { background: transparent; border: 1.5px solid var(--navy); color: var(--navy); }
-.btn-outline-navy:hover { background: var(--navy); color: #fff; box-shadow: 0 6px 20px rgba(15,31,53,0.2); }
+.btn-outline-navy:hover { background: var(--navy); color: #fff; box-shadow: 0 6px 20px rgba(27,58,107,0.2); }
 
 /* CARD */
 .card {
@@ -259,7 +247,7 @@ footer {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(196,147,58,0.07) 0%, transparent 60%);
+  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(45,107,228,0.1) 0%, transparent 60%);
   pointer-events: none;
 }
 .hero-sm::after {
@@ -295,7 +283,7 @@ footer {
   background: var(--cream);
   border: 1.5px solid var(--border);
   color: var(--text);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
   padding: 0.7rem 1rem;
   border-radius: var(--radius);
@@ -306,7 +294,7 @@ footer {
 .form-group textarea:focus,
 .form-group select:focus {
   border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(196,147,58,0.12);
+  box-shadow: 0 0 0 3px rgba(45,107,228,0.12);
 }
 .form-group textarea { resize: vertical; min-height: 130px; }
 
@@ -342,7 +330,7 @@ footer {
     top: 58px !important;
     left: 0 !important; right: 0 !important;
     background: var(--navy) !important;
-    border-top: 1px solid rgba(196,147,58,0.2) !important;
+    border-top: 1px solid rgba(45,107,228,0.2) !important;
     box-shadow: 0 12px 40px rgba(0,0,0,0.4) !important;
     z-index: 199 !important;
   }
@@ -364,7 +352,7 @@ footer {
   .hero-sm { padding: 2.5rem 0; }
   .hero-sm h1 { font-size: 1.6rem; }
   .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 1rem; }
-  .footer-inner { flex-direction: column; align-items: center; gap: 1rem; text-align: center; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
 }
 @media (max-width: 640px) {
   .hero-sm h1 { font-size: 1.4rem; }
