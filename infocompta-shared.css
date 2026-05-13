@@ -58,6 +58,14 @@
   --border-lt:   #E6F1FB;
   --border-dark: rgba(255,255,255,0.12);
 
+  /* ── Alias rétrocompatibilité --gold* (offres.html) → ambre ── */
+  /* Permet aux inline styles existants (ex: color:var(--gold-lt)) de */
+  /* continuer à fonctionner sans modifier le HTML.                    */
+  --gold:      var(--orange);
+  --gold-lt:   var(--orange-lt);
+  --gold-pale: var(--orange-pale);
+  --gold-line: var(--orange-line);
+
   /* ── Effets ── */
   --radius:      4px;
   --radius-md:   10px;
@@ -982,3 +990,225 @@ footer {
   .hero-sm h1    { font-size: 1.4rem; }
   .btn           { padding: 0.7rem 1.5rem; font-size: 0.74rem; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   PAGE OFFRES (offres.html)
+   Couleurs : palette ambre (--orange*) + bleu (--navy, --teal)
+   Typo     : Outfit (titres offres + prix) + DM Sans (corps)
+   Note     : --gold* sont des alias de --orange* définis dans :root
+═══════════════════════════════════════════════════════ */
+
+/* ── Conteneur de page ── */
+.offers-page { padding: 5rem 0 6rem; }
+
+/* ── Grille des offres ── */
+/* Surcharge la grille générique de l'accueil pour la page dédiée  */
+.offers-page .offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+/* ── Carte d'offre (version page dédiée) ── */
+/* Plus détaillée que la version accueil : flex colonne, gap interne */
+.offers-page .offer-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+/* Barre ambre animée en haut de chaque carte */
+.offers-page .offer-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--orange);   /* ambre institutionnel */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.offers-page .offer-card:hover {
+  border-color: var(--orange-line);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+.offers-page .offer-card:hover::before { transform: scaleX(1); }
+
+/* ── Badge de catégorie (Comptabilité, Juridique, RH…) ── */
+.badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 30px;
+  background: var(--orange-pale);   /* fond ambre très pâle */
+  color: var(--orange);             /* texte ambre sur fond pâle */
+  width: fit-content;
+  border: 1px solid var(--orange-line);
+}
+
+/* ── Titre de l'offre ── */
+/* Outfit en remplacement de Cormorant Garamond — cohérence design system */
+.offer-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);   /* bleu profond sur fond blanc */
+  line-height: 1.3;
+}
+
+/* ── Description ── */
+.offer-desc {
+  font-size: 0.84rem;
+  color: var(--muted);   /* bleu-gris atténué */
+  line-height: 1.65;
+  flex: 1;               /* pousse le prix et le bouton vers le bas */
+}
+
+/* ── Prix ── */
+/* Outfit pour les chiffres — lisibilité et cohérence avec les stats */
+.offer-price {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--navy);   /* bleu profond sur fond blanc */
+  line-height: 1;
+}
+.offer-price span {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 400;
+  margin-left: 3px;
+}
+
+/* ── Bouton d'achat ── */
+/* Fond ambre → texte blanc (règle palette : texte blanc sur fond foncé) */
+.btn-buy {
+  display: block;
+  text-align: center;
+  padding: 0.65rem 0;
+  border-radius: var(--radius);
+  background: var(--orange);          /* ambre institutionnel */
+  color: var(--text-on-dark);         /* blanc pur */
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  width: 100%;
+}
+.btn-buy:hover {
+  background: var(--orange-lt);                       /* ambre clair */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(186,117,23,0.35);       /* ombre ambre harmonisée */
+}
+
+/* ═══════════ MODAL SUCCÈS (paiement FedaPay) ═══════════ */
+
+/* Fond semi-transparent navy-dk : bleu profond pour rester dans la palette */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(4,44,83,0.65);    /* navy-dk (#042C53) à 65% */
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+}
+.modal-overlay.active { display: flex; }
+
+/* Boîte de dialogue */
+.modal-box {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border);
+  padding: 2.5rem 2rem;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+/* Barre de couleur ambre en haut de la modale */
+.modal-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--orange), var(--orange-lt));
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.modal-icon { font-size: 2.8rem; margin-bottom: 1rem; }
+
+/* Titre modale : navy sur fond blanc */
+.modal-box h3 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--navy);
+}
+
+/* Corps modale : texte secondaire */
+.modal-box p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 1.8rem;
+  line-height: 1.6;
+}
+
+/* Bouton de téléchargement : même style que btn-buy */
+.modal-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background: var(--orange);          /* ambre */
+  color: var(--text-on-dark);         /* blanc */
+  border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-bottom: 0.75rem;
+  transition: background var(--transition), transform var(--transition);
+}
+.modal-download:hover {
+  background: var(--orange-lt);
+  transform: translateY(-1px);
+}
+
+/* Bouton fermer : discret, texte muted → navy au survol */
+.modal-close {
+  display: block;
+  margin: 0.5rem auto 0;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  transition: color var(--transition);
+}
+.modal-close:hover { color: var(--navy); }
+
+/* ── Responsive page Offres ── */
+@media (max-width: 1023px) { .offers-page { padding: 3.5rem 0 4rem; } }
+@media (max-width: 640px)  { .offers-page .offers-grid { grid-template-columns: 1fr; } }
