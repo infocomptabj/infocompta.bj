@@ -1,64 +1,70 @@
 /* ═══════════════════════════════════════════════════════
-   infocompta-shared.css — Design System v4
-   Palette : DGI Bénin e-services
-   Primaire  : Teal #0E7490  |  Foncé : #0C5F72  |  Clair : #1A9AB5
-   Secondaire: Navy #1A3A5C  |  Accent: #F97316 (orange)
-   Surface   : #F0F9FB (fond clair teal)  |  Blanc : #FFFFFF
+   infocompta-shared.css — Design System v5
+   Palette : Formation Comptable & Fiscale — Bénin
+   Primaire  : Bleu #185FA5  |  Foncé : #0C447C  |  Moyen : #378ADD
+   Secondaire: Vert #639922  |  Accent: Ambre #BA7517
+   Surface   : #E6F1FB (fond bleu institutionnel pâle)  |  Blanc : #FFFFFF
    Typo      : Outfit (display) + DM Sans (corps)
-   Règle clé : texte blanc sur fond teal/navy, texte navy sur fond clair
+   Règle clé : texte blanc sur fond primaire/foncé, texte bleu-profond sur fond clair
 ═══════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
 
 /* ═══════════ VARIABLES ═══════════ */
 :root {
-  /* ── Couleurs extraites de l'image DGI ── */
-  --teal:        #0E7490;   /* fond principal (teal profond)         */
-  --teal-dk:     #0C5F72;   /* teal foncé (survol, ombres)           */
-  --teal-md:     #1A9AB5;   /* teal moyen (accents, highlights)      */
-  --teal-lt:     #22B8D8;   /* teal clair (hover, liens actifs)      */
+  /* ── Bleu institutionnel (couleur primaire) ── */
+  --teal:        #185FA5;   /* fond principal (bleu institutionnel)    */
+  --teal-dk:     #0C447C;   /* bleu foncé (survol, ombres, nav)        */
+  --teal-md:     #378ADD;   /* bleu moyen (accents, highlights)        */
+  --teal-lt:     #85B7EB;   /* bleu clair (hover, liens actifs)        */
 
-  --navy:        #1A3A5C;   /* bleu marine (carte Particuliers, nav) */
-  --navy-dk:     #122840;   /* marine très foncé                     */
-  --navy-lt:     #254D7A;   /* marine atténué                        */
+  /* ── Bleu profond (titres & corps de texte) ── */
+  --navy:        #0C447C;   /* bleu profond (titres, nav, corps)       */
+  --navy-dk:     #042C53;   /* très foncé (ombres profondes)           */
+  --navy-lt:     #185FA5;   /* bleu profond atténué                    */
 
-  --orange:      #F97316;   /* accent vif (CTA, badge, soulignements)*/
-  --orange-lt:   #FB923C;   /* orange survol                         */
-  --orange-pale: #FEF3EC;   /* orange très pâle (fond badge léger)   */
-  --orange-line: rgba(249,115,22,0.28);
+  /* ── Ambre (accent principal — appels à l'action, badges) ── */
+  --orange:      #BA7517;   /* ambre vif (CTA, badge, soulignements)   */
+  --orange-lt:   #EF9F27;   /* ambre clair (survol)                    */
+  --orange-pale: #FAEEDA;   /* ambre très pâle (fond badge léger)      */
+  --orange-line: rgba(186,117,23,0.28);
 
-  --success:     #16A34A;
-  --danger:      #DC2626;
+  /* ── Vert progression (succès, validation, certifications OHADA) ── */
+  --success:     #639922;   /* vert (quiz réussi, module validé)       */
+  --success-lt:  #97C459;   /* vert clair (hover états succès)         */
+  --success-pale:#EAF3DE;   /* fond vert pâle (cartes de validation)   */
+  --danger:      #A32D2D;   /* rouge sobre (erreurs, tentatives échouées) */
+  --danger-pale: #FCEBEB;   /* fond rouge pâle                         */
 
   /* ── Surfaces & fonds ── */
-  --cream:       #F0F9FB;   /* fond page (teal très pâle)            */
-  --cream-dk:    #D9EFF5;   /* fond alterné / hover clair            */
+  --cream:       #E6F1FB;   /* fond page (bleu institutionnel pâle)    */
+  --cream-dk:    #B5D4F4;   /* fond alterné / hover clair              */
   --surface:     #FFFFFF;
-  --surface-teal: rgba(255,255,255,0.06); /* overlay sur fonds teal  */
+  --surface-teal: rgba(255,255,255,0.06); /* overlay sur fonds bleus    */
 
   /* ── Textes ── */
-  /*   Règle : sur fond teal/navy → texte blanc/clair                */
-  /*           sur fond blanc/clair → texte navy/teal                */
-  --text-on-dark:  #FFFFFF;                 /* blanc pur sur teal/navy  */
-  --text-on-dark-muted: rgba(255,255,255,0.62); /* secondaire sur dark  */
-  --text-on-dark-dim:   rgba(255,255,255,0.38); /* tertiaire sur dark   */
+  /*   Règle : sur fond primaire/navy → texte blanc/clair              */
+  /*           sur fond blanc/clair  → texte navy/bleu-profond         */
+  --text-on-dark:       #FFFFFF;
+  --text-on-dark-muted: rgba(255,255,255,0.65);
+  --text-on-dark-dim:   rgba(255,255,255,0.38);
 
-  --text:        #1A3A5C;   /* navy — corps de texte sur fond clair  */
-  --text-md:     #2D5A7B;   /* teal-navy moyen                       */
-  --muted:       #5C8099;   /* gris-teal atténué                     */
+  --text:        #0C447C;   /* bleu profond — corps sur fond clair     */
+  --text-md:     #185FA5;   /* bleu institutionnel — texte secondaire  */
+  --muted:       #5C7FA0;   /* bleu-gris atténué (légendes, sous-titres) */
 
   /* ── Bordures ── */
-  --border:      #B8DDE8;
-  --border-lt:   #D9EFF5;
-  --border-dark: rgba(255,255,255,0.12); /* bordure sur fond sombre   */
+  --border:      #B5D4F4;
+  --border-lt:   #E6F1FB;
+  --border-dark: rgba(255,255,255,0.12);
 
   /* ── Effets ── */
   --radius:      4px;
   --radius-md:   10px;
   --radius-lg:   16px;
-  --shadow:      0 2px 20px rgba(14,116,144,0.10);
-  --shadow-md:   0 8px 40px rgba(14,116,144,0.18);
-  --shadow-lg:   0 20px 60px rgba(14,116,144,0.25);
+  --shadow:      0 2px 20px rgba(24,95,165,0.10);
+  --shadow-md:   0 8px 40px rgba(24,95,165,0.18);
+  --shadow-lg:   0 20px 60px rgba(24,95,165,0.25);
   --transition:  0.22s ease;
 }
 
@@ -81,9 +87,8 @@ h1, h2, h3, h4 {
   font-family: 'Outfit', sans-serif;
   font-weight: 700;
   line-height: 1.15;
-  color: var(--navy);       /* titres navy sur fond clair */
+  color: var(--navy);
 }
-/* Titres sur fond sombre : héritent --text-on-dark via la section parente */
 .hero h1,
 .hero-sm h1,
 .cta-banner h2 {
@@ -104,17 +109,17 @@ header {
   align-items: center;
   justify-content: space-between;
   height: 66px;
-  /* Bordure basse orange comme dans l'image */
   box-shadow:
     0 1px 0 var(--orange-line),
-    0 2px 24px rgba(0,0,0,0.3);
+    0 2px 24px rgba(0,0,0,0.28);
 }
+
 /* ── Logo ── */
 .logo {
   font-family: 'Outfit', sans-serif;
   font-size: 1.6rem;
   font-weight: 800;
-  color: var(--text-on-dark);   /* blanc sur teal */
+  color: var(--text-on-dark);
   letter-spacing: 0.01em;
   flex-shrink: 0;
 }
@@ -146,7 +151,7 @@ nav ul li a:hover  { color: var(--text-on-dark); background: var(--surface-teal)
 nav ul li a.active { color: var(--orange-lt); }
 nav ul li a.nav-cta {
   background: var(--orange);
-  color: var(--text-on-dark);   /* blanc sur orange */
+  color: var(--text-on-dark);
   padding: 0.4rem 1.1rem;
   border-radius: var(--radius);
   font-weight: 600;
@@ -183,7 +188,7 @@ nav ul li a.nav-cta:hover { background: var(--orange-lt); transform: translateY(
 /* ═══════════ FOOTER ═══════════ */
 footer {
   flex-shrink: 0;
-  background: var(--teal-dk);    /* teal foncé comme le header */
+  background: var(--teal-dk);
   border-top: 1px solid rgba(255,255,255,0.08);
 }
 .footer-inner {
@@ -242,13 +247,54 @@ footer {
   margin-bottom: 0.8rem;
 }
 
+/* ── Badge succès (module validé, certification OHADA) ── */
+.badge-success {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--success-pale);
+  color: var(--success);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 30px;
+  border: 1px solid rgba(99,153,34,0.25);
+}
+.badge-success::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  flex-shrink: 0;
+}
+
+/* Badge ambre (en cours, délai, alerte douce) */
+.badge-amber {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--orange-pale);
+  color: var(--orange);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 30px;
+  border: 1px solid var(--orange-line);
+}
+
 /* ── BUTTONS ── */
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   background: var(--orange);
-  color: var(--text-on-dark);   /* blanc sur orange */
+  color: var(--text-on-dark);
   font-family: 'Outfit', sans-serif;
   font-size: 0.78rem;
   font-weight: 600;
@@ -261,23 +307,59 @@ footer {
   transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
   text-decoration: none;
 }
-.btn:hover { background: var(--orange-lt); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(249,115,22,0.35); }
+.btn:hover {
+  background: var(--orange-lt);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(186,117,23,0.35);
+}
 
-/* Bouton fantôme (sur fond teal/navy) */
+/* Bouton succès (valider, certifier) */
+.btn-success {
+  background: var(--success);
+  color: var(--text-on-dark);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.8rem 2rem;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-success:hover {
+  background: var(--success-lt);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99,153,34,0.30);
+}
+
+/* Bouton fantôme (sur fond bleu/navy) */
 .btn-ghost {
   background: transparent;
   border: 1.5px solid var(--border-dark);
-  color: var(--text-on-dark);    /* blanc sur fond sombre */
+  color: var(--text-on-dark);
 }
-.btn-ghost:hover { background: var(--surface-teal); border-color: rgba(255,255,255,0.5); box-shadow: none; }
+.btn-ghost:hover {
+  background: var(--surface-teal);
+  border-color: rgba(255,255,255,0.5);
+  box-shadow: none;
+}
 
-/* Bouton outline teal (sur fond clair) */
+/* Bouton outline bleu (sur fond clair) */
 .btn-outline-teal {
   background: transparent;
   border: 1.5px solid var(--teal);
-  color: var(--teal);            /* teal sur fond blanc/clair */
+  color: var(--teal);
 }
-.btn-outline-teal:hover { background: var(--teal); color: var(--text-on-dark); box-shadow: 0 6px 20px rgba(14,116,144,0.2); }
+.btn-outline-teal:hover {
+  background: var(--teal);
+  color: var(--text-on-dark);
+  box-shadow: 0 6px 20px rgba(24,95,165,0.20);
+}
 
 /* Bouton outline navy (sur fond clair) */
 .btn-outline-navy {
@@ -285,7 +367,11 @@ footer {
   border: 1.5px solid var(--navy);
   color: var(--navy);
 }
-.btn-outline-navy:hover { background: var(--navy); color: var(--text-on-dark); box-shadow: 0 6px 20px rgba(26,58,92,0.2); }
+.btn-outline-navy:hover {
+  background: var(--navy);
+  color: var(--text-on-dark);
+  box-shadow: 0 6px 20px rgba(12,68,124,0.20);
+}
 
 /* ── CARD ── */
 .card {
@@ -297,7 +383,6 @@ footer {
   transition: transform var(--transition), box-shadow var(--transition);
 }
 .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-/* Texte dans les cards blanches : couleurs sur fond clair */
 .card h1, .card h2, .card h3, .card h4 { color: var(--navy); }
 .card p { color: var(--text-md); }
 
@@ -313,7 +398,7 @@ footer {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(249,115,22,0.1) 0%, transparent 60%);
+  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(186,117,23,0.10) 0%, transparent 60%);
   pointer-events: none;
 }
 .hero-sm::after {
@@ -324,7 +409,6 @@ footer {
   background: linear-gradient(90deg, transparent, var(--orange) 30%, var(--orange-lt) 60%, transparent);
 }
 .hero-sm > .container { position: relative; z-index: 1; }
-/* h1 et p héritent du contexte sombre via les règles globales ci-dessus */
 .hero-sm p { color: var(--text-on-dark-muted); font-size: 0.95rem; }
 
 /* ── GRILLES ── */
@@ -339,7 +423,7 @@ footer {
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--navy);           /* label navy sur fond clair */
+  color: var(--navy);
   margin-bottom: 0.45rem;
 }
 .form-group input,
@@ -348,7 +432,7 @@ footer {
   width: 100%;
   background: var(--cream);
   border: 1.5px solid var(--border);
-  color: var(--text);           /* texte navy sur fond clair */
+  color: var(--text);
   font-family: 'DM Sans', sans-serif;
   font-size: 0.9rem;
   padding: 0.7rem 1rem;
@@ -360,7 +444,7 @@ footer {
 .form-group textarea:focus,
 .form-group select:focus {
   border-color: var(--teal);
-  box-shadow: 0 0 0 3px rgba(14,116,144,0.15);
+  box-shadow: 0 0 0 3px rgba(24,95,165,0.15);
 }
 .form-group input::placeholder,
 .form-group textarea::placeholder { color: var(--muted); }
@@ -370,6 +454,16 @@ footer {
 .icon-badge {
   width: 46px; height: 46px;
   background: var(--orange-pale);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+/* Icon badge vert (succès OHADA) */
+.icon-badge-success {
+  width: 46px; height: 46px;
+  background: var(--success-pale);
   border-radius: var(--radius);
   display: flex; align-items: center; justify-content: center;
   font-size: 1.25rem;
@@ -393,19 +487,18 @@ footer {
 
 /* ── Hero principal ── */
 .hero {
-  background: var(--teal);   /* teal profond comme dans l'image */
+  background: var(--teal);
   position: relative;
   overflow: hidden;
   padding: 6rem 0 5rem;
 }
-/* Texture grille subtile */
 .hero::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(249,115,22,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 70% at 10% 80%, rgba(12,95,114,0.6)  0%, transparent 50%);
+    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(186,117,23,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 70% at 10% 80%, rgba(12,68,124,0.55) 0%, transparent 50%);
   pointer-events: none;
 }
 .hero-grid {
@@ -431,14 +524,15 @@ footer {
   gap: 4rem;
   align-items: center;
 }
+
 /* Badge animé */
 .hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(249,115,22,0.12);
-  border: 1px solid rgba(249,115,22,0.3);
-  color: var(--orange-lt);         /* orange sur fond teal */
+  background: rgba(186,117,23,0.12);
+  border: 1px solid rgba(186,117,23,0.30);
+  color: var(--orange-lt);
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -457,7 +551,7 @@ footer {
   0%, 100% { opacity: 1; transform: scale(1); }
   50%       { opacity: 0.5; transform: scale(0.85); }
 }
-/* Titre hero : blanc sur teal */
+
 .hero h1 {
   color: var(--text-on-dark);
   font-size: clamp(2.4rem, 4vw, 3.6rem);
@@ -501,12 +595,12 @@ footer {
 }
 .hero-stat-card:hover {
   background: rgba(255,255,255,0.11);
-  border-color: rgba(249,115,22,0.35);
+  border-color: rgba(186,117,23,0.35);
 }
 .stat-icon {
   width: 44px; height: 44px;
-  background: rgba(249,115,22,0.14);
-  border: 1px solid rgba(249,115,22,0.25);
+  background: rgba(186,117,23,0.14);
+  border: 1px solid rgba(186,117,23,0.25);
   border-radius: var(--radius);
   display: flex; align-items: center; justify-content: center;
   font-size: 1.2rem;
@@ -523,7 +617,7 @@ footer {
   font-family: 'Outfit', sans-serif;
   font-size: 1.4rem;
   font-weight: 700;
-  color: var(--text-on-dark);   /* blanc sur teal */
+  color: var(--text-on-dark);
   line-height: 1;
 }
 .stat-value span { color: var(--orange-lt); font-size: 1rem; }
@@ -533,7 +627,7 @@ footer {
 .features-section { padding: 6rem 0; background: var(--cream); position: relative; }
 .section-header { margin-bottom: 3.5rem; max-width: 500px; }
 .section-header h2 {
-  color: var(--navy);           /* navy sur fond clair */
+  color: var(--navy);
   margin-bottom: 0.6rem;
   font-size: clamp(1.8rem, 3vw, 2.4rem);
 }
@@ -570,7 +664,7 @@ footer {
   font-family: 'Outfit', sans-serif;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--teal);           /* teal sur blanc */
+  color: var(--teal);
   letter-spacing: 0.1em;
   margin-bottom: 1.2rem;
   opacity: 0.7;
@@ -601,7 +695,7 @@ footer {
   right: -100px; top: -100px;
   width: 500px; height: 500px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(14,116,144,0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(24,95,165,0.05) 0%, transparent 70%);
   pointer-events: none;
 }
 .offers-section .section-header h2 { color: var(--navy); }
@@ -637,7 +731,7 @@ footer {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--teal);           /* teal sur fond clair */
+  color: var(--teal);
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
@@ -645,7 +739,7 @@ footer {
 }
 .offer-card:hover .offer-link { gap: 0.6rem; color: var(--orange); }
 
-/* ── CTA Banner (fond teal) ── */
+/* ── CTA Banner (fond bleu institutionnel) ── */
 .cta-banner {
   background: linear-gradient(135deg, var(--teal) 0%, var(--teal-md) 100%);
   border-radius: var(--radius-md);
@@ -664,11 +758,10 @@ footer {
   right: -80px; top: -80px;
   width: 320px; height: 320px;
   border-radius: 50%;
-  background: rgba(249,115,22,0.1);
+  background: rgba(186,117,23,0.10);
   pointer-events: none;
 }
 .cta-banner > * { position: relative; z-index: 1; }
-/* Texte sur fond teal → blanc */
 .cta-banner h2 { color: var(--text-on-dark); font-size: clamp(1.5rem, 2.5vw, 2rem); margin-bottom: 0.4rem; }
 .cta-banner p  { color: var(--text-on-dark-muted); font-size: 0.92rem; max-width: 400px; }
 .cta-actions   { display: flex; gap: 0.9rem; flex-wrap: wrap; }
@@ -702,9 +795,9 @@ footer {
 
 /* ═══════════════════════════════════════════════════════
    À PROPOS — Section "Pourquoi InfoCompta ?"
-   Fond page : --cream (#F0F9FB)
-   Gauche    : textes navy/teal sur fond clair
-   Droite    : panneau teal avec textes blancs/orange
+   Fond page : --cream (#E6F1FB)
+   Gauche    : textes navy/bleu sur fond clair
+   Droite    : panneau bleu avec textes blancs/ambre
 ═══════════════════════════════════════════════════════ */
 
 .about-section {
@@ -722,18 +815,18 @@ footer {
 
 /* ── Colonne gauche (fond clair) ── */
 .about-left h2 {
-  color: var(--navy);            /* navy lisible sur fond clair */
+  color: var(--navy);
   font-size: clamp(1.8rem, 3vw, 2.4rem);
   margin-bottom: 1.3rem;
 }
 .about-left p {
-  color: var(--text-md);         /* #2D5A7B sur fond clair */
+  color: var(--text-md);
   font-size: 0.93rem;
   line-height: 1.8;
   margin-bottom: 1rem;
 }
 
-/* ── Colonne droite : panneau teal (fond sombre) ── */
+/* ── Colonne droite : panneau bleu (fond sombre) ── */
 .about-panel {
   background: var(--teal);
   border-radius: var(--radius-md);
@@ -741,17 +834,17 @@ footer {
   position: relative;
   overflow: hidden;
 }
-/* Halo décoratif orange */
+/* Halo décoratif ambre */
 .about-panel::before {
   content: '';
   position: absolute;
   top: -60px; right: -60px;
   width: 200px; height: 200px;
   border-radius: 50%;
-  background: rgba(249,115,22,0.12);
+  background: rgba(186,117,23,0.12);
   pointer-events: none;
 }
-/* Ligne orange en haut */
+/* Ligne ambre en haut */
 .about-panel::after {
   content: '';
   position: absolute;
@@ -759,12 +852,12 @@ footer {
   height: 2px;
   background: linear-gradient(90deg, transparent, var(--orange) 35%, var(--orange-lt) 65%, transparent);
 }
-/* Citation italique — blanc sur teal */
+/* Citation — blanc sur bleu */
 .about-panel-quote {
   font-family: Georgia, serif;
   font-style: italic;
   font-size: 0.97rem;
-  color: var(--text-on-dark);        /* blanc */
+  color: var(--text-on-dark);
   text-align: center;
   margin-bottom: 1.5rem;
   padding: 0 0.5rem;
@@ -792,27 +885,27 @@ footer {
   background: rgba(255,255,255,0.13);
   border-color: var(--orange-line);
 }
-/* Valeur principale — blanc sur teal */
+/* Valeur principale — blanc sur bleu */
 .about-stat-value {
   font-family: 'Outfit', sans-serif;
   font-size: 2rem;
   font-weight: 800;
-  color: var(--text-on-dark);        /* blanc */
+  color: var(--text-on-dark);
   line-height: 1;
   margin-bottom: 0.35rem;
 }
-/* Unité ou suffixe — orange clair sur teal */
+/* Unité — ambre clair sur bleu */
 .about-stat-value span {
   color: var(--orange-lt);
   font-size: 1.2rem;
 }
-/* Libellé stat — blanc atténué sur teal */
+/* Libellé stat — blanc atténué */
 .about-stat-label {
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-on-dark-muted);  /* rgba(255,255,255,0.62) */
+  color: var(--text-on-dark-muted);
 }
 
 /* ── Responsive About ── */
@@ -837,7 +930,7 @@ footer {
     left: 0 !important; right: 0 !important;
     background: var(--teal) !important;
     border-top: 1px solid rgba(255,255,255,0.08) !important;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.4) !important;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35) !important;
     z-index: 199 !important;
   }
   nav.open ul { flex-direction: column !important; gap: 0 !important; padding: 0.5rem 0 !important; }
