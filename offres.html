@@ -10,7 +10,6 @@
 
   <!-- SDK FedaPay -->
   <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
-
 </head>
 <body>
 
@@ -24,7 +23,7 @@
       <li><a href="index.html">Accueil</a></li>
       <li><a href="plan-comptable.html">Plan Comptable</a></li>
       <li><a href="documents.html">Documents</a></li>
-      <li><a href="quiz.html" class="active">Quiz</a></li>
+      <li><a href="quiz.html">Quiz</a></li>
       <li><a href="offres.html" class="active">Nos offres</a></li>
       <li><a href="a-propos.html">À propos</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -35,7 +34,7 @@
 
 <section class="hero-sm">
   <div class="container">
-    <p class="eyebrow" style="color:var(--gold-lt);">Nos services</p>
+    <p class="eyebrow">Nos services</p>
     <h1>Nos offres</h1>
     <p>Téléchargement instantané après paiement sécurisé via FedaPay</p>
   </div>
@@ -76,12 +75,12 @@ const FEDAPAY_PUBLIC_KEY = "pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg";
 const FEDAPAY_ENV = "sandbox";
 
 const offers = [
-  { badge:"Juridique",    title:"Modèle de contrat de travail CDI",  price:2500, devise:"XOF", desc:"Contrat conforme au droit béninois, prêt à personnaliser.",                              downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-1.com" },
-  { badge:"Comptabilité", title:"Plan comptable OHADA commenté",      price:3500, devise:"XOF", desc:"Document complet avec notes explicatives et exemples pratiques.",                        downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-2.com" },
-  { badge:"Business",     title:"Template de plan d'affaires",        price:4000, devise:"XOF", desc:"Structure complète pour présenter votre projet à des investisseurs.",                    downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-3.com" },
-  { badge:"Académique",   title:"Guide de rédaction de mémoire",      price:1500, devise:"XOF", desc:"Méthodologie et modèles pour rédiger un mémoire de qualité.",                           downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-4.com" },
-  { badge:"Immobilier",   title:"Contrat de bail d'habitation",       price:2000, devise:"XOF", desc:"Modèle légal de contrat de location pour propriétaires et locataires.",                  downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-5.com" },
-  { badge:"RH",           title:"Kit de fiches de paie OHADA",        price:5000, devise:"XOF", desc:"Pack de 12 modèles mensuels avec calculs automatiques intégrés.",                       downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-6.com" }
+  { badge:"Juridique",    title:"Modèle de contrat de travail CDI",  price:2500, devise:"XOF", desc:"Contrat conforme au droit béninois, prêt à personnaliser.",                   downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-1.com" },
+  { badge:"Comptabilité", title:"Plan comptable OHADA commenté",      price:3500, devise:"XOF", desc:"Document complet avec notes explicatives et exemples pratiques.",             downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-2.com" },
+  { badge:"Business",     title:"Template de plan d'affaires",        price:4000, devise:"XOF", desc:"Structure complète pour présenter votre projet à des investisseurs.",         downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-3.com" },
+  { badge:"Académique",   title:"Guide de rédaction de mémoire",      price:1500, devise:"XOF", desc:"Méthodologie et modèles pour rédiger un mémoire de qualité.",                downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-4.com" },
+  { badge:"Immobilier",   title:"Contrat de bail d'habitation",       price:2000, devise:"XOF", desc:"Modèle légal de contrat de location pour propriétaires et locataires.",       downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-5.com" },
+  { badge:"RH",           title:"Kit de fiches de paie OHADA",        price:5000, devise:"XOF", desc:"Pack de 12 modèles mensuels avec calculs automatiques intégrés.",            downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-6.com" }
 ];
 
 const grid = document.getElementById('offersGrid');
