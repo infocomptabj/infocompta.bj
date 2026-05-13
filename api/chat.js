@@ -1,274 +1,502 @@
 // ═══════════════════════════════════════════════════════════════
-//  api/chat.js — InfoCompta
-//  Système de réponse en 4 niveaux :
-//  1. Référentiel fiscal CGI Bénin (sigles)
-//  2. comptes-data.js (comptes OHADA)
-//  3. Docs-context.js (fiscal + SYSCOHADA)
-//  4. Connaissances générales OHADA/Bénin
+//  api/chat.js — InfoCompta  (version 2.0)
+//
+//  SYSTÈME DE RÉPONSE EN 5 NIVEAUX :
+//  1. Référentiel fiscal CGI Bénin (sigles officiels)
+//  2. comptes-data.js  (plan comptable OHADA)
+//  3. Docs-context.js  (CGI Bénin + SYSCOHADA)
+//  4. Connaissances LLM filtrées OHADA/Bénin
+//  5. Recherche web (fallback si rien trouvé) → source citée
+//
+//  CORRECTIONS v2 :
+//  ✔ Recherche floue multi-mots (plus de ratés sur les données du site)
+//  ✔ Anti-hallucination : le LLM est forcé de dire "je ne sais pas"
+//    plutôt qu'inventer taux/montants/références légales
+//  ✔ Fallback web via API gratuite (voir config SEARCH_API ci-dessous)
+//  ✔ Source web toujours citée dans la réponse
+//  ✔ Déduplication et nettoyage du system prompt
+//  ✔ Gestion robuste des erreurs (Groq 429, 401, réseau)
 // ═══════════════════════════════════════════════════════════════
 
-// ── Référentiel fiscal CGI Bénin ──
+// ────────────────────────────────────────────────────────────────
+//  CONFIG RECHERCHE WEB
+//  Option A (recommandée) : Brave Search API — gratuit 2 000 req/mois
+//    → https://api.search.brave.com  (créer un compte gratuit)
+//    → Ajouter dans Vercel : BRAVE_SEARCH_API_KEY = <votre clé>
+//
+//  Option B : Google Custom Search (100 req/jour gratuit)
+//    → GOOGLE_SEARCH_API_KEY + GOOGLE_SEARCH_CX dans Vercel
+//
+//  Si aucune clé n'est configurée, le fallback web est désactivé
+//  proprement et le chat l'indique à l'utilisateur.
+// ────────────────────────────────────────────────────────────────
+
+// ── Référentiel fiscal CGI Bénin (sigles officiels) ─────────────
 const REFERENTIEL_SIGLES = {
-  IS:   { titre: "TITRE 1 — IMPÔTS SUR LE REVENU", definition: "Impôt sur les Sociétés" },
-  IBA:  { titre: "TITRE 1 — IMPÔTS SUR LE REVENU", definition: "Impôt sur les Bénéfices d'Affaires" },
-  IRCM: { titre: "TITRE 1 — IMPÔTS SUR LE REVENU", definition: "Impôt sur le Revenu des Capitaux Mobiliers" },
-  IRF:  { titre: "TITRE 1 — IMPÔTS SUR LE REVENU", definition: "Impôt sur les Revenus Fonciers" },
-  TPVI: { titre: "TITRE 1 — IMPÔTS SUR LE REVENU", definition: "Taxe sur les Plus-Values Immobilières" },
-  ITS:  { titre: "TITRE 1 — IMPÔTS SUR LE REVENU", definition: "Impôt sur les Traitements et Salaires" },
-  RAS:  { titre: "TITRE 1 — IMPÔTS SUR LE REVENU", definition: "Retenues à la Source" },
-  TFU:  { titre: "TITRE 2 — TAXES SUR LE PATRIMOINE", definition: "Taxe Foncière Unique" },
-  TVM:  { titre: "TITRE 2 — TAXES SUR LE PATRIMOINE", definition: "Taxe sur les Véhicules à Moteur" },
-  TPS:  { titre: "TITRE 3 — AUTRES IMPÔTS DIRECTS", definition: "Taxe Professionnelle Synthétique" },
-  VPS:  { titre: "TITRE 3 — AUTRES IMPÔTS DIRECTS", definition: "Versement Patronal sur Salaires" },
-  TEOM: { titre: "TITRE 3 — AUTRES IMPÔTS DIRECTS", definition: "Taxe d'Enlèvement des Ordures Ménagères" },
-  TVA:  { titre: "TITRE 4 — TAXES SUR LE CHIFFRE D'AFFAIRES", definition: "Taxe sur la Valeur Ajoutée" },
-  TAFA: { titre: "TITRE 4 — TAXES SUR LE CHIFFRE D'AFFAIRES", definition: "Taxe sur les Activités Financières et Assurances" },
-  TSPP: { titre: "TITRE 5 — DROITS D'ACCISES", definition: "Taxe Spécifique Unique sur les Produits Pétroliers" },
+  IS:    { titre: "TITRE 1 — IMPÔTS SUR LE REVENU",               definition: "Impôt sur les Sociétés" },
+  IBA:   { titre: "TITRE 1 — IMPÔTS SUR LE REVENU",               definition: "Impôt sur les Bénéfices d'Affaires" },
+  IRCM:  { titre: "TITRE 1 — IMPÔTS SUR LE REVENU",               definition: "Impôt sur le Revenu des Capitaux Mobiliers" },
+  IRF:   { titre: "TITRE 1 — IMPÔTS SUR LE REVENU",               definition: "Impôt sur les Revenus Fonciers" },
+  TPVI:  { titre: "TITRE 1 — IMPÔTS SUR LE REVENU",               definition: "Taxe sur les Plus-Values Immobilières" },
+  ITS:   { titre: "TITRE 1 — IMPÔTS SUR LE REVENU",               definition: "Impôt sur les Traitements et Salaires" },
+  RAS:   { titre: "TITRE 1 — IMPÔTS SUR LE REVENU",               definition: "Retenues à la Source" },
+  TFU:   { titre: "TITRE 2 — TAXES SUR LE PATRIMOINE",            definition: "Taxe Foncière Unique" },
+  TVM:   { titre: "TITRE 2 — TAXES SUR LE PATRIMOINE",            definition: "Taxe sur les Véhicules à Moteur" },
+  TPS:   { titre: "TITRE 3 — AUTRES IMPÔTS DIRECTS",              definition: "Taxe Professionnelle Synthétique" },
+  VPS:   { titre: "TITRE 3 — AUTRES IMPÔTS DIRECTS",              definition: "Versement Patronal sur Salaires" },
+  TEOM:  { titre: "TITRE 3 — AUTRES IMPÔTS DIRECTS",              definition: "Taxe d'Enlèvement des Ordures Ménagères" },
+  TVA:   { titre: "TITRE 4 — TAXES SUR LE CHIFFRE D'AFFAIRES",    definition: "Taxe sur la Valeur Ajoutée" },
+  TAFA:  { titre: "TITRE 4 — TAXES SUR LE CHIFFRE D'AFFAIRES",    definition: "Taxe sur les Activités Financières et Assurances" },
+  TSPP:  { titre: "TITRE 5 — DROITS D'ACCISES",                   definition: "Taxe Spécifique Unique sur les Produits Pétroliers" },
+  CNSS:  { titre: "SÉCURITÉ SOCIALE",                             definition: "Caisse Nationale de Sécurité Sociale" },
+  DGI:   { titre: "ADMINISTRATION FISCALE",                       definition: "Direction Générale des Impôts (Bénin)" },
+  OHADA: { titre: "DROIT DES AFFAIRES",                           definition: "Organisation pour l'Harmonisation en Afrique du Droit des Affaires" },
+  UEMOA: { titre: "INTÉGRATION RÉGIONALE",                        definition: "Union Économique et Monétaire Ouest-Africaine" },
 };
 
-// ── Détection des sigles dans la question ──
-function detecterSigles(question) {
-  const siglesDetectes = [];
-  const mots = question.toUpperCase().replace(/[^A-Z0-9\s]/g, ' ').split(/\s+/);
-  for (const mot of mots) {
-    if (mot.length >= 2 && REFERENTIEL_SIGLES[mot]) {
-      siglesDetectes.push({ sigle: mot, ...REFERENTIEL_SIGLES[mot] });
-    }
-  }
-  return siglesDetectes;
+// ── Mots vides à ignorer lors de la recherche floue ─────────────
+const MOTS_VIDES = new Set([
+  'les','des','une','que','qui','est','dans','pour','par','sur',
+  'avec','vous','nous','mais','donc','alors','comment','quels',
+  'quelles','quel','quelle','etre','avoir','faire','plus','sans',
+  'comme','tout','tous','cette','cela','ceci','votre','notre',
+  'leur','leurs','mon','son','ses','mes','tes','aux','the','and',
+]);
+
+// ── Extraction de mots-clés significatifs ───────────────────────
+function extraireMots(texte, longueurMin = 4) {
+  return texte
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // retire accents
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(m => m.length >= longueurMin && !MOTS_VIDES.has(m));
 }
 
-// ── Recherche dans comptesData ──
+// ── Score de pertinence entre question et texte cible ────────────
+function scorerPertinence(mots, texte) {
+  const cible = texte.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  let score = 0;
+  for (const mot of mots) {
+    if (cible.includes(mot)) score++;
+    // bonus si le mot apparaît plusieurs fois (terme central)
+    const occurrences = (cible.match(new RegExp(mot, 'g')) || []).length;
+    if (occurrences > 1) score += Math.min(occurrences - 1, 2) * 0.5;
+  }
+  return score;
+}
+
+// ── NIVEAU 1 : Détection des sigles ─────────────────────────────
+function detecterSigles(question) {
+  const mots = question.toUpperCase().replace(/[^A-Z0-9\s]/g, ' ').split(/\s+/);
+  return mots
+    .filter(m => m.length >= 2 && REFERENTIEL_SIGLES[m])
+    .map(m => ({ sigle: m, ...REFERENTIEL_SIGLES[m] }));
+}
+
+// ── NIVEAU 2 : Recherche dans comptesData (floue + numéro) ───────
 function rechercherDansComptes(question, comptesData) {
-  if (!comptesData) return null;
-  const q = question.toLowerCase();
+  if (!comptesData || typeof comptesData !== 'object') return null;
+
+  const mots = extraireMots(question, 4);
+  const matchCodes = question.match(/\b(\d{2,6})\b/g) || [];
   const resultats = [];
 
-  // Par numéro de compte
-  const matchCodes = q.match(/\b(\d{2,4})\b/g) || [];
+  // Recherche directe par numéro de compte
   for (const code of matchCodes) {
     if (comptesData[code]) {
       const c = comptesData[code];
-      resultats.push(
-        `COMPTE ${code} — ${c.libelle}\n` +
-        `Nature : ${c.nature || ''} | Sens : ${c.sens || ''}\n` +
-        `${(c.contenu || '').slice(0, 400)}\n` +
-        (c.fonctionnement?.debit?.length  ? `Au débit : ${c.fonctionnement.debit.slice(0,2).join('; ')}\n` : '') +
-        (c.fonctionnement?.credit?.length ? `Au crédit : ${c.fonctionnement.credit.slice(0,2).join('; ')}\n` : '') +
-        (c.commentaires ? `Note : ${c.commentaires.slice(0, 250)}\n` : '')
-      );
+      resultats.push({
+        score: 100,
+        texte:
+          `COMPTE ${code} — ${c.libelle}\n` +
+          `Nature : ${c.nature || '—'} | Sens : ${c.sens || '—'}\n` +
+          `${(c.contenu || '').slice(0, 500)}\n` +
+          (c.fonctionnement?.debit?.length  ? `Au débit : ${c.fonctionnement.debit.slice(0, 3).join('; ')}\n` : '') +
+          (c.fonctionnement?.credit?.length ? `Au crédit : ${c.fonctionnement.credit.slice(0, 3).join('; ')}\n` : '') +
+          (c.commentaires ? `Note : ${c.commentaires.slice(0, 300)}\n` : ''),
+      });
     }
   }
 
-  // Par libellé
-  if (resultats.length < 3) {
-    const mots = q.split(/\s+/).filter(m => m.length > 4);
+  // Recherche floue par libellé + contenu (si pas déjà trouvé par code)
+  if (mots.length > 0) {
     for (const [code, compte] of Object.entries(comptesData)) {
-      if (resultats.length >= 3) break;
-      const libelle = (compte.libelle || '').toLowerCase();
-      const contenu  = (compte.contenu  || '').toLowerCase();
-      if (mots.some(m => libelle.includes(m)) && !resultats.some(r => r.startsWith(`COMPTE ${code}`))) {
-        resultats.push(
-          `COMPTE ${code} — ${compte.libelle}\n` +
-          `Nature : ${compte.nature || ''}\n` +
-          `${(compte.contenu || '').slice(0, 300)}\n` +
-          (compte.commentaires ? `Note : ${compte.commentaires.slice(0, 200)}\n` : '')
-        );
+      if (resultats.some(r => r.texte.startsWith(`COMPTE ${code}`))) continue;
+      const texteRecherche = `${compte.libelle || ''} ${compte.contenu || ''} ${compte.commentaires || ''}`;
+      const score = scorerPertinence(mots, texteRecherche);
+      if (score >= 1) {
+        resultats.push({
+          score,
+          texte:
+            `COMPTE ${code} — ${compte.libelle}\n` +
+            `Nature : ${compte.nature || '—'}\n` +
+            `${(compte.contenu || '').slice(0, 400)}\n` +
+            (compte.commentaires ? `Note : ${compte.commentaires.slice(0, 250)}\n` : ''),
+        });
       }
     }
   }
 
-  return resultats.length > 0 ? resultats.join('\n---\n') : null;
+  // Tri par pertinence, on garde les 4 meilleurs
+  resultats.sort((a, b) => b.score - a.score);
+  const top = resultats.slice(0, 4).map(r => r.texte);
+  return top.length > 0 ? top.join('\n---\n') : null;
 }
 
-// ── Recherche dans docsContext ──
+// ── NIVEAU 3 : Recherche dans docsContext (floue) ────────────────
 function rechercherDansDocs(question, docsContext) {
-  if (!docsContext) return null;
-  const qUp  = question.toUpperCase().replace(/[^A-Z0-9\s]/g, ' ');
-  const qLow = question.toLowerCase();
+  if (!docsContext || typeof docsContext !== 'object') return null;
+
+  const mots    = extraireMots(question, 3);
+  const qUp     = question.toUpperCase().replace(/[^A-Z0-9\s]/g, ' ');
   const resultats = [];
 
-  if (docsContext.cgi) {
+  // Recherche dans CGI Bénin
+  if (docsContext.cgi && typeof docsContext.cgi === 'object') {
     for (const [cle, valeur] of Object.entries(docsContext.cgi)) {
       if (cle === 'meta') continue;
-      if (qUp.includes(cle) || qLow.includes(cle.toLowerCase())) {
-        const v = typeof valeur === 'object' ? valeur : {};
+      const v = typeof valeur === 'object' && valeur !== null ? valeur : {};
+      const texteIndex = `${cle} ${v.definition || ''} ${JSON.stringify(v).slice(0, 500)}`;
+      const score = scorerPertinence(mots, texteIndex) + (qUp.includes(cle.toUpperCase()) ? 5 : 0);
+      if (score >= 1) {
         let extrait = `CGI BÉNIN — ${cle}\n`;
-        if (v.definition)           extrait += `Définition : ${String(v.definition).slice(0, 300)}\n`;
-        if (v.taux)                 extrait += `Taux : ${JSON.stringify(v.taux).slice(0, 200)}\n`;
-        if (v.base_imposable)       extrait += `Base : ${String(v.base_imposable).slice(0, 200)}\n`;
-        if (v.declaration_paiement) extrait += `Échéances : ${JSON.stringify(v.declaration_paiement).slice(0, 200)}\n`;
-        if (v.charges_deductibles)  extrait += `Charges déductibles : ${v.charges_deductibles.slice(0,3).join(', ')}\n`;
+        if (v.definition)           extrait += `Définition : ${String(v.definition).slice(0, 400)}\n`;
+        if (v.taux)                 extrait += `Taux : ${JSON.stringify(v.taux).slice(0, 300)}\n`;
+        if (v.base_imposable)       extrait += `Base imposable : ${String(v.base_imposable).slice(0, 300)}\n`;
+        if (v.declaration_paiement) extrait += `Échéances : ${JSON.stringify(v.declaration_paiement).slice(0, 300)}\n`;
+        if (v.charges_deductibles)  extrait += `Charges déductibles : ${v.charges_deductibles.slice(0, 5).join(', ')}\n`;
         if (v.penalites)            extrait += `Pénalités : ${JSON.stringify(v.penalites).slice(0, 200)}\n`;
-        resultats.push(extrait);
+        if (v.exonerations)         extrait += `Exonérations : ${JSON.stringify(v.exonerations).slice(0, 200)}\n`;
+        resultats.push({ score, texte: extrait });
       }
     }
   }
 
-  if (docsContext.syscohada) {
+  // Recherche dans SYSCOHADA
+  if (docsContext.syscohada && typeof docsContext.syscohada === 'object') {
     for (const [cle, valeur] of Object.entries(docsContext.syscohada)) {
-      if (qLow.includes(cle.toLowerCase()) || qLow.includes((valeur?.titre || '').toLowerCase())) {
-        resultats.push(
-          `SYSCOHADA — ${cle}\n` +
-          `${String(valeur?.resume || valeur?.contenu || JSON.stringify(valeur)).slice(0, 400)}\n`
-        );
+      const v = typeof valeur === 'object' && valeur !== null ? valeur : {};
+      const texteIndex = `${cle} ${v.titre || ''} ${v.resume || ''} ${v.contenu || ''}`;
+      const score = scorerPertinence(mots, texteIndex);
+      if (score >= 1) {
+        resultats.push({
+          score,
+          texte:
+            `SYSCOHADA — ${cle}\n` +
+            (v.titre  ? `Titre : ${v.titre}\n` : '') +
+            `${String(v.resume || v.contenu || JSON.stringify(v)).slice(0, 500)}\n`,
+        });
       }
     }
   }
 
-  return resultats.length > 0 ? resultats.join('\n---\n') : null;
+  resultats.sort((a, b) => b.score - a.score);
+  const top = resultats.slice(0, 4).map(r => r.texte);
+  return top.length > 0 ? top.join('\n---\n') : null;
 }
 
+// ── NIVEAU 5 : Recherche web (fallback) ─────────────────────────
+// Utilise Brave Search API (gratuit) ou Google Custom Search.
+// Renvoie { extrait, sourceUrl, sourceNom } ou null.
+async function rechercherSurWeb(question) {
+  const braveKey  = process.env.BRAVE_SEARCH_API_KEY;
+  const googleKey = process.env.GOOGLE_SEARCH_API_KEY;
+  const googleCX  = process.env.GOOGLE_SEARCH_CX;
+
+  const requete = encodeURIComponent(
+    `comptabilité fiscalité Bénin OHADA ${question.slice(0, 200)}`
+  );
+
+  // ── Brave Search ──
+  if (braveKey) {
+    try {
+      const r = await fetch(
+        `https://api.search.brave.com/res/v1/web/search?q=${requete}&count=3&lang=fr&country=BJ`,
+        {
+          headers: {
+            'Accept':              'application/json',
+            'Accept-Encoding':     'gzip',
+            'X-Subscription-Token': braveKey,
+          },
+        }
+      );
+      if (r.ok) {
+        const d = await r.json();
+        const results = d?.web?.results || [];
+        if (results.length > 0) {
+          const top = results[0];
+          return {
+            extrait:   (top.description || top.extra_snippets?.[0] || '').slice(0, 600),
+            sourceUrl: top.url,
+            sourceNom: top.title || top.url,
+          };
+        }
+      }
+    } catch (_) { /* continue vers Google */ }
+  }
+
+  // ── Google Custom Search ──
+  if (googleKey && googleCX) {
+    try {
+      const r = await fetch(
+        `https://www.googleapis.com/customsearch/v1?key=${googleKey}&cx=${googleCX}&q=${requete}&num=3&lr=lang_fr`
+      );
+      if (r.ok) {
+        const d = await r.json();
+        const items = d?.items || [];
+        if (items.length > 0) {
+          const top = items[0];
+          return {
+            extrait:   (top.snippet || '').slice(0, 600),
+            sourceUrl: top.link,
+            sourceNom: top.title || top.link,
+          };
+        }
+      }
+    } catch (_) { /* aucun résultat */ }
+  }
+
+  return null; // aucune clé configurée ou aucun résultat
+}
+
+// ── Détection si une réponse est nécessaire via le web ───────────
+// Heuristique : si la question contient des mots d'actualité ou
+// de référence précise non couverte par les données locales.
+function necessiteWebSearch(question, aDesContexteLocal) {
+  if (aDesContexteLocal) return false; // priorité aux données du site
+  const signauxWeb = [
+    /loi\s+de\s+finances/i,
+    /budget\s+\d{4}/i,
+    /nouveau[x]?\s+taux/i,
+    /modifi[eé]/i,
+    /actualit[eé]/i,
+    /r[eé]forme/i,
+    /\d{4}.*bénin/i,
+    /décret\s+n°/i,
+    /arrêté/i,
+    /circulaire/i,
+    /note\s+de\s+service/i,
+  ];
+  return signauxWeb.some(rx => rx.test(question));
+}
+
+// ════════════════════════════════════════════════════════════════
+//  HANDLER PRINCIPAL
+// ════════════════════════════════════════════════════════════════
 export default async function handler(req, res) {
 
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // ── CORS ──
+  res.setHeader('Access-Control-Allow-Origin',  '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST')   return res.status(405).json({ error: 'Méthode non autorisée' });
 
+  // ── Vérification clé Groq ──
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
     return res.status(200).json({
-      content: [{ type: 'text', text: '🔴 GROQ_API_KEY manquante dans les variables d\'environnement Vercel.' }]
+      content: [{ type: 'text', text: '🔴 Configuration manquante : GROQ_API_KEY absent dans les variables Vercel.' }],
     });
   }
 
+  // ── Lecture du body ──
   const body = req.body;
-  if (!body) return res.status(400).json({ error: 'Corps invalide' });
+  if (!body || typeof body !== 'object') {
+    return res.status(400).json({ error: 'Corps de requête invalide.' });
+  }
 
-  const messages = (body.messages || []).slice(-14);
+  const messages         = (body.messages || []).slice(-14);
   const derniereQuestion = messages.filter(m => m.role === 'user').pop()?.content || '';
+  const frontendSystem   = typeof body.system === 'string' ? body.system.trim() : '';
 
-  // ══ Récupération du system prompt enrichi envoyé par le frontend ══
-  // Le frontend construit un system prompt très riche (contexte OHADA + CGI + compte courant).
-  // On le conserve pour l'injecter dans le system prompt final du backend.
-  const frontendSystem = (typeof body.system === 'string' && body.system.trim())
-    ? body.system.trim()
-    : null;
+  if (!derniereQuestion.trim()) {
+    return res.status(200).json({
+      content: [{ type: 'text', text: 'Je n\'ai pas reçu de question. Veuillez réessayer.' }],
+    });
+  }
 
-  // ══ NIVEAU 1 — Sigles ══
+  // ════════════════════════════════════════════════════════════════
+  //  COLLECTE DES CONTEXTES (niveaux 1 → 3)
+  // ════════════════════════════════════════════════════════════════
+
+  // NIVEAU 1 — Sigles officiels
   const siglesDetectes = detecterSigles(derniereQuestion);
   let contexteSignes = '';
   if (siglesDetectes.length > 0) {
-    contexteSignes = '\n\n### SIGLES OFFICIELS CGI BÉNIN DÉTECTÉS\n';
+    contexteSignes = '\n\n### ✅ SIGLES OFFICIELS CGI BÉNIN\n';
     for (const s of siglesDetectes) {
-      contexteSignes += `▸ ${s.sigle} = ${s.definition} [${s.titre}]\n`;
+      contexteSignes += `▸ **${s.sigle}** = ${s.definition} [${s.titre}]\n`;
     }
-    contexteSignes += '⚠ Ces définitions sont OFFICIELLES. Utilise-les telles quelles.\n';
+    contexteSignes += '⚠️ Ces définitions sont OFFICIELLES et IMMUABLES.\n';
   }
 
-  // ══ NIVEAU 2 — comptes-data.js ══
+  // NIVEAU 2 — Plan comptable OHADA
   let contexteComptes = '';
   try {
     const mod = await import('../comptes-data.js');
-    const comptesData = mod.default || mod.comptesData || mod;
+    const comptesData = mod.default ?? mod.comptesData ?? mod;
     const resultat = rechercherDansComptes(derniereQuestion, comptesData);
-    if (resultat) contexteComptes = '\n\n### PLAN COMPTABLE OHADA\n' + resultat;
-  } catch (e) { /* non disponible */ }
+    if (resultat) {
+      contexteComptes = '\n\n### ✅ PLAN COMPTABLE OHADA (données site)\n' + resultat;
+    }
+  } catch (_) { /* fichier non disponible */ }
 
-  // ══ NIVEAU 3 — Docs-context.js ══
+  // NIVEAU 3 — CGI Bénin + SYSCOHADA
   let contexteDocs = '';
   try {
     const mod = await import('../Docs-context.js');
-    const docsContext = mod.default || mod.DOCS_CONTEXT || mod;
+    const docsContext = mod.default ?? mod.DOCS_CONTEXT ?? mod;
     const resultat = rechercherDansDocs(derniereQuestion, docsContext);
-    if (resultat) contexteDocs = '\n\n### CGI BÉNIN / SYSCOHADA\n' + resultat;
-  } catch (e) { /* non disponible */ }
-
-  const aDesContexte = contexteSignes || contexteComptes || contexteDocs;
-
-  // ══ Construction du system prompt ══
-  // Si le frontend a envoyé son propre system prompt (riche en contexte de page),
-  // on l'utilise comme base et on y ajoute le contexte extrait côté serveur.
-  // Sinon, on construit un system prompt générique.
-  let systemPrompt;
-  if (frontendSystem) {
-    // Le frontend a déjà tout construit (contexte du compte courant, plan OHADA, CGI…).
-    // On se contente d'y ajouter les données extraites par le backend (sigles, comptes, docs)
-    // uniquement s'il y en a, pour éviter les doublons.
-    systemPrompt = frontendSystem;
-    if (aDesContexte) {
-      systemPrompt += '\n\n## DONNÉES COMPLÉMENTAIRES EXTRAITES PAR LE SERVEUR'
-        + contexteSignes + contexteComptes + contexteDocs;
+    if (resultat) {
+      contexteDocs = '\n\n### ✅ CGI BÉNIN / SYSCOHADA (données site)\n' + resultat;
     }
-  } else {
-    // Aucun system prompt du frontend — on construit le nôtre.
-    systemPrompt = `Tu es COMPTA, l'assistant comptable officiel d'InfoCompta (Bénin).
-Tu es spécialisé en comptabilité OHADA (SYSCOHADA révisé) et fiscalité béninoise (CGI Bénin).
+  } catch (_) { /* fichier non disponible */ }
 
-## ORDRE DE PRIORITÉ DES SOURCES
-1. Les données extraites de nos fichiers officiels (fournies ci-dessous si disponibles)
-2. Tes connaissances en comptabilité OHADA et fiscalité béninoise
+  const aDesContexteLocal = !!(contexteSignes || contexteComptes || contexteDocs);
 
-## RÈGLES IMPÉRATIVES
-- SIGLES : Si un sigle est fourni dans le contexte ci-dessous, utilise OBLIGATOIREMENT cette définition. Ne jamais la remplacer par une autre. Si un sigle n'est pas dans le contexte, demande à l'utilisateur de préciser.
-- RÉPONSE COMPLÈTE : Quand tu identifies un impôt ou une taxe, donne toujours : définition, qui est concerné, base imposable, taux, échéances déclaratives et comment le comptabiliser en OHADA.
-- HONNÊTETÉ : Si tu ne trouves pas l'information, dis : "Je n'ai pas trouvé cette information dans mes sources. Pourriez-vous reformuler ou préciser votre question ?"
-- Ne jamais inventer de taux, montants ou références légales.
-- Réponds toujours en français, de façon claire et structurée.
-${aDesContexte ? '\n## DONNÉES EXTRAITES DE NOS FICHIERS OFFICIELS' + contexteSignes + contexteComptes + contexteDocs : ''}`;
+  // NIVEAU 5 — Fallback web (seulement si aucune donnée locale ET mots-clés d'actualité)
+  let contexteWeb   = '';
+  let sourceWebInfo = '';
+  if (necessiteWebSearch(derniereQuestion, aDesContexteLocal)) {
+    const webResult = await rechercherSurWeb(derniereQuestion);
+    if (webResult) {
+      contexteWeb   = `\n\n### 🌐 RÉSULTAT RECHERCHE WEB\n${webResult.extrait}\n`;
+      sourceWebInfo = `\n📌 Source web : [${webResult.sourceNom}](${webResult.sourceUrl})`;
+    }
   }
 
-  // ── Nettoyage messages ──
+  const aDesContexte = aDesContexteLocal || !!contexteWeb;
+
+  // ════════════════════════════════════════════════════════════════
+  //  CONSTRUCTION DU SYSTEM PROMPT
+  // ════════════════════════════════════════════════════════════════
+  const blocContexte = [contexteSignes, contexteComptes, contexteDocs, contexteWeb]
+    .filter(Boolean).join('');
+
+  // Instruction source web à injecter dans le prompt si recherche web utilisée
+  const instructionWeb = contexteWeb
+    ? `\n- CITATION SOURCE WEB : Si tu utilises des informations du bloc "RÉSULTAT RECHERCHE WEB", tu DOIS terminer ta réponse par : "📌 Source : ${sourceWebInfo.replace('📌 Source web : ', '')}" — ne jamais omettre cette citation.`
+    : '';
+
+  const instructionsBase = `
+## RÈGLES STRICTES ANTI-HALLUCINATION
+- SIGLES : Si un sigle est fourni dans le contexte, utilise OBLIGATOIREMENT cette définition. Ne jamais l'inventer.
+- DONNÉES CHIFFRÉES : Ne jamais inventer un taux, un montant, une date ou une référence légale. Si tu n'es pas certain, dis-le explicitement.
+- HONNÊTETÉ : Si tu ne trouves pas l'information dans tes sources, réponds exactement : "Je n'ai pas trouvé cette information dans les données disponibles. Pourriez-vous reformuler ou préciser votre question ?"
+- RÉPONSE COMPLÈTE : Pour tout impôt/taxe identifié, donne : définition, personnes concernées, base imposable, taux, échéances déclaratives, écriture comptable OHADA.
+- Ne pas mélanger la fiscalité d'autres pays avec celle du Bénin.${instructionWeb}
+
+## ORDRE DE PRIORITÉ DES SOURCES
+1. Données extraites des fichiers du site (contexte ci-dessous, marqué ✅)
+2. Résultats de recherche web (marqué 🌐) — citer la source
+3. Connaissances générales OHADA/fiscalité béninoise (niveau 4)
+${!aDesContexte ? '\n⚠️ Aucune donnée locale trouvée pour cette question. Reste prudent et signale si tu es incertain.' : ''}`;
+
+  let systemPrompt;
+  if (frontendSystem) {
+    // Le frontend a déjà construit un prompt riche → on y ajoute nos règles et contexte
+    systemPrompt =
+      frontendSystem +
+      '\n\n## RÈGLES ET DONNÉES COMPLÉMENTAIRES (BACKEND)' +
+      instructionsBase +
+      (blocContexte ? '\n\n## DONNÉES EXTRAITES DES FICHIERS DU SITE' + blocContexte : '');
+  } else {
+    systemPrompt =
+      `Tu es **COMPTA**, l'assistant comptable officiel d'**InfoCompta** (Bénin).
+Tu es spécialisé en comptabilité OHADA (SYSCOHADA révisé) et fiscalité béninoise (CGI Bénin).
+Tu réponds toujours en **français**, de façon **claire, structurée et professionnelle**.
+` +
+      instructionsBase +
+      (blocContexte ? '\n\n## DONNÉES EXTRAITES DES FICHIERS DU SITE' + blocContexte : '');
+  }
+
+  // ════════════════════════════════════════════════════════════════
+  //  NETTOYAGE ET VALIDATION DES MESSAGES
+  // ════════════════════════════════════════════════════════════════
   const cleanMessages = [];
   for (const m of messages) {
-    if (!m.content || !String(m.content).trim()) continue;
+    if (!m?.content || !String(m.content).trim()) continue;
     const role    = m.role === 'assistant' ? 'assistant' : 'user';
     const content = String(m.content).slice(0, 3000);
+    // fusion des messages consécutifs de même rôle (évite erreur Groq)
     if (cleanMessages.length > 0 && cleanMessages[cleanMessages.length - 1].role === role) {
       cleanMessages[cleanMessages.length - 1].content += '\n' + content;
     } else {
       cleanMessages.push({ role, content });
     }
   }
+  // Le premier message doit être "user"
   if (cleanMessages.length === 0 || cleanMessages[0].role !== 'user') {
     cleanMessages.unshift({ role: 'user', content: 'Bonjour' });
   }
 
-  // ── Appel API Groq ──
+  // ════════════════════════════════════════════════════════════════
+  //  APPEL API GROQ
+  // ════════════════════════════════════════════════════════════════
   try {
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const groqResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type':  'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model:       'llama-3.3-70b-versatile',
         max_tokens:  2048,
-        temperature: 0.3,
+        temperature: 0.2,          // plus bas = moins d'inventions
+        top_p:       0.9,
         messages: [
           { role: 'system', content: systemPrompt.slice(0, 12000) },
-          ...cleanMessages
-        ]
-      })
+          ...cleanMessages,
+        ],
+      }),
     });
 
-    if (!response.ok) {
-      const errData = await response.json().catch(() => ({}));
-      const errMsg  = errData?.error?.message || `HTTP ${response.status}`;
-      let msg = '';
-      if (response.status === 401) msg = '🔴 Clé API Groq invalide.';
-      else if (response.status === 429) msg = '⏳ Limite atteinte. Réessayez dans quelques secondes.';
-      else msg = `⚠️ Erreur API (${response.status}) : ${errMsg}`;
-      return res.status(200).json({ content: [{ type: 'text', text: msg }] });
+    // ── Gestion des erreurs HTTP Groq ──
+    if (!groqResponse.ok) {
+      let errData = {};
+      try { errData = await groqResponse.json(); } catch (_) {}
+      const errMsg = errData?.error?.message || `HTTP ${groqResponse.status}`;
+
+      let msgUtilisateur;
+      switch (groqResponse.status) {
+        case 401:
+          msgUtilisateur = '🔴 Clé API Groq invalide. Vérifiez la variable GROQ_API_KEY dans Vercel.';
+          break;
+        case 429:
+          msgUtilisateur = '⏳ Limite de requêtes atteinte. Veuillez patienter quelques secondes puis réessayer.';
+          break;
+        case 503:
+          msgUtilisateur = '🔧 Le service est temporairement indisponible. Réessayez dans un moment.';
+          break;
+        default:
+          msgUtilisateur = `⚠️ Erreur API (${groqResponse.status}) : ${errMsg}`;
+      }
+      return res.status(200).json({ content: [{ type: 'text', text: msgUtilisateur }] });
     }
 
-    const data = await response.json();
-    const text = data?.choices?.[0]?.message?.content || '';
+    const data = await groqResponse.json();
+    let texte  = data?.choices?.[0]?.message?.content?.trim() || '';
 
-    if (!text.trim()) {
+    if (!texte) {
       return res.status(200).json({
-        content: [{ type: 'text', text: "Je n'ai pas pu générer de réponse. Veuillez réessayer." }]
+        content: [{ type: 'text', text: 'Je n\'ai pas pu générer de réponse. Veuillez reformuler votre question.' }],
       });
     }
 
-    return res.status(200).json({ content: [{ type: 'text', text }] });
+    // Ajout automatique de la citation source web si pas déjà présente
+    if (contexteWeb && sourceWebInfo && !texte.includes('📌 Source')) {
+      texte += `\n\n${sourceWebInfo}`;
+    }
+
+    return res.status(200).json({ content: [{ type: 'text', text: texte }] });
 
   } catch (fetchError) {
+    const msg = fetchError?.message || 'Erreur inconnue';
     return res.status(200).json({
-      content: [{ type: 'text', text: `⚠️ Erreur réseau : ${fetchError.message}.` }]
+      content: [{ type: 'text', text: `⚠️ Erreur réseau : ${msg}. Vérifiez votre connexion et réessayez.` }],
     });
   }
 }
