@@ -33,25 +33,179 @@
 
 // ── Référentiel fiscal CGI Bénin (sigles officiels) ─────────────
 const REFERENTIEL_SIGLES = {
-  IS:    { titre: "TITRE 1 — IMPÔTS SUR LE REVENU",               definition: "Impôt sur les Sociétés" },
-  IBA:   { titre: "TITRE 1 — IMPÔTS SUR LE REVENU",               definition: "Impôt sur les Bénéfices d'Affaires" },
-  IRCM:  { titre: "TITRE 1 — IMPÔTS SUR LE REVENU",               definition: "Impôt sur le Revenu des Capitaux Mobiliers" },
-  IRF:   { titre: "TITRE 1 — IMPÔTS SUR LE REVENU",               definition: "Impôt sur les Revenus Fonciers" },
-  TPVI:  { titre: "TITRE 1 — IMPÔTS SUR LE REVENU",               definition: "Taxe sur les Plus-Values Immobilières" },
-  ITS:   { titre: "TITRE 1 — IMPÔTS SUR LE REVENU",               definition: "Impôt sur les Traitements et Salaires" },
-  RAS:   { titre: "TITRE 1 — IMPÔTS SUR LE REVENU",               definition: "Retenues à la Source" },
-  TFU:   { titre: "TITRE 2 — TAXES SUR LE PATRIMOINE",            definition: "Taxe Foncière Unique" },
-  TVM:   { titre: "TITRE 2 — TAXES SUR LE PATRIMOINE",            definition: "Taxe sur les Véhicules à Moteur" },
-  TPS:   { titre: "TITRE 3 — AUTRES IMPÔTS DIRECTS",              definition: "Taxe Professionnelle Synthétique" },
-  VPS:   { titre: "TITRE 3 — AUTRES IMPÔTS DIRECTS",              definition: "Versement Patronal sur Salaires" },
-  TEOM:  { titre: "TITRE 3 — AUTRES IMPÔTS DIRECTS",              definition: "Taxe d'Enlèvement des Ordures Ménagères" },
-  TVA:   { titre: "TITRE 4 — TAXES SUR LE CHIFFRE D'AFFAIRES",    definition: "Taxe sur la Valeur Ajoutée" },
-  TAFA:  { titre: "TITRE 4 — TAXES SUR LE CHIFFRE D'AFFAIRES",    definition: "Taxe sur les Activités Financières et Assurances" },
-  TSPP:  { titre: "TITRE 5 — DROITS D'ACCISES",                   definition: "Taxe Spécifique Unique sur les Produits Pétroliers" },
-  CNSS:  { titre: "SÉCURITÉ SOCIALE",                             definition: "Caisse Nationale de Sécurité Sociale" },
-  DGI:   { titre: "ADMINISTRATION FISCALE",                       definition: "Direction Générale des Impôts (Bénin)" },
-  OHADA: { titre: "DROIT DES AFFAIRES",                           definition: "Organisation pour l'Harmonisation en Afrique du Droit des Affaires" },
-  UEMOA: { titre: "INTÉGRATION RÉGIONALE",                        definition: "Union Économique et Monétaire Ouest-Africaine" },
+
+  // ── TITRE 1 — IMPÔTS SUR LE REVENU ──────────────────────────
+  IS: {
+    titre: "TITRE 1 — IMPÔTS SUR LE REVENU",
+    definition:
+      "Impôt sur les Sociétés. Impôt annuel sur les bénéfices des personnes morales (SA, SARL…). " +
+      "Taux général : 30%. Base : bénéfice fiscal de l'exercice. " +
+      "Comptabilisation à la clôture : Débit 8512 (IS) / Crédit 4411 (IS à payer). " +
+      "Paiement : Débit 4411 / Crédit 521.",
+  },
+
+  IBA: {
+    titre: "TITRE 1 — IMPÔTS SUR LE REVENU",
+    definition:
+      "Impôt sur les Bénéfices d'Affaires. Impôt annuel sur les bénéfices des personnes physiques " +
+      "exerçant une activité commerciale, industrielle ou artisanale (entreprises individuelles). " +
+      "⚠️ NE PAS CONFONDRE AVEC L'AIB (Acompte sur Impôts assis sur les Bénéfices) qui est une retenue à la source. " +
+      "L'IBA est un impôt final annuel ; l'AIB est un acompte prélevé à chaque transaction.",
+  },
+
+  AIB: {
+    titre: "TITRE 1 — IMPÔTS SUR LE REVENU (Acompte / Retenue à la source)",
+    definition:
+      "Acompte sur Impôts assis sur les Bénéfices. " +
+      "⚠️ L'AIB EST DIFFÉRENT DE L'IBA. L'IBA est l'impôt annuel sur les bénéfices des personnes physiques. " +
+      "L'AIB est un ACOMPTE / RETENUE À LA SOURCE prélevé à chaque transaction, déductible de l'impôt final. " +
+      "\n" +
+      "TAUX LÉGAUX (CGI Bénin) :\n" +
+      "  • 5% : sur les factures normalisées pour les achats de prestations de services et les achats de marchandises en gros.\n" +
+      "  • 1% : au cordon douanier sur la valeur en douane majorée des droits et taxes (hors TVA) pour les importations/exportations.\n" +
+      "\n" +
+      "CAS D'APPLICATION :\n" +
+      "  1. Achats de prestations de services (facture normalisée)\n" +
+      "  2. Achats de marchandises en gros\n" +
+      "  3. Importations / exportations (perçu au cordon douanier)\n" +
+      "  4. Personnes sans IFU ou non répertoriées à la DGI\n" +
+      "\n" +
+      "FONCTIONNEMENT : AIB collecté − AIB supporté = montant à reverser (ou crédit reportable). " +
+      "Depuis la loi de finances 2021 : suppression des demandes préalables de compensation.\n" +
+      "\n" +
+      "EXONÉRATION : Entreprises soumises à la TPS durant leur 1ère année d'activité.\n" +
+      "\n" +
+      "COMPTABILISATION SYSCOHADA :\n" +
+      "  ⚠️ COMPTE CORRECT : 4478x (sous-comptes de 4478 — Autres impôts et taxes). " +
+      "  ⚠️ COMPTE INCORRECT À NE JAMAIS UTILISER : 4452 (ce compte est réservé à la TVA, PAS à l'AIB). " +
+      "  ⚠️ COMPTE INCORRECT À NE JAMAIS UTILISER : 635 (ce compte est réservé aux impôts sur bénéfices, PAS aux acomptes).\n" +
+      "\n" +
+      "  Chez l'ACHETEUR (qui supporte l'AIB retenu par le vendeur) :\n" +
+      "    → Paiement de la facture TTC avec AIB retenu :\n" +
+      "       Débit  607/6xx  — Achats / Charges         [montant HT]\n" +
+      "       Débit  4452     — TVA déductible            [TVA si assujetti]\n" +
+      "       Débit  44781    — AIB supporté              [5% ou 1% du montant]\n" +
+      "         Crédit  401   — Fournisseurs              [total facture]\n" +
+      "    → Paiement fournisseur : Débit 401 / Crédit 521\n" +
+      "\n" +
+      "  Chez le VENDEUR/COLLECTEUR (qui prélève et reverse l'AIB) :\n" +
+      "    → Emission facture normalisée :\n" +
+      "       Débit  411      — Clients                   [montant net après retenue]\n" +
+      "       Débit  44782    — AIB collecté à reverser   [5% ou 1% prélevé]\n" +
+      "         Crédit  70x   — Ventes/Prestations        [montant HT]\n" +
+      "         Crédit  4431  — TVA collectée             [TVA si applicable]\n" +
+      "    → Reversement DGI : Débit 44782 / Crédit 521\n" +
+      "\n" +
+      "  À la CLÔTURE (imputation sur impôt annuel) :\n" +
+      "       Débit  8512     — IS / IBA de l'exercice\n" +
+      "         Crédit  44781 — AIB supporté (soldé)\n" +
+      "         Crédit  4411  — Impôt à payer (solde restant dû)\n" +
+      "\n" +
+      "SOURCE LÉGALE : CGI Bénin, circulaire DGI sur l'AIB ; Loi de finances 2021 (suppression formalités).",
+  },
+
+  IRCM: {
+    titre: "TITRE 1 — IMPÔTS SUR LE REVENU",
+    definition: "Impôt sur le Revenu des Capitaux Mobiliers. S'applique aux dividendes, intérêts et revenus de placements financiers.",
+  },
+  IRF: {
+    titre: "TITRE 1 — IMPÔTS SUR LE REVENU",
+    definition: "Impôt sur les Revenus Fonciers. S'applique aux loyers et revenus tirés de la location de biens immobiliers.",
+  },
+  TPVI: {
+    titre: "TITRE 1 — IMPÔTS SUR LE REVENU",
+    definition: "Taxe sur les Plus-Values Immobilières. Prélevée sur les gains réalisés lors de la cession de biens immobiliers.",
+  },
+  ITS: {
+    titre: "TITRE 1 — IMPÔTS SUR LE REVENU",
+    definition:
+      "Impôt sur les Traitements et Salaires. Retenu à la source par l'employeur sur les salaires versés aux employés. " +
+      "Comptabilisation employeur : Débit 661 (Salaires bruts) / Crédit 421 (Personnel, rémunérations dues) + Crédit 4441 (ITS à reverser). " +
+      "Reversement DGI : Débit 4441 / Crédit 521.",
+  },
+  RAS: {
+    titre: "TITRE 1 — IMPÔTS SUR LE REVENU",
+    definition: "Retenues à la Source. Mécanisme général de prélèvement à la source sur différents revenus (honoraires, loyers, etc.).",
+  },
+
+  // ── TITRE 2 — TAXES SUR LE PATRIMOINE ───────────────────────
+  TFU: {
+    titre: "TITRE 2 — TAXES SUR LE PATRIMOINE",
+    definition: "Taxe Foncière Unique. Taxe annuelle sur la propriété des terrains et bâtiments au Bénin.",
+  },
+  TVM: {
+    titre: "TITRE 2 — TAXES SUR LE PATRIMOINE",
+    definition: "Taxe sur les Véhicules à Moteur. Taxe annuelle due par les propriétaires de véhicules.",
+  },
+
+  // ── TITRE 3 — AUTRES IMPÔTS DIRECTS ─────────────────────────
+  TPS: {
+    titre: "TITRE 3 — AUTRES IMPÔTS DIRECTS",
+    definition:
+      "Taxe Professionnelle Synthétique. Régime simplifié pour les petites entreprises dont le chiffre d'affaires " +
+      "est inférieur au seuil d'assujettissement à la TVA. Remplace IS/IBA, TVA et VPS. " +
+      "Exonération AIB possible en 1ère année d'activité pour les entreprises soumises à la TPS.",
+  },
+  VPS: {
+    titre: "TITRE 3 — AUTRES IMPÔTS DIRECTS",
+    definition:
+      "Versement Patronal sur Salaires. Contribution de l'employeur calculée sur la masse salariale. " +
+      "Comptabilisation : Débit 664 (Charges sociales patronales) / Crédit 4446 (VPS à reverser).",
+  },
+  TEOM: {
+    titre: "TITRE 3 — AUTRES IMPÔTS DIRECTS",
+    definition: "Taxe d'Enlèvement des Ordures Ménagères. Taxe locale due par les occupants de locaux.",
+  },
+
+  // ── TITRE 4 — TAXES SUR LE CHIFFRE D'AFFAIRES ───────────────
+  TVA: {
+    titre: "TITRE 4 — TAXES SUR LE CHIFFRE D'AFFAIRES",
+    definition:
+      "Taxe sur la Valeur Ajoutée. Taux normal : 18% au Bénin. " +
+      "⚠️ COMPTES TVA : 4431 (TVA collectée), 4452 (TVA déductible sur achats). " +
+      "⚠️ Le compte 4452 est EXCLUSIVEMENT pour la TVA. NE JAMAIS l'utiliser pour l'AIB ou d'autres impôts. " +
+      "TVA à décaisser = 4431 − 4452. Déclaration mensuelle.",
+  },
+  TAFA: {
+    titre: "TITRE 4 — TAXES SUR LE CHIFFRE D'AFFAIRES",
+    definition: "Taxe sur les Activités Financières et Assurances. S'applique aux opérations bancaires et d'assurance.",
+  },
+
+  // ── TITRE 5 — DROITS D'ACCISES ───────────────────────────────
+  TSPP: {
+    titre: "TITRE 5 — DROITS D'ACCISES",
+    definition: "Taxe Spécifique Unique sur les Produits Pétroliers. Droits d'accises sur les carburants et produits pétroliers.",
+  },
+
+  // ── ADMINISTRATION & INSTITUTIONS ───────────────────────────
+  IFU: {
+    titre: "ADMINISTRATION FISCALE",
+    definition:
+      "Identifiant Fiscal Unique. Numéro d'identification attribué par la DGI à chaque contribuable au Bénin. " +
+      "Les entreprises sans IFU sont automatiquement soumises à l'AIB à 5% sur leurs factures normalisées.",
+  },
+  DGI: {
+    titre: "ADMINISTRATION FISCALE",
+    definition: "Direction Générale des Impôts (Bénin). Autorité fiscale nationale chargée de l'assiette, du recouvrement et du contrôle des impôts.",
+  },
+  CNSS: {
+    titre: "SÉCURITÉ SOCIALE",
+    definition:
+      "Caisse Nationale de Sécurité Sociale. Gère les cotisations sociales au Bénin. " +
+      "Part patronale : 15,4% du salaire brut. Part salariale : 3,6% du salaire brut.",
+  },
+  OHADA: {
+    titre: "DROIT DES AFFAIRES",
+    definition: "Organisation pour l'Harmonisation en Afrique du Droit des Affaires. Cadre juridique et comptable (SYSCOHADA) commun aux États membres.",
+  },
+  UEMOA: {
+    titre: "INTÉGRATION RÉGIONALE",
+    definition: "Union Économique et Monétaire Ouest-Africaine. Union regroupant 8 pays dont le Bénin, partageant le franc CFA (XOF).",
+  },
+  CGI: {
+    titre: "DROIT FISCAL",
+    definition: "Code Général des Impôts du Bénin. Texte de référence regroupant l'ensemble de la législation fiscale béninoise.",
+  },
 };
 
 // ── Mots vides à ignorer lors de la recherche floue ─────────────
