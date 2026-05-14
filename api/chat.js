@@ -414,6 +414,57 @@ async function rechercherSurWeb(question) {
   return null; // aucune clé configurée ou aucun résultat
 }
 
+// ── NIVEAU 2bis : Recherche dans CGI-data.js (articles officiels) ─
+function rechercherDansCGI(question, cgiData) {
+  if (!cgiData || typeof cgiData !== 'object') return null;
+
+  const mots    = extraireMots(question, 3);
+  const qUp     = question.toUpperCase().replace(/[^A-Z0-9\s]/g, ' ');
+  const resultats = [];
+
+  // Sigles directement détectés dans la question → chercher la section correspondante
+  const siglesQuestion = question.toUpperCase().match(/\b(IS|IBA|IRF|IRCM|ITS|AIB|TVA|TPS|VPS|TFU|TAFA|TPVI|IFU)\b/g) || [];
+
+  for (const [section, contenu] of Object.entries(cgiData)) {
+    if (section === 'meta') continue;
+    if (typeof contenu !== 'object') continue;
+
+    // Score de base : sigle exact dans la question
+    let score = siglesQuestion.includes(section.toUpperCase()) ? 10 : 0;
+
+    // Score sur le résumé
+    if (contenu.resume) {
+      score += scorerPertinence(mots, contenu.resume);
+    }
+
+    if (score < 1) continue;
+
+    // Chercher les articles les plus pertinents dans cette section
+    const articlesCorrespondants = [];
+    if (contenu.articles && typeof contenu.articles === 'object') {
+      for (const [num, texteArt] of Object.entries(contenu.articles)) {
+        const scoreArt = scorerPertinence(mots, texteArt);
+        if (scoreArt >= 1 || siglesQuestion.includes(section.toUpperCase())) {
+          articlesCorrespondants.push({ num, texte: texteArt, score: scoreArt });
+        }
+      }
+      articlesCorrespondants.sort((a, b) => b.score - a.score);
+    }
+
+    // Construire l'extrait
+    let extrait = `[${section}] ${(contenu.resume || '').slice(0, 300)}\n`;
+    for (const art of articlesCorrespondants.slice(0, 5)) {
+      extrait += `\nArticle ${art.num} : ${art.texte.slice(0, 800)}\n`;
+    }
+
+    resultats.push({ score, texte: extrait });
+  }
+
+  resultats.sort((a, b) => b.score - a.score);
+  const top = resultats.slice(0, 3).map(r => r.texte);
+  return top.length > 0 ? top.join('\n---\n') : null;
+}
+
 // ── Détection si une réponse est nécessaire via le web ───────────
 // Heuristique : si la question contient des mots d'actualité ou
 // de référence précise non couverte par les données locales.
@@ -497,7 +548,18 @@ export default async function handler(req, res) {
     }
   } catch (_) { /* fichier non disponible */ }
 
-  // NIVEAU 3 — CGI Bénin + SYSCOHADA
+  // NIVEAU 2bis — CGI Bénin 2026 (texte officiel, articles exacts)
+  let contexteCGI = '';
+  try {
+    const mod = await import('../CGI-data.js');
+    const cgiData = mod.default ?? mod.CGI_BENIN ?? mod;
+    const resultat = rechercherDansCGI(derniereQuestion, cgiData);
+    if (resultat) {
+      contexteCGI = '\n\n### ✅ CODE GÉNÉRAL DES IMPÔTS BÉNIN 2026 (texte officiel)\n' + resultat;
+    }
+  } catch (_) { /* fichier non disponible */ }
+
+  // NIVEAU 3 — Docs-context.js (SYSCOHADA + anciens docs fiscaux)
   let contexteDocs = '';
   try {
     const mod = await import('../Docs-context.js');
@@ -508,7 +570,7 @@ export default async function handler(req, res) {
     }
   } catch (_) { /* fichier non disponible */ }
 
-  const aDesContexteLocal = !!(contexteSignes || contexteComptes || contexteDocs);
+  const aDesContexteLocal = !!(contexteSignes || contexteComptes || contexteCGI || contexteDocs);
 
   // NIVEAU 5 — Fallback web (seulement si aucune donnée locale ET mots-clés d'actualité)
   let contexteWeb   = '';
@@ -526,7 +588,7 @@ export default async function handler(req, res) {
   // ════════════════════════════════════════════════════════════════
   //  CONSTRUCTION DU SYSTEM PROMPT
   // ════════════════════════════════════════════════════════════════
-  const blocContexte = [contexteSignes, contexteComptes, contexteDocs, contexteWeb]
+  const blocContexte = [contexteSignes, contexteComptes, contexteCGI, contexteDocs, contexteWeb]
     .filter(Boolean).join('');
 
   // Instruction source web à injecter dans le prompt si recherche web utilisée
