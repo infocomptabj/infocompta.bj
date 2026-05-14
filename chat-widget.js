@@ -161,15 +161,26 @@ const STYLE = `
 
   /* ════ BOUTON COPIER ════ */
   .ic-copy-btn {
-    display: inline-flex; align-items: center; gap: 4px;
-    background: none; border: 1px solid var(--ic-border);
+    display: inline-flex; align-items: center; gap: 0;
+    background: none; border: none;
     color: var(--ic-muted); cursor: pointer;
-    font-size: 11px; padding: 3px 10px; border-radius: 20px;
-    transition: all .15s; font-family: inherit; margin-top: 2px;
+    font-size: 11px; padding: 3px 4px; border-radius: 6px;
+    transition: color .15s; font-family: inherit; margin-top: 3px;
   }
-  .ic-copy-btn:hover { background: var(--ic-gold-xs); border-color: var(--ic-gold); color: var(--ic-gold); }
-  .ic-copy-btn.copied { background: #d4edda; border-color: #5c9e5c; color: #2d6a35; }
-  .ic-copy-btn svg { width: 11px; height: 11px; fill: currentColor; flex-shrink: 0; }
+  .ic-copy-btn svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
+
+  /* Libellé visible uniquement au survol ou état copié */
+  .ic-copy-btn .ic-copy-label {
+    max-width: 0; overflow: hidden; white-space: nowrap;
+    transition: max-width .2s ease, margin-left .2s ease;
+    margin-left: 0;
+  }
+  .ic-copy-btn:hover { color: var(--ic-gold); }
+  .ic-copy-btn:hover .ic-copy-label { max-width: 50px; margin-left: 4px; }
+
+  /* État copié — vert + texte "Copié" affiché */
+  .ic-copy-btn.copied { color: #2d6a35 !important; }
+  .ic-copy-btn.copied .ic-copy-label { max-width: 50px; margin-left: 4px; }
 
   .ic-typing { display: flex; gap: 4px; padding: 10px 13px; background: var(--ic-surface); border: 1px solid var(--ic-border); border-radius: 12px; border-bottom-left-radius: 3px; width: fit-content; }
   .ic-typing span { width: 6px; height: 6px; background: var(--ic-gold); border-radius: 50%; animation: ic-bounce .9s infinite; }
@@ -257,9 +268,14 @@ function icCopy(text, btn) {
   const plain = text.replace(/```[\w]*\n?([\s\S]*?)```/g,'$1').replace(/\*\*/g,'').replace(/\*/g,'');
   const done = () => {
     btn.classList.add('copied');
-    btn.innerHTML = SVG.check + ' Copié !';
+    // Icône check verte + label "Copié" animé
+    btn.innerHTML = SVG.check + '<span class="ic-copy-label">Copié</span>';
     showToast('✓ Réponse copiée');
-    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = SVG.copy + ' Copier'; }, 2200);
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      // Retour à l'icône seule (le label réapparaît au survol via CSS)
+      btn.innerHTML = SVG.copy + '<span class="ic-copy-label">Copier</span>';
+    }, 2200);
   };
   if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(plain).then(done).catch(() => fallbackCopy(plain, done));
@@ -491,7 +507,7 @@ function icAppendBot(html, source, rawText) {
     <div class="ic-msg-body">
       <div class="ic-bubble">${html}</div>
       ${source ? `<div class="ic-source"><span class="ic-source-dot"></span>${source}</div>` : ''}
-      <button class="ic-copy-btn" id="${btnId}">${SVG.copy} Copier</button>
+      <button class="ic-copy-btn" id="${btnId}">${SVG.copy}<span class="ic-copy-label">Copier</span></button>
     </div>`;
   cont.appendChild(div);
   cont.scrollTop = cont.scrollHeight;
