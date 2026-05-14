@@ -350,6 +350,84 @@ function rechercherDansDocs(question, docsContext) {
   return top.length > 0 ? top.join('\n---\n') : null;
 }
 
+// ── NIVEAU 2ter : Recherche des écritures comptables validées ────
+// Retourne { ecrituresTexte, impotSansEcriture }
+// - ecrituresTexte : bloc formaté à injecter dans le prompt
+// - impotSansEcriture : true si l'impôt détecté n'a pas d'écriture prédéfinie
+async function rechercherEcritures(question) {
+  let ecrData = null;
+  try {
+    const mod = await import('../ecritures-data.js');
+    ecrData = {
+      ecritures:         mod.ECRITURES         ?? mod.default?.ECRITURES         ?? mod.default ?? {},
+      index:             mod.INDEX_ECRITURES    ?? mod.default?.INDEX_ECRITURES   ?? {},
+      sansEcriture:      mod.IMPOTS_SANS_ECRITURE ?? mod.default?.IMPOTS_SANS_ECRITURE ?? [],
+    };
+  } catch (_) { return { ecrituresTexte: '', impotSansEcriture: false }; }
+
+  const { ecritures, index, sansEcriture } = ecrData;
+  const qNorm = question.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+  // 1. Détecter si la question concerne un impôt SANS écriture prédéfinie
+  //    et que l'utilisateur ne demande PAS explicitement une écriture
+  const demandeEcriture = /ecrit|journalis|comptabilis|passer|enregistr|journal|pass|compt/i.test(question);
+  const siglesDetectesSansEcriture = sansEcriture.filter(s =>
+    new RegExp(`\\b${s}\\b`, 'i').test(question)
+  );
+  if (siglesDetectesSansEcriture.length > 0 && !demandeEcriture) {
+    return {
+      ecrituresTexte: '',
+      impotSansEcriture: true,
+      impotsConcernes: siglesDetectesSansEcriture,
+    };
+  }
+
+  // 2. Chercher les écritures correspondantes via l'index
+  const clesTrouvees = new Set();
+  for (const [motCle, cles] of Object.entries(index)) {
+    if (qNorm.includes(motCle.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))) {
+      cles.forEach(c => clesTrouvees.add(c));
+    }
+  }
+
+  if (clesTrouvees.size === 0) {
+    return { ecrituresTexte: '', impotSansEcriture: false };
+  }
+
+  // 3. Formater les écritures trouvées
+  const blocs = [];
+  for (const cle of clesTrouvees) {
+    const e = ecritures[cle];
+    if (!e) continue;
+
+    let bloc = `\n📒 **${e.libelle}**`;
+    if (e.condition) bloc += `\n   _(${e.condition})_`;
+
+    const casListe = e.cas || [];
+    for (const cas of casListe) {
+      if (cas.sous_titre) bloc += `\n\n   **${cas.sous_titre}**`;
+      bloc += '\n```';
+      const maxCompte = Math.max(...cas.lignes.map(l => l.compte.length));
+      for (const l of cas.lignes) {
+        const pad = ' '.repeat(maxCompte - l.compte.length);
+        bloc += `\n   ${l.sens === 'D' ? 'D' : '  C'}  ${l.compte}${pad}  — ${l.intitule}`;
+      }
+      bloc += `\n   ${cas.libelle_ecriture}`;
+      bloc += '\n```';
+    }
+
+    if (e.note) bloc += `\n   ⚠️ ${e.note}`;
+    blocs.push(bloc);
+  }
+
+  return {
+    ecrituresTexte: blocs.length > 0
+      ? '\n\n### ✅ ÉCRITURES COMPTABLES VALIDÉES (InfoCompta)\n' + blocs.join('\n')
+      : '',
+    impotSansEcriture: false,
+  };
+}
+
 // ── NIVEAU 5 : Recherche web (fallback) ─────────────────────────
 // Utilise Brave Search API (gratuit) ou Google Custom Search.
 // Renvoie { extrait, sourceUrl, sourceNom } ou null.
@@ -572,6 +650,10 @@ export default async function handler(req, res) {
 
   const aDesContexteLocal = !!(contexteSignes || contexteComptes || contexteCGI || contexteDocs);
 
+  // NIVEAU 2ter — Écritures comptables validées par l'expert InfoCompta
+  const { ecrituresTexte, impotSansEcriture, impotsConcernes } =
+    await rechercherEcritures(derniereQuestion);
+
   // NIVEAU 5 — Fallback web (seulement si aucune donnée locale ET mots-clés d'actualité)
   let contexteWeb   = '';
   let sourceWebInfo = '';
@@ -588,7 +670,7 @@ export default async function handler(req, res) {
   // ════════════════════════════════════════════════════════════════
   //  CONSTRUCTION DU SYSTEM PROMPT
   // ════════════════════════════════════════════════════════════════
-  const blocContexte = [contexteSignes, contexteComptes, contexteCGI, contexteDocs, contexteWeb]
+  const blocContexte = [contexteSignes, contexteComptes, contexteCGI, contexteDocs, ecrituresTexte, contexteWeb]
     .filter(Boolean).join('');
 
   // Instruction source web à injecter dans le prompt si recherche web utilisée
@@ -596,13 +678,20 @@ export default async function handler(req, res) {
     ? `\n- CITATION SOURCE WEB : Si tu utilises des informations du bloc "RÉSULTAT RECHERCHE WEB", tu DOIS terminer ta réponse par : "📌 Source : ${sourceWebInfo.replace('📌 Source web : ', '')}" — ne jamais omettre cette citation.`
     : '';
 
+  // Instruction écritures comptables
+  const instructionEcritures = impotSansEcriture
+    ? `\n- ÉCRITURES COMPTABLES : La question concerne ${(impotsConcernes || []).join(', ')}. Aucune écriture standard n'est prédéfinie pour cet impôt dans nos données. NE PAS proposer d'écriture comptable spontanément. Réponds uniquement sur les aspects fiscaux (définition, taux, base, échéances). Si l'utilisateur demande EXPLICITEMENT une écriture, tu peux en proposer une en précisant clairement que c'est à titre indicatif et qu'elle doit être validée par un expert-comptable.`
+    : ecrituresTexte
+    ? `\n- ÉCRITURES COMPTABLES : Des écritures validées sont fournies dans le contexte (bloc "ÉCRITURES COMPTABLES VALIDÉES"). Utilise-les EXACTEMENT telles quelles. Ne pas les modifier, compléter ou remplacer par d'autres écritures.`
+    : `\n- ÉCRITURES COMPTABLES : Si la question ne porte pas explicitement sur une écriture comptable, NE PAS en proposer spontanément. Attends que l'utilisateur le demande.`;
+
   const instructionsBase = `
 ## RÈGLES STRICTES ANTI-HALLUCINATION
 - SIGLES : Si un sigle est fourni dans le contexte, utilise OBLIGATOIREMENT cette définition. Ne jamais l'inventer.
 - DONNÉES CHIFFRÉES : Ne jamais inventer un taux, un montant, une date ou une référence légale. Si tu n'es pas certain, dis-le explicitement.
 - HONNÊTETÉ : Si tu ne trouves pas l'information dans tes sources, réponds exactement : "Je n'ai pas trouvé cette information dans les données disponibles. Pourriez-vous reformuler ou préciser votre question ?"
-- RÉPONSE COMPLÈTE : Pour tout impôt/taxe identifié, donne : définition, personnes concernées, base imposable, taux, échéances déclaratives, écriture comptable OHADA.
-- Ne pas mélanger la fiscalité d'autres pays avec celle du Bénin.${instructionWeb}
+- RÉPONSE COMPLÈTE : Pour tout impôt/taxe identifié, donne : définition, personnes concernées, base imposable, taux, échéances déclaratives. L'écriture comptable suit les règles ci-dessous.
+- Ne pas mélanger la fiscalité d'autres pays avec celle du Bénin.${instructionEcritures}${instructionWeb}
 
 ## ORDRE DE PRIORITÉ DES SOURCES
 1. Données extraites des fichiers du site (contexte ci-dessous, marqué ✅)
@@ -612,7 +701,6 @@ ${!aDesContexte ? '\n⚠️ Aucune donnée locale trouvée pour cette question. 
 
   let systemPrompt;
   if (frontendSystem) {
-    // Le frontend a déjà construit un prompt riche → on y ajoute nos règles et contexte
     systemPrompt =
       frontendSystem +
       '\n\n## RÈGLES ET DONNÉES COMPLÉMENTAIRES (BACKEND)' +
