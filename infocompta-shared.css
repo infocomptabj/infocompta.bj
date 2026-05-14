@@ -13,54 +13,49 @@
 /* ═══════════ VARIABLES ═══════════ */
 :root {
   /* ── Bleu institutionnel (couleur primaire) ── */
-  --teal:        #185FA5;   /* fond principal (bleu institutionnel)    */
-  --teal-dk:     #0C447C;   /* bleu foncé (survol, ombres, nav)        */
-  --teal-md:     #378ADD;   /* bleu moyen (accents, highlights)        */
-  --teal-lt:     #85B7EB;   /* bleu clair (hover, liens actifs)        */
+  --teal:        #185FA5;
+  --teal-dk:     #0C447C;
+  --teal-md:     #378ADD;
+  --teal-lt:     #85B7EB;
 
   /* ── Bleu profond (titres & corps de texte) ── */
-  --navy:        #0C447C;   /* bleu profond (titres, nav, corps)       */
-  --navy-dk:     #042C53;   /* très foncé (ombres profondes)           */
-  --navy-lt:     #185FA5;   /* bleu profond atténué                    */
+  --navy:        #0C447C;
+  --navy-dk:     #042C53;
+  --navy-lt:     #185FA5;
 
-  /* ── Ambre (accent principal — appels à l'action, badges) ── */
-  --orange:      #BA7517;   /* ambre vif (CTA, badge, soulignements)   */
-  --orange-lt:   #EF9F27;   /* ambre clair (survol)                    */
-  --orange-pale: #FAEEDA;   /* ambre très pâle (fond badge léger)      */
+  /* ── Ambre (accent principal) ── */
+  --orange:      #BA7517;
+  --orange-lt:   #EF9F27;
+  --orange-pale: #FAEEDA;
   --orange-line: rgba(186,117,23,0.28);
 
-  /* ── Vert progression (succès, validation, certifications OHADA) ── */
-  --success:     #639922;   /* vert (quiz réussi, module validé)       */
-  --success-lt:  #97C459;   /* vert clair (hover états succès)         */
-  --success-pale:#EAF3DE;   /* fond vert pâle (cartes de validation)   */
-  --danger:      #A32D2D;   /* rouge sobre (erreurs, tentatives échouées) */
-  --danger-pale: #FCEBEB;   /* fond rouge pâle                         */
+  /* ── Vert progression ── */
+  --success:     #639922;
+  --success-lt:  #97C459;
+  --success-pale:#EAF3DE;
+  --danger:      #A32D2D;
+  --danger-pale: #FCEBEB;
 
   /* ── Surfaces & fonds ── */
-  --cream:       #E6F1FB;   /* fond page (bleu institutionnel pâle)    */
-  --cream-dk:    #B5D4F4;   /* fond alterné / hover clair              */
+  --cream:       #E6F1FB;
+  --cream-dk:    #B5D4F4;
   --surface:     #FFFFFF;
-  --surface-teal: rgba(255,255,255,0.06); /* overlay sur fonds bleus    */
+  --surface-teal: rgba(255,255,255,0.06);
 
   /* ── Textes ── */
-  /*   Règle : sur fond primaire/navy → texte blanc/clair              */
-  /*           sur fond blanc/clair  → texte navy/bleu-profond         */
   --text-on-dark:       #FFFFFF;
   --text-on-dark-muted: rgba(255,255,255,0.65);
   --text-on-dark-dim:   rgba(255,255,255,0.38);
-
-  --text:        #0C447C;   /* bleu profond — corps sur fond clair     */
-  --text-md:     #185FA5;   /* bleu institutionnel — texte secondaire  */
-  --muted:       #5C7FA0;   /* bleu-gris atténué (légendes, sous-titres) */
+  --text:        #0C447C;
+  --text-md:     #185FA5;
+  --muted:       #5C7FA0;
 
   /* ── Bordures ── */
   --border:      #B5D4F4;
   --border-lt:   #E6F1FB;
   --border-dark: rgba(255,255,255,0.12);
 
-  /* ── Alias rétrocompatibilité --gold* (offres.html) → ambre ── */
-  /* Permet aux inline styles existants (ex: color:var(--gold-lt)) de */
-  /* continuer à fonctionner sans modifier le HTML.                    */
+  /* ── Alias rétrocompatibilité --gold* → ambre ── */
   --gold:      var(--orange);
   --gold-lt:   var(--orange-lt);
   --gold-pale: var(--orange-pale);
@@ -255,7 +250,7 @@ footer {
   margin-bottom: 0.8rem;
 }
 
-/* ── Badge succès (module validé, certification OHADA) ── */
+/* ── Badge succès ── */
 .badge-success {
   display: inline-flex;
   align-items: center;
@@ -280,7 +275,7 @@ footer {
   flex-shrink: 0;
 }
 
-/* Badge ambre (en cours, délai, alerte douce) */
+/* Badge ambre */
 .badge-amber {
   display: inline-flex;
   align-items: center;
@@ -321,7 +316,6 @@ footer {
   box-shadow: 0 6px 20px rgba(186,117,23,0.35);
 }
 
-/* Bouton succès (valider, certifier) */
 .btn-success {
   background: var(--success);
   color: var(--text-on-dark);
@@ -345,7 +339,6 @@ footer {
   box-shadow: 0 6px 20px rgba(99,153,34,0.30);
 }
 
-/* Bouton fantôme (sur fond bleu/navy) */
 .btn-ghost {
   background: transparent;
   border: 1.5px solid var(--border-dark);
@@ -357,7 +350,6 @@ footer {
   box-shadow: none;
 }
 
-/* Bouton outline bleu (sur fond clair) */
 .btn-outline-teal {
   background: transparent;
   border: 1.5px solid var(--teal);
@@ -369,7 +361,6 @@ footer {
   box-shadow: 0 6px 20px rgba(24,95,165,0.20);
 }
 
-/* Bouton outline navy (sur fond clair) */
 .btn-outline-navy {
   background: transparent;
   border: 1.5px solid var(--navy);
@@ -394,7 +385,7 @@ footer {
 .card h1, .card h2, .card h3, .card h4 { color: var(--navy); }
 .card p { color: var(--text-md); }
 
-/* ── HERO SMALL (sous-pages) ── */
+/* ── HERO SMALL ── */
 .hero-sm {
   background: var(--teal);
   padding: 3.5rem 0;
@@ -438,7 +429,7 @@ footer {
 .form-group textarea,
 .form-group select {
   width: 100%;
-  background: var(--cream);
+  background: var(--surface);
   border: 1.5px solid var(--border);
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
@@ -457,6 +448,7 @@ footer {
 .form-group input::placeholder,
 .form-group textarea::placeholder { color: var(--muted); }
 .form-group textarea { resize: vertical; min-height: 130px; }
+.form-group select { appearance: none; cursor: pointer; }
 
 /* ── ICON BADGE ── */
 .icon-badge {
@@ -467,8 +459,6 @@ footer {
   font-size: 1.25rem;
   margin-bottom: 1rem;
 }
-
-/* Icon badge vert (succès OHADA) */
 .icon-badge-success {
   width: 46px; height: 46px;
   background: var(--success-pale);
@@ -532,8 +522,6 @@ footer {
   gap: 4rem;
   align-items: center;
 }
-
-/* Badge animé */
 .hero-badge {
   display: inline-flex;
   align-items: center;
@@ -559,7 +547,6 @@ footer {
   0%, 100% { opacity: 1; transform: scale(1); }
   50%       { opacity: 0.5; transform: scale(0.85); }
 }
-
 .hero h1 {
   color: var(--text-on-dark);
   font-size: clamp(2.4rem, 4vw, 3.6rem);
@@ -577,8 +564,6 @@ footer {
   margin-bottom: 2.2rem;
 }
 .hero-actions { display: flex; gap: 0.9rem; flex-wrap: wrap; }
-
-/* Cartes statistiques (visuel hero) */
 .hero-visual {
   display: flex;
   flex-direction: column;
@@ -631,7 +616,7 @@ footer {
 .stat-value span { color: var(--orange-lt); font-size: 1rem; }
 .hero-stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 
-/* ── Section Fonctionnalités (fond clair) ── */
+/* ── Section Fonctionnalités ── */
 .features-section { padding: 6rem 0; background: var(--cream); position: relative; }
 .section-header { margin-bottom: 3.5rem; max-width: 500px; }
 .section-header h2 {
@@ -688,7 +673,7 @@ footer {
 .feature-card h3 { color: var(--navy); font-size: 1.15rem; margin-bottom: 0.5rem; font-weight: 700; }
 .feature-card p  { color: var(--muted); font-size: 0.87rem; line-height: 1.65; }
 
-/* ── Section Offres (fond blanc) ── */
+/* ── Section Offres ── */
 .offers-section {
   padding: 6rem 0;
   background: var(--surface);
@@ -747,7 +732,7 @@ footer {
 }
 .offer-card:hover .offer-link { gap: 0.6rem; color: var(--orange); }
 
-/* ── CTA Banner (fond bleu institutionnel) ── */
+/* ── CTA Banner ── */
 .cta-banner {
   background: linear-gradient(135deg, var(--teal) 0%, var(--teal-md) 100%);
   border-radius: var(--radius-md);
@@ -774,7 +759,7 @@ footer {
 .cta-banner p  { color: var(--text-on-dark-muted); font-size: 0.92rem; max-width: 400px; }
 .cta-actions   { display: flex; gap: 0.9rem; flex-wrap: wrap; }
 
-/* ── CTA Section (fond clair) ── */
+/* ── CTA Section ── */
 .cta-section { padding: 5rem 0; background: var(--cream); }
 .cta-section h2 { color: var(--navy); }
 .cta-section p  { color: var(--muted); }
@@ -802,39 +787,17 @@ footer {
 }
 
 /* ═══════════════════════════════════════════════════════
-   À PROPOS — Section "Pourquoi InfoCompta ?"
-   Fond page : --cream (#E6F1FB)
-   Gauche    : textes navy/bleu sur fond clair
-   Droite    : panneau bleu avec textes blancs/ambre
+   À PROPOS
 ═══════════════════════════════════════════════════════ */
-
-.about-section {
-  padding: 6rem 0;
-  background: var(--cream);
-}
-
-/* Grille 50/50 */
+.about-section { padding: 6rem 0; background: var(--cream); }
 .about-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3.5rem;
   align-items: center;
 }
-
-/* ── Colonne gauche (fond clair) ── */
-.about-left h2 {
-  color: var(--navy);
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
-  margin-bottom: 1.3rem;
-}
-.about-left p {
-  color: var(--text-md);
-  font-size: 0.93rem;
-  line-height: 1.8;
-  margin-bottom: 1rem;
-}
-
-/* ── Colonne droite : panneau bleu (fond sombre) ── */
+.about-left h2 { color: var(--navy); font-size: clamp(1.8rem, 3vw, 2.4rem); margin-bottom: 1.3rem; }
+.about-left p  { color: var(--text-md); font-size: 0.93rem; line-height: 1.8; margin-bottom: 1rem; }
 .about-panel {
   background: var(--teal);
   border-radius: var(--radius-md);
@@ -842,7 +805,6 @@ footer {
   position: relative;
   overflow: hidden;
 }
-/* Halo décoratif ambre */
 .about-panel::before {
   content: '';
   position: absolute;
@@ -852,7 +814,6 @@ footer {
   background: rgba(186,117,23,0.12);
   pointer-events: none;
 }
-/* Ligne ambre en haut */
 .about-panel::after {
   content: '';
   position: absolute;
@@ -860,7 +821,6 @@ footer {
   height: 2px;
   background: linear-gradient(90deg, transparent, var(--orange) 35%, var(--orange-lt) 65%, transparent);
 }
-/* Citation — blanc sur bleu */
 .about-panel-quote {
   font-family: Georgia, serif;
   font-style: italic;
@@ -873,7 +833,6 @@ footer {
   z-index: 1;
   line-height: 1.6;
 }
-/* Grille 2×2 de stats */
 .about-stats {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -893,7 +852,6 @@ footer {
   background: rgba(255,255,255,0.13);
   border-color: var(--orange-line);
 }
-/* Valeur principale — blanc sur bleu */
 .about-stat-value {
   font-family: 'Outfit', sans-serif;
   font-size: 2rem;
@@ -902,12 +860,7 @@ footer {
   line-height: 1;
   margin-bottom: 0.35rem;
 }
-/* Unité — ambre clair sur bleu */
-.about-stat-value span {
-  color: var(--orange-lt);
-  font-size: 1.2rem;
-}
-/* Libellé stat — blanc atténué */
+.about-stat-value span { color: var(--orange-lt); font-size: 1.2rem; }
 .about-stat-label {
   font-size: 0.7rem;
   font-weight: 600;
@@ -915,8 +868,6 @@ footer {
   text-transform: uppercase;
   color: var(--text-on-dark-muted);
 }
-
-/* ── Responsive About ── */
 @media (max-width: 1023px) {
   .about-section { padding: 4rem 0; }
   .about-inner   { grid-template-columns: 1fr; gap: 2rem; }
@@ -926,7 +877,7 @@ footer {
   .about-stat-value { font-size: 1.6rem; }
 }
 
-/* ═══════════ RESPONSIVE ═══════════ */
+/* ═══════════ RESPONSIVE GLOBAL ═══════════ */
 @media (max-width: 1023px) {
   header { padding: 0 1.2rem; height: 58px; }
   .logo  { font-size: 1.3rem; }
@@ -993,24 +944,13 @@ footer {
 
 /* ═══════════════════════════════════════════════════════
    PAGE OFFRES (offres.html)
-   Couleurs : palette ambre (--orange*) + bleu (--navy, --teal)
-   Typo     : Outfit (titres offres + prix) + DM Sans (corps)
-   Note     : --gold* sont des alias de --orange* définis dans :root
 ═══════════════════════════════════════════════════════ */
-
-/* ── Conteneur de page ── */
 .offers-page { padding: 5rem 0 6rem; }
-
-/* ── Grille des offres ── */
-/* Surcharge la grille générique de l'accueil pour la page dédiée  */
 .offers-page .offers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.25rem;
 }
-
-/* ── Carte d'offre (version page dédiée) ── */
-/* Plus détaillée que la version accueil : flex colonne, gap interne */
 .offers-page .offer-card {
   background: var(--surface);
   border: 1.5px solid var(--border);
@@ -1023,13 +963,12 @@ footer {
   overflow: hidden;
   transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
 }
-/* Barre ambre animée en haut de chaque carte */
 .offers-page .offer-card::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 3px;
-  background: var(--orange);   /* ambre institutionnel */
+  background: var(--orange);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
@@ -1040,8 +979,6 @@ footer {
   transform: translateY(-4px);
 }
 .offers-page .offer-card:hover::before { transform: scaleX(1); }
-
-/* ── Badge de catégorie (Comptabilité, Juridique, RH…) ── */
 .badge {
   display: inline-block;
   font-size: 0.68rem;
@@ -1050,37 +987,16 @@ footer {
   text-transform: uppercase;
   padding: 3px 10px;
   border-radius: 30px;
-  background: var(--orange-pale);   /* fond ambre très pâle */
-  color: var(--orange);             /* texte ambre sur fond pâle */
+  background: var(--orange-pale);
+  color: var(--orange);
   width: fit-content;
   border: 1px solid var(--orange-line);
 }
-
-/* ── Titre de l'offre ── */
-/* Outfit en remplacement de Cormorant Garamond — cohérence design system */
-.offer-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--navy);   /* bleu profond sur fond blanc */
-  line-height: 1.3;
-}
-
-/* ── Description ── */
-.offer-desc {
-  font-size: 0.84rem;
-  color: var(--muted);   /* bleu-gris atténué */
-  line-height: 1.65;
-  flex: 1;               /* pousse le prix et le bouton vers le bas */
-}
-
-/* ── Prix ── */
-/* Outfit pour les chiffres — lisibilité et cohérence avec les stats */
 .offer-price {
   font-family: 'Outfit', sans-serif;
   font-size: 1.7rem;
   font-weight: 700;
-  color: var(--navy);   /* bleu profond sur fond blanc */
+  color: var(--navy);
   line-height: 1;
 }
 .offer-price span {
@@ -1090,16 +1006,13 @@ footer {
   font-weight: 400;
   margin-left: 3px;
 }
-
-/* ── Bouton d'achat ── */
-/* Fond ambre → texte blanc (règle palette : texte blanc sur fond foncé) */
 .btn-buy {
   display: block;
   text-align: center;
   padding: 0.65rem 0;
   border-radius: var(--radius);
-  background: var(--orange);          /* ambre institutionnel */
-  color: var(--text-on-dark);         /* blanc pur */
+  background: var(--orange);
+  color: var(--text-on-dark);
   font-family: 'DM Sans', sans-serif;
   font-size: 0.75rem;
   font-weight: 600;
@@ -1111,27 +1024,23 @@ footer {
   width: 100%;
 }
 .btn-buy:hover {
-  background: var(--orange-lt);                       /* ambre clair */
+  background: var(--orange-lt);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(186,117,23,0.35);       /* ombre ambre harmonisée */
+  box-shadow: 0 4px 14px rgba(186,117,23,0.35);
 }
 
-/* ═══════════ MODAL SUCCÈS (paiement FedaPay) ═══════════ */
-
-/* Fond semi-transparent navy-dk : bleu profond pour rester dans la palette */
+/* ═══════════ MODAL ═══════════ */
 .modal-overlay {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(4,44,83,0.65);    /* navy-dk (#042C53) à 65% */
+  background: rgba(4,44,83,0.65);
   z-index: 9999;
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(3px);
 }
 .modal-overlay.active { display: flex; }
-
-/* Boîte de dialogue */
 .modal-box {
   background: var(--surface);
   border-radius: var(--radius-md);
@@ -1143,7 +1052,6 @@ footer {
   box-shadow: var(--shadow-lg);
   position: relative;
 }
-/* Barre de couleur ambre en haut de la modale */
 .modal-box::before {
   content: '';
   position: absolute;
@@ -1152,10 +1060,7 @@ footer {
   background: linear-gradient(90deg, var(--orange), var(--orange-lt));
   border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
-
 .modal-icon { font-size: 2.8rem; margin-bottom: 1rem; }
-
-/* Titre modale : navy sur fond blanc */
 .modal-box h3 {
   font-family: 'Outfit', sans-serif;
   font-size: 1.4rem;
@@ -1163,23 +1068,14 @@ footer {
   margin-bottom: 0.5rem;
   color: var(--navy);
 }
-
-/* Corps modale : texte secondaire */
-.modal-box p {
-  font-size: 0.88rem;
-  color: var(--muted);
-  margin-bottom: 1.8rem;
-  line-height: 1.6;
-}
-
-/* Bouton de téléchargement : même style que btn-buy */
+.modal-box p { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.8rem; line-height: 1.6; }
 .modal-download {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 2rem;
-  background: var(--orange);          /* ambre */
-  color: var(--text-on-dark);         /* blanc */
+  background: var(--orange);
+  color: var(--text-on-dark);
   border-radius: var(--radius);
   font-family: 'DM Sans', sans-serif;
   font-size: 0.78rem;
@@ -1190,12 +1086,7 @@ footer {
   margin-bottom: 0.75rem;
   transition: background var(--transition), transform var(--transition);
 }
-.modal-download:hover {
-  background: var(--orange-lt);
-  transform: translateY(-1px);
-}
-
-/* Bouton fermer : discret, texte muted → navy au survol */
+.modal-download:hover { background: var(--orange-lt); transform: translateY(-1px); }
 .modal-close {
   display: block;
   margin: 0.5rem auto 0;
@@ -1208,7 +1099,461 @@ footer {
   transition: color var(--transition);
 }
 .modal-close:hover { color: var(--navy); }
-
-/* ── Responsive page Offres ── */
 @media (max-width: 1023px) { .offers-page { padding: 3.5rem 0 4rem; } }
 @media (max-width: 640px)  { .offers-page .offers-grid { grid-template-columns: 1fr; } }
+
+/* ═══════════════════════════════════════════════════════
+   PAGE AUTHENTIFICATION (connexion.html)
+   Split-screen : panneau gauche bleu institutionnel
+                  panneau droit blanc (formulaire)
+   Palette      : variables du design system (--teal, --navy,
+                  --orange*, --cream, --border…)
+   Typo         : Outfit (titres) + DM Sans (corps / labels)
+═══════════════════════════════════════════════════════ */
+
+/* ── Header allégé (page auth — pas de nav) ── */
+.auth-page header { position: relative; }
+
+/* Lien retour */
+.header-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-on-dark-muted);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  transition: color var(--transition);
+}
+.header-back:hover { color: var(--orange-lt); }
+
+/* ── Mise en page principale : 50/50 ── */
+.auth-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 66px);
+}
+
+/* ── Panneau gauche (fond bleu institutionnel foncé) ── */
+.auth-left {
+  background: var(--navy-dk);       /* bleu profond — panel sombre */
+  padding: 5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Halos ambre décoratifs */
+.auth-left::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(186,117,23,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 70% at 10% 80%, rgba(24,95,165,0.35) 0%, transparent 50%);
+  pointer-events: none;
+}
+/* Liseré ambre vertical à gauche */
+.auth-left::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--orange) 30%, var(--orange-lt) 60%, transparent);
+  pointer-events: none;
+}
+.auth-left > * { position: relative; z-index: 1; }
+
+/* Étiquette supérieure */
+.auth-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--orange-lt);
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.auth-label::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: var(--orange);
+  flex-shrink: 0;
+}
+
+/* Titre principal du panneau */
+.auth-left h2 {
+  font-family: 'Outfit', sans-serif;   /* Outfit — cohérence design system */
+  color: var(--text-on-dark);
+  font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+.auth-left h2 em {
+  font-style: italic;
+  color: var(--orange-lt);            /* accent ambre sur fond bleu */
+}
+
+/* Paragraphe descriptif */
+.auth-left > p {
+  color: var(--text-on-dark-muted);
+  font-size: 0.92rem;
+  max-width: 380px;
+  line-height: 1.75;
+  margin-bottom: 3rem;
+}
+
+/* ── Cartes de fonctionnalités ── */
+.auth-features { display: flex; flex-direction: column; gap: 1rem; }
+.auth-feat {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-md);
+  transition: background var(--transition), border-color var(--transition);
+}
+.auth-feat:hover {
+  background: rgba(186,117,23,0.07);
+  border-color: var(--orange-line);
+}
+.feat-icon {
+  width: 38px; height: 38px;
+  background: rgba(186,117,23,0.13);
+  border: 1px solid var(--orange-line);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.feat-text strong {
+  display: block;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-on-dark);
+  margin-bottom: 2px;
+}
+.feat-text span { font-size: 0.78rem; color: var(--text-on-dark-dim); }
+
+/* ── Panneau droit (fond blanc — formulaire) ── */
+.auth-right {
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 3rem;
+}
+.auth-box {
+  width: 100%;
+  max-width: 400px;
+  animation: authFadeUp 0.4s ease both;
+}
+@keyframes authFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Onglets Connexion / Inscription ── */
+.tabs {
+  display: flex;
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 2.2rem;
+  padding: 3px;
+  gap: 3px;
+}
+.tab-btn {
+  flex: 1;
+  padding: 0.65rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: calc(var(--radius) - 1px);
+  transition: background var(--transition), color var(--transition), box-shadow var(--transition);
+}
+.tab-btn.active {
+  background: var(--teal);            /* bleu institutionnel — onglet actif */
+  color: var(--text-on-dark);
+  box-shadow: 0 2px 8px rgba(24,95,165,0.25);
+}
+.tab-btn:hover:not(.active) {
+  background: var(--cream-dk);
+  color: var(--navy);
+}
+
+/* ── En-têtes de formulaire ── */
+.form-title {
+  font-family: 'Outfit', sans-serif;  /* Outfit — cohérence design system */
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.2rem;
+  line-height: 1.15;
+}
+.form-sub {
+  font-size: 0.86rem;
+  color: var(--muted);
+  margin-bottom: 1.8rem;
+}
+
+/* ── Champ mot de passe avec toggle ── */
+.pass-wrap { position: relative; }
+.pass-wrap input { padding-right: 2.8rem; }
+.pass-toggle {
+  position: absolute;
+  right: 0.8rem; top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color var(--transition);
+}
+.pass-toggle:hover { color: var(--teal); }   /* bleu au survol — cohérence */
+.pass-toggle svg { width: 17px; height: 17px; }
+
+/* ── Indicateur de force du mot de passe ── */
+.strength-wrap { margin-top: 6px; }
+.strength-bar {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border);
+  overflow: hidden;
+}
+.strength-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease, background 0.3s ease;
+  width: 0%;
+}
+.strength-label { font-size: 0.7rem; color: var(--muted); margin-top: 4px; }
+
+/* ── Lien "Mot de passe oublié" ── */
+.forgot-row { text-align: right; margin-top: 4px; }
+.forgot-row a {
+  font-size: 0.75rem;
+  color: var(--teal);              /* bleu institutionnel */
+  cursor: pointer;
+  transition: color var(--transition);
+}
+.forgot-row a:hover { color: var(--navy); }
+
+/* ── Bouton principal d'authentification ── */
+/* Reprend les bases de .btn avec largeur 100% et spinner intégré */
+.btn-auth {
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  background: var(--orange);        /* ambre — même que .btn */
+  color: var(--text-on-dark);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  margin-top: 0.6rem;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-auth:hover:not(:disabled) {
+  background: var(--orange-lt);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(186,117,23,0.35);
+}
+.btn-auth:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Variante secondaire (ghost — fond blanc) */
+.btn-auth.secondary {
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid var(--border);
+  box-shadow: none;
+}
+.btn-auth.secondary:hover {
+  background: var(--cream);
+  border-color: var(--teal);
+  color: var(--teal);
+  box-shadow: none;
+  transform: none;
+}
+
+/* ── Spinner de chargement ── */
+.spinner {
+  width: 15px; height: 15px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: authSpin 0.7s linear infinite;
+  display: none;
+}
+@keyframes authSpin { to { transform: rotate(360deg); } }
+
+/* ── Boîte de message (succès / erreur) ── */
+.msg-box {
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.84rem;
+  margin-bottom: 1.2rem;
+  display: none;
+  line-height: 1.5;
+}
+.msg-box.success {
+  background: var(--success-pale);
+  border: 1px solid rgba(99,153,34,0.35);
+  color: #2d5a0e;
+}
+.msg-box.error {
+  background: var(--danger-pale);
+  border: 1px solid rgba(163,45,45,0.30);
+  color: var(--danger);
+}
+
+/* ── Séparateur "ou" ── */
+.sep {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 1.2rem 0;
+}
+.sep::before, .sep::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── Note CGU bas de formulaire ── */
+.cgu {
+  font-size: 0.73rem;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 1.2rem;
+  line-height: 1.5;
+}
+.cgu a { color: var(--teal); }
+.cgu a:hover { color: var(--navy); }
+
+/* ── Grille 2 colonnes (inscription) ── */
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+/* ── Notice email d'activation ── */
+.reg-notice {
+  background: var(--orange-pale);
+  border: 1px solid var(--orange-line);
+  border-radius: var(--radius);
+  padding: 0.7rem 0.9rem;
+  font-size: 0.8rem;
+  color: #5a3e10;
+  margin-bottom: 1.3rem;
+  line-height: 1.6;
+  text-align: center;
+}
+.reg-notice svg { display: inline-block; vertical-align: middle; margin-right: 0.3rem; margin-bottom: 2px; stroke: var(--orange); }
+
+/* ── Label optionnel ── */
+.opt-label {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+/* ── Checkbox CGU personnalisée ── */
+.cgu-check { margin-top: 0.8rem; }
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+.checkbox-label input[type="checkbox"] { display: none; }
+.checkmark {
+  width: 17px; height: 17px;
+  min-width: 17px;
+  border: 1.5px solid var(--border);
+  border-radius: 3px;
+  background: var(--surface);
+  margin-top: 2px;
+  transition: background var(--transition), border-color var(--transition);
+  display: flex; align-items: center; justify-content: center;
+}
+.checkbox-label input:checked + .checkmark {
+  background: var(--teal);           /* bleu institutionnel — cohérence */
+  border-color: var(--teal);
+}
+.checkbox-label input:checked + .checkmark::after {
+  content: "";
+  display: block;
+  width: 4px; height: 8px;
+  border: 2px solid #fff;
+  border-top: none; border-left: none;
+  transform: rotate(45deg) translateY(-1px);
+}
+.checkbox-label a { color: var(--teal); }
+.checkbox-label a:hover { color: var(--navy); }
+
+/* ── Message sécurité ── */
+.reg-secure {
+  font-size: 0.73rem;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 1rem;
+  line-height: 1.5;
+}
+.reg-secure strong { color: var(--navy); }
+
+/* ── Footer auth (simplifié) ── */
+.auth-footer {
+  background: var(--teal-dk);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-on-dark-dim);
+  text-align: center;
+  font-size: 0.77rem;
+  padding: 1.4rem 2rem;
+  letter-spacing: 0.04em;
+}
+.auth-footer strong { color: var(--orange-lt); font-weight: 500; }
+
+/* ── Responsive authentification ── */
+@media (max-width: 900px) {
+  .auth-main { grid-template-columns: 1fr; }
+  .auth-left { display: none; }
+}
+@media (max-width: 480px) {
+  .auth-right { padding: 2.5rem 1.4rem; }
+  .form-row-2 { grid-template-columns: 1fr; }
+  .auth-page header { height: 58px; padding: 0 1.2rem; }
+}
