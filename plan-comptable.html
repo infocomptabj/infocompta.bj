@@ -169,15 +169,13 @@ mark { background: rgba(196,147,58,0.18); color: var(--gold); padding: 0 1px; bo
 
 <header>
   <a href="index.html" class="logo">Info<span>Compta</span></a>
-  <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
   <nav id="mainNav">
     <ul>
       <li><a href="index.html">Accueil</a></li>
       <li><a href="plan-comptable.html" class="active">Plan Comptable</a></li>
       <li><a href="documents.html">Documents</a></li>
-      <li><a href="quiz.html">Quiz</a></li>
+      <li><a href="quiz.html" class="active">Quiz</a></li>
       <li><a href="offres.html">Nos offres</a></li>
       <li><a href="a-propos.html">À propos</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -227,36 +225,6 @@ mark { background: rgba(196,147,58,0.18); color: var(--gold); padding: 0 1px; bo
 <script src="comptes-data.js"></script>
 <script src="Docs-context.js"></script>
 <script src="chat-widget.js"></script>
-
-<!-- ✅ Script pour le hamburger menu -->
-<script>
-(function () {
-  var btn = document.getElementById('hamburgerBtn');
-  var nav = document.getElementById('mainNav');
-  if (btn && nav) {
-    btn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var isOpen = nav.classList.toggle('open');
-      btn.classList.toggle('open', isOpen);
-      btn.setAttribute('aria-expanded', isOpen);
-    });
-    nav.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () { 
-        nav.classList.remove('open'); 
-        btn.classList.remove('open'); 
-        btn.setAttribute('aria-expanded', false); 
-      });
-    });
-    document.addEventListener('click', function (e) {
-      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
-        nav.classList.remove('open'); 
-        btn.classList.remove('open'); 
-        btn.setAttribute('aria-expanded', false);
-      }
-    });
-  }
-})();
-</script>
 
 </body>
 </html>
