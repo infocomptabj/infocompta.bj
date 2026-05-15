@@ -1,33 +1,33 @@
 /* ═══════════════════════════════════════════════════════
    infocompta-shared.css — Design System v5
-   Palette : Formation Comptable & Fiscale — Bénin
-   Primaire  : Bleu #185FA5  |  Foncé : #0C447C  |  Moyen : #378ADD
-   Secondaire: Vert #639922  |  Accent: Ambre #BA7517
-   Surface   : #E6F1FB (fond bleu institutionnel pâle)  |  Blanc : #FFFFFF
+   Palette : Navy charcoal profond + Or chaud + Crème warm
+   Primaire  : Navy charcoal #1B2B4B  |  Foncé : #0D1929  |  Moyen : #2D4A7A
+   Secondaire: Vert #639922  |  Accent: Or chaud #C8913A
+   Surface   : #F5F3EE (fond crème chaud)  |  Blanc : #FFFFFF
    Typo      : Outfit (display) + DM Sans (corps)
-   Règle clé : texte blanc sur fond primaire/foncé, texte bleu-profond sur fond clair
+   Règle clé : texte blanc sur fond primaire/foncé, texte navy sur fond clair
 ═══════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
 
 /* ═══════════ VARIABLES ═══════════ */
 :root {
-  /* ── Bleu institutionnel (couleur primaire) ── */
-  --teal:        #185FA5;
-  --teal-dk:     #0C447C;
-  --teal-md:     #378ADD;
-  --teal-lt:     #85B7EB;
+  /* ── Navy charcoal (couleur primaire) ── */
+  --teal:        #1B2B4B;
+  --teal-dk:     #0D1929;
+  --teal-md:     #2D4A7A;
+  --teal-lt:     #5A7BB5;
 
-  /* ── Bleu profond (titres & corps de texte) ── */
-  --navy:        #0C447C;
-  --navy-dk:     #042C53;
-  --navy-lt:     #185FA5;
+  /* ── Navy profond (titres & corps de texte) ── */
+  --navy:        #0D1929;
+  --navy-dk:     #070E18;
+  --navy-lt:     #1B2B4B;
 
-  /* ── Ambre (accent principal) ── */
-  --orange:      #BA7517;
-  --orange-lt:   #EF9F27;
-  --orange-pale: #FAEEDA;
-  --orange-line: rgba(186,117,23,0.28);
+  /* ── Or chaud (accent principal) ── */
+  --orange:      #C8913A;
+  --orange-lt:   #DCA84E;
+  --orange-pale: #FBF0DC;
+  --orange-line: rgba(200,145,58,0.28);
 
   /* ── Vert progression ── */
   --success:     #639922;
@@ -37,8 +37,8 @@
   --danger-pale: #FCEBEB;
 
   /* ── Surfaces & fonds ── */
-  --cream:       #E6F1FB;
-  --cream-dk:    #B5D4F4;
+  --cream:       #F5F3EE;
+  --cream-dk:    #E2DED5;
   --surface:     #FFFFFF;
   --surface-teal: rgba(255,255,255,0.06);
 
@@ -46,16 +46,16 @@
   --text-on-dark:       #FFFFFF;
   --text-on-dark-muted: rgba(255,255,255,0.65);
   --text-on-dark-dim:   rgba(255,255,255,0.38);
-  --text:        #0C447C;
-  --text-md:     #185FA5;
-  --muted:       #5C7FA0;
+  --text:        #0D1929;
+  --text-md:     #1B2B4B;
+  --muted:       #6B7A96;
 
   /* ── Bordures ── */
-  --border:      #B5D4F4;
-  --border-lt:   #E6F1FB;
+  --border:      #DDD9D0;
+  --border-lt:   #F0EDE6;
   --border-dark: rgba(255,255,255,0.12);
 
-  /* ── Alias rétrocompatibilité --gold* → ambre ── */
+  /* ── Alias rétrocompatibilité --gold* → or chaud ── */
   --gold:      var(--orange);
   --gold-lt:   var(--orange-lt);
   --gold-pale: var(--orange-pale);
@@ -65,9 +65,9 @@
   --radius:      4px;
   --radius-md:   10px;
   --radius-lg:   16px;
-  --shadow:      0 2px 20px rgba(24,95,165,0.10);
-  --shadow-md:   0 8px 40px rgba(24,95,165,0.18);
-  --shadow-lg:   0 20px 60px rgba(24,95,165,0.25);
+  --shadow:      0 2px 20px rgba(13,25,41,0.10);
+  --shadow-md:   0 8px 40px rgba(13,25,41,0.18);
+  --shadow-lg:   0 20px 60px rgba(13,25,41,0.25);
   --transition:  0.22s ease;
 }
 
@@ -313,7 +313,7 @@ footer {
 .btn:hover {
   background: var(--orange-lt);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(186,117,23,0.35);
+  box-shadow: 0 6px 20px rgba(200,145,58,0.35);
 }
 
 .btn-success {
@@ -358,7 +358,7 @@ footer {
 .btn-outline-teal:hover {
   background: var(--teal);
   color: var(--text-on-dark);
-  box-shadow: 0 6px 20px rgba(24,95,165,0.20);
+  box-shadow: 0 6px 20px rgba(27,43,75,0.20);
 }
 
 .btn-outline-navy {
@@ -369,7 +369,7 @@ footer {
 .btn-outline-navy:hover {
   background: var(--navy);
   color: var(--text-on-dark);
-  box-shadow: 0 6px 20px rgba(12,68,124,0.20);
+  box-shadow: 0 6px 20px rgba(13,25,41,0.20);
 }
 
 /* ── CARD ── */
@@ -397,7 +397,7 @@ footer {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(186,117,23,0.10) 0%, transparent 60%);
+  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(200,145,58,0.10) 0%, transparent 60%);
   pointer-events: none;
 }
 .hero-sm::after {
@@ -443,7 +443,7 @@ footer {
 .form-group textarea:focus,
 .form-group select:focus {
   border-color: var(--teal);
-  box-shadow: 0 0 0 3px rgba(24,95,165,0.15);
+  box-shadow: 0 0 0 3px rgba(27,43,75,0.15);
 }
 .form-group input::placeholder,
 .form-group textarea::placeholder { color: var(--muted); }
@@ -495,8 +495,8 @@ footer {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(186,117,23,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 70% at 10% 80%, rgba(12,68,124,0.55) 0%, transparent 50%);
+    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(200,145,58,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 70% at 10% 80%, rgba(7,14,24,0.55) 0%, transparent 50%);
   pointer-events: none;
 }
 .hero-grid {
@@ -526,8 +526,8 @@ footer {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(186,117,23,0.12);
-  border: 1px solid rgba(186,117,23,0.30);
+  background: rgba(200,145,58,0.12);
+  border: 1px solid rgba(200,145,58,0.30);
   color: var(--orange-lt);
   font-size: 0.7rem;
   font-weight: 600;
@@ -588,12 +588,12 @@ footer {
 }
 .hero-stat-card:hover {
   background: rgba(255,255,255,0.11);
-  border-color: rgba(186,117,23,0.35);
+  border-color: rgba(200,145,58,0.35);
 }
 .stat-icon {
   width: 44px; height: 44px;
-  background: rgba(186,117,23,0.14);
-  border: 1px solid rgba(186,117,23,0.25);
+  background: rgba(200,145,58,0.14);
+  border: 1px solid rgba(200,145,58,0.25);
   border-radius: var(--radius);
   display: flex; align-items: center; justify-content: center;
   font-size: 1.2rem;
@@ -688,7 +688,7 @@ footer {
   right: -100px; top: -100px;
   width: 500px; height: 500px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(24,95,165,0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(27,43,75,0.05) 0%, transparent 70%);
   pointer-events: none;
 }
 .offers-section .section-header h2 { color: var(--navy); }
@@ -751,7 +751,7 @@ footer {
   right: -80px; top: -80px;
   width: 320px; height: 320px;
   border-radius: 50%;
-  background: rgba(186,117,23,0.10);
+  background: rgba(200,145,58,0.10);
   pointer-events: none;
 }
 .cta-banner > * { position: relative; z-index: 1; }
@@ -811,7 +811,7 @@ footer {
   top: -60px; right: -60px;
   width: 200px; height: 200px;
   border-radius: 50%;
-  background: rgba(186,117,23,0.12);
+  background: rgba(200,145,58,0.12);
   pointer-events: none;
 }
 .about-panel::after {
@@ -1026,7 +1026,7 @@ footer {
 .btn-buy:hover {
   background: var(--orange-lt);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(186,117,23,0.35);
+  box-shadow: 0 4px 14px rgba(200,145,58,0.35);
 }
 
 /* ═══════════ MODAL ═══════════ */
@@ -1034,7 +1034,7 @@ footer {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(4,44,83,0.65);
+  background: rgba(7,14,24,0.65);
   z-index: 9999;
   align-items: center;
   justify-content: center;
@@ -1104,11 +1104,6 @@ footer {
 
 /* ═══════════════════════════════════════════════════════
    PAGE AUTHENTIFICATION (connexion.html)
-   Split-screen : panneau gauche bleu institutionnel
-                  panneau droit blanc (formulaire)
-   Palette      : variables du design system (--teal, --navy,
-                  --orange*, --cream, --border…)
-   Typo         : Outfit (titres) + DM Sans (corps / labels)
 ═══════════════════════════════════════════════════════ */
 
 /* ── Header allégé (page auth — pas de nav) ── */
@@ -1136,9 +1131,9 @@ footer {
   min-height: calc(100vh - 66px);
 }
 
-/* ── Panneau gauche (fond bleu institutionnel foncé) ── */
+/* ── Panneau gauche (fond navy profond) ── */
 .auth-left {
-  background: var(--navy-dk);       /* bleu profond — panel sombre */
+  background: var(--navy-dk);
   padding: 5rem 4rem;
   display: flex;
   flex-direction: column;
@@ -1147,17 +1142,17 @@ footer {
   overflow: hidden;
 }
 
-/* Halos ambre décoratifs */
+/* Halos or décoratifs */
 .auth-left::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(186,117,23,0.10) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 70% at 10% 80%, rgba(24,95,165,0.35) 0%, transparent 50%);
+    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(200,145,58,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 70% at 10% 80%, rgba(27,43,75,0.35) 0%, transparent 50%);
   pointer-events: none;
 }
-/* Liseré ambre vertical à gauche */
+/* Liseré or vertical à gauche */
 .auth-left::after {
   content: '';
   position: absolute;
@@ -1191,7 +1186,7 @@ footer {
 
 /* Titre principal du panneau */
 .auth-left h2 {
-  font-family: 'Outfit', sans-serif;   /* Outfit — cohérence design system */
+  font-family: 'Outfit', sans-serif;
   color: var(--text-on-dark);
   font-size: clamp(1.8rem, 2.5vw, 2.6rem);
   font-weight: 800;
@@ -1200,7 +1195,7 @@ footer {
 }
 .auth-left h2 em {
   font-style: italic;
-  color: var(--orange-lt);            /* accent ambre sur fond bleu */
+  color: var(--orange-lt);
 }
 
 /* Paragraphe descriptif */
@@ -1225,12 +1220,12 @@ footer {
   transition: background var(--transition), border-color var(--transition);
 }
 .auth-feat:hover {
-  background: rgba(186,117,23,0.07);
+  background: rgba(200,145,58,0.07);
   border-color: var(--orange-line);
 }
 .feat-icon {
   width: 38px; height: 38px;
-  background: rgba(186,117,23,0.13);
+  background: rgba(200,145,58,0.13);
   border: 1px solid var(--orange-line);
   border-radius: var(--radius);
   display: flex; align-items: center; justify-content: center;
@@ -1292,9 +1287,9 @@ footer {
   transition: background var(--transition), color var(--transition), box-shadow var(--transition);
 }
 .tab-btn.active {
-  background: var(--teal);            /* bleu institutionnel — onglet actif */
+  background: var(--teal);
   color: var(--text-on-dark);
-  box-shadow: 0 2px 8px rgba(24,95,165,0.25);
+  box-shadow: 0 2px 8px rgba(27,43,75,0.25);
 }
 .tab-btn:hover:not(.active) {
   background: var(--cream-dk);
@@ -1303,7 +1298,7 @@ footer {
 
 /* ── En-têtes de formulaire ── */
 .form-title {
-  font-family: 'Outfit', sans-serif;  /* Outfit — cohérence design system */
+  font-family: 'Outfit', sans-serif;
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--navy);
@@ -1332,7 +1327,7 @@ footer {
   align-items: center;
   transition: color var(--transition);
 }
-.pass-toggle:hover { color: var(--teal); }   /* bleu au survol — cohérence */
+.pass-toggle:hover { color: var(--teal); }
 .pass-toggle svg { width: 17px; height: 17px; }
 
 /* ── Indicateur de force du mot de passe ── */
@@ -1355,18 +1350,17 @@ footer {
 .forgot-row { text-align: right; margin-top: 4px; }
 .forgot-row a {
   font-size: 0.75rem;
-  color: var(--teal);              /* bleu institutionnel */
+  color: var(--teal);
   cursor: pointer;
   transition: color var(--transition);
 }
 .forgot-row a:hover { color: var(--navy); }
 
 /* ── Bouton principal d'authentification ── */
-/* Reprend les bases de .btn avec largeur 100% et spinner intégré */
 .btn-auth {
   width: 100%;
   padding: 0.8rem 1.2rem;
-  background: var(--orange);        /* ambre — même que .btn */
+  background: var(--orange);
   color: var(--text-on-dark);
   font-family: 'DM Sans', sans-serif;
   font-size: 0.78rem;
@@ -1386,7 +1380,7 @@ footer {
 .btn-auth:hover:not(:disabled) {
   background: var(--orange-lt);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(186,117,23,0.35);
+  box-shadow: 0 6px 20px rgba(200,145,58,0.35);
 }
 .btn-auth:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -1511,7 +1505,7 @@ footer {
   display: flex; align-items: center; justify-content: center;
 }
 .checkbox-label input:checked + .checkmark {
-  background: var(--teal);           /* bleu institutionnel — cohérence */
+  background: var(--teal);
   border-color: var(--teal);
 }
 .checkbox-label input:checked + .checkmark::after {
