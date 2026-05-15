@@ -1601,9 +1601,9 @@ const data = [
         infoBtn.title = `Voir le fonctionnement du compte ${code}`;
         infoBtn.textContent = 'ℹ';
     
-        div.appendChild(infoBtn);
         div.appendChild(codeSpan);
         div.appendChild(labelSpan);
+        div.appendChild(infoBtn);
         container.appendChild(div);
         if (show) visible++;
       });
