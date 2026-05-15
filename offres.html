@@ -83,6 +83,7 @@ const offers = [
   { badge:"RH",           title:"Kit de fiches de paie OHADA",        price:5000, devise:"XOF", desc:"Pack de 12 modèles mensuels avec calculs automatiques intégrés.",            downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-6.com" }
 ];
 
+// ✅ ÉTAPE 1 : Générer les cartes d'offres EN PREMIER
 const grid = document.getElementById('offersGrid');
 offers.forEach((o, index) => {
   const card = document.createElement('div');
@@ -97,6 +98,7 @@ offers.forEach((o, index) => {
   grid.appendChild(card);
 });
 
+// ✅ ÉTAPE 2 : Définir les fonctions
 function payerDocument(index) {
   const doc = offers[index];
   FedaPay.init({
@@ -114,10 +116,12 @@ function ouvrirModal(url) {
   document.getElementById('downloadLink').href = url;
   document.getElementById('successModal').classList.add('active');
 }
+
 function closeModal() {
   document.getElementById('successModal').classList.remove('active');
 }
 
+// ✅ ÉTAPE 3 : Configurer les événements et observateurs
 (function () {
   var btn = document.getElementById('hamburgerBtn');
   var nav = document.getElementById('mainNav');
