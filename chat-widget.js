@@ -58,7 +58,10 @@ const STYLE = `
 
   #ic-panel {
     position: fixed; bottom: 88px; right: 24px; z-index: 9997;
-    width: 370px; height: 580px;
+    width: min(360px, calc(100vw - 32px));
+    height: min(520px, calc(100vh - 100px));
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 100px);
     background: var(--ic-surface);
     border: 1px solid var(--ic-border); border-radius: 14px;
     box-shadow: 0 12px 48px rgba(15,31,53,.22);
