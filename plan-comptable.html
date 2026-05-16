@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script>window.__pageReady = false;</script>
+  <script>window.__scriptsDone = false;</script>
   <script src="auth-init.js"></script>
   <title>Plan Comptable — InfoCompta</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -227,8 +227,8 @@ mark { background: rgba(196,147,58,0.18); color: var(--gold); padding: 0 1px; bo
 <script src="Docs-context.js"></script>
 <script src="chat-widget.js"></script>
 <script>
-  window.__pageReady = true;
-  if (typeof window.__doReveal === 'function') window.__doReveal();
+  window.__scriptsDone = true;
+  if (window.__authDone) window.__ic_reveal();
 </script>
 
   <!-- ── FOOTER ── -->
