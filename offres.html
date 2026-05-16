@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="auth-init.js"></script>
   <title>Nos Offres — InfoCompta</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="infocompta-shared.css">
@@ -105,14 +106,31 @@ function payerDocument(index) {
     transaction: { amount: doc.price, description: doc.title },
     currency: { iso: doc.devise },
     onComplete: function(resp) {
-      if (resp.reason === FedaPay.DIALOG_DISMISSED) { console.log("Paiement annulé."); }
-      else { ouvrirModal(doc.downloadUrl); }
+      if (!isPaymentSuccessful(resp)) {
+        console.log('Paiement annulé ou non confirmé.', resp);
+        return;
+      }
+      ouvrirModal(doc.downloadUrl);
+    },
+    onError: function(error) {
+      console.error('Erreur FedaPay :', error);
+      alert('Le paiement a échoué. Veuillez réessayer plus tard.');
     }
   }).open();
 }
 
+function isPaymentSuccessful(resp) {
+  if (!resp) return false;
+  if (resp.reason === FedaPay.DIALOG_DISMISSED) return false;
+  if (resp.status && resp.status !== 'success') return false;
+  if (resp.transaction && resp.transaction.status && resp.transaction.status !== 'success') return false;
+  return true;
+}
+
 function ouvrirModal(url) {
-  document.getElementById('downloadLink').href = url;
+  const downloadLink = document.getElementById('downloadLink');
+  downloadLink.href = url || '#';
+  downloadLink.target = '_blank';
   document.getElementById('successModal').classList.add('active');
 }
 
@@ -146,10 +164,20 @@ function closeModal() {
     });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-in').forEach(function (el) { observer.observe(el); });
+
+  var successModal = document.getElementById('successModal');
+  if (successModal) {
+    successModal.addEventListener('click', function (e) {
+      if (e.target === successModal) closeModal();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && successModal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+  }
 })();
 </script>
-
-<script src="auth-init.js"></script>
 
 </body>
 </html>
