@@ -121,8 +121,24 @@ window.__ic_reveal = function() {
     });
 
     /* ── 5. Révéler la page une fois tout prêt ── */
-   window.__authDone = true;
-if (window.__scriptsDone !== false) window.__ic_reveal();;
+    window.__authDone = true;
+
+    function tryReveal() {
+      /* Attendre que les scripts de la page aient fini (plan-comptable, offres…) */
+      if (window.__scriptsDone === false) {
+        window.__revealPending = true;
+        return;
+      }
+      /* Attendre que le DOM soit complètement parsé */
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          window.__ic_reveal();
+        }, { once: true });
+      } else {
+        window.__ic_reveal();
+      }
+    }
+    tryReveal();
   };
 
   document.head.appendChild(sdk);
