@@ -20,13 +20,12 @@
   mask.textContent = 'body{opacity:0!important} [id^="fedapay"],[class*="fedapay"],[id^="secured"]{opacity:1!important;z-index:99999!important}';
   document.head.appendChild(mask);
 
-function reveal() {
-  const m = document.getElementById('ic-mask');
+window.__ic_reveal = function() {
+  var m = document.getElementById('ic-mask');
   if (!m) return;
-  m.textContent = 'body{opacity:1!important;transition:opacity 0.18s ease} ...';
-  setTimeout(() => m.remove(), 250);
-}
-window.__ic_reveal = reveal;
+  m.textContent = 'body{opacity:1!important;transition:opacity 0.18s ease} [id^="fedapay"],[class*="fedapay"],[id^="secured"]{opacity:1!important;z-index:99999!important}';
+  setTimeout(function(){ var el=document.getElementById('ic-mask'); if(el) el.remove(); }, 250);
+};
    
   /* ── 2. Styles du menu profil (injectés une seule fois) ── */
   const style = document.createElement('style');
@@ -54,7 +53,7 @@ window.__ic_reveal = reveal;
   const sdk = document.createElement('script');
   sdk.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js';
 
-  sdk.onerror = function () { reveal(); };
+  sdk.onerror = function () { window.__ic_reveal(); };
 
   sdk.onload = async function () {
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -123,7 +122,7 @@ window.__ic_reveal = reveal;
 
     /* ── 5. Révéler la page une fois tout prêt ── */
    window.__authDone = true;
-if (window.__scriptsDone !== false) reveal();
+if (window.__scriptsDone !== false) window.__ic_reveal();;
   };
 
   document.head.appendChild(sdk);
