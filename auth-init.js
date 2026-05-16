@@ -23,7 +23,7 @@
 window.__ic_reveal = function() {
   var m = document.getElementById('ic-mask');
   if (!m) return;
-  m.textContent = 'body{opacity:1!important;transition:opacity 0.18s ease} [id^="fedapay"],[class*="fedapay"],[id^="secured"]{opacity:1!important;z-index:99999!important}';
+  m.textContent = 'body{opacity:1!important} [id^="fedapay"],[class*="fedapay"],[id^="secured"]{opacity:1!important;z-index:99999!important}';
   setTimeout(function(){ var el=document.getElementById('ic-mask'); if(el) el.remove(); }, 250);
 };
    
@@ -124,12 +124,10 @@ window.__ic_reveal = function() {
     window.__authDone = true;
 
     function tryReveal() {
-      /* Attendre que les scripts de la page aient fini (plan-comptable, offres…) */
       if (window.__scriptsDone === false) {
         window.__revealPending = true;
         return;
       }
-      /* Attendre que le DOM soit complètement parsé */
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
           window.__ic_reveal();
