@@ -3,7 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script>window.__scriptsDone = false;</script>
   <script src="auth-init.js"></script>
+  <script>
+    /* Intercept : ne révèle la page qu'une fois les scripts terminés */
+    var _origReveal = window.__ic_reveal;
+    window.__ic_reveal = function() {
+      if (!window.__scriptsDone) { window.__revealPending = true; return; }
+      _origReveal();
+    };
+  </script>
   <title>Nos Offres — InfoCompta</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="infocompta-shared.css">
@@ -83,7 +92,7 @@ const offers = [
   { badge:"RH",           title:"Kit de fiches de paie OHADA",        price:5000, devise:"XOF", desc:"Pack de 12 modèles mensuels avec calculs automatiques intégrés.",            downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-6.com" }
 ];
 
-// ✅ ÉTAPE 1 : Générer les cartes d'offres EN PREMIER
+// Générer les cartes d'offres
 const grid = document.getElementById('offersGrid');
 offers.forEach((o, index) => {
   const card = document.createElement('div');
@@ -98,7 +107,6 @@ offers.forEach((o, index) => {
   grid.appendChild(card);
 });
 
-// ✅ ÉTAPE 2 : Définir les fonctions
 function payerDocument(index) {
   const doc = offers[index];
   FedaPay.init({
@@ -121,7 +129,6 @@ function closeModal() {
   document.getElementById('successModal').classList.remove('active');
 }
 
-// ✅ ÉTAPE 3 : Configurer les événements et observateurs
 (function () {
   var btn = document.getElementById('hamburgerBtn');
   var nav = document.getElementById('mainNav');
@@ -147,6 +154,10 @@ function closeModal() {
     });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-in').forEach(function (el) { observer.observe(el); });
+
+  /* ── Signaler que tous les scripts sont exécutés ── */
+  window.__scriptsDone = true;
+  if (window.__revealPending) window.__ic_reveal();
 })();
 </script>
 
