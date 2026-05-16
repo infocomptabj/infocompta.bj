@@ -3,20 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>
-  /* Bloquer la révélation tant que le rendu n'est pas terminé */
-  window.__scriptsDone = false;
-</script>
+<script>window.__scriptsDone = false;</script>
 <script src="auth-init.js"></script>
 <script>
-  /* Intercepter __ic_reveal : attendre que __scriptsDone soit true */
-  (function() {
-    var _orig = window.__ic_reveal;
-    window.__ic_reveal = function() {
-      if (!window.__scriptsDone) { window.__revealPending = true; return; }
-      _orig && _orig();
-    };
-  })();
+  var _orig = window.__ic_reveal;
+  window.__ic_reveal = function() {
+    if (!window.__scriptsDone) { window.__revealPending = true; return; }
+    _orig();
+  };
 </script>
   <title>Plan Comptable — InfoCompta</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -233,16 +227,15 @@ mark { background: rgba(196,147,58,0.18); color: var(--gold); padding: 0 1px; bo
 
 <!-- IA FAB -->
 
-<script src="plan-comptable.js" defer></script>
+<script src="plan-comptable.js"></script>
 
 <!-- Widget IA -->
-<script src="comptes-data.js" defer></script>
-<script src="Docs-context.js" defer></script>
-<script src="chat-widget.js" defer></script>
+<script src="comptes-data.js"></script>
+<script src="Docs-context.js"></script>
+<script src="chat-widget.js"></script>
 <script>
-/* ── Hamburger mobile ── */
-(function() {
-  function initHamburger() {
+  /* ── Hamburger mobile (manquait sur cette page) ── */
+  (function() {
     var btn = document.getElementById('hamburgerBtn');
     var nav = document.getElementById('mainNav');
     if (!btn || !nav) return;
@@ -250,7 +243,7 @@ mark { background: rgba(196,147,58,0.18); color: var(--gold); padding: 0 1px; bo
       e.stopPropagation();
       var isOpen = nav.classList.toggle('open');
       btn.classList.toggle('open', isOpen);
-      btn.setAttribute('aria-expanded', isOpen);
+      btn.setAttribute('aria-expanded', String(isOpen));
     });
     nav.querySelectorAll('a').forEach(function(a) {
       a.addEventListener('click', function() {
@@ -266,34 +259,11 @@ mark { background: rgba(196,147,58,0.18); color: var(--gold); padding: 0 1px; bo
         btn.setAttribute('aria-expanded', 'false');
       }
     });
-  }
+  })();
 
-  /* ── Fade-in scroll ── */
-  function initFadeIn() {
-    var obs = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.fade-in').forEach(function(el) { obs.observe(el); });
-  }
-
-  /* ── Signaler que tout est prêt et révéler ── */
-  function ready() {
-    initHamburger();
-    initFadeIn();
-    window.__scriptsDone = true;
-    if (window.__revealPending) window.__ic_reveal();
-  }
-
-  /* Les scripts avec defer s'exécutent après DOMContentLoaded,
-     mais ce bloc inline s'exécute avant. On attend donc DOMContentLoaded. */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', ready);
-  } else {
-    ready();
-  }
-})();
+  /* ── Signaler que tous les scripts sont prêts ── */
+  window.__scriptsDone = true;
+  if (window.__revealPending) window.__ic_reveal();
 </script>
 
   <!-- ── FOOTER ── -->
