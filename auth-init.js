@@ -20,17 +20,13 @@
   mask.textContent = 'body{opacity:0!important} [id^="fedapay"],[class*="fedapay"],[id^="secured"]{opacity:1!important;z-index:99999!important}';
   document.head.appendChild(mask);
 
-  function reveal() {
-    if (window.__pageReady === false) {
-      window.__doReveal = reveal;
-      return;
-    }
-    const m = document.getElementById('ic-mask');
-    if (!m) return;
-    m.textContent = 'body{opacity:1!important;transition:opacity 0.18s ease} [id^="fedapay"],[class*="fedapay"],[id^="secured"]{opacity:1!important;z-index:99999!important}';
-    setTimeout(() => m.remove(), 250);
-  }
-
+function reveal() {
+  if (window.__pageReady === false) { window.__revealPending = true; return; }
+  const m = document.getElementById('ic-mask');
+  if (!m) return;
+  m.textContent = 'body{opacity:1!important;transition:opacity 0.18s ease} [id^="fedapay"],[class*="fedapay"],[id^="secured"]{opacity:1!important;z-index:99999!important}';
+  setTimeout(() => m.remove(), 250);
+}
   /* ── 2. Styles du menu profil (injectés une seule fois) ── */
   const style = document.createElement('style');
   style.textContent = `
