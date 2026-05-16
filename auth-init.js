@@ -21,12 +21,13 @@
   document.head.appendChild(mask);
 
 function reveal() {
-  if (window.__pageReady === false) { window.__revealPending = true; return; }
   const m = document.getElementById('ic-mask');
   if (!m) return;
-  m.textContent = 'body{opacity:1!important;transition:opacity 0.18s ease} [id^="fedapay"],[class*="fedapay"],[id^="secured"]{opacity:1!important;z-index:99999!important}';
+  m.textContent = 'body{opacity:1!important;transition:opacity 0.18s ease} ...';
   setTimeout(() => m.remove(), 250);
 }
+window.__ic_reveal = reveal;
+   
   /* ── 2. Styles du menu profil (injectés une seule fois) ── */
   const style = document.createElement('style');
   style.textContent = `
@@ -121,7 +122,8 @@ function reveal() {
     });
 
     /* ── 5. Révéler la page une fois tout prêt ── */
-    reveal();
+   window.__authDone = true;
+if (window.__scriptsDone !== false) reveal();
   };
 
   document.head.appendChild(sdk);
