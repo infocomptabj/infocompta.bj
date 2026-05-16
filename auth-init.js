@@ -35,7 +35,7 @@
   const style = document.createElement('style');
   style.textContent = `
     nav a[href="auth.html"]{display:none!important}
-    .ic-avatar{position:relative;margin-left:.75rem;flex-shrink:0}
+    .ic-profile-wrap{position:relative;margin-left:.75rem;flex-shrink:0}
     .ic-avatar-btn{width:36px;height:36px;border-radius:50%;background:rgba(184,150,62,0.2);border:1.5px solid #d4af6a;color:#d4af6a;font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;outline:none;flex-shrink:0;transition:background .2s,border-color .2s}
     .ic-avatar-btn:hover{background:rgba(184,150,62,0.35);border-color:#fff;color:#fff}
     .ic-drop{position:absolute;top:calc(100% + 10px);right:0;background:#fff;border:1px solid #e2ddd6;border-radius:6px;box-shadow:0 8px 32px rgba(26,46,74,0.16);min-width:220px;z-index:9999;opacity:0;pointer-events:none;transform:translateY(6px);transition:opacity .18s ease,transform .18s ease}
@@ -83,7 +83,7 @@
     })();
 
     const wrap = document.createElement('div');
-    wrap.className = 'ic-avatar';
+    wrap.className = 'ic-profile-wrap';
     wrap.innerHTML = `
       <button class="ic-avatar-btn" id="icAvatarBtn" title="Mon profil">${initials}</button>
       <div class="ic-drop" id="icDrop">
