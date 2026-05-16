@@ -41,11 +41,210 @@
 </section>
 
 <main>
-  <section class="offers-page">
+  <!-- Copied plans, templates and annuaire from offres 2 -->
+  <section class="offres-hero">
     <div class="container">
-      <div class="offers-grid fade-in" id="offersGrid"></div>
+      <p class="section-label">💳 Paiement Mobile Money disponible</p>
+      <h1>Nos offres pour votre<br>comptabilité OHADA</h1>
+      <p>Plans d'abonnement, templates professionnels et annuaire d'experts — tout pour gérer vos finances au Bénin.</p>
+      <div class="hero-tabs">
+        <button class="hero-tab active" onclick="scrollSec('plans')">Abonnements</button>
+        <button class="hero-tab" onclick="scrollSec('templates')">Templates</button>
+        <button class="hero-tab" onclick="scrollSec('annuaire')">Annuaire</button>
+      </div>
     </div>
   </section>
+
+  <div class="ads-strip">
+    <div class="ads-slot">
+      📢 Espace publicitaire — Remplace ce bloc par ton code <strong>Google AdSense</strong>
+    </div>
+  </div>
+
+  <!-- PLANS -->
+  <section class="offres-section offres-section-alt" id="plans">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label">Abonnements</p>
+        <h2>Choisissez votre plan</h2>
+        <p>Accédez aux outils comptables OHADA adaptés à votre activité. Paiement Mobile Money accepté.</p>
+      </div>
+      <div class="plans-grid">
+
+        <div class="plan-card">
+          <div class="plan-icon">🆓</div>
+          <div class="plan-name">Gratuit</div>
+          <div class="plan-price">0 <small>FCFA</small></div>
+          <div class="plan-period">Pour toujours · Aucune carte requise</div>
+          <p class="plan-desc">Découvrez InfoCompta et accédez aux bases de la comptabilité OHADA sans engagement.</p>
+          <hr class="plan-divider" />
+          <ul class="plan-features">
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Plan comptable OHADA complet</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Recherche de comptes</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> 1 document stocké</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Support par email</li>
+            <li class="plan-feat disabled"><span class="plan-feat-no">✗</span> Rapports financiers</li>
+            <li class="plan-feat disabled"><span class="plan-feat-no">✗</span> Templates inclus</li>
+          </ul>
+          <a href="plan-comptable.html" class="btn-plan btn-plan-outline">Commencer gratuitement</a>
+        </div>
+
+        <div class="plan-card featured">
+          <div class="plan-ribbon">⭐ Populaire</div>
+          <div class="plan-icon">💼</div>
+          <div class="plan-name">Pro</div>
+          <div class="plan-price">3 500 <small>FCFA</small></div>
+          <div class="plan-period">par mois · Résiliable à tout moment</div>
+          <p class="plan-desc">Pour les PME et entrepreneurs qui veulent gérer leur comptabilité efficacement.</p>
+          <hr class="plan-divider" />
+          <ul class="plan-features">
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Tout le plan Gratuit</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Documents illimités</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Rapports financiers avancés</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> 3 templates comptables inclus</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Export PDF & Excel</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Assistance prioritaire</li>
+          </ul>
+          <button class="btn-plan btn-plan-gold" onclick="openPayment('Plan Pro', '3 500', 'mensuel')">💳 Souscrire via Mobile Money</button>
+        </div>
+
+        <div class="plan-card">
+          <div class="plan-icon">🏢</div>
+          <div class="plan-name">Expert</div>
+          <div class="plan-price">8 000 <small>FCFA</small></div>
+          <div class="plan-period">par mois · Pour cabinets & experts</div>
+          <p class="plan-desc">Pour les experts-comptables et cabinets gérant plusieurs clients simultanément.</p>
+          <hr class="plan-divider" />
+          <ul class="plan-features">
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Tout le plan Pro</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Multi-entreprises</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Accès tous les templates</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Accès API</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Formation comptable incluse</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Référencement annuaire</li>
+          </ul>
+          <button class="btn-plan btn-plan-navy" onclick="openPayment('Plan Expert', '8 000', 'mensuel')">💳 Souscrire via Mobile Money</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TEMPLATES -->
+  <section class="offres-section" id="templates">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label">Modèles prêts à l'emploi</p>
+        <h2>📁 Templates comptables</h2>
+        <p>Conformes au SYSCOHADA révisé — téléchargement après confirmation du paiement.</p>
+      </div>
+      <div class="tpl-grid">
+        <div class="tpl-card">
+          <div class="tpl-thumb tpl-t1">📊</div>
+          <div class="tpl-body">
+            <div class="tpl-name">Journal Comptable OHADA</div>
+            <div class="tpl-desc">Modèle Excel avec formules automatiques, conforme au SYSCOHADA révisé.</div>
+            <div class="tpl-footer">
+              <div><span class="tpl-price">2 500 FCFA</span><span class="tpl-format">XLSX</span></div>
+              <button class="btn-tpl" onclick="openPayment('Journal Comptable OHADA','2 500','achat unique')">Acheter</button>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card">
+          <div class="tpl-thumb tpl-t2">📋</div>
+          <div class="tpl-body">
+            <div class="tpl-name">Bilan + Compte de Résultat</div>
+            <div class="tpl-desc">Pack états financiers annuels complets prêts à remplir et soumettre.</div>
+            <div class="tpl-footer">
+              <div><span class="tpl-price">4 000 FCFA</span><span class="tpl-format">XLSX</span></div>
+              <button class="btn-tpl" onclick="openPayment('Bilan + Compte de Résultat','4 000','achat unique')">Acheter</button>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card">
+          <div class="tpl-thumb tpl-t3">🧾</div>
+          <div class="tpl-body">
+            <div class="tpl-name">Modèle de Facture Pro</div>
+            <div class="tpl-desc">Facture Word & Excel personnalisable avec calcul TVA automatique.</div>
+            <div class="tpl-footer">
+              <div><span class="tpl-price">1 500 FCFA</span><span class="tpl-format">DOCX</span></div>
+              <button class="btn-tpl" onclick="openPayment('Modèle de Facture Pro','1 500','achat unique')">Acheter</button>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card">
+          <div class="tpl-thumb tpl-t4">📈</div>
+          <div class="tpl-body">
+            <div class="tpl-name">Tableau de Bord Financier</div>
+            <div class="tpl-desc">Dashboard Excel avec graphiques dynamiques pour suivre vos KPIs financiers.</div>
+            <div class="tpl-footer">
+              <div><span class="tpl-price">5 000 FCFA</span><span class="tpl-format">XLSX</span></div>
+              <button class="btn-tpl" onclick="openPayment('Tableau de Bord Financier','5 000','achat unique')">Acheter</button>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card">
+          <div class="tpl-thumb tpl-t5">🗓️</div>
+          <div class="tpl-body">
+            <div class="tpl-name">Grand Livre Automatisé</div>
+            <div class="tpl-desc">Extraction automatique des écritures par compte avec soldes calculés.</div>
+            <div class="tpl-footer">
+              <div><span class="tpl-price">3 000 FCFA</span><span class="tpl-format">XLSX</span></div>
+              <button class="btn-tpl" onclick="openPayment('Grand Livre Automatisé','3 000','achat unique')">Acheter</button>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card">
+          <div class="tpl-thumb tpl-t6">💰</div>
+          <div class="tpl-body">
+            <div class="tpl-name">Déclaration TVA Bénin</div>
+            <div class="tpl-desc">Modèle de déclaration mensuelle de TVA adapté au droit fiscal béninois.</div>
+            <div class="tpl-footer">
+              <div><span class="tpl-price">2 000 FCFA</span><span class="tpl-format">XLSX</span></div>
+              <button class="btn-tpl" onclick="openPayment('Déclaration TVA Bénin','2 000','achat unique')">Acheter</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANNUAIRE -->
+  <section class="offres-section offres-section-alt" id="annuaire">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label">Experts certifiés</p>
+        <h2>🤝 Annuaire des experts</h2>
+        <p>Trouvez un expert-comptable certifié au Bénin ou référencez votre cabinet auprès de nos utilisateurs.</p>
+      </div>
+      <div class="partners-grid">
+        <div class="partner-card">
+          <div class="partner-av av-navy">👨‍💼</div>
+          <div>
+            <div class="partner-name">Cabinet ABC Conseils</div>
+            <div class="partner-role">Expert-comptable · Cotonou, Bénin</div>
+            <div class="partner-tags"><span class="p-tag tag-navy">Audit</span><span class="p-tag tag-green">Fiscalité</span></div>
+          </div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-av av-teal">👩‍💼</div>
+          <div>
+            <div class="partner-name">Fiduciaire OHADA Pro</div>
+            <div class="partner-role">Commissaire aux comptes · Porto-Novo</div>
+            <div class="partner-tags"><span class="p-tag tag-navy">PME</span><span class="p-tag tag-gold">Start-up</span></div>
+          </div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-av av-gold">🏢</div>
+          <div>
+            <div class="partner-name">GFC Bénin</div>
+            <div class="partner-role">Cabinet comptable · Parakou</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer>
@@ -80,7 +279,15 @@ const offers = [
   { badge:"Business",     title:"Template de plan d'affaires",        price:4000, devise:"XOF", desc:"Structure complète pour présenter votre projet à des investisseurs.",         downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-3.com" },
   { badge:"Académique",   title:"Guide de rédaction de mémoire",      price:1500, devise:"XOF", desc:"Méthodologie et modèles pour rédiger un mémoire de qualité.",                downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-4.com" },
   { badge:"Immobilier",   title:"Contrat de bail d'habitation",       price:2000, devise:"XOF", desc:"Modèle légal de contrat de location pour propriétaires et locataires.",       downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-5.com" },
-  { badge:"RH",           title:"Kit de fiches de paie OHADA",        price:5000, devise:"XOF", desc:"Pack de 12 modèles mensuels avec calculs automatiques intégrés.",            downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-6.com" }
+  { badge:"RH",           title:"Kit de fiches de paie OHADA",        price:5000, devise:"XOF", desc:"Pack de 12 modèles mensuels avec calculs automatiques intégrés.",            downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-6.com" },
+
+  // Templates copied from offres 2
+  { badge:"Comptabilité", title:"Journal Comptable OHADA",          price:2500, devise:"XOF", desc:"Modèle Excel avec formules automatiques, conforme au SYSCOHADA révisé.",       downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-7.com" },
+  { badge:"Comptabilité", title:"Bilan + Compte de Résultat",       price:4000, devise:"XOF", desc:"Pack états financiers annuels complets prêts à remplir et soumettre.",       downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-8.com" },
+  { badge:"RH",           title:"Modèle de Facture Pro",             price:1500, devise:"XOF", desc:"Facture Word & Excel personnalisable avec calcul TVA automatique.",            downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-9.com" },
+  { badge:"Business",     title:"Tableau de Bord Financier",         price:5000, devise:"XOF", desc:"Dashboard Excel avec graphiques dynamiques pour suivre vos KPIs financiers.", downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-10.com" },
+  { badge:"Comptabilité", title:"Grand Livre Automatisé",           price:3000, devise:"XOF", desc:"Extraction automatique des écritures par compte avec soldes calculés.",       downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-11.com" },
+  { badge:"Fiscalité",    title:"Déclaration TVA Bénin",            price:2000, devise:"XOF", desc:"Modèle de déclaration mensuelle de TVA adapté au droit fiscal béninois.",          downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-12.com" }
 ];
 
 // ✅ ÉTAPE 1 : Générer les cartes d'offres EN PREMIER
@@ -125,6 +332,27 @@ function isPaymentSuccessful(resp) {
   if (resp.status && resp.status !== 'success') return false;
   if (resp.transaction && resp.transaction.status && resp.transaction.status !== 'success') return false;
   return true;
+}
+
+function openPayment(name, amount, freq) {
+  // If the item exists in the offers array, reuse payerDocument
+  var idx = offers.findIndex(function(o){ return o.title === name; });
+  if (idx !== -1) { payerDocument(idx); return; }
+
+  // Otherwise start a direct FedaPay checkout using the provided amount and name
+  var parsed = parseInt(String(amount).replace(/\s+/g, '').replace(/[^0-9]/g, ''), 10) || 0;
+  try {
+    FedaPay.init({
+      public_key: FEDAPAY_PUBLIC_KEY,
+      transaction: { amount: parsed, description: name },
+      currency: { iso: 'XOF' },
+      onComplete: function(resp) {
+        if (!isPaymentSuccessful(resp)) { console.log('Paiement annulé ou non confirmé.', resp); return; }
+        alert('Paiement réussi — merci !');
+      },
+      onError: function(err) { console.error('Erreur FedaPay :', err); alert('Le paiement a échoué. Veuillez réessayer.'); }
+    }).open();
+  } catch (e) { console.error(e); alert('Impossible de démarrer le paiement.'); }
 }
 
 function ouvrirModal(url) {
