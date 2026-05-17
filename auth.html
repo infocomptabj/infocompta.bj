@@ -336,7 +336,7 @@
       const { error } = await sb.auth.signInWithPassword({ email, password: pass });
       if (error) throw error;
       showMsg('Connexion réussie ! Redirection en cours…', 'success');
-      setTimeout(() => { window.location.href = 'plan-comptable.html'; }, 1200);
+      setTimeout(() => { window.location.href = 'index.html'; }, 1200);
     } catch {
       showMsg('Identifiants incorrects. Vérifiez votre email et mot de passe.', 'error');
     }
