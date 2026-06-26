@@ -485,7 +485,7 @@ footer {
 
 /* ── Hero principal ── */
 .hero {
-  background: var(--teal);
+  background: url('images/hero-bg.jpg') center center / cover no-repeat;
   position: relative;
   overflow: hidden;
   padding: 6rem 0 5rem;
@@ -495,8 +495,16 @@ footer {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(200,145,58,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 70% at 10% 80%, rgba(7,14,24,0.55) 0%, transparent 50%);
+    rgba(13, 25, 41, 0.72),
+    /* ↑ overlay navy — ajuste l'opacité selon la photo */
+/* Photo sombre (bureau, nuit)  → 0.55 suffit  */
+/* Photo claire (lumière, bleu) → 0.75 à 0.85  */
+/* Photo très colorée          → 0.80 à 0.88  */
+    radial-gradient(
+      ellipse 70% 60% at 80% 20%,
+      rgba(200,145,58,0.10) 0%,
+      transparent 60%
+    );
   pointer-events: none;
 }
 .hero-grid {
