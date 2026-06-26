@@ -485,7 +485,7 @@ footer {
 
 /* ── Hero principal ── */
 .hero {
-  background: url('images/hero-bg.jpg') center center / cover no-repeat;
+  background: url('images/hero-bg.png') center center / cover no-repeat;
   position: relative;
   overflow: hidden;
   padding: 6rem 0 5rem;
