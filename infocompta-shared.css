@@ -1,44 +1,46 @@
 /* ═══════════════════════════════════════════════════════
-   infocompta-shared.css — Design System v5
-   Palette : Navy charcoal profond + Or chaud + Crème warm
-   Primaire  : Navy charcoal #1B2B4B  |  Foncé : #0D1929  |  Moyen : #2D4A7A
-   Secondaire: Vert #639922  |  Accent: Or chaud #C8913A
-   Surface   : #F5F3EE (fond crème chaud)  |  Blanc : #FFFFFF
+   infocompta-shared.css — Design System v6
+   Palette : Bleu nuit profond + Bleu royal + Gris bleuté + Blanc
+   Primaire  : Bleu nuit #00085B   |  Foncé : #000440  |  Moyen : #1A237A
+   Accent    : Bleu royal #1039E2 (boutons, liens, onglets actifs)
+   Secondaire: Gris bleuté #A2B5CB (bordures, icônes secondaires)
+   Alerte    : Rouge #FF1414 (erreurs, alertes, notifications uniquement)
+   Surface   : #FFFFFF (fond principal et cartes)
    Typo      : Outfit (display) + DM Sans (corps)
-   Règle clé : texte blanc sur fond primaire/foncé, texte navy sur fond clair
+   Règle clé : texte blanc sur fond primaire/foncé, texte bleu nuit sur fond clair
 ═══════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
 
 /* ═══════════ VARIABLES ═══════════ */
 :root {
-  /* ── Navy charcoal (couleur primaire) ── */
-  --teal:        #1B2B4B;
-  --teal-dk:     #1B2B4B;
-  --teal-md:     #2D4A7A;
-  --teal-lt:     #5A7BB5;
+  /* ── Bleu nuit (couleur primaire — header/nav/footer) ── */
+  --teal:        #00085B;
+  --teal-dk:     #000440;
+  --teal-md:     #1A237A;
+  --teal-lt:     #3D4A9E;
 
-  /* ── Navy profond (titres & corps de texte) ── */
-  --navy:        #0D1929;
-  --navy-dk:     #070E18;
-  --navy-lt:     #1B2B4B;
+  /* ── Bleu nuit profond (titres & corps de texte) ── */
+  --navy:        #00085B;
+  --navy-dk:     #000440;
+  --navy-lt:     #1A237A;
 
-  /* ── Or chaud (accent principal) ── */
-  --orange:      #C8913A;
-  --orange-lt:   #DCA84E;
-  --orange-pale: #FBF0DC;
-  --orange-line: rgba(200,145,58,0.28);
+  /* ── Bleu royal (accent principal — boutons, liens, onglets actifs) ── */
+  --orange:      #1039E2;
+  --orange-lt:   #3D5AE8;
+  --orange-pale: #E7EBFC;
+  --orange-line: rgba(16,57,226,0.28);
 
   /* ── Vert progression ── */
   --success:     #639922;
   --success-lt:  #97C459;
   --success-pale:#EAF3DE;
-  --danger:      #A32D2D;
-  --danger-pale: #FCEBEB;
+  --danger:      #FF1414;
+  --danger-pale: #FFE8E8;
 
-  /* ── Surfaces & fonds ── */
-  --cream:       #F5F3EE;
-  --cream-dk:    #E2DED5;
+  /* ── Surfaces & fonds (blanc dominant) ── */
+  --cream:       #F5F7FB;
+  --cream-dk:    #E4E9F3;
   --surface:     #FFFFFF;
   --surface-teal: rgba(255,255,255,0.06);
 
@@ -46,16 +48,16 @@
   --text-on-dark:       #FFFFFF;
   --text-on-dark-muted: rgba(255,255,255,0.65);
   --text-on-dark-dim:   rgba(255,255,255,0.38);
-  --text:        #0D1929;
-  --text-md:     #1B2B4B;
+  --text:        #00085B;
+  --text-md:     #1A237A;
   --muted:       #6B7A96;
 
-  /* ── Bordures ── */
-  --border:      #DDD9D0;
-  --border-lt:   #F0EDE6;
+  /* ── Bordures (gris bleuté — éléments secondaires) ── */
+  --border:      #A2B5CB;
+  --border-lt:   #D5DEE9;
   --border-dark: rgba(255,255,255,0.12);
 
-  /* ── Alias rétrocompatibilité --gold* → or chaud ── */
+  /* ── Alias rétrocompatibilité --gold* → bleu royal ── */
   --gold:      var(--orange);
   --gold-lt:   var(--orange-lt);
   --gold-pale: var(--orange-pale);
@@ -65,9 +67,9 @@
   --radius:      4px;
   --radius-md:   10px;
   --radius-lg:   16px;
-  --shadow:      0 2px 20px rgba(13,25,41,0.10);
-  --shadow-md:   0 8px 40px rgba(13,25,41,0.18);
-  --shadow-lg:   0 20px 60px rgba(13,25,41,0.25);
+  --shadow:      0 2px 20px rgba(0,8,91,0.10);
+  --shadow-md:   0 8px 40px rgba(0,8,91,0.18);
+  --shadow-lg:   0 20px 60px rgba(0,8,91,0.25);
   --transition:  0.22s ease;
 }
 
@@ -313,7 +315,7 @@ footer {
 .btn:hover {
   background: var(--orange-lt);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(200,145,58,0.35);
+  box-shadow: 0 6px 20px rgba(16,57,226,0.35);
 }
 
 .btn-success {
@@ -358,7 +360,7 @@ footer {
 .btn-outline-teal:hover {
   background: var(--teal);
   color: var(--text-on-dark);
-  box-shadow: 0 6px 20px rgba(27,43,75,0.20);
+  box-shadow: 0 6px 20px rgba(0,8,91,0.20);
 }
 
 .btn-outline-navy {
@@ -369,7 +371,7 @@ footer {
 .btn-outline-navy:hover {
   background: var(--navy);
   color: var(--text-on-dark);
-  box-shadow: 0 6px 20px rgba(13,25,41,0.20);
+  box-shadow: 0 6px 20px rgba(0,8,91,0.20);
 }
 
 /* ── CARD ── */
@@ -397,7 +399,7 @@ footer {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(200,145,58,0.10) 0%, transparent 60%);
+  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(16,57,226,0.10) 0%, transparent 60%);
   pointer-events: none;
 }
 .hero-sm::after {
@@ -443,7 +445,7 @@ footer {
 .form-group textarea:focus,
 .form-group select:focus {
   border-color: var(--teal);
-  box-shadow: 0 0 0 3px rgba(27,43,75,0.15);
+  box-shadow: 0 0 0 3px rgba(0,8,91,0.15);
 }
 .form-group input::placeholder,
 .form-group textarea::placeholder { color: var(--muted); }
@@ -495,14 +497,14 @@ footer {
   position: absolute;
   inset: 0;
   background:
-    rgba(13, 25, 41, 0.72),
-    /* ↑ overlay navy — ajuste l'opacité selon la photo */
+    rgba(0, 8, 91, 0.72),
+    /* ↑ overlay bleu nuit — ajuste l'opacité selon la photo */
 /* Photo sombre (bureau, nuit)  → 0.55 suffit  */
 /* Photo claire (lumière, bleu) → 0.75 à 0.85  */
 /* Photo très colorée          → 0.80 à 0.88  */
     radial-gradient(
       ellipse 70% 60% at 80% 20%,
-      rgba(200,145,58,0.10) 0%,
+      rgba(16,57,226,0.10) 0%,
       transparent 60%
     );
   pointer-events: none;
@@ -534,8 +536,8 @@ footer {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(200,145,58,0.12);
-  border: 1px solid rgba(200,145,58,0.30);
+  background: rgba(16,57,226,0.12);
+  border: 1px solid rgba(16,57,226,0.30);
   color: var(--orange-lt);
   font-size: 0.7rem;
   font-weight: 600;
@@ -596,12 +598,12 @@ footer {
 }
 .hero-stat-card:hover {
   background: rgba(255,255,255,0.11);
-  border-color: rgba(200,145,58,0.35);
+  border-color: rgba(16,57,226,0.35);
 }
 .stat-icon {
   width: 44px; height: 44px;
-  background: rgba(200,145,58,0.14);
-  border: 1px solid rgba(200,145,58,0.25);
+  background: rgba(16,57,226,0.14);
+  border: 1px solid rgba(16,57,226,0.25);
   border-radius: var(--radius);
   display: flex; align-items: center; justify-content: center;
   font-size: 1.2rem;
@@ -696,7 +698,7 @@ footer {
   right: -100px; top: -100px;
   width: 500px; height: 500px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(27,43,75,0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0,8,91,0.05) 0%, transparent 70%);
   pointer-events: none;
 }
 .offers-section .section-header h2 { color: var(--navy); }
@@ -759,7 +761,7 @@ footer {
   right: -80px; top: -80px;
   width: 320px; height: 320px;
   border-radius: 50%;
-  background: rgba(200,145,58,0.10);
+  background: rgba(16,57,226,0.10);
   pointer-events: none;
 }
 .cta-banner > * { position: relative; z-index: 1; }
@@ -819,7 +821,7 @@ footer {
   top: -60px; right: -60px;
   width: 200px; height: 200px;
   border-radius: 50%;
-  background: rgba(200,145,58,0.12);
+  background: rgba(16,57,226,0.12);
   pointer-events: none;
 }
 .about-panel::after {
@@ -1034,7 +1036,7 @@ footer {
 .btn-buy:hover {
   background: var(--orange-lt);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(200,145,58,0.35);
+  box-shadow: 0 4px 14px rgba(16,57,226,0.35);
 }
 
 /* ═══════════ MODAL ═══════════ */
@@ -1042,7 +1044,7 @@ footer {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(7,14,24,0.65);
+  background: rgba(0,4,64,0.65);
   z-index: 9999;
   align-items: center;
   justify-content: center;
@@ -1139,7 +1141,7 @@ footer {
   min-height: calc(100vh - 66px);
 }
 
-/* ── Panneau gauche (fond navy profond) ── */
+/* ── Panneau gauche (fond bleu nuit profond) ── */
 .auth-left {
   background: var(--navy-dk);
   padding: 5rem 4rem;
@@ -1150,17 +1152,17 @@ footer {
   overflow: hidden;
 }
 
-/* Halos or décoratifs */
+/* Halos royal décoratifs */
 .auth-left::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(200,145,58,0.10) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 70% at 10% 80%, rgba(27,43,75,0.35) 0%, transparent 50%);
+    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(16,57,226,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 70% at 10% 80%, rgba(0,8,91,0.35) 0%, transparent 50%);
   pointer-events: none;
 }
-/* Liseré or vertical à gauche */
+/* Liseré royal vertical à gauche */
 .auth-left::after {
   content: '';
   position: absolute;
@@ -1228,12 +1230,12 @@ footer {
   transition: background var(--transition), border-color var(--transition);
 }
 .auth-feat:hover {
-  background: rgba(200,145,58,0.07);
+  background: rgba(16,57,226,0.07);
   border-color: var(--orange-line);
 }
 .feat-icon {
   width: 38px; height: 38px;
-  background: rgba(200,145,58,0.13);
+  background: rgba(16,57,226,0.13);
   border: 1px solid var(--orange-line);
   border-radius: var(--radius);
   display: flex; align-items: center; justify-content: center;
@@ -1297,7 +1299,7 @@ footer {
 .tab-btn.active {
   background: var(--teal);
   color: var(--text-on-dark);
-  box-shadow: 0 2px 8px rgba(27,43,75,0.25);
+  box-shadow: 0 2px 8px rgba(0,8,91,0.25);
 }
 .tab-btn:hover:not(.active) {
   background: var(--cream-dk);
@@ -1388,7 +1390,7 @@ footer {
 .btn-auth:hover:not(:disabled) {
   background: var(--orange-lt);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(200,145,58,0.35);
+  box-shadow: 0 6px 20px rgba(16,57,226,0.35);
 }
 .btn-auth:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -1434,7 +1436,7 @@ footer {
 }
 .msg-box.error {
   background: var(--danger-pale);
-  border: 1px solid rgba(163,45,45,0.30);
+  border: 1px solid rgba(255,20,20,0.30);
   color: var(--danger);
 }
 
@@ -1474,7 +1476,7 @@ footer {
   border-radius: var(--radius);
   padding: 0.7rem 0.9rem;
   font-size: 0.8rem;
-  color: #5a3e10;
+  color: #0a1a5c;
   margin-bottom: 1.3rem;
   line-height: 1.6;
   text-align: center;
