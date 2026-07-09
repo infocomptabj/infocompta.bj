@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════
    offres-styles.css — Styles spécifiques à offres.html
    Hérite intégralement des variables de infocompta-shared.css
-   Palette  : Navy charcoal #1B2B4B | Or chaud #C8913A | Crème #F5F3EE
+   Palette  : Bleu nuit #00085B | Bleu royal #1039E2 | Gris bleuté #A2B5CB | Blanc
    Typo     : Outfit (display) + DM Sans (corps)
    ═══════════════════════════════════════════════════════ */
 
@@ -21,8 +21,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 65% 70% at 85% 15%, rgba(200,145,58,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 60% at 10% 85%, rgba(7,14,24,0.45) 0%, transparent 50%);
+    radial-gradient(ellipse 65% 70% at 85% 15%, rgba(16,57,226,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 10% 85%, rgba(0,4,64,0.45) 0%, transparent 50%);
   pointer-events: none;
 }
 .offres-hero::after {
@@ -40,8 +40,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(200,145,58,0.12);
-  border: 1px solid rgba(200,145,58,0.30);
+  background: rgba(16,57,226,0.12);
+  border: 1px solid rgba(16,57,226,0.30);
   color: var(--orange-lt);
   border-radius: 30px;
   padding: 5px 16px;
@@ -281,7 +281,7 @@
   display: flex; align-items: center; justify-content: center;
   font-size: 0.65rem;
   font-weight: 800;
-  border: 1px solid rgba(163,45,45,0.20);
+  border: 1px solid rgba(255,20,20,0.20);
 }
 
 /* ── Boutons des plans ── */
@@ -314,12 +314,12 @@
 .btn-plan-gold {
   background: var(--orange);
   color: var(--text-on-dark);
-  box-shadow: 0 4px 14px rgba(200,145,58,0.35);
+  box-shadow: 0 4px 14px rgba(16,57,226,0.35);
 }
 .btn-plan-gold:hover {
   background: var(--orange-lt);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(200,145,58,0.50);
+  box-shadow: 0 6px 20px rgba(16,57,226,0.50);
 }
 .btn-plan-navy {
   background: var(--teal);
@@ -328,7 +328,7 @@
 .btn-plan-navy:hover {
   background: var(--teal-md);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(27,43,75,0.30);
+  box-shadow: 0 4px 16px rgba(0,8,91,0.30);
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -355,7 +355,7 @@
   border-color: var(--orange-line);
 }
 
-/* Vignette colorée */
+/* Vignette colorée — alignée sur la palette Bleu nuit / Bleu royal / Gris bleuté */
 .tpl-thumb {
   height: 96px;
   display: flex;
@@ -363,12 +363,12 @@
   justify-content: center;
   font-size: 2.2rem;
 }
-.tpl-t1 { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); }
-.tpl-t2 { background: linear-gradient(135deg, var(--teal) 0%, var(--navy) 100%); }
+.tpl-t1 { background: linear-gradient(135deg, var(--teal-lt) 0%, var(--teal-md) 100%); }
+.tpl-t2 { background: linear-gradient(135deg, var(--teal) 0%, var(--navy-dk) 100%); }
 .tpl-t3 { background: linear-gradient(135deg, var(--orange-lt) 0%, var(--orange) 100%); }
-.tpl-t4 { background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); }
+.tpl-t4 { background: linear-gradient(135deg, var(--border) 0%, var(--teal-lt) 100%); }
 .tpl-t5 { background: linear-gradient(135deg, var(--success-lt) 0%, var(--success) 100%); }
-.tpl-t6 { background: linear-gradient(135deg, var(--orange) 0%, #a07010 100%); }
+.tpl-t6 { background: linear-gradient(135deg, var(--orange) 0%, var(--navy-dk) 100%); }
 
 .tpl-body {
   padding: 1.2rem 1.3rem 1.1rem;
@@ -434,7 +434,7 @@
 .btn-tpl:hover {
   background: var(--teal-md);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(27,43,75,0.25);
+  box-shadow: 0 4px 12px rgba(0,8,91,0.25);
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -503,9 +503,9 @@
   border: 1px solid transparent;
 }
 .tag-navy  {
-  background: rgba(27,43,75,0.09);
+  background: rgba(0,8,91,0.09);
   color: var(--teal);
-  border-color: rgba(27,43,75,0.15);
+  border-color: rgba(0,8,91,0.15);
 }
 .tag-green {
   background: var(--success-pale);
