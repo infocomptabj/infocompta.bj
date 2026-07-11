@@ -235,14 +235,6 @@ footer {
   color: var(--orange);
   margin-bottom: 0.8rem;
 }
-.eyebrow::before {
-  content: '';
-  display: block;
-  width: 20px;
-  height: 1px;
-  background: var(--orange);
-  flex-shrink: 0;
-}
 .section-label {
   font-size: 0.7rem;
   font-weight: 600;
