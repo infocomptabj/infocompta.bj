@@ -501,7 +501,7 @@ footer {
   position: absolute;
   inset: -15px; /* légèrement plus grand que le cadre pour masquer les bords flous */
   background: url('images/hero-bg.png') center center / cover no-repeat;
-  filter: blur(6px) brightness(0.92) saturate(0.9);
+  filter: blur(1px) brightness(0.92) saturate(0.9);
   transform: scale(1.06);
   z-index: 0;
   pointer-events: none;
@@ -511,12 +511,7 @@ footer {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(0,8,91,0.82) 0%, rgba(0,8,91,0.74) 45%, rgba(0,8,91,0.86) 100%),
-    radial-gradient(
-      ellipse 70% 60% at 80% 20%,
-      rgba(16,57,226,0.10) 0%,
-      transparent 60%
-    );
+    linear-gradient(231deg, #08080f87 0%, rgb(11 18 18 / 36%) 45%, rgb(18 20 28 / 61%) 100%), radial-gradient(ellipse 70% 60% at 80% 20%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.07) 60%);
   z-index: 1;
   pointer-events: none;
 }
