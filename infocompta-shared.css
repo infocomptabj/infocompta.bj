@@ -551,7 +551,7 @@ footer {
   gap: 0.5rem;
   background: rgba(16,57,226,0.12);
   border: 1px solid rgba(16,57,226,0.30);
-  color: var(--orange-lt);
+  color: #fff;
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.12em;
