@@ -500,7 +500,7 @@ footer {
   content: '';
   position: absolute;
   inset: -15px; /* légèrement plus grand que le cadre pour masquer les bords flous */
-  background: url('images/hero-bg.png') center center / cover no-repeat;
+  background: url('images/hero-bg1.jpg') center center / cover no-repeat;
   filter: blur(1px) brightness(0.92) saturate(0.9);
   transform: scale(1.06);
   z-index: 0;
