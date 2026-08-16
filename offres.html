@@ -1,23 +1,16 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- SEO & Réseaux Sociaux -->
-  <title>Accueil — InfoCompta</title>
-  <meta name="description" content="InfoCompta vous donne accès au plan comptable OHADA complet, à vos documents comptables et à un assistant IA spécialisé en fiscalité béninoise.">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Accueil — InfoCompta">
-  <meta property="og:description" content="Plateforme OHADA — Bénin : Plan comptable, fiscalité CGI et assistant IA 24h/24.">
-
-  <script src="auth-init.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nos Offres</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="infocompta-shared.css">
+  <link rel="stylesheet" href="offres-styles.css">
+  <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
 <header>
   <a href="index.html" class="logo">Info<span>Compta</span></a>
   <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
@@ -25,11 +18,11 @@
   </button>
   <nav id="mainNav">
     <ul>
-      <li><a href="index.html" class="active">Accueil</a></li>
+      <li><a href="index.html">Accueil</a></li>
       <li><a href="plan-comptable.html">Plan Comptable</a></li>
       <li><a href="documents.html">Documents</a></li>
       <li><a href="quiz.html">Quiz</a></li>
-      <li><a href="offres.html">Nos offres</a></li>
+      <li><a href="offres.html" class="active">Nos offres</a></li>
       <li><a href="a-propos.html">À propos</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li><a href="auth.html" class="nav-cta">Connexion</a></li>
@@ -37,195 +30,206 @@
   </nav>
 </header>
 
+<section class="hero-sm">
+  <div class="container">
+    <p class="eyebrow">Nos services</p>
+    <h1>Nos offres</h1>
+    <p>Téléchargement instantané après paiement sécurisé via FedaPay</p>
+  </div>
+</section>
+
 <main>
-
-  <!-- ── HERO ── -->
-  <section class="hero">
-    <div class="hero-grid"></div>
-    <div class="hero-accent"></div>
-    <div class="container">
-      <div class="hero-inner">
-
-        <div class="hero-content">
-          <div class="hero-badge">
-            <span class="hero-badge-dot"></span>
-            Plateforme OHADA — Bénin
-          </div>
-          <h1>Gérez votre comptabilité<br><em>en toute clarté</em></h1>
-          <p class="hero-sub">
-            InfoCompta vous donne accès au plan comptable OHADA complet, à vos documents comptables et à un assistant IA spécialisé en fiscalité béninoise.
-          </p>
-          <div class="hero-actions">
-            <a href="plan-comptable.html" class="btn">
-              Voir le Plan Comptable
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-            <a href="a-propos.html" class="btn btn-ghost">En savoir plus</a>
-          </div>
-        </div>
-
-        <div class="hero-visual">
-          <div class="hero-stat-card">
-            <div class="stat-icon" aria-hidden="true">📋</div>
-            <div>
-              <div class="stat-label">Plan Comptable</div>
-              <div class="stat-value">9 Classes <span>OHADA</span></div>
-            </div>
-          </div>
-          <div class="hero-stat-row">
-            <div class="hero-stat-card">
-              <div class="stat-icon" aria-hidden="true">🏛️</div>
-              <div>
-                <div class="stat-label">Fiscalité</div>
-                <div class="stat-value">CGI <span>Bénin</span></div>
-              </div>
-            </div>
-            <div class="hero-stat-card">
-              <div class="stat-icon" aria-hidden="true">🤖</div>
-              <div>
-                <div class="stat-label">Assistant IA</div>
-                <div class="stat-value">24h/24</div>
-              </div>
-            </div>
-          </div>
-          <div class="hero-stat-card">
-            <div class="stat-icon" aria-hidden="true">🔒</div>
-            <div>
-              <div class="stat-label">Sécurité</div>
-              <div class="stat-value">Chiffrement <span>TLS + bcrypt</span></div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ── FONCTIONNALITÉS ── -->
-  <section class="features-section">
-    <div class="container">
-      <div class="section-header fade-in">
-        <p class="eyebrow">Ce que nous offrons</p>
-        <h2>Fonctionnalités principales</h2>
-        <p>Des outils pensés pour les professionnels de la comptabilité et de la gestion en espace OHADA.</p>
-      </div>
-      <div class="features-grid fade-in">
-        <div class="feature-card">
-          <div class="feature-num">01</div>
-          <div class="feature-icon" aria-hidden="true">📋</div>
-          <h3>Plan Comptable OHADA</h3>
-          <p>L'intégralité des 9 classes avec recherche instantanée, navigation par classe et détails de fonctionnement.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-num">02</div>
-          <div class="feature-icon" aria-hidden="true">📁</div>
-          <h3>Gestion de Documents</h3>
-          <p>Centralisez factures, rapports et pièces comptables dans un espace personnel sécurisé et organisé.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-num">03</div>
-          <div class="feature-icon" aria-hidden="true">🤖</div>
-          <h3>Assistant IA COMPTA</h3>
-          <p>Posez vos questions sur la fiscalité béninoise et le SYSCOHADA à un assistant entraîné sur les textes officiels.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-num">04</div>
-          <div class="feature-icon" aria-hidden="true">🔍</div>
-          <h3>Recherche Avancée</h3>
-          <p>Retrouvez n'importe quel compte par numéro ou libellé, avec filtres par classe et par nature.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-num">05</div>
-          <div class="feature-icon" aria-hidden="true">🔒</div>
-          <h3>Données Sécurisées</h3>
-          <p>Authentification Supabase, chiffrement bcrypt et HTTPS sur toutes les communications.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-num">06</div>
-          <div class="feature-icon" aria-hidden="true">📱</div>
-          <h3>Mobile Ready</h3>
-          <p>Interface optimisée pour tous les appareils — accédez à vos données depuis n'importe où.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── ESPACE PUB ── -->
   <div class="ads-strip">
     <div class="ads-slot">
       📢 Espace publicitaire — Remplace ce bloc par ton code <strong>Google AdSense</strong>
     </div>
   </div>
 
-  <!-- ── OFFRES ── -->
-  <section class="offers-section">
+  <!-- PLANS -->
+  <section class="offres-section offres-section-alt" id="plans">
     <div class="container">
-      <div class="section-header fade-in">
-        <p class="eyebrow">Nos services</p>
-        <h2>Offres &amp; outils comptables</h2>
-        <p>Abonnements, templates OHADA et annuaire d'experts — paiement Mobile Money accepté.</p>
+      <div class="section-head">
+        <p class="section-label">Abonnements</p>
+        <h2>Choisissez votre plan</h2>
+        <p>Accédez aux outils comptables OHADA adaptés à votre activité. Paiement Mobile Money accepté.</p>
       </div>
+      <div class="plans-grid">
 
-      <div class="offers-grid fade-in">
-        <a href="offres.html#plans" class="offer-card">
-          <span class="offer-icon" aria-hidden="true">💼</span>
-          <div class="offer-title">Plans Premium</div>
-          <div class="offer-desc">Documents illimités, rapports avancés, export PDF — dès 3 500 FCFA/mois.</div>
-          <span class="offer-link">Voir les plans →</span>
-        </a>
-        <a href="offres.html#templates" class="offer-card">
-          <span class="offer-icon" aria-hidden="true">📁</span>
-          <div class="offer-title">Templates OHADA</div>
-          <div class="offer-desc">Journal, bilan, factures, grand livre — modèles Excel & Word dès 1 500 FCFA.</div>
-          <span class="offer-link">Voir les templates →</span>
-        </a>
-        <a href="offres.html#annuaire" class="offer-card">
-          <span class="offer-icon" aria-hidden="true">🤝</span>
-          <div class="offer-title">Annuaire Experts</div>
-          <div class="offer-desc">Trouvez ou référencez un expert-comptable certifié au Bénin.</div>
-          <span class="offer-link">Voir l'annuaire →</span>
-        </a>
-        <a href="offres.html" class="offer-card">
-          <span class="offer-icon" aria-hidden="true">📱</span>
-          <div class="offer-title">Mobile Money</div>
-          <div class="offer-desc">Paiement accepté via MTN MoMo, Moov Africa et FedaPay.</div>
-          <span class="offer-link">Comment payer →</span>
-        </a>
-      </div>
-
-      <div class="cta-banner fade-in">
-        <div>
-          <h2>Prêt à passer à la vitesse supérieure ?</h2>
-          <p>Découvrez toutes nos offres et choisissez le plan adapté à votre activité au Bénin.</p>
+        <div class="plan-card">
+          <div class="plan-icon">🆓</div>
+          <div class="plan-name">Gratuit</div>
+          <div class="plan-price">0 <small>FCFA</small></div>
+          <div class="plan-period">Pour toujours · Aucune carte requise</div>
+          <p class="plan-desc">Découvrez InfoCompta et accédez aux bases de la comptabilité OHADA sans engagement.</p>
+          <hr class="plan-divider" />
+          <ul class="plan-features">
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Plan comptable OHADA complet</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Recherche de comptes</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> 1 document stocké</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Support par email</li>
+            <li class="plan-feat disabled"><span class="plan-feat-no">✗</span> Rapports financiers</li>
+            <li class="plan-feat disabled"><span class="plan-feat-no">✗</span> Templates inclus</li>
+          </ul>
+          <a href="plan-comptable.html" class="btn-plan btn-plan-outline">Commencer gratuitement</a>
         </div>
-        <div class="cta-actions">
-          <a href="offres.html" class="btn">Voir toutes les offres →</a>
-          <a href="contact.html" class="btn btn-ghost">Nous contacter</a>
+
+        <div class="plan-card featured">
+          <div class="plan-ribbon">⭐ Populaire</div>
+          <div class="plan-icon">💼</div>
+          <div class="plan-name">Pro</div>
+          <div class="plan-price">3 500 <small>FCFA</small></div>
+          <div class="plan-period">par mois · Résiliable à tout moment</div>
+          <p class="plan-desc">Pour les PME et entrepreneurs qui veulent gérer leur comptabilité efficacement.</p>
+          <hr class="plan-divider" />
+          <ul class="plan-features">
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Tout le plan Gratuit</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Documents illimités</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Rapports financiers avancés</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> 3 templates comptables inclus</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Export PDF & Excel</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Assistance prioritaire</li>
+          </ul>
+          <button class="btn-plan btn-plan-gold" onclick="openPayment('Plan Pro', '3 500', 'mensuel')">💳 Souscrire via Mobile Money</button>
+        </div>
+
+        <div class="plan-card">
+          <div class="plan-icon">🏢</div>
+          <div class="plan-name">Expert</div>
+          <div class="plan-price">8 000 <small>FCFA</small></div>
+          <div class="plan-period">par mois · Pour cabinets & experts</div>
+          <p class="plan-desc">Pour les experts-comptables et cabinets gérant plusieurs clients simultanément.</p>
+          <hr class="plan-divider" />
+          <ul class="plan-features">
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Tout le plan Pro</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Multi-entreprises</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Accès tous les templates</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Accès API</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Formation comptable incluse</li>
+            <li class="plan-feat"><span class="plan-feat-ok">✓</span> Référencement annuaire</li>
+          </ul>
+          <button class="btn-plan btn-plan-navy" onclick="openPayment('Plan Expert', '8 000', 'mensuel')">💳 Souscrire via Mobile Money</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TEMPLATES -->
+  <section class="offres-section" id="templates">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label">Modèles prêts à l'emploi</p>
+        <h2>📁 Templates comptables</h2>
+        <p>Conformes au SYSCOHADA révisé — téléchargement après confirmation du paiement.</p>
+      </div>
+      <div class="tpl-grid">
+        <div class="tpl-card">
+          <div class="tpl-thumb tpl-t1">📊</div>
+          <div class="tpl-body">
+            <div class="tpl-name">Journal Comptable OHADA</div>
+            <div class="tpl-desc">Modèle Excel avec formules automatiques, conforme au SYSCOHADA révisé.</div>
+            <div class="tpl-footer">
+              <div><span class="tpl-price">2 500 FCFA</span><span class="tpl-format">XLSX</span></div>
+              <button class="btn-tpl" onclick="openPayment('Journal Comptable OHADA','2 500','achat unique')">Acheter</button>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card">
+          <div class="tpl-thumb tpl-t2">📋</div>
+          <div class="tpl-body">
+            <div class="tpl-name">Bilan + Compte de Résultat</div>
+            <div class="tpl-desc">Pack états financiers annuels complets prêts à remplir et soumettre.</div>
+            <div class="tpl-footer">
+              <div><span class="tpl-price">4 000 FCFA</span><span class="tpl-format">XLSX</span></div>
+              <button class="btn-tpl" onclick="openPayment('Bilan + Compte de Résultat','4 000','achat unique')">Acheter</button>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card">
+          <div class="tpl-thumb tpl-t3">🧾</div>
+          <div class="tpl-body">
+            <div class="tpl-name">Modèle de Facture Pro</div>
+            <div class="tpl-desc">Facture Word & Excel personnalisable avec calcul TVA automatique.</div>
+            <div class="tpl-footer">
+              <div><span class="tpl-price">1 500 FCFA</span><span class="tpl-format">DOCX</span></div>
+              <button class="btn-tpl" onclick="openPayment('Modèle de Facture Pro','1 500','achat unique')">Acheter</button>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card">
+          <div class="tpl-thumb tpl-t4">📈</div>
+          <div class="tpl-body">
+            <div class="tpl-name">Tableau de Bord Financier</div>
+            <div class="tpl-desc">Dashboard Excel avec graphiques dynamiques pour suivre vos KPIs financiers.</div>
+            <div class="tpl-footer">
+              <div><span class="tpl-price">5 000 FCFA</span><span class="tpl-format">XLSX</span></div>
+              <button class="btn-tpl" onclick="openPayment('Tableau de Bord Financier','5 000','achat unique')">Acheter</button>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card">
+          <div class="tpl-thumb tpl-t5">🗓️</div>
+          <div class="tpl-body">
+            <div class="tpl-name">Grand Livre Automatisé</div>
+            <div class="tpl-desc">Extraction automatique des écritures par compte avec soldes calculés.</div>
+            <div class="tpl-footer">
+              <div><span class="tpl-price">3 000 FCFA</span><span class="tpl-format">XLSX</span></div>
+              <button class="btn-tpl" onclick="openPayment('Grand Livre Automatisé','3 000','achat unique')">Acheter</button>
+            </div>
+          </div>
+        </div>
+        <div class="tpl-card">
+          <div class="tpl-thumb tpl-t6">💰</div>
+          <div class="tpl-body">
+            <div class="tpl-name">Déclaration TVA Bénin</div>
+            <div class="tpl-desc">Modèle de déclaration mensuelle de TVA adapté au droit fiscal béninois.</div>
+            <div class="tpl-footer">
+              <div><span class="tpl-price">2 000 FCFA</span><span class="tpl-format">XLSX</span></div>
+              <button class="btn-tpl" onclick="openPayment('Déclaration TVA Bénin','2 000','achat unique')">Acheter</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── CTA FINAL ── -->
-  <section class="cta-section">
+  <!-- ANNUAIRE -->
+  <section class="offres-section offres-section-alt" id="annuaire">
     <div class="container">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;" class="fade-in">
-        <div>
-          <p class="eyebrow">Commencer maintenant</p>
-          <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:0.4rem;">Prêt à commencer ?</h2>
-          <p style="font-size:0.95rem;">Consultez le plan comptable ou contactez-nous pour en savoir plus.</p>
+      <div class="section-head">
+        <p class="section-label">Experts certifiés</p>
+        <h2>🤝 Annuaire des experts</h2>
+        <p>Trouvez un expert-comptable certifié au Bénin ou référencez votre cabinet auprès de nos utilisateurs.</p>
+      </div>
+      <div class="partners-grid">
+        <div class="partner-card">
+          <div class="partner-av av-navy">👨‍💼</div>
+          <div>
+            <div class="partner-name">Cabinet ABC Conseils</div>
+            <div class="partner-role">Expert-comptable · Cotonou, Bénin</div>
+            <div class="partner-tags"><span class="p-tag tag-navy">Audit</span><span class="p-tag tag-green">Fiscalité</span></div>
+          </div>
         </div>
-        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-          <a href="plan-comptable.html" class="btn">Plan Comptable</a>
-          <a href="contact.html" class="btn btn-outline-navy">Nous contacter</a>
+        <div class="partner-card">
+          <div class="partner-av av-teal">👩‍💼</div>
+          <div>
+            <div class="partner-name">Fiduciaire OHADA Pro</div>
+            <div class="partner-role">Commissaire aux comptes · Porto-Novo</div>
+            <div class="partner-tags"><span class="p-tag tag-navy">PME</span><span class="p-tag tag-gold">Start-up</span></div>
+          </div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-av av-gold">🏢</div>
+          <div>
+            <div class="partner-name">GFC Bénin</div>
+            <div class="partner-role">Cabinet comptable · Parakou</div>
+          </div>
         </div>
       </div>
     </div>
   </section>
-
 </main>
 
-<!-- ── FOOTER ── -->
 <footer>
   <div class="footer-inner">
     <div class="footer-logo">Info<span>Compta</span></div>
@@ -238,29 +242,87 @@
   </div>
 </footer>
 
+<div class="modal-overlay" id="successModal">
+  <div class="modal-box">
+    <div class="modal-icon">✅</div>
+    <h3>Paiement réussi !</h3>
+    <p>Merci pour votre achat. Cliquez ci-dessous pour télécharger votre document.</p>
+    <a id="downloadLink" href="#" class="modal-download" download>⬇ Télécharger le document</a>
+    <button class="modal-close" onclick="closeModal()">Fermer</button>
+  </div>
+</div>
+
 <script>
+const FEDAPAY_PUBLIC_KEY = "pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg";
+const FEDAPAY_ENV = "sandbox";
+
+const offers = [
+  { title:"Journal Comptable OHADA",    price:2500, devise:"XOF", downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-7.com" },
+  { title:"Bilan + Compte de Résultat", price:4000, devise:"XOF", downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-8.com" },
+  { title:"Modèle de Facture Pro",      price:1500, devise:"XOF", downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-9.com" },
+  { title:"Tableau de Bord Financier",  price:5000, devise:"XOF", downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-10.com" },
+  { title:"Grand Livre Automatisé",     price:3000, devise:"XOF", downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-11.com" },
+  { title:"Déclaration TVA Bénin",      price:2000, devise:"XOF", downloadUrl:"https://LIEN-TELECHARGEMENT-DOCUMENT-12.com" },
+  { title:"Plan Pro",                   price:3500, devise:"XOF", downloadUrl:"" },
+  { title:"Plan Expert",                price:8000, devise:"XOF", downloadUrl:"" }
+];
+
+function isPaymentSuccessful(resp) {
+  if (!resp) return false;
+  if (resp.reason === FedaPay.DIALOG_DISMISSED) return false;
+  if (resp.status && resp.status !== 'success') return false;
+  if (resp.transaction && resp.transaction.status && resp.transaction.status !== 'success') return false;
+  return true;
+}
+
+function openPayment(name, amount, freq) {
+  var idx = offers.findIndex(function(o){ return o.title === name; });
+  var parsed = parseInt(String(amount).replace(/\s+/g, '').replace(/[^0-9]/g, ''), 10) || 0;
+  var downloadUrl = idx !== -1 ? offers[idx].downloadUrl : '';
+  try {
+    FedaPay.init({
+      public_key: FEDAPAY_PUBLIC_KEY,
+      transaction: { amount: parsed, description: name },
+      currency: { iso: 'XOF' },
+      onComplete: function(resp) {
+        if (!isPaymentSuccessful(resp)) { console.log('Paiement annulé.', resp); return; }
+        if (downloadUrl) { ouvrirModal(downloadUrl); } else { alert('Paiement réussi — merci !'); }
+      },
+      onError: function(err) { console.error('Erreur FedaPay :', err); alert('Le paiement a échoué. Veuillez réessayer.'); }
+    }).open();
+  } catch(e) { console.error(e); alert('Impossible de démarrer le paiement.'); }
+}
+
+function ouvrirModal(url) {
+  var dl = document.getElementById('downloadLink');
+  dl.href = url || '#';
+  dl.target = '_blank';
+  document.getElementById('successModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('successModal').classList.remove('active');
+}
+
 (function () {
   /* ── Hamburger ── */
-  const btn = document.getElementById('hamburgerBtn');
-  const nav = document.getElementById('mainNav');
-
+  var btn = document.getElementById('hamburgerBtn');
+  var nav = document.getElementById('mainNav');
   if (btn && nav) {
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', function (e) {
       e.stopPropagation();
-      const isOpen = nav.classList.toggle('open');
+      var isOpen = nav.classList.toggle('open');
       btn.classList.toggle('open', isOpen);
-      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      btn.setAttribute('aria-expanded', String(isOpen));
     });
-
-    nav.querySelectorAll('a').forEach((a) => {
-      a.addEventListener('click', () => {
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
         nav.classList.remove('open');
         btn.classList.remove('open');
         btn.setAttribute('aria-expanded', 'false');
       });
     });
-
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', function (e) {
       if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
         nav.classList.remove('open');
         btn.classList.remove('open');
@@ -269,21 +331,27 @@
     });
   }
 
-  /* ── Scroll fade-in animations ── */
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
+  /* ── Fade-in scroll ── */
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
     });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(function (el) { observer.observe(el); });
 
-  document.querySelectorAll('.fade-in').forEach((el) => {
-    observer.observe(el);
-  });
+  /* ── Modal fermeture clavier/overlay ── */
+  var successModal = document.getElementById('successModal');
+  if (successModal) {
+    successModal.addEventListener('click', function (e) { if (e.target === successModal) closeModal(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && successModal.classList.contains('active')) closeModal();
+    });
+  }
 })();
 </script>
+
+<!-- auth-init en dernier : la page est déjà rendue quand il vérifie la session -->
+<script src="auth-init.js"></script>
 
 </body>
 </html>
