@@ -399,7 +399,7 @@ footer {
   content: '';
   position: absolute;
   inset: 0;
-  background: url('images/hero-bg3.png') center center / cover no-repeat;
+  background: url('images/hero-bg4.jpg') center center / cover no-repeat;
   pointer-events: none;
 }
 .hero-sm::after {
