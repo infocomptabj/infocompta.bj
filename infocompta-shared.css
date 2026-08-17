@@ -389,12 +389,11 @@ footer {
 
 /* ── HERO SMALL ── */
 .hero-sm {
-  background: var(--teal);
+ background: var(--teal);
   padding: 3.5rem 0;
   color: var(--text-on-dark);
   position: relative;
   overflow: hidden;
-  min-height: 260px;   /* ← empêche le bloc de devenir plus court que l'image */
 }
 .hero-sm::before {
   content: '';
