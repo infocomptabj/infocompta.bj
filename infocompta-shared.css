@@ -511,7 +511,9 @@ footer {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(231deg, #08080f87 0%, rgb(11 18 18 / 36%) 45%, rgb(18 20 28 / 61%) 100%), radial-gradient(ellipse 70% 60% at 80% 20%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.07) 60%);
+    linear-gradient(231deg, #08080f87 0%, rgb(11 18 18 / 36%) 45%, rgb(18 20 28 / 61%) 100%),
+    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 60%),
+    linear-gradient(90deg, transparent 0%, transparent 55%, rgba(0,4,64,0.35) 100%);
   z-index: 1;
   pointer-events: none;
 }
