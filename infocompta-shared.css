@@ -394,12 +394,13 @@ footer {
   color: var(--text-on-dark);
   position: relative;
   overflow: hidden;
+  min-height: 260px;   /* ← empêche le bloc de devenir plus court que l'image */
 }
 .hero-sm::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: url('images/hero-bg4.png') center center / cover no-repeat;
+  background: url('images/hero-bg4.png') center 35% / cover no-repeat;
   pointer-events: none;
 }
 .hero-sm::after {
