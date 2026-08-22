@@ -747,7 +747,7 @@ Tu réponds toujours en **français**, de façon **claire, structurée et profes
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model:       'llama-3.3-70b-versatile',
+        model:       'openai/gpt-oss-120b',
         max_tokens:  2048,
         temperature: 0.2,          // plus bas = moins d'inventions
         top_p:       0.9,
