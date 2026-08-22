@@ -40,7 +40,7 @@
 <main>
   <div class="ads-strip">
     <div class="ads-slot">
-      📢 Espace publicitaire — Remplace ce bloc par ton code <strong>Google AdSense</strong>
+      📢 Espace publicitaire - Remplacer ce bloc par mon code <strong>Google AdSense</strong>
     </div>
   </div>
 
@@ -119,7 +119,7 @@
       <div class="section-head">
         <p class="section-label">Modèles prêts à l'emploi</p>
         <h2>📁 Templates comptables</h2>
-        <p>Conformes au SYSCOHADA révisé — téléchargement après confirmation du paiement.</p>
+        <p>Téléchargement après confirmation du paiement.</p>
       </div>
       <div class="tpl-grid">
         <div class="tpl-card">
@@ -237,7 +237,7 @@
       <a href="contact.html">Contact</a>
       <a href="a-propos.html">À propos</a>
     </div>
-    <p class="footer-copy">&copy; 2026 InfoCompta — Tous droits réservés</p>
+    <p class="footer-copy">&copy; 2026 InfoCompta</p>
   </div>
 </footer>
 
@@ -285,7 +285,7 @@ function openPayment(name, amount, freq) {
       currency: { iso: 'XOF' },
       onComplete: function(resp) {
         if (!isPaymentSuccessful(resp)) { console.log('Paiement annulé.', resp); return; }
-        if (downloadUrl) { ouvrirModal(downloadUrl); } else { alert('Paiement réussi — merci !'); }
+        if (downloadUrl) { ouvrirModal(downloadUrl); } else { alert('Paiement réussi - merci !'); }
       },
       onError: function(err) { console.error('Erreur FedaPay :', err); alert('Le paiement a échoué. Veuillez réessayer.'); }
     }).open();
