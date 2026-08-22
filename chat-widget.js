@@ -432,7 +432,7 @@ function buildWidget() {
           maxlength="1000"></textarea>
         <button id="ic-send" aria-label="Envoyer">${SVG.send}</button>
       </div>
-      <div class="ic-footer">Propulsé par <span>Groq · Llama 3.3</span> · Données OHADA <span>InfoCompta</span></div>
+      <div class="ic-footer">Propulsé par <span>Groq · GPT-OSS</span> · Données OHADA <span>InfoCompta</span></div>
     </div>
 
     <div id="ic-toast"></div>
