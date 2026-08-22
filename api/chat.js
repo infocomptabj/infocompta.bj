@@ -590,7 +590,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Corps de requête invalide.' });
   }
 
-  const messages         = (body.messages || []).slice(-14);
+  const messages         = (body.messages || []).slice(-6);
   const derniereQuestion = messages.filter(m => m.role === 'user').pop()?.content || '';
   const frontendSystem   = typeof body.system === 'string' ? body.system.trim() : '';
 
@@ -723,7 +723,7 @@ Tu réponds toujours en **français**, de façon **claire, structurée et profes
   for (const m of messages) {
     if (!m?.content || !String(m.content).trim()) continue;
     const role    = m.role === 'assistant' ? 'assistant' : 'user';
-    const content = String(m.content).slice(0, 3000);
+    const content = String(m.content).slice(0, 800);
     // fusion des messages consécutifs de même rôle (évite erreur Groq)
     if (cleanMessages.length > 0 && cleanMessages[cleanMessages.length - 1].role === role) {
       cleanMessages[cleanMessages.length - 1].content += '\n' + content;
@@ -748,11 +748,11 @@ Tu réponds toujours en **français**, de façon **claire, structurée et profes
       },
       body: JSON.stringify({
         model:       'openai/gpt-oss-120b',
-        max_tokens:  2048,
+        max_tokens:  1024,
         temperature: 0.2,          // plus bas = moins d'inventions
         top_p:       0.9,
         messages: [
-          { role: 'system', content: systemPrompt.slice(0, 12000) },
+          { role: 'system', content: systemPrompt.slice(0, 6000) },
           ...cleanMessages,
         ],
       }),
