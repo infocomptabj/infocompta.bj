@@ -244,7 +244,7 @@ const SVG = {
 const _code          = new URLSearchParams(window.location.search).get('code') || '';
 const IC_STORAGE_KEY = 'infocompta_chat_' + window.location.pathname + (_code ? '_' + _code : '');
 const IC_MAX_STORED  = 20;
-const IC_HISTORY_MAX = 14;
+const IC_HISTORY_MAX = 6;
 let icOpen = false, icBusy = false, icRestored = false;
 let icHist = icLoadHistory();
 
