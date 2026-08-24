@@ -123,7 +123,17 @@ header {
 html.ic-authed nav a[href="auth.html"] {
   display: none;
 }
-
+.ic-profile-wrap {
+  width: 0;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+html.ic-authed .ic-profile-wrap {
+  width: 36px;
+  height: 36px;
+  margin-left: 0.75rem;
+  overflow: visible;
+}
 /* ── Logo ── */
 .logo {
   font-family: 'Outfit', sans-serif;
