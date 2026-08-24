@@ -24,7 +24,6 @@
 
   const style = document.createElement('style');
   style.textContent = `
-    nav a[href="auth.html"]{display:none!important}
     .ic-profile-wrap{position:relative;margin-left:.75rem;flex-shrink:0}
     .ic-avatar-btn{width:36px;height:36px;border-radius:50%;background:rgba(16,57,226,0.14);border:1.5px solid #1039E2;color:#1039E2;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;outline:none;flex-shrink:0;transition:background .2s,border-color .2s}
     .ic-avatar-btn:hover{background:rgba(16,57,226,0.28);border-color:#fff;color:#fff}
