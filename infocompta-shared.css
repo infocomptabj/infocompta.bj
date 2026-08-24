@@ -120,6 +120,9 @@ header {
     0 1px 0 var(--orange-line),
     0 2px 24px rgba(0,0,0,0.28);
 }
+html.ic-authed nav a[href="auth.html"] {
+  display: none;
+}
 
 /* ── Logo ── */
 .logo {
