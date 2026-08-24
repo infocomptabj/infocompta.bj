@@ -265,12 +265,5 @@
   });
 })();
 </script>
-<script>
-  const heroImg = new Image();
-  heroImg.src = 'images/hero-bg1.jpg';
-  const showHero = () => document.querySelector('.hero')?.classList.add('bg-loaded');
-  heroImg.onload = showHero;
-  if (heroImg.complete) showHero();
-</script>
 </body>
 </html>
