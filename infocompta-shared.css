@@ -490,11 +490,15 @@ footer {
    - la photo est posée sur ::before, légèrement zoomée et floutée
    - un voile bleu nuit plat (::after) assure le contraste du texte blanc
    - un léger dégradé (haut → bas) évite un aplat trop mécanique */
-.hero 
-  position: relative;
+.hero {
+   position: relative;
   overflow: hidden;
   padding: 6rem 0 5rem;
-  background: var(--navy-dk); /* couleur de repli pendant le chargement de l'image */
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.hero.bg-loaded {
+  opacity: 1;
 }
 .hero::before {
   content: '';
