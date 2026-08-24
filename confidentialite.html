@@ -2,6 +2,19 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <script>
+(function () {
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+        document.documentElement.classList.add('ic-authed');
+      }
+    }
+  } catch (e) {}
+})();
+</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="auth-display.js" defer></script>
   <title>Politique de Confidentialité — InfoCompta</title>
