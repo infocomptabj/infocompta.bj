@@ -491,11 +491,10 @@ footer {
    - un voile bleu nuit plat (::after) assure le contraste du texte blanc
    - un léger dégradé (haut → bas) évite un aplat trop mécanique */
 .hero {
-   position: relative;
+  position: relative;
   overflow: hidden;
   padding: 6rem 0 5rem;
-  opacity: 0;
-  transition: opacity 0.4s ease;
+  background: rgb(16 57 226 / 0%); /* couleur de repli pendant le chargement de l'image */
 }
 .hero::before {
   content: '';
