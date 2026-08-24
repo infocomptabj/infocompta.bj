@@ -3,15 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>window.__scriptsDone = false;</script>
 <script src="auth-display.js" defer></script>
-<script>
-  var _orig = window.__ic_reveal;
-  window.__ic_reveal = function() {
-    if (!window.__scriptsDone) { window.__revealPending = true; return; }
-    _orig();
-  };
-</script>
   <title>Plan Comptable</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="infocompta-shared.css">
@@ -259,10 +251,6 @@ mark { background: rgba(196,147,58,0.18); color: var(--gold); padding: 0 1px; bo
       }
     });
   })();
-
-  /* ── Signaler que tous les scripts sont prêts ── */
-  window.__scriptsDone = true;
-  if (window.__revealPending) window.__ic_reveal();
 </script>
 
   <!-- ── FOOTER ── -->
