@@ -48,24 +48,22 @@
     const initials = name.trim()
       ? name.trim().split(/\s+/).map(p => p[0]).join('').slice(0, 2).toUpperCase()
       : (email || '??').slice(0, 2).toUpperCase();
-
-    const wrap = document.createElement('div');
-    wrap.className = 'ic-profile-wrap';
-    wrap.innerHTML = `
-      <button class="ic-avatar-btn" id="icAvatarBtn" title="Mon profil">${initials}</button>
-      <div class="ic-drop" id="icDrop">
-        <div class="ic-drop-info">
-          <div class="ic-drop-name">${name || 'Mon compte'}</div>
-          <div class="ic-drop-email">${email}</div>
-        </div>
-        <div class="ic-drop-links">
-          <a class="ic-drop-link" href="confidentialite.html">Politique de confidentialité</a>
-          <hr class="ic-drop-hr">
-          <button class="ic-drop-link danger" id="icLogout">Se déconnecter</button>
-        </div>
-      </div>`;
-    const header = document.querySelector('header');
-    if (header) header.appendChild(wrap);
+     
+const slot = document.getElementById('icAuthSlot');
+if (!slot) return;
+slot.innerHTML = `
+  <button class="ic-avatar-btn" id="icAvatarBtn" title="Mon profil">${initials}</button>
+  <div class="ic-drop" id="icDrop">
+    <div class="ic-drop-info">
+      <div class="ic-drop-name">${name || 'Mon compte'}</div>
+      <div class="ic-drop-email">${email}</div>
+    </div>
+    <div class="ic-drop-links">
+      <a class="ic-drop-link" href="confidentialite.html">Politique de confidentialité</a>
+      <hr class="ic-drop-hr">
+      <button class="ic-drop-link danger" id="icLogout">Se déconnecter</button>
+    </div>
+  </div>`;
 
     const btn = document.getElementById('icAvatarBtn');
     const drop = document.getElementById('icDrop');
