@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<script>
+(function () {
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+        document.documentElement.classList.add('ic-authed');
+      }
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="auth-display.js" defer></script>
+<title>Fiscalité du Bénin 2026 — Toutes les fiches du CGI | InfoCompta</title>
+<meta name="description" content="Les 53 fiches fiscales du Code Général des Impôts du Bénin (LF 2026), classées par livre : IS, IBA, TVA, ITS, patente, TFU, enregistrement, timbre, procédures. Champ d'application, taux, déclarations et sanctions pour chaque impôt.">
+<link rel="canonical" href="https://www.infocompta.bj/fiscalite-cgi-benin.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="infocompta-shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Fiches fiscales du CGI Bénin 2026",
+  "numberOfItems": 53,
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"L'Impôt sur les Sociétés (IS)","url":"https://www.infocompta.bj/fiches/is.html"},
+    {"@type":"ListItem","position":2,"name":"L'Impôt sur les Bénéfices d'Affaires (IBA)","url":"https://www.infocompta.bj/fiches/iba.html"},
+    {"@type":"ListItem","position":3,"name":"L'Impôt sur le Revenu des Capitaux Mobiliers (IRCM)","url":"https://www.infocompta.bj/fiches/ircm.html"},
+    {"@type":"ListItem","position":4,"name":"L'Impôt sur les Revenus Fonciers (IRF)","url":"https://www.infocompta.bj/fiches/irf.html"},
+    {"@type":"ListItem","position":5,"name":"La Taxe sur les Plus-Values Immobilières (TPVI)","url":"https://www.infocompta.bj/fiches/tpvi.html"},
+    {"@type":"ListItem","position":6,"name":"L'Impôt sur les Traitements et Salaires (ITS)","url":"https://www.infocompta.bj/fiches/its.html"},
+    {"@type":"ListItem","position":7,"name":"Les Retenues à la Source","url":"https://www.infocompta.bj/fiches/retenues-a-la-source.html"},
+    {"@type":"ListItem","position":8,"name":"Les Régimes Incitatifs","url":"https://www.infocompta.bj/fiches/regimes-incitatifs.html"},
+    {"@type":"ListItem","position":9,"name":"La Taxe Foncière Unique (TFU)","url":"https://www.infocompta.bj/fiches/tfu.html"},
+    {"@type":"ListItem","position":10,"name":"La Taxe sur les Véhicules à Moteur (TVM)","url":"https://www.infocompta.bj/fiches/tvm.html"},
+    {"@type":"ListItem","position":11,"name":"La Taxe sur les Armes à Feu","url":"https://www.infocompta.bj/fiches/taxe-sur-les-armes-a-feu.html"},
+    {"@type":"ListItem","position":12,"name":"La Taxe sur les Pirogues et Barques Motorisées","url":"https://www.infocompta.bj/fiches/taxe-sur-les-pirogues-et-barques-motorisees.html"},
+    {"@type":"ListItem","position":13,"name":"La Taxe sur les Taxis de Ville","url":"https://www.infocompta.bj/fiches/taxe-sur-les-taxis-de-ville.html"},
+    {"@type":"ListItem","position":14,"name":"La Taxe Professionnelle Synthétique (TPS)","url":"https://www.infocompta.bj/fiches/tps.html"},
+    {"@type":"ListItem","position":15,"name":"Le Versement Patronal sur Salaires (VPS)","url":"https://www.infocompta.bj/fiches/vps.html"},
+    {"@type":"ListItem","position":16,"name":"Contribution des Patentes et des Licences","url":"https://www.infocompta.bj/fiches/contribution-des-patentes-et-des-licences.html"},
+    {"@type":"ListItem","position":17,"name":"La Taxe de Développement du Sport","url":"https://www.infocompta.bj/fiches/taxe-de-developpement-du-sport.html"},
+    {"@type":"ListItem","position":18,"name":"La Taxe d'Enlèvement des Ordures Ménagères (TEOM)","url":"https://www.infocompta.bj/fiches/teom.html"},
+    {"@type":"ListItem","position":19,"name":"La Taxe sur la Valeur Ajoutée (TVA)","url":"https://www.infocompta.bj/fiches/tva.html"},
+    {"@type":"ListItem","position":20,"name":"La Taxe sur les Activités Financières et Assurances (TAFA)","url":"https://www.infocompta.bj/fiches/tafa.html"},
+    {"@type":"ListItem","position":21,"name":"La Taxe sur les Jeux de Hasard","url":"https://www.infocompta.bj/fiches/taxe-sur-les-jeux-de-hasard.html"},
+    {"@type":"ListItem","position":22,"name":"Contribution sur la vente de services de communications électroniques","url":"https://www.infocompta.bj/fiches/contribution-sur-la-vente-de-services-de.html"},
+    {"@type":"ListItem","position":23,"name":"La Taxe sur les Produits Spécifiques","url":"https://www.infocompta.bj/fiches/taxe-sur-les-produits-specifiques.html"},
+    {"@type":"ListItem","position":24,"name":"La Taxe Spécifique Unique sur les Produits Pétroliers (TSUPP)","url":"https://www.infocompta.bj/fiches/tsupp.html"},
+    {"@type":"ListItem","position":25,"name":"La Taxe sur les Véhicules de Tourisme","url":"https://www.infocompta.bj/fiches/taxe-sur-les-vehicules-de-tourisme.html"},
+    {"@type":"ListItem","position":26,"name":"La Taxe de Séjour","url":"https://www.infocompta.bj/fiches/taxe-de-sejour.html"},
+    {"@type":"ListItem","position":27,"name":"La Contribution au Développement Local (CDL)","url":"https://www.infocompta.bj/fiches/cdl.html"},
+    {"@type":"ListItem","position":28,"name":"Le Prélèvement Forfaitaire sur les Véhicules d'Occasion","url":"https://www.infocompta.bj/fiches/prelevement-forfaitaire-sur-les-vehicules-d.html"},
+    {"@type":"ListItem","position":29,"name":"La Taxe de Pacage","url":"https://www.infocompta.bj/fiches/taxe-de-pacage.html"},
+    {"@type":"ListItem","position":30,"name":"La Taxe sur les Spectacles, Jeux et Divertissements","url":"https://www.infocompta.bj/fiches/taxe-sur-les-spectacles-jeux-et.html"},
+    {"@type":"ListItem","position":31,"name":"Taxe sur la vente des boissons fermentées artisanales","url":"https://www.infocompta.bj/fiches/taxe-sur-la-vente-des-boissons-fermentees.html"},
+    {"@type":"ListItem","position":32,"name":"La Taxe sur la Publicité","url":"https://www.infocompta.bj/fiches/taxe-sur-la-publicite.html"},
+    {"@type":"ListItem","position":33,"name":"La Taxe sur la consommation d'électricité et d'eau","url":"https://www.infocompta.bj/fiches/taxe-sur-la-consommation-d-electricite-et-d.html"},
+    {"@type":"ListItem","position":34,"name":"Les Droits d'Enregistrement -- Principes et Champ d'application","url":"https://www.infocompta.bj/fiches/droits-d-enregistrement.html"},
+    {"@type":"ListItem","position":35,"name":"Droits d'Enregistrement -- Principes Généraux d'Assiette","url":"https://www.infocompta.bj/fiches/droits-d-enregistrement-2.html"},
+    {"@type":"ListItem","position":36,"name":"Fixation des Droits d'Enregistrement","url":"https://www.infocompta.bj/fiches/fixation-des-droits-d-enregistrement.html"},
+    {"@type":"ListItem","position":37,"name":"Déclarations et Paiement des Droits d'Enregistrement","url":"https://www.infocompta.bj/fiches/declarations-et-paiement-des-droits-d.html"},
+    {"@type":"ListItem","position":38,"name":"Obligations des Officiers Publics et Ministériels","url":"https://www.infocompta.bj/fiches/obligations-des-officiers-publics-et.html"},
+    {"@type":"ListItem","position":39,"name":"Dispositions particulières aux mutations à titre gratuit","url":"https://www.infocompta.bj/fiches/dispositions-particulieres-aux-mutations-a.html"},
+    {"@type":"ListItem","position":40,"name":"Le Droit de Timbre","url":"https://www.infocompta.bj/fiches/droit-de-timbre.html"},
+    {"@type":"ListItem","position":41,"name":"Identification des Contribuables (IFU)","url":"https://www.infocompta.bj/fiches/ifu.html"},
+    {"@type":"ListItem","position":42,"name":"Identification des Bénéficiaires Effectifs","url":"https://www.infocompta.bj/fiches/identification-des-beneficiaires-effectifs.html"},
+    {"@type":"ListItem","position":43,"name":"Obligations Déclaratives Annuelles","url":"https://www.infocompta.bj/fiches/obligations-declaratives-annuelles.html"},
+    {"@type":"ListItem","position":44,"name":"Obligations Comptables et de Facturation","url":"https://www.infocompta.bj/fiches/obligations-comptables-et-de-facturation.html"},
+    {"@type":"ListItem","position":45,"name":"Sanctions Fiscales (Pénalités d'Assiette et de Recouvrement)","url":"https://www.infocompta.bj/fiches/sanctions-fiscales-penalites-d-assiette-et.html"},
+    {"@type":"ListItem","position":46,"name":"Sanctions de Facturation et Sanctions Pénales","url":"https://www.infocompta.bj/fiches/sanctions-de-facturation-et-sanctions.html"},
+    {"@type":"ListItem","position":47,"name":"Les Moyens de Contrôle de l'Administration","url":"https://www.infocompta.bj/fiches/moyens-de-controle-de-l-administration.html"},
+    {"@type":"ListItem","position":48,"name":"Les Formes de Contrôle","url":"https://www.infocompta.bj/fiches/formes-de-controle.html"},
+    {"@type":"ListItem","position":49,"name":"Procédures de Rectification et Taxation d'Office","url":"https://www.infocompta.bj/fiches/procedures-de-rectification-et-taxation-d.html"},
+    {"@type":"ListItem","position":50,"name":"Garanties, Prescription et Contentieux","url":"https://www.infocompta.bj/fiches/garanties-prescription-et-contentieux.html"},
+    {"@type":"ListItem","position":51,"name":"Recouvrement et Poursuites (Phase 1)","url":"https://www.infocompta.bj/fiches/recouvrement-et-poursuites-phase-1.html"},
+    {"@type":"ListItem","position":52,"name":"Poursuites (Phase 2) et Garanties de Recouvrement","url":"https://www.infocompta.bj/fiches/poursuites-phase-2-et-garanties-de.html"},
+    {"@type":"ListItem","position":53,"name":"Livre 6 -- Dispositions Finales","url":"https://www.infocompta.bj/fiches/livre-6.html"}
+  ]
+}
+</script>
+<style>
+
+/* ═══════════════════════════════════════════════════════
+   PAGE FISCALITÉ CGI — Styles spécifiques
+═══════════════════════════════════════════════════════ */
+
+/* ── Barre de recherche héro ── */
+.cgi-search-wrap { max-width: 560px; margin: 2.2rem auto 0; position: relative; }
+.cgi-search-wrap input {
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.18);
+  color: var(--text-on-dark);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  padding: 0.95rem 1.3rem 0.95rem 3rem;
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color var(--transition), background var(--transition);
+}
+.cgi-search-wrap input::placeholder { color: var(--text-on-dark-dim); }
+.cgi-search-wrap input:focus { border-color: var(--orange-lt); background: rgba(255,255,255,0.12); }
+.cgi-search-icon {
+  position: absolute;
+  left: 1.1rem; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-on-dark-dim);
+  pointer-events: none;
+  font-size: 1rem;
+}
+.cgi-hero-stats {
+  display: flex;
+  gap: 2.2rem;
+  justify-content: center;
+  margin-top: 1.8rem;
+  flex-wrap: wrap;
+}
+.cgi-hero-stat { text-align: center; }
+.cgi-hero-stat-value {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--text-on-dark);
+  line-height: 1;
+}
+.cgi-hero-stat-value span { color: var(--orange-lt); }
+.cgi-hero-stat-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-on-dark-muted);
+  margin-top: 4px;
+}
+
+/* ── Sommaire / chips des 6 livres ── */
+.cgi-toc {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 1.1rem 0;
+  position: sticky;
+  top: 66px;
+  z-index: 150;
+}
+.cgi-toc-inner {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.cgi-toc-inner::-webkit-scrollbar { display: none; }
+.cgi-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 30px;
+  padding: 0.5rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--navy);
+  transition: background var(--transition), border-color var(--transition), transform var(--transition);
+}
+.cgi-chip:hover { background: var(--orange-pale); border-color: var(--orange-line); transform: translateY(-1px); }
+.cgi-chip-icon { color: var(--orange); font-size: 0.85rem; }
+.cgi-chip-count {
+  background: var(--teal);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 20px;
+}
+
+/* ── Sections Livre ── */
+.cgi-livre { padding: 3.6rem 0; }
+.cgi-livre:nth-child(even) { background: var(--cream); }
+.cgi-livre-header p { color: var(--muted); font-size: 0.9rem; max-width: 640px; }
+
+/* ── Grille des fiches ── */
+.cgi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.cgi-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.4rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+.cgi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--orange);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.cgi-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--orange-line); }
+.cgi-card:hover::before { transform: scaleX(1); }
+.cgi-card-num {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--orange);
+  text-transform: uppercase;
+}
+.cgi-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.3;
+}
+.cgi-card-art {
+  font-size: 0.76rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+.cgi-card-art-muted { font-style: italic; opacity: 0.75; }
+.cgi-card-go {
+  margin-top: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--teal);
+  transition: gap var(--transition), color var(--transition);
+}
+.cgi-card:hover .cgi-card-go { color: var(--orange); }
+.cgi-card.is-hidden { display: none; }
+.cgi-livre.is-hidden { display: none; }
+
+/* ── État vide (recherche sans résultat) ── */
+.cgi-empty {
+  display: none;
+  text-align: center;
+  padding: 5rem 1rem;
+}
+.cgi-empty.is-visible { display: block; }
+.cgi-empty h3 { color: var(--navy); margin-bottom: 0.5rem; }
+.cgi-empty p { color: var(--muted); font-size: 0.9rem; }
+
+/* ── Bandeau routeur (mots-clés) ── */
+.cgi-router-note {
+  background: var(--orange-pale);
+  border: 1px solid var(--orange-line);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.83rem;
+  color: #0a1a5c;
+  margin: 0 0 2.2rem;
+}
+.cgi-router-note strong { color: var(--navy); }
+
+@media (max-width: 640px) {
+  .cgi-toc { top: 58px; }
+  .cgi-hero-stats { gap: 1.3rem; }
+  .cgi-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Info<span>Compta</span></a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="mainNav">
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="plan-comptable.html">Plan Comptable</a></li>
+      <li><a href="documents.html">Documents</a></li>
+      <li><a href="fiscalite-cgi-benin.html" class="active">Fiscalité CGI</a></li>
+      <li><a href="quiz.html">Quiz</a></li>
+      <li><a href="offres.html">Nos offres</a></li>
+      <li><a href="a-propos.html">À propos</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="auth.html" class="nav-cta">Connexion</a></li>
+    </ul>
+  </nav>
+  <div class="ic-profile-wrap" id="icAuthSlot"></div>
+</header>
+
+<main>
+
+  <section class="hero-sm">
+    <div class="container">
+      <span class="eyebrow">Code Général des Impôts — Bénin 2026</span>
+      <h1>Toutes les fiches fiscales du CGI, classées par impôt</h1>
+      <p>53 fiches structurées — champ d'application, base imposable, taux, déclarations et sanctions — issues du CGI Bénin (Loi n°2021-15, mise à jour LF 2026). Cherchez un impôt ou parcourez par livre.</p>
+
+      <div class="cgi-search-wrap">
+        <span class="cgi-search-icon">🔎</span>
+        <input type="text" id="cgi-search" placeholder="Rechercher un impôt : TVA, patente, ITS, enregistrement…" autocomplete="off">
+      </div>
+
+      <div class="cgi-hero-stats">
+        <div class="cgi-hero-stat"><div class="cgi-hero-stat-value">53</div><div class="cgi-hero-stat-label">Fiches fiscales</div></div>
+        <div class="cgi-hero-stat"><div class="cgi-hero-stat-value">6</div><div class="cgi-hero-stat-label">Livres du CGI</div></div>
+        <div class="cgi-hero-stat"><div class="cgi-hero-stat-value">LF <span>2026</span></div><div class="cgi-hero-stat-label">Mise à jour</div></div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="cgi-toc" aria-label="Sommaire des livres du CGI">
+    <div class="container">
+      <div class="cgi-toc-inner">
+          <a href="#livre-1" class="cgi-chip"><span class="cgi-chip-icon">◆</span>Les impôts directs <span class="cgi-chip-count">18</span></a>
+          <a href="#livre-2" class="cgi-chip"><span class="cgi-chip-icon">▲</span>Les impôts indirects <span class="cgi-chip-count">15</span></a>
+          <a href="#livre-3" class="cgi-chip"><span class="cgi-chip-icon">✎</span>Enregistrement & timbre <span class="cgi-chip-count">7</span></a>
+          <a href="#livre-4" class="cgi-chip"><span class="cgi-chip-icon">●</span>Dispositions générales <span class="cgi-chip-count">6</span></a>
+          <a href="#livre-5" class="cgi-chip"><span class="cgi-chip-icon">⚖</span>Procédures fiscales <span class="cgi-chip-count">6</span></a>
+          <a href="#livre-6" class="cgi-chip"><span class="cgi-chip-icon">▪</span>Dispositions finales <span class="cgi-chip-count">1</span></a>
+      </div>
+    </div>
+  </nav>
+
+      <section class="cgi-livre" id="livre-1">
+        <div class="container">
+          <div class="section-header cgi-livre-header">
+            <span class="section-label">LIVRE 1 — 18 FICHES</span>
+            <h2>Les impôts directs</h2>
+            <p>IS, IBA, IRCM, IRF, ITS, TFU, TVM, TPS, VPS, patentes et licences — l&#x27;ensemble des impôts directs sur les bénéfices, revenus et biens.</p>
+          </div>
+          <div class="cgi-grid">
+            <a href="/fiches/is.html" class="cgi-card" data-search="l&#x27;impôt sur les sociétés (is) is 2-53">
+              <span class="cgi-card-num">Ch. 01</span>
+              <h3>L&#x27;Impôt sur les Sociétés (IS)</h3>
+              <span class="cgi-card-art">Art. 2-53 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/iba.html" class="cgi-card" data-search="l&#x27;impôt sur les bénéfices d&#x27;affaires (iba) iba 54-67">
+              <span class="cgi-card-num">Ch. 02</span>
+              <h3>L&#x27;Impôt sur les Bénéfices d&#x27;Affaires (IBA)</h3>
+              <span class="cgi-card-art">Art. 54-67 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/ircm.html" class="cgi-card" data-search="l&#x27;impôt sur le revenu des capitaux mobiliers (ircm) ircm 68-100">
+              <span class="cgi-card-num">Ch. 03</span>
+              <h3>L&#x27;Impôt sur le Revenu des Capitaux Mobiliers (IRCM)</h3>
+              <span class="cgi-card-art">Art. 68-100 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/irf.html" class="cgi-card" data-search="l&#x27;impôt sur les revenus fonciers (irf) irf 101-107">
+              <span class="cgi-card-num">Ch. 04</span>
+              <h3>L&#x27;Impôt sur les Revenus Fonciers (IRF)</h3>
+              <span class="cgi-card-art">Art. 101-107 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/tpvi.html" class="cgi-card" data-search="la taxe sur les plus-values immobilières (tpvi) tpvi 108-118">
+              <span class="cgi-card-num">Ch. 05</span>
+              <h3>La Taxe sur les Plus-Values Immobilières (TPVI)</h3>
+              <span class="cgi-card-art">Art. 108-118 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/its.html" class="cgi-card" data-search="l&#x27;impôt sur les traitements et salaires (its) its 119-129">
+              <span class="cgi-card-num">Ch. 06</span>
+              <h3>L&#x27;Impôt sur les Traitements et Salaires (ITS)</h3>
+              <span class="cgi-card-art">Art. 119-129 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/retenues-a-la-source.html" class="cgi-card" data-search="les retenues à la source retenues_a_la_source ">
+              <span class="cgi-card-num">Ch. 07</span>
+              <h3>Les Retenues à la Source</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/regimes-incitatifs.html" class="cgi-card" data-search="les régimes incitatifs regimes_incitatifs ">
+              <span class="cgi-card-num">Ch. 08</span>
+              <h3>Les Régimes Incitatifs</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/tfu.html" class="cgi-card" data-search="la taxe foncière unique (tfu) tfu 151-165">
+              <span class="cgi-card-num">Ch. 09</span>
+              <h3>La Taxe Foncière Unique (TFU)</h3>
+              <span class="cgi-card-art">Art. 151-165 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/tvm.html" class="cgi-card" data-search="la taxe sur les véhicules à moteur (tvm) tvm 166-171">
+              <span class="cgi-card-num">Ch. 10</span>
+              <h3>La Taxe sur les Véhicules à Moteur (TVM)</h3>
+              <span class="cgi-card-art">Art. 166-171 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/taxe-sur-les-armes-a-feu.html" class="cgi-card" data-search="la taxe sur les armes à feu taxe_sur_les_armes_a_feu 172-175">
+              <span class="cgi-card-num">Ch. 11</span>
+              <h3>La Taxe sur les Armes à Feu</h3>
+              <span class="cgi-card-art">Art. 172-175 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/taxe-sur-les-pirogues-et-barques-motorisees.html" class="cgi-card" data-search="la taxe sur les pirogues et barques motorisées taxe_sur_les_pirogues_et_barques_motorisees ">
+              <span class="cgi-card-num">Ch. 12</span>
+              <h3>La Taxe sur les Pirogues et Barques Motorisées</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/taxe-sur-les-taxis-de-ville.html" class="cgi-card" data-search="la taxe sur les taxis de ville taxe_sur_les_taxis_de_ville ">
+              <span class="cgi-card-num">Ch. 13</span>
+              <h3>La Taxe sur les Taxis de Ville</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/tps.html" class="cgi-card" data-search="la taxe professionnelle synthétique (tps) tps 178-190">
+              <span class="cgi-card-num">Ch. 14</span>
+              <h3>La Taxe Professionnelle Synthétique (TPS)</h3>
+              <span class="cgi-card-art">Art. 178-190 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/vps.html" class="cgi-card" data-search="le versement patronal sur salaires (vps) vps 191-195">
+              <span class="cgi-card-num">Ch. 15</span>
+              <h3>Le Versement Patronal sur Salaires (VPS)</h3>
+              <span class="cgi-card-art">Art. 191-195 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/contribution-des-patentes-et-des-licences.html" class="cgi-card" data-search="contribution des patentes et des licences contribution_des_patentes_et_des_licences 196-217">
+              <span class="cgi-card-num">Ch. 16</span>
+              <h3>Contribution des Patentes et des Licences</h3>
+              <span class="cgi-card-art">Art. 196-217 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/taxe-de-developpement-du-sport.html" class="cgi-card" data-search="la taxe de développement du sport taxe_de_developpement_du_sport 218-220">
+              <span class="cgi-card-num">Ch. 17</span>
+              <h3>La Taxe de Développement du Sport</h3>
+              <span class="cgi-card-art">Art. 218-220 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/teom.html" class="cgi-card" data-search="la taxe d&#x27;enlèvement des ordures ménagères (teom) teom 221-222">
+              <span class="cgi-card-num">Ch. 18</span>
+              <h3>La Taxe d&#x27;Enlèvement des Ordures Ménagères (TEOM)</h3>
+              <span class="cgi-card-art">Art. 221-222 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="cgi-livre" id="livre-2">
+        <div class="container">
+          <div class="section-header cgi-livre-header">
+            <span class="section-label">LIVRE 2 — 15 FICHES</span>
+            <h2>Les impôts indirects</h2>
+            <p>TVA, TAFA, droits d&#x27;accises et taxes spécifiques sur la consommation, les produits pétroliers, la publicité et les activités réglementées.</p>
+          </div>
+          <div class="cgi-grid">
+            <a href="/fiches/tva.html" class="cgi-card" data-search="la taxe sur la valeur ajoutée (tva) tva ">
+              <span class="cgi-card-num">Ch. 19</span>
+              <h3>La Taxe sur la Valeur Ajoutée (TVA)</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/tafa.html" class="cgi-card" data-search="la taxe sur les activités financières et assurances (tafa) tafa 264-271">
+              <span class="cgi-card-num">Ch. 20</span>
+              <h3>La Taxe sur les Activités Financières et Assurances (TAFA)</h3>
+              <span class="cgi-card-art">Art. 264-271 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/taxe-sur-les-jeux-de-hasard.html" class="cgi-card" data-search="la taxe sur les jeux de hasard taxe_sur_les_jeux_de_hasard ">
+              <span class="cgi-card-num">Ch. 21</span>
+              <h3>La Taxe sur les Jeux de Hasard</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/contribution-sur-la-vente-de-services-de.html" class="cgi-card" data-search="contribution sur la vente de services de communications électroniques contribution_sur_la_vente_de_services_de ">
+              <span class="cgi-card-num">Ch. 22</span>
+              <h3>Contribution sur la vente de services de communications électroniques</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/taxe-sur-les-produits-specifiques.html" class="cgi-card" data-search="la taxe sur les produits spécifiques taxe_sur_les_produits_specifiques 274-280">
+              <span class="cgi-card-num">Ch. 23</span>
+              <h3>La Taxe sur les Produits Spécifiques</h3>
+              <span class="cgi-card-art">Art. 274-280 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/tsupp.html" class="cgi-card" data-search="la taxe spécifique unique sur les produits pétroliers (tsupp) tsupp 281-284">
+              <span class="cgi-card-num">Ch. 24</span>
+              <h3>La Taxe Spécifique Unique sur les Produits Pétroliers (TSUPP)</h3>
+              <span class="cgi-card-art">Art. 281-284 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/taxe-sur-les-vehicules-de-tourisme.html" class="cgi-card" data-search="la taxe sur les véhicules de tourisme taxe_sur_les_vehicules_de_tourisme 285-290">
+              <span class="cgi-card-num">Ch. 25</span>
+              <h3>La Taxe sur les Véhicules de Tourisme</h3>
+              <span class="cgi-card-art">Art. 285-290 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/taxe-de-sejour.html" class="cgi-card" data-search="la taxe de séjour taxe_de_sejour 291-295">
+              <span class="cgi-card-num">Ch. 26</span>
+              <h3>La Taxe de Séjour</h3>
+              <span class="cgi-card-art">Art. 291-295 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/cdl.html" class="cgi-card" data-search="la contribution au développement local (cdl) cdl 296-303">
+              <span class="cgi-card-num">Ch. 27</span>
+              <h3>La Contribution au Développement Local (CDL)</h3>
+              <span class="cgi-card-art">Art. 296-303 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/prelevement-forfaitaire-sur-les-vehicules-d.html" class="cgi-card" data-search="le prélèvement forfaitaire sur les véhicules d&#x27;occasion prelevement_forfaitaire_sur_les_vehicules_d ">
+              <span class="cgi-card-num">Ch. 28</span>
+              <h3>Le Prélèvement Forfaitaire sur les Véhicules d&#x27;Occasion</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/taxe-de-pacage.html" class="cgi-card" data-search="la taxe de pacage taxe_de_pacage ">
+              <span class="cgi-card-num">Ch. 29</span>
+              <h3>La Taxe de Pacage</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/taxe-sur-les-spectacles-jeux-et.html" class="cgi-card" data-search="la taxe sur les spectacles, jeux et divertissements taxe_sur_les_spectacles_jeux_et ">
+              <span class="cgi-card-num">Ch. 30</span>
+              <h3>La Taxe sur les Spectacles, Jeux et Divertissements</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/taxe-sur-la-vente-des-boissons-fermentees.html" class="cgi-card" data-search="taxe sur la vente des boissons fermentées artisanales taxe_sur_la_vente_des_boissons_fermentees ">
+              <span class="cgi-card-num">Ch. 31</span>
+              <h3>Taxe sur la vente des boissons fermentées artisanales</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/taxe-sur-la-publicite.html" class="cgi-card" data-search="la taxe sur la publicité taxe_sur_la_publicite 309-315">
+              <span class="cgi-card-num">Ch. 32</span>
+              <h3>La Taxe sur la Publicité</h3>
+              <span class="cgi-card-art">Art. 309-315 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/taxe-sur-la-consommation-d-electricite-et-d.html" class="cgi-card" data-search="la taxe sur la consommation d&#x27;électricité et d&#x27;eau taxe_sur_la_consommation_d_electricite_et_d ">
+              <span class="cgi-card-num">Ch. 33</span>
+              <h3>La Taxe sur la consommation d&#x27;électricité et d&#x27;eau</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="cgi-livre" id="livre-3">
+        <div class="container">
+          <div class="section-header cgi-livre-header">
+            <span class="section-label">LIVRE 3 — 7 FICHES</span>
+            <h2>Enregistrement &amp; timbre</h2>
+            <p>Droits d&#x27;enregistrement des actes juridiques et droit de timbre : mutations, baux, marchés publics, successions.</p>
+          </div>
+          <div class="cgi-grid">
+            <a href="/fiches/droits-d-enregistrement.html" class="cgi-card" data-search="les droits d&#x27;enregistrement -- principes et champ d&#x27;application droits_d_enregistrement ">
+              <span class="cgi-card-num">Ch. 34</span>
+              <h3>Les Droits d&#x27;Enregistrement -- Principes et Champ d&#x27;application</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/droits-d-enregistrement-2.html" class="cgi-card" data-search="droits d&#x27;enregistrement -- principes généraux d&#x27;assiette droits_d_enregistrement_2 322-326">
+              <span class="cgi-card-num">Ch. 35</span>
+              <h3>Droits d&#x27;Enregistrement -- Principes Généraux d&#x27;Assiette</h3>
+              <span class="cgi-card-art">Art. 322-326 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/fixation-des-droits-d-enregistrement.html" class="cgi-card" data-search="fixation des droits d&#x27;enregistrement fixation_des_droits_d_enregistrement 327-354">
+              <span class="cgi-card-num">Ch. 36</span>
+              <h3>Fixation des Droits d&#x27;Enregistrement</h3>
+              <span class="cgi-card-art">Art. 327-354 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/declarations-et-paiement-des-droits-d.html" class="cgi-card" data-search="déclarations et paiement des droits d&#x27;enregistrement declarations_et_paiement_des_droits_d 355-370">
+              <span class="cgi-card-num">Ch. 37</span>
+              <h3>Déclarations et Paiement des Droits d&#x27;Enregistrement</h3>
+              <span class="cgi-card-art">Art. 355-370 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/obligations-des-officiers-publics-et.html" class="cgi-card" data-search="obligations des officiers publics et ministériels obligations_des_officiers_publics_et 371-382">
+              <span class="cgi-card-num">Ch. 38</span>
+              <h3>Obligations des Officiers Publics et Ministériels</h3>
+              <span class="cgi-card-art">Art. 371-382 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/dispositions-particulieres-aux-mutations-a.html" class="cgi-card" data-search="dispositions particulières aux mutations à titre gratuit dispositions_particulieres_aux_mutations_a 383-398">
+              <span class="cgi-card-num">Ch. 39</span>
+              <h3>Dispositions particulières aux mutations à titre gratuit</h3>
+              <span class="cgi-card-art">Art. 383-398 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/droit-de-timbre.html" class="cgi-card" data-search="le droit de timbre droit_de_timbre 399-459">
+              <span class="cgi-card-num">Ch. 40</span>
+              <h3>Le Droit de Timbre</h3>
+              <span class="cgi-card-art">Art. 399-459 CGI</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="cgi-livre" id="livre-4">
+        <div class="container">
+          <div class="section-header cgi-livre-header">
+            <span class="section-label">LIVRE 4 — 6 FICHES</span>
+            <h2>Dispositions générales</h2>
+            <p>IFU, obligations comptables et déclaratives, sanctions fiscales — le socle commun à tous les contribuables.</p>
+          </div>
+          <div class="cgi-grid">
+            <a href="/fiches/ifu.html" class="cgi-card" data-search="identification des contribuables (ifu) ifu ">
+              <span class="cgi-card-num">Ch. 41</span>
+              <h3>Identification des Contribuables (IFU)</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/identification-des-beneficiaires-effectifs.html" class="cgi-card" data-search="identification des bénéficiaires effectifs identification_des_beneficiaires_effectifs ">
+              <span class="cgi-card-num">Ch. 42</span>
+              <h3>Identification des Bénéficiaires Effectifs</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/obligations-declaratives-annuelles.html" class="cgi-card" data-search="obligations déclaratives annuelles obligations_declaratives_annuelles ">
+              <span class="cgi-card-num">Ch. 43</span>
+              <h3>Obligations Déclaratives Annuelles</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/obligations-comptables-et-de-facturation.html" class="cgi-card" data-search="obligations comptables et de facturation obligations_comptables_et_de_facturation ">
+              <span class="cgi-card-num">Ch. 44</span>
+              <h3>Obligations Comptables et de Facturation</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/sanctions-fiscales-penalites-d-assiette-et.html" class="cgi-card" data-search="sanctions fiscales (pénalités d&#x27;assiette et de recouvrement) sanctions_fiscales_penalites_d_assiette_et ">
+              <span class="cgi-card-num">Ch. 45</span>
+              <h3>Sanctions Fiscales (Pénalités d&#x27;Assiette et de Recouvrement)</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/sanctions-de-facturation-et-sanctions.html" class="cgi-card" data-search="sanctions de facturation et sanctions pénales sanctions_de_facturation_et_sanctions ">
+              <span class="cgi-card-num">Ch. 46</span>
+              <h3>Sanctions de Facturation et Sanctions Pénales</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="cgi-livre" id="livre-5">
+        <div class="container">
+          <div class="section-header cgi-livre-header">
+            <span class="section-label">LIVRE 5 — 6 FICHES</span>
+            <h2>Procédures fiscales</h2>
+            <p>Contrôle fiscal, rectification, garanties du contribuable, recouvrement et voies de recours.</p>
+          </div>
+          <div class="cgi-grid">
+            <a href="/fiches/moyens-de-controle-de-l-administration.html" class="cgi-card" data-search="les moyens de contrôle de l&#x27;administration moyens_de_controle_de_l_administration ">
+              <span class="cgi-card-num">Ch. 47</span>
+              <h3>Les Moyens de Contrôle de l&#x27;Administration</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/formes-de-controle.html" class="cgi-card" data-search="les formes de contrôle formes_de_controle ">
+              <span class="cgi-card-num">Ch. 48</span>
+              <h3>Les Formes de Contrôle</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/procedures-de-rectification-et-taxation-d.html" class="cgi-card" data-search="procédures de rectification et taxation d&#x27;office procedures_de_rectification_et_taxation_d ">
+              <span class="cgi-card-num">Ch. 49</span>
+              <h3>Procédures de Rectification et Taxation d&#x27;Office</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/garanties-prescription-et-contentieux.html" class="cgi-card" data-search="garanties, prescription et contentieux garanties_prescription_et_contentieux ">
+              <span class="cgi-card-num">Ch. 50</span>
+              <h3>Garanties, Prescription et Contentieux</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/recouvrement-et-poursuites-phase-1.html" class="cgi-card" data-search="recouvrement et poursuites (phase 1) recouvrement_et_poursuites_phase_1 ">
+              <span class="cgi-card-num">Ch. 51</span>
+              <h3>Recouvrement et Poursuites (Phase 1)</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+            <a href="/fiches/poursuites-phase-2-et-garanties-de.html" class="cgi-card" data-search="poursuites (phase 2) et garanties de recouvrement poursuites_phase_2_et_garanties_de ">
+              <span class="cgi-card-num">Ch. 52</span>
+              <h3>Poursuites (Phase 2) et Garanties de Recouvrement</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="cgi-livre" id="livre-6">
+        <div class="container">
+          <div class="section-header cgi-livre-header">
+            <span class="section-label">LIVRE 6 — 1 FICHE</span>
+            <h2>Dispositions finales</h2>
+            <p>Dispositions transitoires et finales du Code Général des Impôts.</p>
+          </div>
+          <div class="cgi-grid">
+            <a href="/fiches/livre-6.html" class="cgi-card" data-search="livre 6 -- dispositions finales livre_6 ">
+              <span class="cgi-card-num">Ch. 53</span>
+              <h3>Livre 6 -- Dispositions Finales</h3>
+              <span class="cgi-card-art cgi-card-art-muted">Articles divers</span>
+              <span class="cgi-card-go">Consulter la fiche →</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+  <section class="cgi-livre" id="cgi-empty-section" style="display:none;">
+    <div class="container">
+      <div class="cgi-empty" id="cgi-empty">
+        <h3>Aucune fiche ne correspond à votre recherche</h3>
+        <p>Essayez un autre mot-clé (nom de l'impôt, sigle, ou numéro d'article du CGI).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-banner">
+        <div>
+          <h2>Une écriture comptable à générer ?</h2>
+          <p>Retrouvez le schéma d'écriture SYSCOHADA correspondant à chaque impôt : TVA, AIB, IS, retenues, salaires…</p>
+        </div>
+        <div class="cta-actions">
+          <a href="ecritures.html" class="btn">Voir les écritures types</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Info<span>Compta</span></div>
+    <div class="footer-links">
+      <a href="confidentialite.html">Confidentialité</a>
+      <a href="contact.html">Contact</a>
+      <a href="a-propos.html">À propos</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 InfoCompta</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  /* ── Hamburger (identique au reste du site) ── */
+  var btn = document.getElementById('hamburgerBtn');
+  var nav = document.getElementById('mainNav');
+  if (btn && nav) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      }
+    });
+  }
+})();
+</script>
+
+<script>
+(function() {
+  const input = document.getElementById('cgi-search');
+  const cards = Array.from(document.querySelectorAll('.cgi-card'));
+  const livreSections = Array.from(document.querySelectorAll('.cgi-livre'));
+  const emptySection = document.getElementById('cgi-empty-section');
+  const emptyState = document.getElementById('cgi-empty');
+
+  function normalize(str) {
+    return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  input.addEventListener('input', function() {
+    const q = normalize(input.value.trim());
+    let anyVisible = false;
+
+    livreSections.forEach(function(section) {
+      const sectionCards = section.querySelectorAll('.cgi-card');
+      let sectionHasVisible = false;
+      sectionCards.forEach(function(card) {
+        const haystack = normalize(card.getAttribute('data-search') || '');
+        const match = q === '' || haystack.indexOf(q) !== -1;
+        card.classList.toggle('is-hidden', !match);
+        if (match) { sectionHasVisible = true; anyVisible = true; }
+      });
+      if (sectionCards.length > 0) {
+        section.classList.toggle('is-hidden', !sectionHasVisible);
+      }
+    });
+
+    emptySection.style.display = (q !== '' && !anyVisible) ? 'block' : 'none';
+    emptyState.classList.toggle('is-visible', q !== '' && !anyVisible);
+  });
+})();
+</script>
+
+</body>
+</html>
