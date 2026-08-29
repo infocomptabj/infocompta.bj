@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<script>
+(function () {
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+        document.documentElement.classList.add('ic-authed');
+      }
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../auth-display.js" defer></script>
+<title>La Contribution au Développement Local (CDL) — CGI Bénin 2026 | InfoCompta</title>
+<meta name="description" content="Définition : Taxe frappant les ressources naturelles et les produits issus de l&#x27;exploitation locale. Produits visés : Produits agricoles, forestiers, anima…">
+<link rel="canonical" href="https://www.infocompta.bj/fiches/cdl.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="stylesheet" href="../infocompta-shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "La Contribution au Développement Local (CDL)",
+  "articleSection": "Livre 2 : Les Impôts Indirects (TVA, TAFA, Accises, etc.)",
+  "about": "Code Général des Impôts du Bénin — La Contribution au Développement Local (CDL)",
+  "url": "https://www.infocompta.bj/fiches/cdl.html",
+  "isPartOf": {
+    "@type": "WebPage",
+    "url": "https://www.infocompta.bj/fiscalite-cgi-benin.html"
+  }
+}
+</script>
+<style>
+.fiche-hero { padding: 2.6rem 0 2.2rem; }
+.fiche-breadcrumb {
+  font-size: 0.76rem;
+  color: var(--text-on-dark-dim);
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+.fiche-breadcrumb a { color: var(--text-on-dark-muted); transition: color var(--transition); }
+.fiche-breadcrumb a:hover { color: var(--orange-lt); }
+.fiche-breadcrumb span.sep { opacity: 0.5; }
+.fiche-hero h1 { font-size: clamp(1.7rem, 3.2vw, 2.5rem); margin-bottom: 0.7rem; }
+.fiche-meta { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+.fiche-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16,57,226,0.14);
+  border: 1px solid rgba(16,57,226,0.30);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 30px;
+}
+
+.fiche-body { padding: 3rem 0 1rem; }
+.fiche-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.fiche-toc {
+  position: sticky;
+  top: 90px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.3rem;
+}
+.fiche-toc-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.7rem;
+}
+.fiche-toc ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+.fiche-toc a {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+  transition: color var(--transition);
+  display: block;
+}
+.fiche-toc a:hover { color: var(--orange); }
+
+.fiche-content { max-width: 720px; }
+.fiche-section { margin-bottom: 2.6rem; scroll-margin-top: 90px; }
+.fiche-section h2 {
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1.5px solid var(--border-lt);
+}
+.fiche-section p { margin-bottom: 0.9rem; font-size: 0.94rem; }
+.fiche-section ul, .fiche-section ol { margin: 0 0 0.9rem 1.3rem; }
+.fiche-section li { font-size: 0.94rem; color: var(--text-md); margin-bottom: 0.4rem; line-height: 1.6; }
+.fiche-section strong { color: var(--navy); }
+
+.fiche-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 3rem 0 3.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+}
+.fiche-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.fiche-nav-link:hover { border-color: var(--orange-line); transform: translateY(-2px); box-shadow: var(--shadow); }
+.fiche-nav-next { text-align: right; align-items: flex-end; }
+.fiche-nav-dir { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); }
+.fiche-nav-title { font-size: 0.86rem; color: var(--navy); font-weight: 600; }
+.fiche-nav-disabled { opacity: 0.35; pointer-events: none; padding: 1rem 1.2rem; border: 1.5px dashed var(--border); border-radius: var(--radius-md); }
+
+@media (max-width: 900px) {
+  .fiche-layout { grid-template-columns: 1fr; }
+  .fiche-toc { position: static; }
+  .fiche-nav { grid-template-columns: 1fr; }
+  .fiche-nav-next { text-align: left; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="logo">Info<span>Compta</span></a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="mainNav">
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="../plan-comptable.html">Plan Comptable</a></li>
+      <li><a href="../documents.html">Documents</a></li>
+      <li><a href="../fiscalite-cgi-benin.html" class="active">Fiscalité CGI</a></li>
+      <li><a href="../quiz.html">Quiz</a></li>
+      <li><a href="../offres.html">Nos offres</a></li>
+      <li><a href="../a-propos.html">À propos</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="../auth.html" class="nav-cta">Connexion</a></li>
+    </ul>
+  </nav>
+  <div class="ic-profile-wrap" id="icAuthSlot"></div>
+</header>
+
+<main>
+
+  <section class="hero-sm fiche-hero">
+    <div class="container">
+      <div class="fiche-breadcrumb">
+        <a href="../index.html">Accueil</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html">Fiscalité CGI</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html#livre-2">Les impôts indirects</a>
+        <span class="sep">/</span>
+        <span>La Contribution au Développement Local (CDL)</span>
+      </div>
+      <h1>La Contribution au Développement Local (CDL)</h1>
+      <div class="fiche-meta">
+        <span class="fiche-badge">Livre 2 — Les impôts indirects</span>
+        <span class="fiche-badge">Articles 296-303 du CGI</span>
+        <span class="fiche-badge">Chapitre 27 / 53</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="fiche-body">
+    <div class="container">
+      <div class="fiche-layout">
+        <nav class="fiche-toc" aria-label="Sommaire de la fiche">
+          <div class="fiche-toc-label">Sur cette page</div>
+          <ul>
+          <li><a href="#introduction-et-champ-d-application">Introduction et Champ d'application</a></li>
+          <li><a href="#m-canisme-de-collecte-et-fait-g-n-rateur">Mécanisme de Collecte et Fait Générateur</a></li>
+          <li><a href="#tarification-extraits-du-bar-me">Tarification (Extraits du barème)</a></li>
+          <li><a href="#d-claration-paiement-et-territorialit">Déclaration, Paiement et Territorialité</a></li>
+          <li><a href="#lutte-contre-la-fraude-et-retenue-la-source">Lutte contre la fraude et Retenue à la source</a></li>
+          </ul>
+        </nav>
+
+        <article class="fiche-content">
+
+        <div class="fiche-section" id="introduction-et-champ-d-application">
+          <h2>Introduction et Champ d'application</h2>
+          <p><strong>Définition :</strong> Taxe frappant les ressources naturelles et les produits issus de l'exploitation locale.</p>
+<p>Produits visés : Produits agricoles, forestiers, animaux, halieutiques, miniers, ainsi que les eaux (surface et souterraine) et les recettes des sites touristiques.</p>
+<p>Assujettis : Producteurs de coton, acheteurs grossistes (noix d'anacarde, vivriers, volaille, charbon), exploitants forestiers et miniers, éleveurs en transhumance, exploitants de parcs ou musées, et producteurs d'eau minérale.</p>
+        </div>
+
+        <div class="fiche-section" id="m-canisme-de-collecte-et-fait-g-n-rateur">
+          <h2>Mécanisme de Collecte et Fait Générateur</h2>
+          <p>Mode de collecte : Les assujettis doivent obligatoirement incorporer la contribution à leurs prix et la collecter sur leurs clients.</p>
+<p>Fait générateur :</p>
+<p>La vente : pour le coton, les produits vivriers, le bétail, les produits halieutiques et l'eau minérale.</p>
+<p>La traversée du territoire : pour les troupeaux en transhumance.</p>
+<p>Le transport : pour les noix d'anacarde, les produits miniers (carrières) et forestiers (bois).</p>
+<p>L'encaissement : pour les recettes des sites touristiques.</p>
+<p>Le prélèvement : pour l'eau de surface.</p>
+        </div>
+
+        <div class="fiche-section" id="tarification-extraits-du-bar-me">
+          <h2>Tarification (Extraits du barème)</h2>
+          <p>Les tarifs sont fixés annuellement par délibération des élus locaux dans les limites suivantes :</p>
+<p>Riz : 1 à 2 FCFA par kg.</p>
+<p>Coton, céréales et anacarde : 1 à 5 FCFA par kg.</p>
+<p>Bétail : De 100 FCFA (porc, petit ruminant) à 1 000 FCFA (gros ruminant) par tête.</p>
+<p>Bois : 500 à 2 000 FCFA par bille ou madrier transporté.</p>
+<p>Tourisme : 5 % à 10 % des recettes brutes.</p>
+<p>Eau : 1 à 5 FCFA par litre (minérale) ou 10 à 20 FCFA par m³ (eau prélevée).</p>
+        </div>
+
+        <div class="fiche-section" id="d-claration-paiement-et-territorialit">
+          <h2>Déclaration, Paiement et Territorialité</h2>
+          <p>Procédures : Les règles de déclaration, de contrôle et de recouvrement sont identiques à celles de la TVA.</p>
+<p>Lieu de perception : La taxe est perçue une seule fois par la commune dans le ressort de laquelle est située la matière taxée.</p>
+<p>Responsabilité : Les clients des assujettis sont solidairement responsables du paiement de la contribution.</p>
+        </div>
+
+        <div class="fiche-section" id="lutte-contre-la-fraude-et-retenue-la-source">
+          <h2>Lutte contre la fraude et Retenue à la source</h2>
+          <p>Appréhension des fraudeurs : Tout assujetti n'ayant pas payé la CDL dans sa commune peut être imposé par n'importe quelle autre commune ; la taxe est alors reversée à la commune compétente.</p>
+<p>Retenue à la source : Le Code prévoit que la CDL peut faire l'objet d'une retenue à la source dans des conditions fixées par voie réglementaire.</p>
+<p>Ce module est basé sur l'article 304 du Code.</p>
+        </div>
+
+          <div class="fiche-nav">
+            <a href="taxe-de-sejour.html" class="fiche-nav-link fiche-nav-prev"><span class="fiche-nav-dir">← Chapitre précédent</span><span class="fiche-nav-title">La Taxe de Séjour</span></a>
+            <a href="prelevement-forfaitaire-sur-les-vehicules-d.html" class="fiche-nav-link fiche-nav-next"><span class="fiche-nav-dir">Chapitre suivant →</span><span class="fiche-nav-title">Le Prélèvement Forfaitaire sur les Véhicules d'Occasion</span></a>
+          </div>
+
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Info<span>Compta</span></div>
+    <div class="footer-links">
+      <a href="../confidentialite.html">Confidentialité</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../a-propos.html">À propos</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 InfoCompta</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('hamburgerBtn');
+  var nav = document.getElementById('mainNav');
+  if (btn && nav) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

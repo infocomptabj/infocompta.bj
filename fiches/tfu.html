@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<script>
+(function () {
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+        document.documentElement.classList.add('ic-authed');
+      }
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../auth-display.js" defer></script>
+<title>La Taxe Foncière Unique (TFU) — CGI Bénin 2026 | InfoCompta</title>
+<meta name="description" content="Définition : La TFU est une contribution annuelle assise sur les propriétés foncières situées en République du Bénin. Nature : C&#x27;est un impôt local dont le…">
+<link rel="canonical" href="https://www.infocompta.bj/fiches/tfu.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="stylesheet" href="../infocompta-shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "La Taxe Foncière Unique (TFU)",
+  "articleSection": "Livre 1 : Les Impôts Directs (IS, IBA, IRCM, IRF, ITS, TFU, etc.)",
+  "about": "Code Général des Impôts du Bénin — La Taxe Foncière Unique (TFU)",
+  "url": "https://www.infocompta.bj/fiches/tfu.html",
+  "isPartOf": {
+    "@type": "WebPage",
+    "url": "https://www.infocompta.bj/fiscalite-cgi-benin.html"
+  }
+}
+</script>
+<style>
+.fiche-hero { padding: 2.6rem 0 2.2rem; }
+.fiche-breadcrumb {
+  font-size: 0.76rem;
+  color: var(--text-on-dark-dim);
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+.fiche-breadcrumb a { color: var(--text-on-dark-muted); transition: color var(--transition); }
+.fiche-breadcrumb a:hover { color: var(--orange-lt); }
+.fiche-breadcrumb span.sep { opacity: 0.5; }
+.fiche-hero h1 { font-size: clamp(1.7rem, 3.2vw, 2.5rem); margin-bottom: 0.7rem; }
+.fiche-meta { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+.fiche-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16,57,226,0.14);
+  border: 1px solid rgba(16,57,226,0.30);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 30px;
+}
+
+.fiche-body { padding: 3rem 0 1rem; }
+.fiche-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.fiche-toc {
+  position: sticky;
+  top: 90px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.3rem;
+}
+.fiche-toc-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.7rem;
+}
+.fiche-toc ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+.fiche-toc a {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+  transition: color var(--transition);
+  display: block;
+}
+.fiche-toc a:hover { color: var(--orange); }
+
+.fiche-content { max-width: 720px; }
+.fiche-section { margin-bottom: 2.6rem; scroll-margin-top: 90px; }
+.fiche-section h2 {
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1.5px solid var(--border-lt);
+}
+.fiche-section p { margin-bottom: 0.9rem; font-size: 0.94rem; }
+.fiche-section ul, .fiche-section ol { margin: 0 0 0.9rem 1.3rem; }
+.fiche-section li { font-size: 0.94rem; color: var(--text-md); margin-bottom: 0.4rem; line-height: 1.6; }
+.fiche-section strong { color: var(--navy); }
+
+.fiche-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 3rem 0 3.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+}
+.fiche-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.fiche-nav-link:hover { border-color: var(--orange-line); transform: translateY(-2px); box-shadow: var(--shadow); }
+.fiche-nav-next { text-align: right; align-items: flex-end; }
+.fiche-nav-dir { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); }
+.fiche-nav-title { font-size: 0.86rem; color: var(--navy); font-weight: 600; }
+.fiche-nav-disabled { opacity: 0.35; pointer-events: none; padding: 1rem 1.2rem; border: 1.5px dashed var(--border); border-radius: var(--radius-md); }
+
+@media (max-width: 900px) {
+  .fiche-layout { grid-template-columns: 1fr; }
+  .fiche-toc { position: static; }
+  .fiche-nav { grid-template-columns: 1fr; }
+  .fiche-nav-next { text-align: left; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="logo">Info<span>Compta</span></a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="mainNav">
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="../plan-comptable.html">Plan Comptable</a></li>
+      <li><a href="../documents.html">Documents</a></li>
+      <li><a href="../fiscalite-cgi-benin.html" class="active">Fiscalité CGI</a></li>
+      <li><a href="../quiz.html">Quiz</a></li>
+      <li><a href="../offres.html">Nos offres</a></li>
+      <li><a href="../a-propos.html">À propos</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="../auth.html" class="nav-cta">Connexion</a></li>
+    </ul>
+  </nav>
+  <div class="ic-profile-wrap" id="icAuthSlot"></div>
+</header>
+
+<main>
+
+  <section class="hero-sm fiche-hero">
+    <div class="container">
+      <div class="fiche-breadcrumb">
+        <a href="../index.html">Accueil</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html">Fiscalité CGI</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html#livre-1">Les impôts directs</a>
+        <span class="sep">/</span>
+        <span>La Taxe Foncière Unique (TFU)</span>
+      </div>
+      <h1>La Taxe Foncière Unique (TFU)</h1>
+      <div class="fiche-meta">
+        <span class="fiche-badge">Livre 1 — Les impôts directs</span>
+        <span class="fiche-badge">Articles 151-165 du CGI</span>
+        <span class="fiche-badge">Chapitre 09 / 53</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="fiche-body">
+    <div class="container">
+      <div class="fiche-layout">
+        <nav class="fiche-toc" aria-label="Sommaire de la fiche">
+          <div class="fiche-toc-label">Sur cette page</div>
+          <ul>
+          <li><a href="#introduction-et-d-finition">Introduction et Définition</a></li>
+          <li><a href="#champ-d-application-propri-t-s-imposables">Champ d'application -- Propriétés imposables</a></li>
+          <li><a href="#exon-rations-permanentes">Exonérations Permanentes</a></li>
+          <li><a href="#exon-ration-temporaire-r-sidence-principale">Exonération Temporaire (Résidence Principale)</a></li>
+          <li><a href="#personnes-imposables-d-biteurs">Personnes Imposables (Débiteurs)</a></li>
+          <li><a href="#base-d-imposition-assiette">Base d'imposition (Assiette)</a></li>
+          <li><a href="#taux-de-la-taxe">Taux de la Taxe</a></li>
+          <li><a href="#obligations-d-claratives">Obligations Déclaratives</a></li>
+          <li><a href="#modalit-s-de-paiement">Modalités de Paiement</a></li>
+          </ul>
+        </nav>
+
+        <article class="fiche-content">
+
+        <div class="fiche-section" id="introduction-et-d-finition">
+          <h2>Introduction et Définition</h2>
+          <p><strong>Définition :</strong> La TFU est une contribution annuelle assise sur les propriétés foncières situées en République du Bénin.</p>
+<p>Nature : C'est un impôt local dont le produit est affecté au budget de la commune où se situe l'immeuble (sous déduction de 10% pour frais d'administration).</p>
+        </div>
+
+        <div class="fiche-section" id="champ-d-application-propri-t-s-imposables">
+          <h2>Champ d'application -- Propriétés imposables</h2>
+          <p>La taxe frappe deux catégories de biens :</p>
+<p>1\. Propriétés bâties : Constructions fixées au sol à demeure (maisons, usines, manufactures) et terrains non cultivés à usage commercial ou industriel (chantiers, dépôts)</p>
+<p>2\. Propriétés non bâties : Terrains nus de toute nature.</p>
+<p>Note : Les constructions légères (kiosques, cases en paille) sont assimilées aux propriétés non bâties, sauf si elles sont productives de revenus ou à usage commercial.</p>
+        </div>
+
+        <div class="fiche-section" id="exon-rations-permanentes">
+          <h2>Exonérations Permanentes</h2>
+          <p>Sont notamment exemptés de la TFU :</p>
+<p>Les immeubles appartenant à l'État et aux collectivités locales (si improductifs de revenus).</p>
+<p>Les immeubles des missions diplomatiques et organismes internationaux (sous réserve d'accord de siège).</p>
+<p>Les terrains agricoles, pépinières et jardins d'essais.</p>
+<p>Les immeubles à usage scolaire, universitaire ou sportif (si l'établissement est propriétaire).</p>
+<p>Les édifices servant à l'exercice des cultes.</p>
+<p>Les terrains boisés ou ensemencés en bois.</p>
+        </div>
+
+        <div class="fiche-section" id="exon-ration-temporaire-r-sidence-principale">
+          <h2>Exonération Temporaire (Résidence Principale)</h2>
+          <p>Avantage : Les constructions nouvelles ou reconstructions destinées à l'habitation du propriétaire et de sa famille bénéficient d'une dispense de TFU.</p>
+<p>Durée : L'exonération s'arrête la quatrième année suivant l'achèvement ou la première utilisation.</p>
+<p>Conditions :</p>
+<p>S'applique uniquement à la résidence principale.</p>
+<p>Accordée une seule fois par personne.</p>
+<p>Le propriétaire doit être à jour de la TFU sur l'immeuble préexistant.</p>
+        </div>
+
+        <div class="fiche-section" id="personnes-imposables-d-biteurs">
+          <h2>Personnes Imposables (Débiteurs)</h2>
+          <p>Principe : La taxe est due pour l'année entière par le propriétaire au 1er janvier de l'année d'imposition.</p>
+<p>Cas particuliers :</p>
+<p>Usufruitier (en cas d'usufruit).</p>
+<p>Emphytéote (en cas de bail emphytéotique).</p>
+<p>Locataire (en cas de bail à construction, à compter de l'année suivant l'achèvement).</p>
+<p>Solidarité : Les fermiers ou locataires sont tenus de payer la taxe en l'acquit des propriétaires (montant à valoir sur le loyer).</p>
+        </div>
+
+        <div class="fiche-section" id="base-d-imposition-assiette">
+          <h2>Base d'imposition (Assiette)</h2>
+          <p>La méthode de calcul diffère selon la nature du bien :</p>
+<p>Pour les propriétés bâties : La base est la valeur locative de l'immeuble.</p>
+<p>Pour les propriétés non bâties : La base est l'évaluation administrative (valeur vénale) fixée par les conseils municipaux et révisable tous les 5 ans.</p>
+        </div>
+
+        <div class="fiche-section" id="taux-de-la-taxe">
+          <h2>Taux de la Taxe</h2>
+          <p>Les taux sont fixés annuellement par les conseils municipaux dans les limites suivantes :</p>
+<p>Propriétés non bâties : Entre 3% et 7%.</p>
+<p>Propriétés bâties : Entre 4% et 8%.</p>
+<p>Taux par défaut (si aucun taux n'est adopté) : 5% pour le non bâti et 6% pour le bâti.</p>
+        </div>
+
+        <div class="fiche-section" id="obligations-d-claratives">
+          <h2>Obligations Déclaratives</h2>
+          <p>Délai initial : Déclaration de la propriété par simple lettre dans les 30 jours suivant l'acquisition ou l'achèvement.</p>
+<p>Signalétique : Obligation de poser une plaque ou une mention à l'entrée comportant l'adresse complète (numéro « Rue entrée parcelle »).</p>
+<p>État annuel : Les propriétaires ou gérants doivent fournir au plus tard le 10 décembre un état de leurs locataires et occupants.</p>
+        </div>
+
+        <div class="fiche-section" id="modalit-s-de-paiement">
+          <h2>Modalités de Paiement</h2>
+          <p>La TFU est payée en deux acomptes :</p>
+<p>1\. 1er acompte (50%) : Au plus tard le 10 février (basé sur la taxe de l'année précédente).</p>
+<p>2\. Solde (50%) : Au plus tard le 30 avril.</p>
+<p>Preuve de paiement : Le paiement régulier crée une présomption de propriété. Aucun acte foncier (titre foncier, permis de construire) n'est valide sans la mention certifiée que le propriétaire est à jour de sa TFU.</p>
+<p>Nous continuons la série avec le Chapitre 2 du Titre 2 (Livre 1) du Code Général des Impôts 2026. Ce chapitre traite de la Taxe sur les Véhicules à Moteur (TVM).</p>
+        </div>
+
+          <div class="fiche-nav">
+            <a href="regimes-incitatifs.html" class="fiche-nav-link fiche-nav-prev"><span class="fiche-nav-dir">← Chapitre précédent</span><span class="fiche-nav-title">Les Régimes Incitatifs</span></a>
+            <a href="tvm.html" class="fiche-nav-link fiche-nav-next"><span class="fiche-nav-dir">Chapitre suivant →</span><span class="fiche-nav-title">La Taxe sur les Véhicules à Moteur (TVM)</span></a>
+          </div>
+
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Info<span>Compta</span></div>
+    <div class="footer-links">
+      <a href="../confidentialite.html">Confidentialité</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../a-propos.html">À propos</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 InfoCompta</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('hamburgerBtn');
+  var nav = document.getElementById('mainNav');
+  if (btn && nav) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<script>
+(function () {
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+        document.documentElement.classList.add('ic-authed');
+      }
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../auth-display.js" defer></script>
+<title>La Taxe sur la Valeur Ajoutée (TVA) — CGI Bénin 2026 | InfoCompta</title>
+<meta name="description" content="Définition : La TVA est un impôt général sur la consommation qui frappe les livraisons de biens et les prestations de services réalisées au Bénin par des p…">
+<link rel="canonical" href="https://www.infocompta.bj/fiches/tva.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="stylesheet" href="../infocompta-shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "La Taxe sur la Valeur Ajoutée (TVA)",
+  "articleSection": "Livre 2 : Les Impôts Indirects (TVA, TAFA, Accises, etc.)",
+  "about": "Code Général des Impôts du Bénin — La Taxe sur la Valeur Ajoutée (TVA)",
+  "url": "https://www.infocompta.bj/fiches/tva.html",
+  "isPartOf": {
+    "@type": "WebPage",
+    "url": "https://www.infocompta.bj/fiscalite-cgi-benin.html"
+  }
+}
+</script>
+<style>
+.fiche-hero { padding: 2.6rem 0 2.2rem; }
+.fiche-breadcrumb {
+  font-size: 0.76rem;
+  color: var(--text-on-dark-dim);
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+.fiche-breadcrumb a { color: var(--text-on-dark-muted); transition: color var(--transition); }
+.fiche-breadcrumb a:hover { color: var(--orange-lt); }
+.fiche-breadcrumb span.sep { opacity: 0.5; }
+.fiche-hero h1 { font-size: clamp(1.7rem, 3.2vw, 2.5rem); margin-bottom: 0.7rem; }
+.fiche-meta { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+.fiche-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16,57,226,0.14);
+  border: 1px solid rgba(16,57,226,0.30);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 30px;
+}
+
+.fiche-body { padding: 3rem 0 1rem; }
+.fiche-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.fiche-toc {
+  position: sticky;
+  top: 90px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.3rem;
+}
+.fiche-toc-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.7rem;
+}
+.fiche-toc ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+.fiche-toc a {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+  transition: color var(--transition);
+  display: block;
+}
+.fiche-toc a:hover { color: var(--orange); }
+
+.fiche-content { max-width: 720px; }
+.fiche-section { margin-bottom: 2.6rem; scroll-margin-top: 90px; }
+.fiche-section h2 {
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1.5px solid var(--border-lt);
+}
+.fiche-section p { margin-bottom: 0.9rem; font-size: 0.94rem; }
+.fiche-section ul, .fiche-section ol { margin: 0 0 0.9rem 1.3rem; }
+.fiche-section li { font-size: 0.94rem; color: var(--text-md); margin-bottom: 0.4rem; line-height: 1.6; }
+.fiche-section strong { color: var(--navy); }
+
+.fiche-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 3rem 0 3.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+}
+.fiche-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.fiche-nav-link:hover { border-color: var(--orange-line); transform: translateY(-2px); box-shadow: var(--shadow); }
+.fiche-nav-next { text-align: right; align-items: flex-end; }
+.fiche-nav-dir { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); }
+.fiche-nav-title { font-size: 0.86rem; color: var(--navy); font-weight: 600; }
+.fiche-nav-disabled { opacity: 0.35; pointer-events: none; padding: 1rem 1.2rem; border: 1.5px dashed var(--border); border-radius: var(--radius-md); }
+
+@media (max-width: 900px) {
+  .fiche-layout { grid-template-columns: 1fr; }
+  .fiche-toc { position: static; }
+  .fiche-nav { grid-template-columns: 1fr; }
+  .fiche-nav-next { text-align: left; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="logo">Info<span>Compta</span></a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="mainNav">
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="../plan-comptable.html">Plan Comptable</a></li>
+      <li><a href="../documents.html">Documents</a></li>
+      <li><a href="../fiscalite-cgi-benin.html" class="active">Fiscalité CGI</a></li>
+      <li><a href="../quiz.html">Quiz</a></li>
+      <li><a href="../offres.html">Nos offres</a></li>
+      <li><a href="../a-propos.html">À propos</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="../auth.html" class="nav-cta">Connexion</a></li>
+    </ul>
+  </nav>
+  <div class="ic-profile-wrap" id="icAuthSlot"></div>
+</header>
+
+<main>
+
+  <section class="hero-sm fiche-hero">
+    <div class="container">
+      <div class="fiche-breadcrumb">
+        <a href="../index.html">Accueil</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html">Fiscalité CGI</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html#livre-2">Les impôts indirects</a>
+        <span class="sep">/</span>
+        <span>La Taxe sur la Valeur Ajoutée (TVA)</span>
+      </div>
+      <h1>La Taxe sur la Valeur Ajoutée (TVA)</h1>
+      <div class="fiche-meta">
+        <span class="fiche-badge">Livre 2 — Les impôts indirects</span>
+        <span class="fiche-badge">Articles divers du CGI</span>
+        <span class="fiche-badge">Chapitre 19 / 53</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="fiche-body">
+    <div class="container">
+      <div class="fiche-layout">
+        <nav class="fiche-toc" aria-label="Sommaire de la fiche">
+          <div class="fiche-toc-label">Sur cette page</div>
+          <ul>
+          <li><a href="#introduction-et-principes">Introduction et Principes</a></li>
+          <li><a href="#champ-d-application-op-rations-imposables">Champ d'application -- Opérations imposables</a></li>
+          <li><a href="#les-assujettis-redevables">Les Assujettis (Redevables)</a></li>
+          <li><a href="#exon-rations-principales-cat-gories">Exonérations (Principales catégories)</a></li>
+          <li><a href="#territorialit">Territorialité</a></li>
+          <li><a href="#fait-g-n-rateur-et-exigibilit">Fait Générateur et Exigibilité</a></li>
+          <li><a href="#base-d-imposition-assiette">Base d'imposition (Assiette)</a></li>
+          <li><a href="#le-taux-de-la-tva">Le Taux de la TVA</a></li>
+          <li><a href="#r-gime-des-d-ductions">Régime des Déductions</a></li>
+          <li><a href="#prorata-et-r-gularisations">Prorata et Régularisations</a></li>
+          <li><a href="#remboursement-des-cr-dits-de-tva">Remboursement des Crédits de TVA</a></li>
+          <li><a href="#obligations-et-paiement">Obligations et Paiement</a></li>
+          <li><a href="#la-retenue-la-source-de-tva">La Retenue à la source de TVA</a></li>
+          </ul>
+        </nav>
+
+        <article class="fiche-content">
+
+        <div class="fiche-section" id="introduction-et-principes">
+          <h2>Introduction et Principes</h2>
+          <p><strong>Définition :</strong> La TVA est un impôt général sur la consommation qui frappe les livraisons de biens et les prestations de services réalisées au Bénin par des personnes indépendantes.</p>
+<p>Neutralité : Pour l'entreprise, elle est neutre grâce au mécanisme de déduction de la TVA payée sur les achats (TVA d'amont) de la TVA collectée sur les ventes (TVA d'aval).</p>
+<p>Charge finale : Elle est supportée par le consommateur final.</p>
+        </div>
+
+        <div class="fiche-section" id="champ-d-application-op-rations-imposables">
+          <h2>Champ d'application -- Opérations imposables</h2>
+          <p>Sont soumises à la TVA :</p>
+<p>Les importations : Franchissement du cordon douanier pour mise à la consommation.</p>
+<p>Les livraisons de biens : Transfert du pouvoir de disposer d'un bien (inclut eau, électricité, gaz, télécoms).</p>
+<p>Les prestations de services : Locations, travaux immobiliers, hôtellerie, transports, professions libérales, e-commerce.</p>
+<p>Les livraisons à soi-même : Biens ou services prélevés pour les besoins de l'entreprise ou des tiers.</p>
+        </div>
+
+        <div class="fiche-section" id="les-assujettis-redevables">
+          <h2>Les Assujettis (Redevables)</h2>
+          <p>Critère d'activité : Personnes physiques ou morales réalisant des opérations imposables de manière indépendante et à titre onéreux.</p>
+<p>Critère de seuil : Seuls sont redevables ceux dont le chiffre d'affaires annuel atteint le seuil fixé par arrêté ministériel.</p>
+<p>Droit d'option : Les entreprises sous le seuil peuvent opter pour la TVA si elles tiennent une comptabilité régulière (système normal).</p>
+        </div>
+
+        <div class="fiche-section" id="exon-rations-principales-cat-gories">
+          <h2>Exonérations (Principales catégories)</h2>
+          <p>Sont notamment exonérés de TVA :</p>
+<p>Produits médicaux : Iode, oxygène, médicaments, fauteuils roulants, lunettes médicales.</p>
+<p>Produits alimentaires de base : Pain, céréales locales (riz béninois, maïs), tubercules, viande fraîche, lait non transformé.</p>
+<p>Services sociaux : Enseignement, consultations médicales et soins hospitaliers.</p>
+<p>Éléments culturels : Journaux, périodiques et livres.</p>
+<p>Logement : Locations d'immeubles nus à usage d'habitation.</p>
+<p>Autres : Gaz domestique et dispositifs solaires (photovoltaïques).</p>
+        </div>
+
+        <div class="fiche-section" id="territorialit">
+          <h2>Territorialité</h2>
+          <p>Livraisons de biens : Imposables au Bénin si le bien s'y trouve au moment de la livraison ou du départ de l'expédition.</p>
+<p>Prestations de services :</p>
+<p>Matérielles : Imposables si exécutées au Bénin (ex : travaux, hébergement).</p>
+<p>Immatérielles : Imposables si le preneur (client) réside fiscalement au Bénin (ex : publicité, conseil, brevets).</p>
+        </div>
+
+        <div class="fiche-section" id="fait-g-n-rateur-et-exigibilit">
+          <h2>Fait Générateur et Exigibilité</h2>
+          <p>Fait générateur (événement qui crée la dette fiscale) :</p>
+<p>Ventes : Livraison du bien.</p>
+<p>Services et travaux : Accomplissement du service ou exécution des travaux.</p>
+<p>Exigibilité (moment où le Trésor peut réclamer la taxe) :</p>
+<p>Ventes : Livraison.</p>
+<p>Services et Marchés Publics : Encaissement du prix ou des acomptes.</p>
+        </div>
+
+        <div class="fiche-section" id="base-d-imposition-assiette">
+          <h2>Base d'imposition (Assiette)</h2>
+          <p>Composition : Le prix total, y compris les frais accessoires (transport, emballage), les impôts et taxes (sauf TVA) et les compléments de prix.</p>
+<p>Cas particuliers :</p>
+<p>Importations : Valeur en douane + droits de douane + accises.</p>
+<p>Agences de voyage : Imposition sur la marge (Prix client -- Prix prestataires).</p>
+        </div>
+
+        <div class="fiche-section" id="le-taux-de-la-tva">
+          <h2>Le Taux de la TVA</h2>
+          <p>Taux de droit commun : 18%.</p>
+<p>Taux zéro : Applicable exclusivement aux exportations de produits et de marchandises (permet de déduire la TVA d'amont sans collecter d'aval).</p>
+        </div>
+
+        <div class="fiche-section" id="r-gime-des-d-ductions">
+          <h2>Régime des Déductions</h2>
+          <p>Principe : La TVA ayant grevé les éléments du prix d'une opération imposable est déductible.</p>
+<p>Conditions :</p>
+<p>Doit figurer sur une facture normalisée.</p>
+<p>Bien/service nécessaire à l'exploitation.</p>
+<p>Achat &gt;= 100 000 FCFA payé par chèque, virement ou carte.</p>
+<p>Exclusions : TVA non déductible sur les véhicules de tourisme, le carburant (sauf industriels et transporteurs), les frais de réception et de logement du personnel.</p>
+        </div>
+
+        <div class="fiche-section" id="prorata-et-r-gularisations">
+          <h2>Prorata et Régularisations</h2>
+          <p>Prorata de déduction : Pour les entreprises réalisant des opérations mixtes (imposables et exonérées), la TVA n'est déductible qu'à hauteur d'un pourcentage (Chiffre d'affaires imposable / Chiffre d'affaires total).</p>
+<p>Régularisations : En cas de disparition de marchandise (sauf vol/casse justifié) ou de cession d'immobilisation avant 5 ans, une partie de la TVA initialement déduite doit être reversée.</p>
+        </div>
+
+        <div class="fiche-section" id="remboursement-des-cr-dits-de-tva">
+          <h2>Remboursement des Crédits de TVA</h2>
+          <p>Principe : Si les déductions sont supérieures à la taxe collectée, l'excédent forme un crédit d'impôt imputable sur les mois suivants.</p>
+<p>Remboursement possible pour : Les exportateurs (plus de 50% du CA), les producteurs, en cas d'investissement &gt; 40 millions FCFA TTC, ou en cas de cessation d'activité.</p>
+        </div>
+
+        <div class="fiche-section" id="obligations-et-paiement">
+          <h2>Obligations et Paiement</h2>
+          <p><strong>Déclaration :</strong> Mensuelle, au plus tard le 10 du mois suivant.</p>
+<p>Paiement : Spontané lors de la déclaration.</p>
+<p>Facturation : Obligation de délivrer une facture normalisée (via machine MECeF) mentionnant distinctement la TVA.</p>
+        </div>
+
+        <div class="fiche-section" id="la-retenue-la-source-de-tva">
+          <h2>La Retenue à la source de TVA</h2>
+          <p>Cible : Opérations avec l'État, les collectivités locales et les organismes publics.</p>
+<p>Taux de retenue :</p>
+<p>100% pour les fournisseurs non-assujettis.</p>
+<p>40% pour les autres redevables.</p>
+<p>Déduction : Le montant retenu par le service public est mentionné comme déduction sur la déclaration mensuelle de l'entreprise.</p>
+        </div>
+
+          <div class="fiche-nav">
+            <a href="teom.html" class="fiche-nav-link fiche-nav-prev"><span class="fiche-nav-dir">← Chapitre précédent</span><span class="fiche-nav-title">La Taxe d'Enlèvement des Ordures Ménagères (TEOM)</span></a>
+            <a href="tafa.html" class="fiche-nav-link fiche-nav-next"><span class="fiche-nav-dir">Chapitre suivant →</span><span class="fiche-nav-title">La Taxe sur les Activités Financières et Assurances (TAFA)</span></a>
+          </div>
+
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Info<span>Compta</span></div>
+    <div class="footer-links">
+      <a href="../confidentialite.html">Confidentialité</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../a-propos.html">À propos</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 InfoCompta</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('hamburgerBtn');
+  var nav = document.getElementById('mainNav');
+  if (btn && nav) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

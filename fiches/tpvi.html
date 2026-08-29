@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<script>
+(function () {
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+        document.documentElement.classList.add('ic-authed');
+      }
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../auth-display.js" defer></script>
+<title>La Taxe sur les Plus-Values Immobilières (TPVI) — CGI Bénin 2026 | InfoCompta</title>
+<meta name="description" content="Définition : La TPVI est une taxe assise sur les plus-values réalisées par des personnes physiques ou morales lors de la cession de biens immobiliers ou de…">
+<link rel="canonical" href="https://www.infocompta.bj/fiches/tpvi.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="stylesheet" href="../infocompta-shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "La Taxe sur les Plus-Values Immobilières (TPVI)",
+  "articleSection": "Livre 1 : Les Impôts Directs (IS, IBA, IRCM, IRF, ITS, TFU, etc.)",
+  "about": "Code Général des Impôts du Bénin — La Taxe sur les Plus-Values Immobilières (TPVI)",
+  "url": "https://www.infocompta.bj/fiches/tpvi.html",
+  "isPartOf": {
+    "@type": "WebPage",
+    "url": "https://www.infocompta.bj/fiscalite-cgi-benin.html"
+  }
+}
+</script>
+<style>
+.fiche-hero { padding: 2.6rem 0 2.2rem; }
+.fiche-breadcrumb {
+  font-size: 0.76rem;
+  color: var(--text-on-dark-dim);
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+.fiche-breadcrumb a { color: var(--text-on-dark-muted); transition: color var(--transition); }
+.fiche-breadcrumb a:hover { color: var(--orange-lt); }
+.fiche-breadcrumb span.sep { opacity: 0.5; }
+.fiche-hero h1 { font-size: clamp(1.7rem, 3.2vw, 2.5rem); margin-bottom: 0.7rem; }
+.fiche-meta { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+.fiche-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16,57,226,0.14);
+  border: 1px solid rgba(16,57,226,0.30);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 30px;
+}
+
+.fiche-body { padding: 3rem 0 1rem; }
+.fiche-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.fiche-toc {
+  position: sticky;
+  top: 90px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.3rem;
+}
+.fiche-toc-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.7rem;
+}
+.fiche-toc ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+.fiche-toc a {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+  transition: color var(--transition);
+  display: block;
+}
+.fiche-toc a:hover { color: var(--orange); }
+
+.fiche-content { max-width: 720px; }
+.fiche-section { margin-bottom: 2.6rem; scroll-margin-top: 90px; }
+.fiche-section h2 {
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1.5px solid var(--border-lt);
+}
+.fiche-section p { margin-bottom: 0.9rem; font-size: 0.94rem; }
+.fiche-section ul, .fiche-section ol { margin: 0 0 0.9rem 1.3rem; }
+.fiche-section li { font-size: 0.94rem; color: var(--text-md); margin-bottom: 0.4rem; line-height: 1.6; }
+.fiche-section strong { color: var(--navy); }
+
+.fiche-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 3rem 0 3.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+}
+.fiche-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.fiche-nav-link:hover { border-color: var(--orange-line); transform: translateY(-2px); box-shadow: var(--shadow); }
+.fiche-nav-next { text-align: right; align-items: flex-end; }
+.fiche-nav-dir { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); }
+.fiche-nav-title { font-size: 0.86rem; color: var(--navy); font-weight: 600; }
+.fiche-nav-disabled { opacity: 0.35; pointer-events: none; padding: 1rem 1.2rem; border: 1.5px dashed var(--border); border-radius: var(--radius-md); }
+
+@media (max-width: 900px) {
+  .fiche-layout { grid-template-columns: 1fr; }
+  .fiche-toc { position: static; }
+  .fiche-nav { grid-template-columns: 1fr; }
+  .fiche-nav-next { text-align: left; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="logo">Info<span>Compta</span></a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="mainNav">
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="../plan-comptable.html">Plan Comptable</a></li>
+      <li><a href="../documents.html">Documents</a></li>
+      <li><a href="../fiscalite-cgi-benin.html" class="active">Fiscalité CGI</a></li>
+      <li><a href="../quiz.html">Quiz</a></li>
+      <li><a href="../offres.html">Nos offres</a></li>
+      <li><a href="../a-propos.html">À propos</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="../auth.html" class="nav-cta">Connexion</a></li>
+    </ul>
+  </nav>
+  <div class="ic-profile-wrap" id="icAuthSlot"></div>
+</header>
+
+<main>
+
+  <section class="hero-sm fiche-hero">
+    <div class="container">
+      <div class="fiche-breadcrumb">
+        <a href="../index.html">Accueil</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html">Fiscalité CGI</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html#livre-1">Les impôts directs</a>
+        <span class="sep">/</span>
+        <span>La Taxe sur les Plus-Values Immobilières (TPVI)</span>
+      </div>
+      <h1>La Taxe sur les Plus-Values Immobilières (TPVI)</h1>
+      <div class="fiche-meta">
+        <span class="fiche-badge">Livre 1 — Les impôts directs</span>
+        <span class="fiche-badge">Articles 108-118 du CGI</span>
+        <span class="fiche-badge">Chapitre 05 / 53</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="fiche-body">
+    <div class="container">
+      <div class="fiche-layout">
+        <nav class="fiche-toc" aria-label="Sommaire de la fiche">
+          <div class="fiche-toc-label">Sur cette page</div>
+          <ul>
+          <li><a href="#introduction-et-d-finition">Introduction et Définition</a></li>
+          <li><a href="#champ-d-application-biens-vis-s">Champ d'application -- Biens visés</a></li>
+          <li><a href="#d-finition-de-la-cession">Définition de la « Cession »</a></li>
+          <li><a href="#exon-rations">Exonérations</a></li>
+          <li><a href="#d-termination-de-la-plus-value-assiette">Détermination de la Plus-Value (Assiette)</a></li>
+          <li><a href="#cas-particuliers-d-valuation">Cas particuliers d'évaluation</a></li>
+          <li><a href="#calcul-de-la-taxe-taux-et-minimum">Calcul de la Taxe (Taux et Minimum)</a></li>
+          <li><a href="#obligations-et-paiement">Obligations et Paiement</a></li>
+          </ul>
+        </nav>
+
+        <article class="fiche-content">
+
+        <div class="fiche-section" id="introduction-et-d-finition">
+          <h2>Introduction et Définition</h2>
+          <p><strong>Définition :</strong> La TPVI est une taxe assise sur les plus-values réalisées par des personnes physiques ou morales lors de la cession de biens immobiliers ou de droits assimilés.</p>
+<p><strong>Nature de l'opération :</strong> Elle frappe le gain réalisé entre le prix d'acquisition et le prix de revente d'un bien.</p>
+        </div>
+
+        <div class="fiche-section" id="champ-d-application-biens-vis-s">
+          <h2>Champ d'application -- Biens visés</h2>
+          <p>La taxe s'applique lors de la cession de :</p>
+<ol><li>Immeubles bâtis ou non bâtis (terrains, maisons, etc.).</li></ol>
+<ol><li>Droits réels immobiliers.</li></ol>
+<ol><li>Titres de sociétés à prépondérance immobilière (sociétés dont</li></ol>
+<p>l'actif est constitué à plus de 50% d'immeubles).</p>
+<ol><li>Titres miniers (droits d'exploration ou d'exploitation).</li></ol>
+        </div>
+
+        <div class="fiche-section" id="d-finition-de-la-cession">
+          <h2>Définition de la « Cession »</h2>
+          <p>Sont considérés comme des cessions imposables :</p>
+<ul><li>La vente et l'échange.</li></ul>
+<ul><li>L'apport en société.</li></ul>
+<ul><li>La distribution de dividendes en nature (sous forme d'immeuble).</li></ul>
+<ul><li>L'expropriation pour cause d'utilité publique.</li></ul>
+<ul><li>Les donations (mutations à titre gratuit entre vifs).</li></ul>
+        </div>
+
+        <div class="fiche-section" id="exon-rations">
+          <h2>Exonérations</h2>
+          <p>Sont exemptés de la TPVI :</p>
+<ul><li>La vente d'immeubles appartenant à l'État, aux collectivités locales</li></ul>
+<p>ou aux établissements publics administratifs.</p>
+<ul><li>Les plus-values sur les immeubles inscrits à l'actif d'une</li></ul>
+<p>entreprise déjà soumise à l'IBA ou à l'IS (car ces plus-values sont déjà incluses dans le bénéfice professionnel).</p>
+        </div>
+
+        <div class="fiche-section" id="d-termination-de-la-plus-value-assiette">
+          <h2>Détermination de la Plus-Value (Assiette)</h2>
+          <p><strong>Calcul de base :</strong> Plus-value = Prix de cession (ou estimation) -- Prix d'acquisition.</p>
+<p><strong>Prix d'acquisition :</strong> C'est la somme réellement déboursée par le cédant pour obtenir la propriété, justifiée par des actes ayant date certaine.</p>
+<p><strong>Valeur vénale :</strong> Pour les biens acquis gratuitement (succession/donation), on retient la valeur vénale au jour de la mutation.</p>
+        </div>
+
+        <div class="fiche-section" id="cas-particuliers-d-valuation">
+          <h2>Cas particuliers d'évaluation</h2>
+          <p><strong>Constructions :</strong> Pour les immeubles construits par le cédant lui-même, la plus-value est fixée forfaitairement à 10% du prix de cession de la construction.</p>
+<p><strong>Valeur de référence :</strong> À défaut de documents ou en cas de prix manifestement minoré, l'administration utilise une valeur d'acquisition de référence actualisée et fixée par arrêté ministériel.</p>
+        </div>
+
+        <div class="fiche-section" id="calcul-de-la-taxe-taux-et-minimum">
+          <h2>Calcul de la Taxe (Taux et Minimum)</h2>
+          <p><strong>Taux de la taxe :</strong> Le taux est fixé à 5% de la plus-value imposable.</p>
+<p><strong>Minimum de perception :</strong> La taxe ne peut être inférieure à 1% du prix de cession global du bien.</p>
+<p><strong>Affectation :</strong> Une part du produit est affectée au budget de la collectivité locale où se situe le bien.</p>
+        </div>
+
+        <div class="fiche-section" id="obligations-et-paiement">
+          <h2>Obligations et Paiement</h2>
+          <p><strong>Moment du paiement :</strong> La taxe est payée lors des formalités d'enregistrement de l'acte de vente ou de la déclaration de mutation.</p>
+<p><strong>Redevable :</strong> La taxe est due par le cédant (le vendeur), malgré toute convention contraire.</p>
+<p><strong>Cas des titres miniers :</strong> La taxe est retenue et reversée par l'acquéreur (le cessionnaire).</p>
+<p><strong>Condition de mutation :</strong> Aucun transfert de propriété foncière ne peut être effectué sans la preuve préalable du paiement de la TPVI.</p>
+        </div>
+
+          <div class="fiche-nav">
+            <a href="irf.html" class="fiche-nav-link fiche-nav-prev"><span class="fiche-nav-dir">← Chapitre précédent</span><span class="fiche-nav-title">L'Impôt sur les Revenus Fonciers (IRF)</span></a>
+            <a href="its.html" class="fiche-nav-link fiche-nav-next"><span class="fiche-nav-dir">Chapitre suivant →</span><span class="fiche-nav-title">L'Impôt sur les Traitements et Salaires (ITS)</span></a>
+          </div>
+
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Info<span>Compta</span></div>
+    <div class="footer-links">
+      <a href="../confidentialite.html">Confidentialité</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../a-propos.html">À propos</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 InfoCompta</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('hamburgerBtn');
+  var nav = document.getElementById('mainNav');
+  if (btn && nav) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

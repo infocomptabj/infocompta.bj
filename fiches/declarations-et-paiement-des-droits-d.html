@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<script>
+(function () {
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+        document.documentElement.classList.add('ic-authed');
+      }
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../auth-display.js" defer></script>
+<title>Déclarations et Paiement des Droits d&#x27;Enregistrement — CGI Bénin 2026 | InfoCompta</title>
+<meta name="description" content="Délai de principe : un mois à compter de la date de l&#x27;acte ou de la notification du marché public. Actes d&#x27;huissiers : 15 jours après leur signature. Actes…">
+<link rel="canonical" href="https://www.infocompta.bj/fiches/declarations-et-paiement-des-droits-d.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="stylesheet" href="../infocompta-shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Déclarations et Paiement des Droits d'Enregistrement",
+  "articleSection": "Livre 3 : Les formalités fiscales liées à la rédaction d'actes juridiques et à la certification de documents (Enregistrement et le Timbre)",
+  "about": "Code Général des Impôts du Bénin — Déclarations et Paiement des Droits d'Enregistrement",
+  "url": "https://www.infocompta.bj/fiches/declarations-et-paiement-des-droits-d.html",
+  "isPartOf": {
+    "@type": "WebPage",
+    "url": "https://www.infocompta.bj/fiscalite-cgi-benin.html"
+  }
+}
+</script>
+<style>
+.fiche-hero { padding: 2.6rem 0 2.2rem; }
+.fiche-breadcrumb {
+  font-size: 0.76rem;
+  color: var(--text-on-dark-dim);
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+.fiche-breadcrumb a { color: var(--text-on-dark-muted); transition: color var(--transition); }
+.fiche-breadcrumb a:hover { color: var(--orange-lt); }
+.fiche-breadcrumb span.sep { opacity: 0.5; }
+.fiche-hero h1 { font-size: clamp(1.7rem, 3.2vw, 2.5rem); margin-bottom: 0.7rem; }
+.fiche-meta { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+.fiche-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16,57,226,0.14);
+  border: 1px solid rgba(16,57,226,0.30);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 30px;
+}
+
+.fiche-body { padding: 3rem 0 1rem; }
+.fiche-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.fiche-toc {
+  position: sticky;
+  top: 90px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.3rem;
+}
+.fiche-toc-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.7rem;
+}
+.fiche-toc ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+.fiche-toc a {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+  transition: color var(--transition);
+  display: block;
+}
+.fiche-toc a:hover { color: var(--orange); }
+
+.fiche-content { max-width: 720px; }
+.fiche-section { margin-bottom: 2.6rem; scroll-margin-top: 90px; }
+.fiche-section h2 {
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1.5px solid var(--border-lt);
+}
+.fiche-section p { margin-bottom: 0.9rem; font-size: 0.94rem; }
+.fiche-section ul, .fiche-section ol { margin: 0 0 0.9rem 1.3rem; }
+.fiche-section li { font-size: 0.94rem; color: var(--text-md); margin-bottom: 0.4rem; line-height: 1.6; }
+.fiche-section strong { color: var(--navy); }
+
+.fiche-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 3rem 0 3.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+}
+.fiche-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.fiche-nav-link:hover { border-color: var(--orange-line); transform: translateY(-2px); box-shadow: var(--shadow); }
+.fiche-nav-next { text-align: right; align-items: flex-end; }
+.fiche-nav-dir { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); }
+.fiche-nav-title { font-size: 0.86rem; color: var(--navy); font-weight: 600; }
+.fiche-nav-disabled { opacity: 0.35; pointer-events: none; padding: 1rem 1.2rem; border: 1.5px dashed var(--border); border-radius: var(--radius-md); }
+
+@media (max-width: 900px) {
+  .fiche-layout { grid-template-columns: 1fr; }
+  .fiche-toc { position: static; }
+  .fiche-nav { grid-template-columns: 1fr; }
+  .fiche-nav-next { text-align: left; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="logo">Info<span>Compta</span></a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="mainNav">
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="../plan-comptable.html">Plan Comptable</a></li>
+      <li><a href="../documents.html">Documents</a></li>
+      <li><a href="../fiscalite-cgi-benin.html" class="active">Fiscalité CGI</a></li>
+      <li><a href="../quiz.html">Quiz</a></li>
+      <li><a href="../offres.html">Nos offres</a></li>
+      <li><a href="../a-propos.html">À propos</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="../auth.html" class="nav-cta">Connexion</a></li>
+    </ul>
+  </nav>
+  <div class="ic-profile-wrap" id="icAuthSlot"></div>
+</header>
+
+<main>
+
+  <section class="hero-sm fiche-hero">
+    <div class="container">
+      <div class="fiche-breadcrumb">
+        <a href="../index.html">Accueil</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html">Fiscalité CGI</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html#livre-3">Enregistrement &amp; timbre</a>
+        <span class="sep">/</span>
+        <span>Déclarations et Paiement des Droits d'Enregistrement</span>
+      </div>
+      <h1>Déclarations et Paiement des Droits d'Enregistrement</h1>
+      <div class="fiche-meta">
+        <span class="fiche-badge">Livre 3 — Enregistrement &amp; timbre</span>
+        <span class="fiche-badge">Articles 355-370 du CGI</span>
+        <span class="fiche-badge">Chapitre 37 / 53</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="fiche-body">
+    <div class="container">
+      <div class="fiche-layout">
+        <nav class="fiche-toc" aria-label="Sommaire de la fiche">
+          <div class="fiche-toc-label">Sur cette page</div>
+          <ul>
+          <li><a href="#d-lais-pour-enregistrer">Délais pour enregistrer</a></li>
+          <li><a href="#service-des-imp-ts-comp-tent">Service des Impôts compétent</a></li>
+          <li><a href="#redevables-des-droits">Redevables des droits</a></li>
+          <li><a href="#modalit-s-de-paiement-et-mentions-lectroniques">Modalités de Paiement et Mentions Électroniques</a></li>
+          <li><a href="#fractionnement-des-droits-baux-et-march-s">Fractionnement des droits (Baux et Marchés)</a></li>
+          <li><a href="#cas-particulier-logements-d-habitation">Cas particulier : Logements d'habitation</a></li>
+          <li><a href="#restitution-des-droits">Restitution des droits</a></li>
+          </ul>
+        </nav>
+
+        <article class="fiche-content">
+
+        <div class="fiche-section" id="d-lais-pour-enregistrer">
+          <h2>Délais pour enregistrer</h2>
+          <p>Délai de principe : un mois à compter de la date de l'acte ou de la notification du marché public.</p>
+<p>Actes d'huissiers : 15 jours après leur signature.</p>
+<p>Actes faits à l'étranger : 2 mois.</p>
+<p>Testaments : 3 mois après le décès du testateur.</p>
+<p>Mutations par décès (Successions) : 6 mois après le décès (porté à 1 an si le décès a lieu hors du Bénin).</p>
+<p>Absence d'acte : Pour les mutations ou baux verbaux, une déclaration détaillée doit être faite dans le mois de l'entrée en possession.</p>
+        </div>
+
+        <div class="fiche-section" id="service-des-imp-ts-comp-tent">
+          <h2>Service des Impôts compétent</h2>
+          <p>Le lieu de l'enregistrement dépend de la nature de l'acte :</p>
+<p>Règle générale : Au service dont dépend l'officier public (notaire, greffier, huissier) qui a rédigé l'acte.</p>
+<p>Immeubles et fonds de commerce : Obligatoirement au service de la situation du bien.</p>
+<p>Sociétés et Titres : Au service dont dépend le siège social de la société.</p>
+<p>Successions : Au service du domicile du défunt (quelle que soit la situation des biens).</p>
+<p>Actes étrangers : Peuvent être enregistrés dans n'importe quel service des impôts au Bénin.</p>
+        </div>
+
+        <div class="fiche-section" id="redevables-des-droits">
+          <h2>Redevables des droits</h2>
+          <p>Les personnes chargées d'acquitter les droits sont :</p>
+<p>Les Officiers Publics : Notaires, huissiers et greffiers pour les actes de leur ministère (ils peuvent ensuite en poursuivre le remboursement auprès des parties).</p>
+<p>Les nouveaux possesseurs : Pour les actes de transmission de propriété, d'usufruit ou de jouissance.</p>
+<p>Les héritiers, légataires et exécuteurs testamentaires : Pour les successions.</p>
+<p>Le donataire : Pour les donations entre vifs.</p>
+<p>Solidarité : Les parties contractantes sont solidairement responsables du paiement vis-à-vis du Trésor Public, sauf exceptions judiciaires.</p>
+        </div>
+
+        <div class="fiche-section" id="modalit-s-de-paiement-et-mentions-lectroniques">
+          <h2>Modalités de Paiement et Mentions Électroniques</h2>
+          <p>Principe : Les droits sont payés intégralement et préalablement à l'enregistrement.</p>
+<p>Contestation : Le paiement ne peut être différé sous prétexte de désaccord sur le montant (sauf recours en restitution ultérieur).</p>
+<p>Enregistrement électronique : La mention d'enregistrement peut être octroyée de façon dématérialisée, produisant les mêmes effets juridiques que sur support papier.</p>
+<p>Exception de l'État : Si l'État est partie à l'acte, le Ministre peut autoriser un paiement différé.</p>
+        </div>
+
+        <div class="fiche-section" id="fractionnement-des-droits-baux-et-march-s">
+          <h2>Fractionnement des droits (Baux et Marchés)</h2>
+          <p>Le Code autorise le paiement échelonné dans certains cas spécifiques :</p>
+<p>Baux d'immeubles : Le droit proportionnel (1 %) peut être fractionné par périodes triennales ou par périodes contractuelles.</p>
+<p>Marchés Publics : Le fractionnement est automatique (généralement par périodes de trois ans).</p>
+<p>Règle : Seul le droit de la première période est payé lors de l'enregistrement ; les suivants sont dus au début de chaque nouvelle période.</p>
+        </div>
+
+        <div class="fiche-section" id="cas-particulier-logements-d-habitation">
+          <h2>Cas particulier : Logements d'habitation</h2>
+          <p>Cible : Vente d'un immeuble bâti dont au moins les 3/4 de la superficie sont destinés à l'habitation.</p>
+<p>Avantage : Le paiement du droit de mutation peut être divisé en 6 fractions égales sur une période maximale de 5 ans et 3 mois.</p>
+<p>Garantie : Ce bénéfice impose la constitution d'une hypothèque au profit de l'administration sur l'immeuble concerné.</p>
+        </div>
+
+        <div class="fiche-section" id="restitution-des-droits">
+          <h2>Restitution des droits</h2>
+          <p>Principe d'irrépétibilité : Les droits régulièrement perçus ne sont pas restituables, même si le contrat est ensuite résolu ou révoqué par les parties.</p>
+<p>Exceptions : La restitution est possible si l'annulation est prononcée par un jugement définitif pour cause de lésion ou de vices cachés.</p>
+<p>Cas d'État : Les droits sont remboursés en cas de résiliation unilatérale du contrat par l'État.</p>
+<p>Ce module détaille les responsabilités des notaires, huissiers, greffiers et commissaires-priseurs, basées sur les articles 371 à 382.</p>
+        </div>
+
+          <div class="fiche-nav">
+            <a href="fixation-des-droits-d-enregistrement.html" class="fiche-nav-link fiche-nav-prev"><span class="fiche-nav-dir">← Chapitre précédent</span><span class="fiche-nav-title">Fixation des Droits d'Enregistrement</span></a>
+            <a href="obligations-des-officiers-publics-et.html" class="fiche-nav-link fiche-nav-next"><span class="fiche-nav-dir">Chapitre suivant →</span><span class="fiche-nav-title">Obligations des Officiers Publics et Ministériels</span></a>
+          </div>
+
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Info<span>Compta</span></div>
+    <div class="footer-links">
+      <a href="../confidentialite.html">Confidentialité</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../a-propos.html">À propos</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 InfoCompta</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('hamburgerBtn');
+  var nav = document.getElementById('mainNav');
+  if (btn && nav) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<script>
+(function () {
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+        document.documentElement.classList.add('ic-authed');
+      }
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../auth-display.js" defer></script>
+<title>La Taxe sur les Activités Financières et Assurances (TAFA) — CGI Bénin 2026 | InfoCompta</title>
+<meta name="description" content="Définition : La TAFA est un impôt indirect qui frappe les opérations réalisées par les banques, les établissements financiers et les compagnies d&#x27;assurance…">
+<link rel="canonical" href="https://www.infocompta.bj/fiches/tafa.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="stylesheet" href="../infocompta-shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "La Taxe sur les Activités Financières et Assurances (TAFA)",
+  "articleSection": "Livre 2 : Les Impôts Indirects (TVA, TAFA, Accises, etc.)",
+  "about": "Code Général des Impôts du Bénin — La Taxe sur les Activités Financières et Assurances (TAFA)",
+  "url": "https://www.infocompta.bj/fiches/tafa.html",
+  "isPartOf": {
+    "@type": "WebPage",
+    "url": "https://www.infocompta.bj/fiscalite-cgi-benin.html"
+  }
+}
+</script>
+<style>
+.fiche-hero { padding: 2.6rem 0 2.2rem; }
+.fiche-breadcrumb {
+  font-size: 0.76rem;
+  color: var(--text-on-dark-dim);
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+.fiche-breadcrumb a { color: var(--text-on-dark-muted); transition: color var(--transition); }
+.fiche-breadcrumb a:hover { color: var(--orange-lt); }
+.fiche-breadcrumb span.sep { opacity: 0.5; }
+.fiche-hero h1 { font-size: clamp(1.7rem, 3.2vw, 2.5rem); margin-bottom: 0.7rem; }
+.fiche-meta { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+.fiche-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16,57,226,0.14);
+  border: 1px solid rgba(16,57,226,0.30);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 30px;
+}
+
+.fiche-body { padding: 3rem 0 1rem; }
+.fiche-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.fiche-toc {
+  position: sticky;
+  top: 90px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.3rem;
+}
+.fiche-toc-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.7rem;
+}
+.fiche-toc ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+.fiche-toc a {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+  transition: color var(--transition);
+  display: block;
+}
+.fiche-toc a:hover { color: var(--orange); }
+
+.fiche-content { max-width: 720px; }
+.fiche-section { margin-bottom: 2.6rem; scroll-margin-top: 90px; }
+.fiche-section h2 {
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1.5px solid var(--border-lt);
+}
+.fiche-section p { margin-bottom: 0.9rem; font-size: 0.94rem; }
+.fiche-section ul, .fiche-section ol { margin: 0 0 0.9rem 1.3rem; }
+.fiche-section li { font-size: 0.94rem; color: var(--text-md); margin-bottom: 0.4rem; line-height: 1.6; }
+.fiche-section strong { color: var(--navy); }
+
+.fiche-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 3rem 0 3.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+}
+.fiche-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.fiche-nav-link:hover { border-color: var(--orange-line); transform: translateY(-2px); box-shadow: var(--shadow); }
+.fiche-nav-next { text-align: right; align-items: flex-end; }
+.fiche-nav-dir { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); }
+.fiche-nav-title { font-size: 0.86rem; color: var(--navy); font-weight: 600; }
+.fiche-nav-disabled { opacity: 0.35; pointer-events: none; padding: 1rem 1.2rem; border: 1.5px dashed var(--border); border-radius: var(--radius-md); }
+
+@media (max-width: 900px) {
+  .fiche-layout { grid-template-columns: 1fr; }
+  .fiche-toc { position: static; }
+  .fiche-nav { grid-template-columns: 1fr; }
+  .fiche-nav-next { text-align: left; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="logo">Info<span>Compta</span></a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="mainNav">
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="../plan-comptable.html">Plan Comptable</a></li>
+      <li><a href="../documents.html">Documents</a></li>
+      <li><a href="../fiscalite-cgi-benin.html" class="active">Fiscalité CGI</a></li>
+      <li><a href="../quiz.html">Quiz</a></li>
+      <li><a href="../offres.html">Nos offres</a></li>
+      <li><a href="../a-propos.html">À propos</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="../auth.html" class="nav-cta">Connexion</a></li>
+    </ul>
+  </nav>
+  <div class="ic-profile-wrap" id="icAuthSlot"></div>
+</header>
+
+<main>
+
+  <section class="hero-sm fiche-hero">
+    <div class="container">
+      <div class="fiche-breadcrumb">
+        <a href="../index.html">Accueil</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html">Fiscalité CGI</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html#livre-2">Les impôts indirects</a>
+        <span class="sep">/</span>
+        <span>La Taxe sur les Activités Financières et Assurances (TAFA)</span>
+      </div>
+      <h1>La Taxe sur les Activités Financières et Assurances (TAFA)</h1>
+      <div class="fiche-meta">
+        <span class="fiche-badge">Livre 2 — Les impôts indirects</span>
+        <span class="fiche-badge">Articles 264-271 du CGI</span>
+        <span class="fiche-badge">Chapitre 20 / 53</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="fiche-body">
+    <div class="container">
+      <div class="fiche-layout">
+        <nav class="fiche-toc" aria-label="Sommaire de la fiche">
+          <div class="fiche-toc-label">Sur cette page</div>
+          <ul>
+          <li><a href="#introduction-et-d-finition">Introduction et Définition</a></li>
+          <li><a href="#champ-d-application-secteur-bancaire">Champ d'application -- Secteur Bancaire</a></li>
+          <li><a href="#champ-d-application-assurances">Champ d'application -- Assurances</a></li>
+          <li><a href="#principales-exon-rations">Principales Exonérations</a></li>
+          <li><a href="#fait-g-n-rateur-et-exigibilit">Fait Générateur et Exigibilité</a></li>
+          <li><a href="#base-d-imposition-assiette">Base d'imposition (Assiette)</a></li>
+          <li><a href="#taux-de-la-tafa">Taux de la TAFA</a></li>
+          <li><a href="#d-claration-paiement-et-restitution">Déclaration, Paiement et Restitution</a></li>
+          </ul>
+        </nav>
+
+        <article class="fiche-content">
+
+        <div class="fiche-section" id="introduction-et-d-finition">
+          <h2>Introduction et Définition</h2>
+          <p><strong>Définition :</strong> La TAFA est un impôt indirect qui frappe les opérations réalisées par les banques, les établissements financiers et les compagnies d'assurances.</p>
+<p>Nature : Elle s'applique aux rémunérations perçues sur les opérations financières et sur les contrats d'assurance.</p>
+        </div>
+
+        <div class="fiche-section" id="champ-d-application-secteur-bancaire">
+          <h2>Champ d'application -- Secteur Bancaire</h2>
+          <p>Sont imposables les opérations et rémunérations suivantes :</p>
+<p>Activités bancaires : Négociation, transfert et nantissement de titres, ingénierie financière, conseil en placement.</p>
+<p>Commissions : Tenue de compte, encaissement d'effets, opérations sur valeurs mobilières, profits de change.</p>
+<p>Intérêts sur crédits : Prêts aux entreprises, financement du commerce extérieur, crédits immobiliers et aux particuliers.</p>
+<p>Transferts : Transferts bancaires de fonds (hors transferts rapides de type Western Union/MoneyGram).</p>
+        </div>
+
+        <div class="fiche-section" id="champ-d-application-assurances">
+          <h2>Champ d'application -- Assurances</h2>
+          <p>Contrats visés : La taxe s'applique à tous les contrats d'assurance.</p>
+<p>Critère de territorialité : Le contrat est taxable si le risque est situé au Bénin ou se rapporte à un établissement béninois.</p>
+<p>Présomption de situation : À défaut de localisation certaine, le risque est réputé situé au domicile ou au siège du souscripteur.</p>
+        </div>
+
+        <div class="fiche-section" id="principales-exon-rations">
+          <h2>Principales Exonérations</h2>
+          <p>Sont affranchis de la TAFA :</p>
+<p>Les opérations de la BCEAO.</p>
+<p>Les prêts et crédits consentis au Trésor Public et aux collectivités locales.</p>
+<p>Les opérations entre banques et établissements financiers (marché interbancaire).</p>
+<p>Les contrats d'assurance-vie et maladie.</p>
+<p>Les opérations de crédit-bail et les transferts rapides d'argent, car ils sont déjà soumis à la TVA.</p>
+<p>Les opérations de collecte de l'épargne des Systèmes Financiers Décentralisés (SFD).</p>
+        </div>
+
+        <div class="fiche-section" id="fait-g-n-rateur-et-exigibilit">
+          <h2>Fait Générateur et Exigibilité</h2>
+          <p>La taxe devient due au moment de :</p>
+<p>1\. L'inscription des intérêts au crédit du compte du bénéficiaire pour les prêts et avances.</p>
+<p>2\. L'accomplissement de la prestation pour les services financiers.</p>
+<p>3\. Le paiement de la prime pour les contrats d'assurance.</p>
+        </div>
+
+        <div class="fiche-section" id="base-d-imposition-assiette">
+          <h2>Base d'imposition (Assiette)</h2>
+          <p>Banques : Le montant brut hors taxe des intérêts, commissions et autres rémunérations perçues.</p>
+<p>Assurances : Le montant des sommes stipulées au profit de l'assureur (primes) et de tous les accessoires à la charge de l'assuré.</p>
+        </div>
+
+        <div class="fiche-section" id="taux-de-la-tafa">
+          <h2>Taux de la TAFA</h2>
+          <p>Le taux est différencié selon la nature de l'assurance ou de l'opération :</p>
+<p>20% pour les assurances contre l'incendie.</p>
+<p>5% pour les assurances de transport.</p>
+<p>10% pour tous les autres cas (opérations bancaires et autres assurances).</p>
+        </div>
+
+        <div class="fiche-section" id="d-claration-paiement-et-restitution">
+          <h2>Déclaration, Paiement et Restitution</h2>
+          <p>Règles de gestion : Les modalités de déclaration, de contrôle et les sanctions sont identiques à celles de la TVA.</p>
+<p><strong>Redevables :</strong> Chaque établissement ou succursale d'une société d'assurance est considéré comme un redevable distinct.</p>
+<p>Restitution : En matière d'assurance, la taxe peut être restituée en cas de résiliation ou d'annulation judiciaire du contrat.</p>
+<p>Prescription : L'action en restitution se prescrit par un an après la décision judiciaire définitive (et max 5 ans après paiement).</p>
+<p>Ce module est basé sur l'article 272 du Code.</p>
+        </div>
+
+          <div class="fiche-nav">
+            <a href="tva.html" class="fiche-nav-link fiche-nav-prev"><span class="fiche-nav-dir">← Chapitre précédent</span><span class="fiche-nav-title">La Taxe sur la Valeur Ajoutée (TVA)</span></a>
+            <a href="taxe-sur-les-jeux-de-hasard.html" class="fiche-nav-link fiche-nav-next"><span class="fiche-nav-dir">Chapitre suivant →</span><span class="fiche-nav-title">La Taxe sur les Jeux de Hasard</span></a>
+          </div>
+
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Info<span>Compta</span></div>
+    <div class="footer-links">
+      <a href="../confidentialite.html">Confidentialité</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../a-propos.html">À propos</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 InfoCompta</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('hamburgerBtn');
+  var nav = document.getElementById('mainNav');
+  if (btn && nav) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

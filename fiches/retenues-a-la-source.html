@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<script>
+(function () {
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+        document.documentElement.classList.add('ic-authed');
+      }
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../auth-display.js" defer></script>
+<title>Les Retenues à la Source — CGI Bénin 2026 | InfoCompta</title>
+<meta name="description" content="Définition : Ce chapitre regroupe les mécanismes où l&#x27;impôt est prélevé directement par celui qui paie le revenu pour le reverser à l&#x27;État. Quatre types de…">
+<link rel="canonical" href="https://www.infocompta.bj/fiches/retenues-a-la-source.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="stylesheet" href="../infocompta-shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Les Retenues à la Source",
+  "articleSection": "Livre 1 : Les Impôts Directs (IS, IBA, IRCM, IRF, ITS, TFU, etc.)",
+  "about": "Code Général des Impôts du Bénin — Les Retenues à la Source",
+  "url": "https://www.infocompta.bj/fiches/retenues-a-la-source.html",
+  "isPartOf": {
+    "@type": "WebPage",
+    "url": "https://www.infocompta.bj/fiscalite-cgi-benin.html"
+  }
+}
+</script>
+<style>
+.fiche-hero { padding: 2.6rem 0 2.2rem; }
+.fiche-breadcrumb {
+  font-size: 0.76rem;
+  color: var(--text-on-dark-dim);
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+.fiche-breadcrumb a { color: var(--text-on-dark-muted); transition: color var(--transition); }
+.fiche-breadcrumb a:hover { color: var(--orange-lt); }
+.fiche-breadcrumb span.sep { opacity: 0.5; }
+.fiche-hero h1 { font-size: clamp(1.7rem, 3.2vw, 2.5rem); margin-bottom: 0.7rem; }
+.fiche-meta { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+.fiche-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16,57,226,0.14);
+  border: 1px solid rgba(16,57,226,0.30);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 30px;
+}
+
+.fiche-body { padding: 3rem 0 1rem; }
+.fiche-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.fiche-toc {
+  position: sticky;
+  top: 90px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.3rem;
+}
+.fiche-toc-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.7rem;
+}
+.fiche-toc ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+.fiche-toc a {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+  transition: color var(--transition);
+  display: block;
+}
+.fiche-toc a:hover { color: var(--orange); }
+
+.fiche-content { max-width: 720px; }
+.fiche-section { margin-bottom: 2.6rem; scroll-margin-top: 90px; }
+.fiche-section h2 {
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1.5px solid var(--border-lt);
+}
+.fiche-section p { margin-bottom: 0.9rem; font-size: 0.94rem; }
+.fiche-section ul, .fiche-section ol { margin: 0 0 0.9rem 1.3rem; }
+.fiche-section li { font-size: 0.94rem; color: var(--text-md); margin-bottom: 0.4rem; line-height: 1.6; }
+.fiche-section strong { color: var(--navy); }
+
+.fiche-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 3rem 0 3.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+}
+.fiche-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.fiche-nav-link:hover { border-color: var(--orange-line); transform: translateY(-2px); box-shadow: var(--shadow); }
+.fiche-nav-next { text-align: right; align-items: flex-end; }
+.fiche-nav-dir { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); }
+.fiche-nav-title { font-size: 0.86rem; color: var(--navy); font-weight: 600; }
+.fiche-nav-disabled { opacity: 0.35; pointer-events: none; padding: 1rem 1.2rem; border: 1.5px dashed var(--border); border-radius: var(--radius-md); }
+
+@media (max-width: 900px) {
+  .fiche-layout { grid-template-columns: 1fr; }
+  .fiche-toc { position: static; }
+  .fiche-nav { grid-template-columns: 1fr; }
+  .fiche-nav-next { text-align: left; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="logo">Info<span>Compta</span></a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="mainNav">
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="../plan-comptable.html">Plan Comptable</a></li>
+      <li><a href="../documents.html">Documents</a></li>
+      <li><a href="../fiscalite-cgi-benin.html" class="active">Fiscalité CGI</a></li>
+      <li><a href="../quiz.html">Quiz</a></li>
+      <li><a href="../offres.html">Nos offres</a></li>
+      <li><a href="../a-propos.html">À propos</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="../auth.html" class="nav-cta">Connexion</a></li>
+    </ul>
+  </nav>
+  <div class="ic-profile-wrap" id="icAuthSlot"></div>
+</header>
+
+<main>
+
+  <section class="hero-sm fiche-hero">
+    <div class="container">
+      <div class="fiche-breadcrumb">
+        <a href="../index.html">Accueil</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html">Fiscalité CGI</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html#livre-1">Les impôts directs</a>
+        <span class="sep">/</span>
+        <span>Les Retenues à la Source</span>
+      </div>
+      <h1>Les Retenues à la Source</h1>
+      <div class="fiche-meta">
+        <span class="fiche-badge">Livre 1 — Les impôts directs</span>
+        <span class="fiche-badge">Articles divers du CGI</span>
+        <span class="fiche-badge">Chapitre 07 / 53</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="fiche-body">
+    <div class="container">
+      <div class="fiche-layout">
+        <nav class="fiche-toc" aria-label="Sommaire de la fiche">
+          <div class="fiche-toc-label">Sur cette page</div>
+          <ul>
+          <li><a href="#introduction-et-panorama">Introduction et Panorama</a></li>
+          <li><a href="#l-acompte-sur-imp-t-assis-sur-les-b-n-fices-aib">L'Acompte sur Impôt assis sur les Bénéfices (AIB)</a></li>
+          <li><a href="#aib-taux-et-base-de-calcul">AIB -- Taux et Base de Calcul</a></li>
+          <li><a href="#aib-m-canisme-d-imputation">AIB -- Mécanisme d'Imputation</a></li>
+          <li><a href="#pr-l-vement-sur-les-personnes-non-connues-dgi">Prélèvement sur les Personnes Non Connues (DGI)</a></li>
+          <li><a href="#retenue-sur-les-prestataires-non-r-sidents">Retenue sur les Prestataires Non-Résidents</a></li>
+          <li><a href="#retenue-prestataires-conventions-et-responsabilit">Retenue Prestataires -- Conventions et Responsabilité</a></li>
+          <li><a href="#pr-l-vement-sur-les-ventes-d-hydrocarbures">Prélèvement sur les Ventes d'Hydrocarbures</a></li>
+          <li><a href="#obligations-et-sanctions">Obligations et Sanctions</a></li>
+          </ul>
+        </nav>
+
+        <article class="fiche-content">
+
+        <div class="fiche-section" id="introduction-et-panorama">
+          <h2>Introduction et Panorama</h2>
+          <p><strong>Définition :</strong> Ce chapitre regroupe les mécanismes où l'impôt est prélevé directement par celui qui paie le revenu pour le reverser à l'État.</p>
+<p>Quatre types de prélèvements :</p>
+<ol><li>AIB (Acompte sur Impôt assis sur les Bénéfices).</li></ol>
+<ol><li>Prélèvement sur les personnes non connues du fichier fiscal.</li></ol>
+<ol><li>Retenue sur les prestataires non-résidents.</li></ol>
+<ol><li>Prélèvement sur les ventes d'hydrocarbures par des non-domiciliés.</li></ol>
+        </div>
+
+        <div class="fiche-section" id="l-acompte-sur-imp-t-assis-sur-les-b-n-fices-aib">
+          <h2>L'Acompte sur Impôt assis sur les Bénéfices (AIB)</h2>
+          <p><strong>Nature :</strong> C'est une avance (acompte) sur l'impôt final (IS, IBA ou TPS).</p>
+<p><strong>Opérations visées :</strong></p>
+<ul><li>Importations de marchandises (sauf transit).</li></ul>
+<ul><li>Achats commerciaux à l'intérieur auprès d'importateurs, producteurs</li></ul>
+<p>ou revendeurs.</p>
+<ul><li>Paiements par l'État, les collectivités, les entreprises publiques,</li></ul>
+<p>les ONG et les sociétés soumises à l'IS/IBA à leurs fournisseurs.</p>
+        </div>
+
+        <div class="fiche-section" id="aib-taux-et-base-de-calcul">
+          <h2>AIB -- Taux et Base de Calcul</h2>
+          <p><strong>Base d'imposition :</strong> Valeur en douane (import) ou prix TTC (intérieur), hors TVA.</p>
+<p><strong>Taux applicables :</strong></p>
+<p><strong>1% :</strong> Importations et achats par des entreprises immatriculées (IFU), fournitures à l'État.</p>
+<p><strong>3% :</strong> Prestations de services par des personnes immatriculées (IFU).</p>
+<p><strong>5% :</strong> Achats et services par des personnes non immatriculées (sans IFU).</p>
+        </div>
+
+        <div class="fiche-section" id="aib-m-canisme-d-imputation">
+          <h2>AIB -- Mécanisme d'Imputation</h2>
+          <p><strong>Utilisation :</strong> L'AIB payé lors des achats est déductible de l'AIB que l'entreprise doit elle-même collecter sur ses propres ventes.</p>
+<p><strong>Solde annuel :</strong> Si les acomptes payés durant l'année dépassent l'impôt réel dû (IS ou IBA), l'excédent constitue un crédit d'impôt imputable sur les échéances futures.</p>
+<p><strong>Cas de la TPS :</strong> L'AIB payé est déductible de la part nationale de la taxe professionnelle synthétique.</p>
+        </div>
+
+        <div class="fiche-section" id="pr-l-vement-sur-les-personnes-non-connues-dgi">
+          <h2>Prélèvement sur les Personnes Non Connues (DGI)</h2>
+          <p><strong>Cible :</strong> Personnes physiques ou morales réalisant des opérations sans être enregistrées au fichier des contribuables de la DGI.</p>
+<p><strong>Champ :</strong> Importations, exportations, ventes et prestations.</p>
+<p><strong>Taux :</strong> 10% de la base imposable.</p>
+<p>Caractère définitif : Contrairement à l'AIB, ce prélèvement est libératoire et définitif (non imputable sur d'autres impôts).</p>
+        </div>
+
+        <div class="fiche-section" id="retenue-sur-les-prestataires-non-r-sidents">
+          <h2>Retenue sur les Prestataires Non-Résidents</h2>
+          <p><strong>Champ d'application :</strong> Sommes payées à des personnes (physiques ou morales) n'ayant pas d'établissement stable au Bénin pour des prestations fournies ou utilisées au Bénin.</p>
+<p><strong>Services visés :</strong> Activités non commerciales, droits d'auteur, brevets, marques, et travaux immobiliers.</p>
+<p><strong>Taux :</strong> <strong>20%</strong> sur le montant brut des sommes dues.</p>
+<p>Dispense : Rémunérations pour prestations artistiques et culturelles.</p>
+        </div>
+
+        <div class="fiche-section" id="retenue-prestataires-conventions-et-responsabilit">
+          <h2>Retenue Prestataires -- Conventions et Responsabilité</h2>
+          <p><strong>Conventions fiscales :</strong> Le taux de <strong>20%</strong> peut être réduit ou annulé si une convention internationale de non-double imposition a été signée avec le pays du prestataire.</p>
+<p><strong>Responsabilité :</strong> Le débiteur béninois est tenu d'opérer la retenue. Il est solidairement responsable avec le prestataire étranger du reversement de l'impôt.</p>
+        </div>
+
+        <div class="fiche-section" id="pr-l-vement-sur-les-ventes-d-hydrocarbures">
+          <h2>Prélèvement sur les Ventes d'Hydrocarbures</h2>
+          <p><strong>Redevables :</strong> Entreprises non domiciliées fiscalement au Bénin vendant des hydrocarbures à des importateurs agréés locaux.</p>
+<p><strong>Taux :</strong> 0,3 franc CFA par litre vendu.</p>
+<p><strong>Reversement :</strong> Opéré par les dépositaires des stocks d'hydrocarbures au Bénin au plus tard le 10 du mois suivant le prélèvement.</p>
+        </div>
+
+        <div class="fiche-section" id="obligations-et-sanctions">
+          <h2>Obligations et Sanctions</h2>
+          <p><strong>Déclaration :</strong> Doit être faite mensuellement au plus tard le 10 du mois suivant, même en l'absence de prélèvement (déclaration néant).</p>
+<p><strong>Sanctions pour non-retenue :</strong> Celui qui devait retenir l'impôt devient personnellement redevable du montant non prélevé.</p>
+<p><strong>Pénalités de retard :</strong> 20% des sommes non reversées (porté à 40% après 2 mois de retard).</p>
+<p><strong>Amende AIB :</strong> 100% de la retenue non effectuée (50% au premier manquement).</p>
+        </div>
+
+          <div class="fiche-nav">
+            <a href="its.html" class="fiche-nav-link fiche-nav-prev"><span class="fiche-nav-dir">← Chapitre précédent</span><span class="fiche-nav-title">L'Impôt sur les Traitements et Salaires (ITS)</span></a>
+            <a href="regimes-incitatifs.html" class="fiche-nav-link fiche-nav-next"><span class="fiche-nav-dir">Chapitre suivant →</span><span class="fiche-nav-title">Les Régimes Incitatifs</span></a>
+          </div>
+
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Info<span>Compta</span></div>
+    <div class="footer-links">
+      <a href="../confidentialite.html">Confidentialité</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../a-propos.html">À propos</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 InfoCompta</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('hamburgerBtn');
+  var nav = document.getElementById('mainNav');
+  if (btn && nav) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>
