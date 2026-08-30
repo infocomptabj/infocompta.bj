@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<script>
+(function () {
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+        document.documentElement.classList.add('ic-authed');
+      }
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../auth-display.js" defer></script>
+<title>Contribution des Patentes et des Licences</title>
+<meta name="description" content="Définition : La patente est une contribution annuelle et personnelle…">
+<link rel="canonical" href="https://www.infocompta.bj/fiches/contribution-des-patentes-et-des-licences.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="stylesheet" href="../infocompta-shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Contribution des Patentes et des Licences",
+  "articleSection": "Livre 1 : Les Impôts Directs (IS, IBA, IRCM, IRF, ITS, TFU, etc.)",
+  "about": "Code Général des Impôts du Bénin - Contribution des Patentes et des Licences",
+  "url": "https://www.infocompta.bj/fiches/contribution-des-patentes-et-des-licences.html",
+  "isPartOf": {
+    "@type": "WebPage",
+    "url": "https://www.infocompta.bj/fiscalite-cgi-benin.html"
+  }
+}
+</script>
+<style>
+.fiche-hero { padding: 2.6rem 0 2.2rem; }
+.fiche-breadcrumb {
+  font-size: 0.76rem;
+  color: var(--text-on-dark-dim);
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+.fiche-breadcrumb a { color: var(--text-on-dark-muted); transition: color var(--transition); }
+.fiche-breadcrumb a:hover { color: var(--orange-lt); }
+.fiche-breadcrumb span.sep { opacity: 0.5; }
+.fiche-hero h1 { font-size: clamp(1.7rem, 3.2vw, 2.5rem); margin-bottom: 0.7rem; }
+.fiche-meta { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+.fiche-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16,57,226,0.14);
+  border: 1px solid rgba(16,57,226,0.30);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 30px;
+}
+
+.fiche-body { padding: 3rem 0 1rem; }
+.fiche-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.fiche-toc {
+  position: sticky;
+  top: 90px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.3rem;
+}
+.fiche-toc-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.7rem;
+}
+.fiche-toc ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+.fiche-toc a {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+  transition: color var(--transition);
+  display: block;
+}
+.fiche-toc a:hover { color: var(--orange); }
+
+.fiche-content { max-width: 720px; }
+.fiche-section { margin-bottom: 2.6rem; scroll-margin-top: 90px; }
+.fiche-section h2 {
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1.5px solid var(--border-lt);
+}
+.fiche-section p { margin-bottom: 0.9rem; font-size: 0.94rem; }
+.fiche-section ul, .fiche-section ol { margin: 0 0 0.9rem 1.3rem; }
+.fiche-section li { font-size: 0.94rem; color: var(--text-md); margin-bottom: 0.4rem; line-height: 1.6; }
+.fiche-section strong { color: var(--navy); }
+
+.fiche-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 3rem 0 3.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+}
+.fiche-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.fiche-nav-link:hover { border-color: var(--orange-line); transform: translateY(-2px); box-shadow: var(--shadow); }
+.fiche-nav-next { text-align: right; align-items: flex-end; }
+.fiche-nav-dir { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); }
+.fiche-nav-title { font-size: 0.86rem; color: var(--navy); font-weight: 600; }
+.fiche-nav-disabled { opacity: 0.35; pointer-events: none; padding: 1rem 1.2rem; border: 1.5px dashed var(--border); border-radius: var(--radius-md); }
+
+@media (max-width: 900px) {
+  .fiche-layout { grid-template-columns: 1fr; }
+  .fiche-toc { position: static; }
+  .fiche-nav { grid-template-columns: 1fr; }
+  .fiche-nav-next { text-align: left; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="logo">Info<span>Compta</span></a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="mainNav">
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="../plan-comptable.html">Plan Comptable</a></li>
+      <li><a href="../documents.html">Documents</a></li>
+      <li><a href="../fiscalite-cgi-benin.html" class="active">Fiscalité CGI</a></li>
+      <li><a href="../quiz.html">Quiz</a></li>
+      <li><a href="../offres.html">Nos offres</a></li>
+      <li><a href="../a-propos.html">À propos</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="../auth.html" class="nav-cta">Connexion</a></li>
+    </ul>
+  </nav>
+  <div class="ic-profile-wrap" id="icAuthSlot"></div>
+</header>
+
+<main>
+
+  <section class="hero-sm fiche-hero">
+    <div class="container">
+      <div class="fiche-breadcrumb">
+        <a href="../index.html">Accueil</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html">Fiscalité CGI</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html#livre-1">Les impôts directs</a>
+        <span class="sep">/</span>
+        <span>Contribution des Patentes et des Licences</span>
+      </div>
+      <h1>Contribution des Patentes et des Licences</h1>
+      <div class="fiche-meta">
+        <span class="fiche-badge">LIVRE 1 : Les impôts directs</span>
+        <span class="fiche-badge">Articles 196-217 du CGI</span>
+        <span class="fiche-badge">Chapitre 16 / 53</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="fiche-body">
+    <div class="container">
+      <div class="fiche-layout">
+        <nav class="fiche-toc" aria-label="Sommaire de la fiche">
+          <div class="fiche-toc-label">Sur cette page</div>
+          <ul>
+          <li><a href="#la-patente-introduction-et-champ-d-application">La Patente -- Introduction et Champ d'application</a></li>
+          <li><a href="#la-patente-principales-exemptions">La Patente -- Principales Exemptions</a></li>
+          <li><a href="#calcul-de-la-patente-le-droit-fixe">Calcul de la Patente -- Le Droit Fixe</a></li>
+          <li><a href="#calcul-de-la-patente-le-droit-proportionnel">Calcul de la Patente -- Le Droit Proportionnel</a></li>
+          <li><a href="#la-patente-complementaire-marches-publics">La Patente Complémentaire (Marchés Publics)</a></li>
+          <li><a href="#la-patente-declaration-et-paiement">La Patente -- Déclaration et Paiement</a></li>
+          <li><a href="#la-licence-champ-d-application">La Licence -- Champ d'application</a></li>
+          <li><a href="#la-licence-tarification">La Licence -- Tarification</a></li>
+          <li><a href="#la-licence-obligations-et-sanctions">La Licence -- Obligations et Sanctions</a></li>
+          </ul>
+        </nav>
+
+        <article class="fiche-content">
+
+        <div class="fiche-section" id="la-patente-introduction-et-champ-d-application">
+          <h2>La Patente -- Introduction et Champ d'application</h2>
+<p><strong>Définition :</strong> La patente est une contribution annuelle et personnelle due par toute personne (physique ou morale, béninoise ou étrangère) qui exerce au Bénin un commerce, une industrie ou une profession non expressément exemptée.</p>
+<p>Établissements multiples : Le droit fixe est dû pour chaque établissement distinct (atelier, magasin, succursale).</p>
+<p>Principe de l'exercice habituel : Seul le fait d'exercer habituellement une activité lucrative rend passible de la patente.</p>
+        </div>
+
+        <div class="fiche-section" id="la-patente-principales-exemptions">
+          <h2>La Patente -- Principales Exemptions</h2>
+<p>Sont notamment affranchis de la patente :</p>
+<p>L'État, les communes et les établissements publics (pour les services d'utilité générale).</p>
+<p>Les salariés (fonctionnaires ou employés privés) dans l'exercice de leurs fonctions.</p>
+<p>Les agriculteurs, éleveurs et pêcheurs pour la vente de leurs propres récoltes ou produits.</p>
+<p>Les établissements d'enseignement (publics ou privés).</p>
+<p>Les artistes (peintres, sculpteurs, musiciens) ne vendant que le produit de leur art.</p>
+<p>Les contribuables assujettis à la Taxe Professionnelle Synthétique (TPS).</p>
+<p>Les entreprises nouvelles, pendant leurs 12 premiers mois d'activité.</p>
+        </div>
+
+        <div class="fiche-section" id="calcul-de-la-patente-le-droit-fixe">
+          <h2>Calcul de la Patente -- Le Droit Fixe</h2>
+<p>La contribution se compose d'un droit fixe et d'un droit proportionnel.</p>
+<p>Tarif Général : Basé sur le chiffre d'affaires (CA) de l'exercice précédent et la zone géographique.</p>
+<p>Zone 1 (Atlantique, Littoral, Ouémé, etc.) : 70 000 FCFA si CA ≤ 1 milliard.</p>
+<p>Zone 2 (Borgou, Alibori, etc.) : 60 000 FCFA si CA ≤ 1 milliard.</p>
+<p>Au-delà d'un milliard : + 10 000 FCFA par milliard supplémentaire.</p>
+<p>Tarif Spécifique (Import/Export) : Basé sur le volume des importations/exportations (de 150 000 FCFA à plus de 1 125 000 FCFA).</p>
+        </div>
+
+        <div class="fiche-section" id="calcul-de-la-patente-le-droit-proportionnel">
+          <h2>Calcul de la Patente -- Le Droit Proportionnel</h2>
+<p>Assiette : Établi sur la valeur locative des locaux servant à l'exercice de la profession (bureaux, usines, magasins, terrains de dépôts).</p>
+<p>Taux par localité :</p>
+<p>Cotonou et Porto-Novo : 17%.</p>
+<p>Parakou : 25%.</p>
+<p>Autres communes : entre 12% et 18% selon le département.</p>
+<p>Minimum de perception : Le droit proportionnel ne peut être inférieur au tiers du droit fixe.</p>
+        </div>
+
+        <div class="fiche-section" id="la-patente-complementaire-marches-publics">
+          <h2>La Patente Complémentaire (Marchés Publics)</h2>
+<p>Cible : Les attributaires de marchés ou d'adjudications de travaux publics.</p>
+<p><strong>Taux :</strong> 0,5% du montant hors taxes du marché (ou de l'avenant).</p>
+<p>Paiement : Doit être déclaré et payé au plus tard la fin du mois suivant l'attribution du marché.</p>
+<p>Note : Un fractionnement du paiement est possible si le droit excède 10 millions FCFA.</p>
+        </div>
+
+        <div class="fiche-section" id="la-patente-declaration-et-paiement">
+          <h2>La Patente -- Déclaration et Paiement</h2>
+<p>Déclaration annuelle : À souscrire au plus tard le 30 avril pour l'ensemble des établissements de l'entreprise.</p>
+<p>Modalités de paiement :</p>
+<p>Acompte de 50% au plus tard le 10 février (sur la base de l'année précédente).</p>
+<p>Solde au plus tard le 30 avril.</p>
+<p>Affectation : Le produit est perçu au profit des communes (après déduction de 10% pour frais d'administration par l'État).</p>
+        </div>
+
+        <div class="fiche-section" id="la-licence-champ-d-application">
+          <h2>La Licence -- Champ d'application</h2>
+<p><strong>Définition :</strong> Droit annuel dû par toute personne se livrant à la vente au détail de boissons alcooliques ou fermentées (consommation sur place ou à emporter).</p>
+<p>Boissons visées : Vins de liqueur, vermouths, bières, et toute boisson titrant plus de 12° d'alcool.</p>
+<p>Indépendance : La licence est due indépendamment de la patente ; le paiement de l'une ne dispense pas de l'autre.</p>
+        </div>
+
+        <div class="fiche-section" id="la-licence-tarification">
+          <h2>La Licence -- Tarification</h2>
+<p>Le tarif est fixé selon le chiffre d'affaires et la zone géographique :</p>
+<p>CA ≤ 500 millions : 50 000 FCFA (Zone 1) / 30 000 FCFA (Zone 2).</p>
+<p>CA entre 500M et 1 milliard : 80 000 FCFA (Zone 1) / 60 000 FCFA (Zone 2).</p>
+<p>CA &gt; 1 milliard : 100 000 FCFA pour toutes les zones.</p>
+        </div>
+
+        <div class="fiche-section" id="la-licence-obligations-et-sanctions">
+          <h2>La Licence -- Obligations et Sanctions</h2>
+<p>Alignement sur la patente : Les règles d'assiette, de déclaration et de paiement sont les mêmes que pour la patente (acompte en février, solde en avril).</p>
+<p>Sanctions :</p>
+<p>Majoration de 10% en cas de retard de paiement.</p>
+<p>L'autorité administrative peut ordonner la fermeture immédiate de l'établissement en cas de non-paiement.</p>
+<p>Affectation : Comme pour la patente, le produit revient au budget de la commune d'exploitation.</p>
+        </div>
+
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Info<span>Compta</span></div>
+    <div class="footer-links">
+      <a href="../confidentialite.html">Confidentialité</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../a-propos.html">À propos</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 InfoCompta</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('hamburgerBtn');
+  var nav = document.getElementById('mainNav');
+  if (btn && nav) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>
