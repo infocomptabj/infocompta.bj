@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<script>
+(function () {
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+        document.documentElement.classList.add('ic-authed');
+      }
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../auth-display.js" defer></script>
+<title>L'Impôt sur les Traitements et Salaires (ITS) — CGI Bénin 2026 | InfoCompta</title>
+<meta name="description" content="Définition : L&#x27;ITS est un impôt qui frappe les revenus perçus par…">
+<link rel="canonical" href="https://www.infocompta.bj/fiches/its.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="stylesheet" href="../infocompta-shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "L'Impôt sur les Traitements et Salaires (ITS)",
+  "articleSection": "Livre 1 : Les Impôts Directs (IS, IBA, IRCM, IRF, ITS, TFU, etc.)",
+  "about": "Code Général des Impôts du Bénin — L'Impôt sur les Traitements et Salaires (ITS)",
+  "url": "https://www.infocompta.bj/fiches/its.html",
+  "isPartOf": {
+    "@type": "WebPage",
+    "url": "https://www.infocompta.bj/fiscalite-cgi-benin.html"
+  }
+}
+</script>
+<style>
+.fiche-hero { padding: 2.6rem 0 2.2rem; }
+.fiche-breadcrumb {
+  font-size: 0.76rem;
+  color: var(--text-on-dark-dim);
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+.fiche-breadcrumb a { color: var(--text-on-dark-muted); transition: color var(--transition); }
+.fiche-breadcrumb a:hover { color: var(--orange-lt); }
+.fiche-breadcrumb span.sep { opacity: 0.5; }
+.fiche-hero h1 { font-size: clamp(1.7rem, 3.2vw, 2.5rem); margin-bottom: 0.7rem; }
+.fiche-meta { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+.fiche-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16,57,226,0.14);
+  border: 1px solid rgba(16,57,226,0.30);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 30px;
+}
+
+.fiche-body { padding: 3rem 0 1rem; }
+.fiche-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.fiche-toc {
+  position: sticky;
+  top: 90px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.3rem;
+}
+.fiche-toc-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.7rem;
+}
+.fiche-toc ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+.fiche-toc a {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+  transition: color var(--transition);
+  display: block;
+}
+.fiche-toc a:hover { color: var(--orange); }
+
+.fiche-content { max-width: 720px; }
+.fiche-section { margin-bottom: 2.6rem; scroll-margin-top: 90px; }
+.fiche-section h2 {
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1.5px solid var(--border-lt);
+}
+.fiche-section p { margin-bottom: 0.9rem; font-size: 0.94rem; }
+.fiche-section ul, .fiche-section ol { margin: 0 0 0.9rem 1.3rem; }
+.fiche-section li { font-size: 0.94rem; color: var(--text-md); margin-bottom: 0.4rem; line-height: 1.6; }
+.fiche-section strong { color: var(--navy); }
+
+.fiche-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 3rem 0 3.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+}
+.fiche-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.fiche-nav-link:hover { border-color: var(--orange-line); transform: translateY(-2px); box-shadow: var(--shadow); }
+.fiche-nav-next { text-align: right; align-items: flex-end; }
+.fiche-nav-dir { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); }
+.fiche-nav-title { font-size: 0.86rem; color: var(--navy); font-weight: 600; }
+.fiche-nav-disabled { opacity: 0.35; pointer-events: none; padding: 1rem 1.2rem; border: 1.5px dashed var(--border); border-radius: var(--radius-md); }
+
+@media (max-width: 900px) {
+  .fiche-layout { grid-template-columns: 1fr; }
+  .fiche-toc { position: static; }
+  .fiche-nav { grid-template-columns: 1fr; }
+  .fiche-nav-next { text-align: left; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="logo">Info<span>Compta</span></a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="mainNav">
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="../plan-comptable.html">Plan Comptable</a></li>
+      <li><a href="../documents.html">Documents</a></li>
+      <li><a href="../fiscalite-cgi-benin.html" class="active">Fiscalité CGI</a></li>
+      <li><a href="../quiz.html">Quiz</a></li>
+      <li><a href="../offres.html">Nos offres</a></li>
+      <li><a href="../a-propos.html">À propos</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="../auth.html" class="nav-cta">Connexion</a></li>
+    </ul>
+  </nav>
+  <div class="ic-profile-wrap" id="icAuthSlot"></div>
+</header>
+
+<main>
+
+  <section class="hero-sm fiche-hero">
+    <div class="container">
+      <div class="fiche-breadcrumb">
+        <a href="../index.html">Accueil</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html">Fiscalité CGI</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html#livre-1">Les impôts directs</a>
+        <span class="sep">/</span>
+        <span>L'Impôt sur les Traitements et Salaires (ITS)</span>
+      </div>
+      <h1>L'Impôt sur les Traitements et Salaires (ITS)</h1>
+      <div class="fiche-meta">
+        <span class="fiche-badge">LIVRE 1 — Les impôts directs</span>
+        <span class="fiche-badge">Articles 119-129 du CGI</span>
+        <span class="fiche-badge">Chapitre 06 / 53</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="fiche-body">
+    <div class="container">
+      <div class="fiche-layout">
+        <nav class="fiche-toc" aria-label="Sommaire de la fiche">
+          <div class="fiche-toc-label">Sur cette page</div>
+          <ul>
+          <li><a href="#introduction-et-champ-d-application">Introduction et Champ d'application</a></li>
+          <li><a href="#exonerations-et-affranchissements">Exonérations et Affranchissements</a></li>
+          <li><a href="#territorialite-et-domicile-fiscal">Territorialité et Domicile Fiscal</a></li>
+          <li><a href="#determination-de-la-base-d-imposition">Détermination de la Base d'Imposition</a></li>
+          <li><a href="#les-avantages-en-nature-evaluation">Les Avantages en Nature (Évaluation)</a></li>
+          <li><a href="#elements-exclus-de-la-base-imposable">Éléments exclus de la base imposable</a></li>
+          <li><a href="#calcul-de-l-impot-le-bareme-progressif">Calcul de l'impôt (Le Barème Progressif)</a></li>
+          <li><a href="#redevance-ortb-et-revenus-exceptionnels">Redevance ORTB et Revenus Exceptionnels</a></li>
+          <li><a href="#declaration-et-paiement">Déclaration et Paiement</a></li>
+          </ul>
+        </nav>
+
+        <article class="fiche-content">
+
+        <div class="fiche-section" id="introduction-et-champ-d-application">
+          <h2>Introduction et Champ d'application</h2>
+<p><strong>Définition :</strong> L'ITS est un impôt qui frappe les revenus perçus par les salariés et les dirigeants de sociétés.</p>
+<p><strong>Revenus imposables :</strong></p>
+<ul><li>Traitements, émoluments et salaires publics ou privés.</li><li>Rétributions accessoires de toute nature.</li><li>Indemnités de fin de carrière (IFC) versées par l'employeur ou un assureur.</li><li>Rémunérations versées aux dirigeants de sociétés soumises à l'IS.</li></ul>
+        </div>
+
+        <div class="fiche-section" id="exonerations-et-affranchissements">
+          <h2>Exonérations et Affranchissements</h2>
+<p>Sont exclus du champ de l'impôt :</p>
+<ul><li>Les indemnités de licenciement (selon les textes légaux, hors congés payés et préavis).</li><li>Les allocations familiales et prestations de sécurité sociale (dans les limites des montants payables par la CNSS).</li><li>Les cotisations patronales de prévoyance et retraite complémentaire (limite : 1,5 fois la part patronale CNSS).</li><li>Les gratifications de stage (durée ≤ 3 mois, stagiaires &lt; 30 ans, rémunération ≤ 3 fois le SMIG).</li></ul>
+        </div>
+
+        <div class="fiche-section" id="territorialite-et-domicile-fiscal">
+          <h2>Territorialité et Domicile Fiscal</h2>
+<p>L'impôt est dû au Bénin dans deux cas :</p>
+<ol><li>Bénéficiaire domicilié au Bénin : Même si l'activité s'exerce à l'étranger ou que l'employeur est hors du Bénin.</li><li>Activité au Bénin ou Employeur au Bénin : Même si le bénéficiaire réside à l'étranger.</li></ol>
+<p><strong>Définition du domicile fiscal :</strong> Foyer permanent au Bénin, centre des intérêts vitaux au Bénin, ou séjour d'au moins 183 jours sur 12 mois.</p>
+        </div>
+
+        <div class="fiche-section" id="determination-de-la-base-d-imposition">
+          <h2>Détermination de la Base d'Imposition</h2>
+<p>Le salaire mensuel imposable inclut les montants bruts de :</p>
+<ul><li>Traitements, salaires et pécules ;</li><li>Gratifications et heures supplémentaires ;</li><li>Avantages professionnels en argent ou en nature ;</li><li>Indemnités de toute sorte (y compris le transport) ;</li><li>Indemnités de maladie versées aux salariés.</li></ul>
+        </div>
+
+        <div class="fiche-section" id="les-avantages-en-nature-evaluation">
+          <h2>Les Avantages en Nature (Évaluation)</h2>
+<p>Ils sont retenus chaque mois pour leur valeur réelle (voyages, frais médicaux, scolarité) ou selon un barème forfaitaire :</p>
+<p><strong>Logement :</strong> 15% du salaire de base.</p>
+<p><strong>Domesticité :</strong> 15% du salaire de base (sous conditions de cotisations CNSS).</p>
+<p><strong>Électricité :</strong> 50 000 FCFA (Dirigeants) / 20 000 FCFA (Employés).</p>
+<p><strong>Eau :</strong> 10 000 FCFA (Dirigeants) / 5 000 FCFA (Employés).</p>
+<p><strong>Véhicules (4 roues) :</strong> 30 000 FCFA (Dirigeants) / 15 000 FCFA (Employés).</p>
+        </div>
+
+        <div class="fiche-section" id="elements-exclus-de-la-base-imposable">
+          <h2>Éléments exclus de la base imposable</h2>
+<p>Ne sont pas compris dans l'assiette de l'ITS :</p>
+<ul><li>Les frais de formation engagés par l'entreprise ;</li><li>Les primes d'assurance maladie (contrat collectif) ;</li><li>Les primes d'assurance maladie (contrat individuel) dans la limite de 80% de la prime ;</li><li>Les revenus des sportifs et artistes professionnels dans la limite de 4 fois le SMIG.</li></ul>
+        </div>
+
+        <div class="fiche-section" id="calcul-de-l-impot-le-bareme-progressif">
+          <h2>Calcul de l'impôt (Le Barème Progressif)</h2>
+<p>L'impôt est calculé par tranches sur le revenu mensuel :</p>
+<p><strong>0% :</strong> de 0 à 60 000 FCFA.</p>
+<p><strong>10% :</strong> de 60 001 à 150 000 FCFA.</p>
+<p><strong>15% :</strong> de 150 001 à 250 000 FCFA.</p>
+<p><strong>19% :</strong> de 250 001 à 500 000 FCFA.</p>
+<p><strong>30% :</strong> au-dessus de 500 000 FCFA.</p>
+        </div>
+
+        <div class="fiche-section" id="redevance-ortb-et-revenus-exceptionnels">
+          <h2>Redevance ORTB et Revenus Exceptionnels</h2>
+<p>Redevance ORTB :</p>
+<ul><li>1 000 FCFA sur le salaire de mars ;</li><li>3 000 FCFA sur le salaire de juin (sauf pour la tranche à 0%).</li></ul>
+<p>Rémunérations exceptionnelles (13è mois, IFC, etc.) : Bénéficient d'un mécanisme d'atténuation basé sur le salaire moyen des 12 derniers mois pour éviter une imposition trop forte sur un seul mois.</p>
+        </div>
+
+        <div class="fiche-section" id="declaration-et-paiement">
+          <h2>Déclaration et Paiement</h2>
+<p>Retenue à la source : L'employeur est tenu d'opérer la retenue pour le compte du Trésor Public.</p>
+<p><strong>Échéance :</strong> Le reversement des retenues doit être effectué au plus tard le 10 du mois suivant le paiement des salaires.</p>
+<p><strong>Caractère libératoire :</strong> Les retenues opérées sont libératoires pour le salarié.</p>
+<p><strong>État annuel :</strong> Un état global des salaires payés doit être remis avant le 30 avril de chaque année.</p>
+        </div>
+
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Info<span>Compta</span></div>
+    <div class="footer-links">
+      <a href="../confidentialite.html">Confidentialité</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../a-propos.html">À propos</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 InfoCompta</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('hamburgerBtn');
+  var nav = document.getElementById('mainNav');
+  if (btn && nav) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

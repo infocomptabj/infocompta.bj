@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<script>
+(function () {
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+        document.documentElement.classList.add('ic-authed');
+      }
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../auth-display.js" defer></script>
+<title>Dispositions particulières aux mutations à titre gratuit — CGI Bénin 2026 | InfoCompta</title>
+<meta name="description" content="Nature des mutations : Les mutations à titre gratuit comprennent les…">
+<link rel="canonical" href="https://www.infocompta.bj/fiches/dispositions-particulieres-aux-mutations-a.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="stylesheet" href="../infocompta-shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Dispositions particulières aux mutations à titre gratuit",
+  "articleSection": "Livre 3 : Les formalités fiscales liées à la rédaction d'actes juridiques et à la certification de documents (Enregistrement et le Timbre)",
+  "about": "Code Général des Impôts du Bénin — Dispositions particulières aux mutations à titre gratuit",
+  "url": "https://www.infocompta.bj/fiches/dispositions-particulieres-aux-mutations-a.html",
+  "isPartOf": {
+    "@type": "WebPage",
+    "url": "https://www.infocompta.bj/fiscalite-cgi-benin.html"
+  }
+}
+</script>
+<style>
+.fiche-hero { padding: 2.6rem 0 2.2rem; }
+.fiche-breadcrumb {
+  font-size: 0.76rem;
+  color: var(--text-on-dark-dim);
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+.fiche-breadcrumb a { color: var(--text-on-dark-muted); transition: color var(--transition); }
+.fiche-breadcrumb a:hover { color: var(--orange-lt); }
+.fiche-breadcrumb span.sep { opacity: 0.5; }
+.fiche-hero h1 { font-size: clamp(1.7rem, 3.2vw, 2.5rem); margin-bottom: 0.7rem; }
+.fiche-meta { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+.fiche-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16,57,226,0.14);
+  border: 1px solid rgba(16,57,226,0.30);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 30px;
+}
+
+.fiche-body { padding: 3rem 0 1rem; }
+.fiche-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.fiche-toc {
+  position: sticky;
+  top: 90px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.3rem;
+}
+.fiche-toc-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.7rem;
+}
+.fiche-toc ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+.fiche-toc a {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+  transition: color var(--transition);
+  display: block;
+}
+.fiche-toc a:hover { color: var(--orange); }
+
+.fiche-content { max-width: 720px; }
+.fiche-section { margin-bottom: 2.6rem; scroll-margin-top: 90px; }
+.fiche-section h2 {
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1.5px solid var(--border-lt);
+}
+.fiche-section p { margin-bottom: 0.9rem; font-size: 0.94rem; }
+.fiche-section ul, .fiche-section ol { margin: 0 0 0.9rem 1.3rem; }
+.fiche-section li { font-size: 0.94rem; color: var(--text-md); margin-bottom: 0.4rem; line-height: 1.6; }
+.fiche-section strong { color: var(--navy); }
+
+.fiche-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 3rem 0 3.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+}
+.fiche-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.fiche-nav-link:hover { border-color: var(--orange-line); transform: translateY(-2px); box-shadow: var(--shadow); }
+.fiche-nav-next { text-align: right; align-items: flex-end; }
+.fiche-nav-dir { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); }
+.fiche-nav-title { font-size: 0.86rem; color: var(--navy); font-weight: 600; }
+.fiche-nav-disabled { opacity: 0.35; pointer-events: none; padding: 1rem 1.2rem; border: 1.5px dashed var(--border); border-radius: var(--radius-md); }
+
+@media (max-width: 900px) {
+  .fiche-layout { grid-template-columns: 1fr; }
+  .fiche-toc { position: static; }
+  .fiche-nav { grid-template-columns: 1fr; }
+  .fiche-nav-next { text-align: left; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="logo">Info<span>Compta</span></a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="mainNav">
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="../plan-comptable.html">Plan Comptable</a></li>
+      <li><a href="../documents.html">Documents</a></li>
+      <li><a href="../fiscalite-cgi-benin.html" class="active">Fiscalité CGI</a></li>
+      <li><a href="../quiz.html">Quiz</a></li>
+      <li><a href="../offres.html">Nos offres</a></li>
+      <li><a href="../a-propos.html">À propos</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="../auth.html" class="nav-cta">Connexion</a></li>
+    </ul>
+  </nav>
+  <div class="ic-profile-wrap" id="icAuthSlot"></div>
+</header>
+
+<main>
+
+  <section class="hero-sm fiche-hero">
+    <div class="container">
+      <div class="fiche-breadcrumb">
+        <a href="../index.html">Accueil</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html">Fiscalité CGI</a>
+        <span class="sep">/</span>
+        <a href="../fiscalite-cgi-benin.html#livre-3">Enregistrement &amp; timbre</a>
+        <span class="sep">/</span>
+        <span>Dispositions particulières aux mutations à titre gratuit</span>
+      </div>
+      <h1>Dispositions particulières aux mutations à titre gratuit</h1>
+      <div class="fiche-meta">
+        <span class="fiche-badge">LIVRE 3 — Enregistrement &amp; timbre</span>
+        <span class="fiche-badge">Articles 383-398 du CGI</span>
+        <span class="fiche-badge">Chapitre 39 / 53</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="fiche-body">
+    <div class="container">
+      <div class="fiche-layout">
+        <nav class="fiche-toc" aria-label="Sommaire de la fiche">
+          <div class="fiche-toc-label">Sur cette page</div>
+          <ul>
+          <li><a href="#definition-et-principes">Définition et Principes</a></li>
+          <li><a href="#evaluation-des-biens-meubles-et-immeubles">Évaluation des biens meubles et immeubles</a></li>
+          <li><a href="#presomptions-de-propriete-en-matiere-de-succession">Présomptions de propriété en matière de succession</a></li>
+          <li><a href="#deduction-des-dettes-et-charges">Déduction des dettes et charges</a></li>
+          <li><a href="#tarifs-et-liquidation-des-droits">Tarifs et Liquidation des droits</a></li>
+          <li><a href="#obligations-des-heritiers-et-tiers">Obligations des héritiers et tiers</a></li>
+          <li><a href="#role-des-agents-publics">Rôle des agents publics</a></li>
+          </ul>
+        </nav>
+
+        <article class="fiche-content">
+
+        <div class="fiche-section" id="definition-et-principes">
+          <h2>Définition et Principes</h2>
+<p>Nature des mutations : Les mutations à titre gratuit comprennent les donations, les legs et les successions.</p>
+<p>Application : Elles sont soumises aux règles générales de l'enregistrement, sous réserve des spécificités prévues par ce chapitre.</p>
+<p>Base d'imposition : La valeur des biens est déterminée par une déclaration détaillée et estimative des parties, sans déduction des charges (sauf exceptions légales).</p>
+        </div>
+
+        <div class="fiche-section" id="evaluation-des-biens-meubles-et-immeubles">
+          <h2>Évaluation des biens meubles et immeubles</h2>
+<p>Valeurs mobilières (actions/obligations) : L'estimation ne peut être inférieure au cours moyen de la bourse au jour de la transmission.</p>
+<p>Immeubles : Si le bien a fait l'objet d'une adjudication publique dans les 2 ans (avant ou après), le droit ne peut être calculé sur une somme inférieure au prix d'adjudication.</p>
+<p>Meubles meublants : La valeur imposable ne peut être inférieure à 5 % de l'ensemble des autres valeurs de la succession.</p>
+<p>Bijoux et objets d'art : La valeur ne peut être inférieure à 60 % de l'évaluation figurant dans les contrats d'assurance contre le vol/incendie datant de moins de 10 ans.</p>
+        </div>
+
+        <div class="fiche-section" id="presomptions-de-propriete-en-matiere-de-succession">
+          <h2>Présomptions de propriété en matière de succession</h2>
+<p>Sont réputés faire partie de la succession (sauf preuve contraire) :</p>
+<p>Biens en usufruit : Tout bien dont le défunt avait l'usufruit et dont la nue-propriété appartient à ses héritiers ou personnes interposées (sauf donation régulière faite plus de 3 mois avant le décès).</p>
+<p>Titres et valeurs : Ceux dont le défunt a perçu les revenus ou fait des opérations moins d'un an avant le décès.</p>
+<p>Comptes joints : Les sommes et titres en comptes indivis ou collectifs sont réputés appartenir aux déposants par parts égales.</p>
+        </div>
+
+        <div class="fiche-section" id="deduction-des-dettes-et-charges">
+          <h2>Déduction des dettes et charges</h2>
+<p>Sont déductibles de l'actif de la succession, sous réserve de justifications :</p>
+<p>Dettes du défunt : Justifiées par des titres ayant force de preuve contre lui.</p>
+<p>Frais de dernière maladie et funérailles : Déductibles dans la limite de 1 000 000 FCFA (maladie) et 500 000 FCFA (funérailles).</p>
+<p>Dettes fiscales : Les impôts établis après le décès mais dus par le défunt.</p>
+<p>Exclusions : Ne sont pas déductibles les dettes échues depuis plus de 3 mois (sans attestation), les dettes consenties aux héritiers, ou les dettes reconnues uniquement par testament.</p>
+        </div>
+
+        <div class="fiche-section" id="tarifs-et-liquidation-des-droits">
+          <h2>Tarifs et Liquidation des droits</h2>
+<p>Successions (Mutations par décès) : Elles sont enregistrées gratis.</p>
+<p>Donations entre vifs : Elles sont soumises à un droit proportionnel de 5 %.</p>
+<p>Croix-Rouge : Les dons et legs à la Croix-Rouge internationale ou ses associations rattachées sont gratis.</p>
+<p>Responsabilité : Les droits sont dus par les héritiers, donataires ou légataires. Les cohéritiers sont solidaires pour le paiement.</p>
+        </div>
+
+        <div class="fiche-section" id="obligations-des-heritiers-et-tiers">
+          <h2>Obligations des héritiers et tiers</h2>
+<p>Déclaration de succession : Les héritiers doivent souscrire une déclaration mentionnant l'état civil complet de tous les ayants droit.</p>
+<p>Signalement par les tiers : Les banques et administrations dépositaires de fonds ou titres appartenant à une succession ouverte doivent en adresser la liste au service des impôts dans les 15 jours suivant les opérations.</p>
+        </div>
+
+        <div class="fiche-section" id="role-des-agents-publics">
+          <h2>Rôle des agents publics</h2>
+<p>État civil : Les agents publics doivent fournir trimestriellement au service des impôts les relevés des actes de décès.</p>
+<p>Ce module détaille les règles applicables aux différents types de timbres, basées sur les articles 399 à 459.</p>
+        </div>
+
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Info<span>Compta</span></div>
+    <div class="footer-links">
+      <a href="../confidentialite.html">Confidentialité</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../a-propos.html">À propos</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 InfoCompta</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('hamburgerBtn');
+  var nav = document.getElementById('mainNav');
+  if (btn && nav) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>
