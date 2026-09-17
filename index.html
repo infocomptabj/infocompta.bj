@@ -2,20 +2,24 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+
+  <!-- Détection anticipée de session (évite le flash "non connecté") -->
   <script>
-(function () {
-  try {
-    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
-    if (raw) {
-      var parsed = JSON.parse(raw);
-      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
-        document.documentElement.classList.add('ic-authed');
+  (function () {
+    try {
+      var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+          document.documentElement.classList.add('ic-authed');
+        }
       }
-    }
-  } catch (e) {}
-})();
-</script>
+    } catch (e) {}
+  })();
+  </script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="InfoCompta : plan comptable OHADA, gestion documentaire et assistant IA pour la fiscalité béninoise.">
   <script src="auth-display.js" defer></script>
   <title>Accueil</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -29,19 +33,7 @@
   <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
-  <nav id="mainNav">
-    <ul>
-      <li><a href="index.html" class="active">Accueil</a></li>
-      <li><a href="plan-comptable.html">Plan Comptable</a></li>
-      <li><a href="documents.html">Documents</a></li>
-      <li><a href="fiscalite-cgi-benin.html">Fiscalité CGI</a></li>
-      <li><a href="quiz.html">Quiz</a></li>
-      <li><a href="offres.html">Nos offres</a></li>
-      <li><a href="a-propos.html">À propos</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="auth.html" class="nav-cta">Connexion</a></li>
-    </ul>
-  </nav>
+  <nav id="mainNav"><ul id="mainNavList"></ul></nav>
   <div class="ic-profile-wrap" id="icAuthSlot"></div>
 </header>
 
@@ -72,38 +64,7 @@
           </div>
         </div>
 
-        <div class="hero-visual">
-          <div class="hero-stat-card">
-            <div class="stat-icon">📋</div>
-            <div>
-              <div class="stat-label">Plan Comptable</div>
-              <div class="stat-value">9 Classes <span>OHADA</span></div>
-            </div>
-          </div>
-          <div class="hero-stat-row">
-            <div class="hero-stat-card">
-              <div class="stat-icon">🏛️</div>
-              <div>
-                <div class="stat-label">Fiscalité</div>
-                <div class="stat-value">CGI <span>Bénin</span></div>
-              </div>
-            </div>
-            <div class="hero-stat-card">
-              <div class="stat-icon">🤖</div>
-              <div>
-                <div class="stat-label">Assistant IA</div>
-                <div class="stat-value">24h/24</div>
-              </div>
-            </div>
-          </div>
-          <div class="hero-stat-card">
-            <div class="stat-icon">🔒</div>
-            <div>
-              <div class="stat-label">Sécurité</div>
-              <div class="stat-value">Chiffrement</div>
-            </div>
-          </div>
-        </div>
+        <div class="hero-visual" id="heroVisual"></div>
 
       </div>
     </div>
@@ -116,38 +77,7 @@
         <h2>Fonctionnalités principales</h2>
         <p>Des outils pensés pour les professionnels de la comptabilité et de la gestion en espace OHADA.</p>
       </div>
-      <div class="features-grid fade-in">
-        <div class="feature-card">
-          <div class="feature-icon">📋</div>
-          <h3>Plan Comptable OHADA</h3>
-          <p>L'intégralité des 9 classes avec recherche instantanée, navigation par classe et détails de fonctionnement.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">📁</div>
-          <h3>Gestion de Documents</h3>
-          <p>Centralisez factures, rapports et pièces comptables dans un espace personnel sécurisé et organisé.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🤖</div>
-          <h3>Assistant IA COMPTA</h3>
-          <p>Posez vos questions sur la fiscalité béninoise et le SYSCOHADA à un assistant entraîné sur les textes officiels.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔍</div>
-          <h3>Recherche Avancée</h3>
-          <p>Retrouvez n'importe quel compte par numéro ou libellé, avec filtres par classe et par nature.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔒</div>
-          <h3>Données Sécurisées</h3>
-          <p>Authentification Supabase, chiffrement bcrypt et HTTPS sur toutes les communications.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">📱</div>
-          <h3>Mobile Ready</h3>
-          <p>Interface optimisée pour tous les appareils. Accédez à vos données depuis n'importe où.</p>
-        </div>
-      </div>
+      <div class="features-grid fade-in" id="featuresGrid"></div>
     </div>
   </section>
 
@@ -166,32 +96,7 @@
         <p>Abonnements, templates OHADA et annuaire d'experts/paiement Mobile Money accepté.</p>
       </div>
 
-      <div class="offers-grid fade-in">
-        <a href="offres.html#plans" class="offer-card">
-          <span class="offer-icon">💼</span>
-          <div class="offer-title">Plans Premium</div>
-          <div class="offer-desc">Documents illimités, rapports avancés, export PDF A partir de 3 500 FCFA/mois.</div>
-          <span class="offer-link">Voir les plans →</span>
-        </a>
-        <a href="offres.html#templates" class="offer-card">
-          <span class="offer-icon">📁</span>
-          <div class="offer-title">Templates OHADA</div>
-          <div class="offer-desc">Journal, bilan, factures, grand livre, modèles Excel & Word A partir de 1 500 FCFA.</div>
-          <span class="offer-link">Voir les templates →</span>
-        </a>
-        <a href="offres.html#annuaire" class="offer-card">
-          <span class="offer-icon">🤝</span>
-          <div class="offer-title">Annuaire Experts</div>
-          <div class="offer-desc">Trouvez ou référencez un expert-comptable certifié au Bénin.</div>
-          <span class="offer-link">Voir l'annuaire →</span>
-        </a>
-        <a href="offres.html" class="offer-card">
-          <span class="offer-icon">📱</span>
-          <div class="offer-title">Mobile Money</div>
-          <div class="offer-desc">Paiement accepté via MTN MoMo, Moov Africa et FedaPay.</div>
-          <span class="offer-link">Comment payer →</span>
-        </a>
-      </div>
+      <div class="offers-grid fade-in" id="offersGrid"></div>
 
       <div class="cta-banner fade-in">
         <div>
@@ -238,34 +143,140 @@
 </footer>
 
 <script>
-(function () {
-  /* ── Hamburger ── */
+/* ─────────────────────────────────────────────────────────────
+   CONTENU — toutes les données des blocs répétés (nav, stats du
+   hero, fonctionnalités, offres) vivent ici. Ajouter/retirer une
+   carte se fait en éditant un tableau, jamais du HTML dupliqué.
+   ───────────────────────────────────────────────────────────── */
+var CONTENT = {
+  nav: [
+    { href: 'index.html', label: 'Accueil', active: true },
+    { href: 'plan-comptable.html', label: 'Plan Comptable' },
+    { href: 'documents.html', label: 'Documents' },
+    { href: 'fiscalite-cgi-benin.html', label: 'Fiscalité CGI' },
+    { href: 'quiz.html', label: 'Quiz' },
+    { href: 'offres.html', label: 'Nos offres' },
+    { href: 'a-propos.html', label: 'À propos' },
+    { href: 'contact.html', label: 'Contact' },
+    { href: 'auth.html', label: 'Connexion', cta: true }
+  ],
+  heroStats: [
+    { icon: '📋', label: 'Plan Comptable', value: '9 Classes', tag: 'OHADA' },
+    { icon: '🏛️', label: 'Fiscalité', value: 'CGI', tag: 'Bénin' },
+    { icon: '🤖', label: 'Assistant IA', value: '24h/24' },
+    { icon: '🔒', label: 'Sécurité', value: 'Chiffrement' }
+  ],
+  features: [
+    { icon: '📋', title: 'Plan Comptable OHADA', text: "L'intégralité des 9 classes avec recherche instantanée, navigation par classe et détails de fonctionnement." },
+    { icon: '📁', title: 'Gestion de Documents', text: 'Centralisez factures, rapports et pièces comptables dans un espace personnel sécurisé et organisé.' },
+    { icon: '🤖', title: 'Assistant IA COMPTA', text: 'Posez vos questions sur la fiscalité béninoise et le SYSCOHADA à un assistant entraîné sur les textes officiels.' },
+    { icon: '🔍', title: 'Recherche Avancée', text: "Retrouvez n'importe quel compte par numéro ou libellé, avec filtres par classe et par nature." },
+    { icon: '🔒', title: 'Données Sécurisées', text: 'Authentification Supabase, chiffrement bcrypt et HTTPS sur toutes les communications.' },
+    { icon: '📱', title: 'Mobile Ready', text: 'Interface optimisée pour tous les appareils. Accédez à vos données depuis n\'importe où.' }
+  ],
+  offers: [
+    { icon: '💼', href: 'offres.html#plans', title: 'Plans Premium', text: 'Documents illimités, rapports avancés, export PDF à partir de 3 500 FCFA/mois.', link: 'Voir les plans →' },
+    { icon: '📁', href: 'offres.html#templates', title: 'Templates OHADA', text: 'Journal, bilan, factures, grand livre, modèles Excel & Word à partir de 1 500 FCFA.', link: 'Voir les templates →' },
+    { icon: '🤝', href: 'offres.html#annuaire', title: 'Annuaire Experts', text: 'Trouvez ou référencez un expert-comptable certifié au Bénin.', link: "Voir l'annuaire →" },
+    { icon: '📱', href: 'offres.html', title: 'Mobile Money', text: 'Paiement accepté via MTN MoMo, Moov Africa et FedaPay.', link: 'Comment payer →' }
+  ]
+};
+
+/* ─────────────────────────────────────────────────────────────
+   RENDU — un seul point de vérité par type de carte. Chaque
+   fonction construit un tableau de chaînes puis fait UNE seule
+   écriture DOM (innerHTML), pour rester rapide même si le
+   contenu grandit.
+   ───────────────────────────────────────────────────────────── */
+function renderNav() {
+  var html = CONTENT.nav.map(function (item) {
+    var cls = [item.active ? 'active' : '', item.cta ? 'nav-cta' : ''].join(' ').trim();
+    return '<li><a href="' + item.href + '"' + (cls ? ' class="' + cls + '"' : '') + '>' + item.label + '</a></li>';
+  }).join('');
+  document.getElementById('mainNavList').innerHTML = html;
+}
+
+function renderHeroVisual() {
+  var cards = CONTENT.heroStats.map(function (s, i) {
+    return (
+      '<div class="hero-stat-card" style="transition-delay:' + (i * 70) + 'ms">' +
+        '<div class="stat-icon">' + s.icon + '</div>' +
+        '<div>' +
+          '<div class="stat-label">' + s.label + '</div>' +
+          '<div class="stat-value">' + s.value + (s.tag ? ' <span>' + s.tag + '</span>' : '') + '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  });
+  // Même agencement visuel que l'original (carte seule / paire / carte seule)
+  // mais généré depuis les données au lieu d'être recopié à la main.
+  var html = cards[0] +
+    '<div class="hero-stat-row">' + cards[1] + cards[2] + '</div>' +
+    cards[3];
+  document.getElementById('heroVisual').innerHTML = html;
+}
+
+function renderFeatures() {
+  var html = CONTENT.features.map(function (f) {
+    return (
+      '<div class="feature-card">' +
+        '<div class="feature-icon">' + f.icon + '</div>' +
+        '<h3>' + f.title + '</h3>' +
+        '<p>' + f.text + '</p>' +
+      '</div>'
+    );
+  }).join('');
+  document.getElementById('featuresGrid').innerHTML = html;
+}
+
+function renderOffers() {
+  var html = CONTENT.offers.map(function (o) {
+    return (
+      '<a href="' + o.href + '" class="offer-card">' +
+        '<span class="offer-icon">' + o.icon + '</span>' +
+        '<div class="offer-title">' + o.title + '</div>' +
+        '<div class="offer-desc">' + o.text + '</div>' +
+        '<span class="offer-link">' + o.link + '</span>' +
+      '</a>'
+    );
+  }).join('');
+  document.getElementById('offersGrid').innerHTML = html;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   COMPORTEMENT — menu hamburger + révélation au défilement.
+   ───────────────────────────────────────────────────────────── */
+function initHamburger() {
   var btn = document.getElementById('hamburgerBtn');
   var nav = document.getElementById('mainNav');
-  if (btn && nav) {
-    btn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var isOpen = nav.classList.toggle('open');
-      btn.classList.toggle('open', isOpen);
-      btn.setAttribute('aria-expanded', isOpen);
-    });
-    nav.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () {
-        nav.classList.remove('open');
-        btn.classList.remove('open');
-        btn.setAttribute('aria-expanded', false);
-      });
-    });
-    document.addEventListener('click', function (e) {
-      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
-        nav.classList.remove('open');
-        btn.classList.remove('open');
-        btn.setAttribute('aria-expanded', false);
-      }
-    });
+  if (!btn || !nav) return;
+
+  function close() {
+    nav.classList.remove('open');
+    btn.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
   }
 
-  /* ── Scroll fade-in animations ── */
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var isOpen = nav.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', String(isOpen));
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A') close();
+  });
+  document.addEventListener('click', function (e) {
+    if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) close();
+  });
+}
+
+function initScrollReveal() {
+  var targets = document.querySelectorAll('.fade-in');
+  if (!('IntersectionObserver' in window) || !targets.length) {
+    targets.forEach(function (el) { el.classList.add('visible'); });
+    return;
+  }
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
@@ -274,11 +285,20 @@
       }
     });
   }, { threshold: 0.12 });
+  targets.forEach(function (el) { observer.observe(el); });
+}
 
-  document.querySelectorAll('.fade-in').forEach(function (el) {
-    observer.observe(el);
-  });
-})();
+/* ─────────────────────────────────────────────────────────────
+   INIT
+   ───────────────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', function () {
+  renderNav();
+  renderHeroVisual();
+  renderFeatures();
+  renderOffers();
+  initHamburger();
+  initScrollReveal();
+});
 </script>
 </body>
 </html>
