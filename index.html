@@ -73,11 +73,11 @@
   <!-- ── FONCTIONNALITÉS ── -->
   <section class="features-section">
     <div class="container">
-      <div class="section-header fade-in">
+      <div class="section-header">
         <h2>Fonctionnalités principales</h2>
         <p>Des outils pensés pour les professionnels de la comptabilité et de la gestion en espace OHADA.</p>
       </div>
-      <div class="features-grid fade-in" id="featuresGrid"></div>
+      <div class="features-grid" id="featuresGrid"></div>
     </div>
   </section>
 
@@ -91,14 +91,14 @@
   <!-- ── OFFRES ── -->
   <section class="offers-section">
     <div class="container">
-      <div class="section-header fade-in">
+      <div class="section-header">
         <h2>Offres &amp; outils comptables</h2>
         <p>Abonnements, templates OHADA et annuaire d'experts/paiement Mobile Money accepté.</p>
       </div>
 
-      <div class="offers-grid fade-in" id="offersGrid"></div>
+      <div class="offers-grid" id="offersGrid"></div>
 
-      <div class="cta-banner fade-in">
+      <div class="cta-banner">
         <div>
           <h2>Prêt à passer à la vitesse supérieure ?</h2>
           <p>Découvrez toutes nos offres et choisissez le plan adapté à votre activité au Bénin.</p>
@@ -114,7 +114,7 @@
   <!-- ── CTA FINAL ── -->
   <section class="cta-section">
     <div class="container">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;" class="fade-in">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;">
         <div>
           <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:0.4rem;">Prêt à commencer ?</h2>
           <p style="font-size:0.95rem;">Consultez le plan comptable ou contactez-nous pour en savoir plus.</p>
@@ -197,9 +197,9 @@ function renderNav() {
 }
 
 function renderHeroVisual() {
-  var cards = CONTENT.heroStats.map(function (s, i) {
+  var cards = CONTENT.heroStats.map(function (s) {
     return (
-      '<div class="hero-stat-card" style="transition-delay:' + (i * 70) + 'ms">' +
+      '<div class="hero-stat-card">' +
         '<div class="stat-icon">' + s.icon + '</div>' +
         '<div>' +
           '<div class="stat-label">' + s.label + '</div>' +
@@ -271,23 +271,6 @@ function initHamburger() {
   });
 }
 
-function initScrollReveal() {
-  var targets = document.querySelectorAll('.fade-in');
-  if (!('IntersectionObserver' in window) || !targets.length) {
-    targets.forEach(function (el) { el.classList.add('visible'); });
-    return;
-  }
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  targets.forEach(function (el) { observer.observe(el); });
-}
-
 /* ─────────────────────────────────────────────────────────────
    INIT
    ───────────────────────────────────────────────────────────── */
@@ -297,7 +280,6 @@ document.addEventListener('DOMContentLoaded', function () {
   renderFeatures();
   renderOffers();
   initHamburger();
-  initScrollReveal();
 });
 </script>
 </body>
