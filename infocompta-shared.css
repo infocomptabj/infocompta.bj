@@ -509,7 +509,8 @@ footer {
   position: relative;
   overflow: hidden;
   padding: 6rem 0 5rem;
-  background: rgb(16 57 226 / 0%); /* couleur de repli pendant le chargement de l'image */
+  min-height: 620px;
+  
 }
 .hero::before {
   content: '';
@@ -556,6 +557,29 @@ footer {
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
   align-items: center;
+}
+
+.hero-top {
+  text-align: left;
+}
+
+.hero-bottom {
+  position: absolute;
+  left: 50%;
+  bottom: 3rem;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 560px;
+  text-align: center;
+  z-index: 4;
+}
+.hero-bottom .hero-sub {
+  text-align: center;
+  max-width: 100%;
+  margin: 0 auto 1.5rem;
+}
+.hero-bottom .hero-actions {
+  justify-content: center;
 }
 .hero-badge {
   display: inline-flex;
