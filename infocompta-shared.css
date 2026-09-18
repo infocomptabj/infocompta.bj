@@ -935,6 +935,13 @@ footer {
 @media (max-width: 1023px) {
   .about-section { padding: 4rem 0; }
   .about-inner   { grid-template-columns: 1fr; gap: 2rem; }
+   .hero .container { padding-left: 1.2rem; /* redevient normal sur mobile */}
+.hero-bottom {
+  position: static;
+  transform: none;
+  max-width: 100%;
+  margin-top: 2rem;
+}
 }
 @media (max-width: 640px) {
   .about-stats { grid-template-columns: 1fr 1fr; }
