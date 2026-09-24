@@ -125,7 +125,7 @@ header {
     0 1px 0 var(--orange-line),
     0 2px 24px rgba(0,0,0,0.28);
 }
-html.ic-authed nav a[href="auth.html"] {
+html.ic-authed header nav a[href="auth.html"] {
   display: none;
 }
 .ic-profile-wrap {
@@ -160,8 +160,8 @@ html.ic-authed .ic-profile-wrap {
 }
 
 /* ── Navigation ── */
-nav ul { list-style: none; display: flex; align-items: center; gap: 0.1rem; }
-nav ul li a {
+header ul { list-style: none; display: flex; align-items: center; gap: 0.1rem; }
+header nav ul li a {
   color: var(--text-on-dark-muted);
   font-size: 0.78rem;
   font-weight: 500;
@@ -172,9 +172,9 @@ nav ul li a {
   transition: color var(--transition), background var(--transition);
   display: block;
 }
-nav ul li a:hover  { color: var(--text-on-dark); background: var(--surface-teal); }
-nav ul li a.active { color: var(--orange-lt); }
-nav ul li a.nav-cta {
+header nav ul li a:hover  { color: var(--text-on-dark); background: var(--surface-teal); }
+header nav ul li a.active { color: var(--orange-lt); }
+header nav ul li a.nav-cta {
   background: var(--orange);
   color: var(--text-on-dark);
   padding: 0.4rem 1.1rem;
@@ -183,7 +183,7 @@ nav ul li a.nav-cta {
   margin-left: 0.5rem;
   transition: background var(--transition), transform var(--transition);
 }
-nav ul li a.nav-cta:hover { background: var(--orange-lt); transform: translateY(-1px); }
+header nav ul li a.nav-cta:hover { background: var(--orange-lt); transform: translateY(-1px); }
 
 /* Hamburger */
 .hamburger {
