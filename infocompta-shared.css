@@ -8,12 +8,17 @@
    Surface   : #FFFFFF (fond principal et cartes)
    Typo      : Outfit (display) + DM Sans (corps)
    Règle clé : texte blanc sur fond primaire/foncé, texte bleu nuit sur fond clair
+
+   ⚠️ IMPORTANT — Police Google Fonts :
+   Le @import a été retiré (il bloquait le parsing du CSS, donc
+   l'affichage du header/menu). Ajoutez ceci dans le <head> du HTML,
+   AVANT le <link> vers ce fichier CSS :
+
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
 ═══════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
-@view-transition {
-  navigation: auto;
-}
 /* ═══════════ VARIABLES ═══════════ */
 :root {
   /* ── Bleu nuit (couleur primaire — header/nav/footer) ── */
@@ -198,7 +203,11 @@ nav ul li a.nav-cta:hover { background: var(--orange-lt); transform: translateY(
   height: 1.5px;
   background: rgba(255,255,255,0.85);
   border-radius: 2px;
-  transition: all 0.28s ease;
+  /* transition: all → transition ciblée : "all" force le navigateur à
+     surveiller/interpoler chaque propriété CSS de l'élément à chaque
+     frame, même celles qui ne changent pas. On ne cible que ce qui bouge
+     réellement ici (transform, opacity), moins coûteux et sans reflow. */
+  transition: transform 0.2s ease, opacity 0.2s ease;
   transform-origin: center;
 }
 .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
@@ -930,32 +939,32 @@ footer {
 @media (max-width: 1023px) {
   header { padding: 0 1.2rem; height: 58px; }
   .logo  { font-size: 1.3rem; }
-  nav { display: none !important; }
+  nav { display: none; }
   nav.open {
-    display: block !important;
-    position: fixed !important;
-    top: 58px !important;
-    left: 0 !important; right: 0 !important;
-    background: var(--teal) !important;
-    border-top: 1px solid rgba(255,255,255,0.08) !important;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.35) !important;
-    z-index: 199 !important;
+    display: block;
+    position: fixed;
+    top: 58px;
+    left: 0; right: 0;
+    background: var(--teal);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+    z-index: 199;
   }
-  nav.open ul { flex-direction: column !important; gap: 0 !important; padding: 0.5rem 0 !important; }
+  nav.open ul { flex-direction: column; gap: 0; padding: 0.5rem 0; }
   nav.open ul li a {
-    padding: 1rem 1.8rem !important;
-    font-size: 0.85rem !important;
-    border-radius: 0 !important;
-    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
-    display: block !important;
-    color: var(--text-on-dark-muted) !important;
+    padding: 1rem 1.8rem;
+    font-size: 0.85rem;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: block;
+    color: var(--text-on-dark-muted);
   }
-  nav.open ul li a:hover { color: var(--text-on-dark) !important; }
+  nav.open ul li a:hover { color: var(--text-on-dark); }
   nav.open ul li a.nav-cta {
-    margin: 0.7rem 1.2rem !important;
-    border-radius: var(--radius) !important;
-    text-align: center !important;
-    color: var(--text-on-dark) !important;
+    margin: 0.7rem 1.2rem;
+    border-radius: var(--radius);
+    text-align: center;
+    color: var(--text-on-dark);
   }
   .hamburger { display: flex; }
   .container { padding: 0 1.2rem; }
