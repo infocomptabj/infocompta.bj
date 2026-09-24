@@ -939,8 +939,8 @@ footer {
 @media (max-width: 1023px) {
   header { padding: 0 1.2rem; height: 58px; }
   .logo  { font-size: 1.3rem; }
-  nav { display: none; }
-  nav.open {
+  header nav { display: none; }
+  header nav.open {
     display: block;
     position: fixed;
     top: 58px;
@@ -950,8 +950,8 @@ footer {
     box-shadow: 0 12px 40px rgba(0,0,0,0.35);
     z-index: 199;
   }
-  nav.open ul { flex-direction: column; gap: 0; padding: 0.5rem 0; }
-  nav.open ul li a {
+  header nav.open ul { flex-direction: column; gap: 0; padding: 0.5rem 0; }
+  header nav.open ul li a {
     padding: 1rem 1.8rem;
     font-size: 0.85rem;
     border-radius: 0;
@@ -959,8 +959,8 @@ footer {
     display: block;
     color: var(--text-on-dark-muted);
   }
-  nav.open ul li a:hover { color: var(--text-on-dark); }
-  nav.open ul li a.nav-cta {
+  header nav.open ul li a:hover { color: var(--text-on-dark); }
+  header nav.open ul li a.nav-cta {
     margin: 0.7rem 1.2rem;
     border-radius: var(--radius);
     text-align: center;
