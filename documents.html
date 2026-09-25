@@ -550,6 +550,7 @@ function setFilter(cat, btn) {
 }
 
 document.getElementById('statTotal').textContent = documents.length;
+document.getElementById('statFree').textContent = Math.round(documents.filter(d => !d.payant).length / documents.length * 100) + '%';  
 renderCards(documents);
 </script>
 </body>
