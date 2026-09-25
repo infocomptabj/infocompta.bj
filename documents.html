@@ -158,6 +158,18 @@
 .tag-modele    { background: rgba(109,40,217,0.1); color: #6D28D9; }
 .tag-procedure { background: rgba(37,99,235,0.1); color: #2563eb; }
 
+.doc-price-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(196,147,58,0.12);
+  color: var(--gold);
+  white-space: nowrap;
+}
+.btn-dl.btn-dl-payant { background: var(--gold); }
+.btn-dl.btn-dl-payant:hover { background: #a5791f; }
+    
 .doc-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.05rem;
@@ -317,7 +329,7 @@
       </div>
       <div class="stat-divider"></div>
       <div class="stat-item">
-        <span class="stat-num" style="color:var(--gold);">100%</span>
+        <span class="stat-num" style="color:var(--gold);" id="statFree">–</span>
         <span class="stat-lbl">Gratuit</span>
       </div>
     </div>
@@ -443,6 +455,25 @@ const stripeClass = { officiel:'stripe-officiel', fiscal:'stripe-fiscal', guide:
 const iconClass   = { officiel:'icon-officiel',   fiscal:'icon-fiscal',   guide:'icon-guide',   modele:'icon-modele',   procedure:'icon-procedure' };
 const tagClass    = { officiel:'tag-officiel',     fiscal:'tag-fiscal',    guide:'tag-guide',    modele:'tag-modele',    procedure:'tag-procedure' };
 
+function icHasSession() {
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (!raw) return false;
+    var parsed = JSON.parse(raw);
+    if (parsed.expires_at && parsed.expires_at * 1000 < Date.now()) return false;
+    return true;
+  } catch (e) { return false; }
+}
+
+function handleDownloadClick(docId) {
+  if (!icHasSession()) {
+    window.location.href = 'auth.html?redirect=documents.html';
+    return;
+  }
+  // Étape 4 : vérifier l'achat existant / déclencher le paiement FedaPay
+  alert('Authentifié — flux de paiement à venir (Étape 4).');
+}
+  
 function renderCards(list) {
   const grid  = document.getElementById('docGrid');
   const empty = document.getElementById('emptyState');
@@ -463,6 +494,7 @@ function renderCards(list) {
         <div class="doc-header">
           <div class="doc-icon-wrap ${iconClass[doc.categorie] || 'icon-officiel'}">${doc.icone}</div>
           <span class="doc-tag ${tagClass[doc.categorie] || 'tag-officiel'}">${doc.tag}</span>
+          ${doc.payant ? `<span class="doc-price-badge">${doc.prix} FCFA</span>` : ''}
         </div>
         <div class="doc-title">${doc.titre}</div>
         <div class="doc-desc">${doc.description}</div>
@@ -476,6 +508,11 @@ function renderCards(list) {
           ? `<button class="btn-dl" style="background:var(--muted);cursor:not-allowed;opacity:0.55;" disabled>
                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
                Bientôt disponible
+             </button>`
+          : doc.payant
+          ? `<button class="btn-dl btn-dl-payant" onclick="handleDownloadClick('${doc.id}')">
+               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+               Télécharger — ${doc.prix} FCFA
              </button>`
           : `<a class="btn-dl" href="${doc.url}" target="_blank" rel="noopener">
                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
