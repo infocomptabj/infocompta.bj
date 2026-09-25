@@ -418,7 +418,7 @@ footer {
   color: var(--text-on-dark);
   position: relative;
   overflow: hidden;
-  }
+}
 .hero-sm::before {
   content: '';
   position: absolute;
