@@ -485,7 +485,7 @@ function renderCards(list) {
   }
   empty.classList.remove('visible');
   list.forEach(doc => {
-    const bientot = doc.url === '#';
+    const bientot = !doc.payant && doc.url === '#';
     const card = document.createElement('div');
     card.className = 'doc-card';
     card.innerHTML = `
