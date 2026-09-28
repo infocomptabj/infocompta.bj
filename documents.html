@@ -467,13 +467,96 @@ function icHasSession() {
   } catch (e) { return false; }
 }
 
-function handleDownloadClick(docId) {
-  if (!icHasSession()) {
+async function handleDownloadClick(docId) {
+  const doc = documents.find(function (d) { return d.id === docId; });
+  if (!doc) return;
+
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
     window.location.href = 'auth.html?redirect=documents.html';
     return;
   }
-  // Étape 4 : vérifier l'achat existant / déclencher le paiement FedaPay
-  alert('Authentifié.');
+
+  // Cet utilisateur a-t-il déjà acheté ce document avec des téléchargements restants ?
+  const { data: purchases, error } = await sb
+    .from('document_purchases')
+    .select('id, downloads_remaining')
+    .eq('document_id', docId)
+    .gt('downloads_remaining', 0)
+    .limit(1);
+
+  if (error) {
+    console.error(error);
+    alert('Impossible de vérifier vos achats. Veuillez réessayer.');
+    return;
+  }
+
+  if (purchases && purchases.length > 0) {
+    // Étape 5 : téléchargement réel + décompte
+    alert('Document déjà acheté (' + purchases[0].downloads_remaining + ' téléchargements restants). Téléchargement à venir (Étape 5).');
+    return;
+  }
+
+  startPayment(doc, session);
+}
+
+function startPayment(doc, session) {
+  try {
+    FedaPay.init({
+      public_key: FEDAPAY_PUBLIC_KEY,
+      transaction: { amount: doc.prix, description: doc.titre },
+      currency: { iso: 'XOF' },
+      onComplete: function (resp) {
+        if (!isPaymentSuccessful(resp)) { console.log('Paiement annulé.', resp); return; }
+        recordPurchase(doc.id, resp, session);
+      },
+      onError: function (err) {
+        console.error('Erreur FedaPay :', err);
+        alert('Le paiement a échoué. Veuillez réessayer.');
+      }
+    }).open();
+  } catch (e) {
+    console.error(e);
+    alert('Impossible de démarrer le paiement.');
+  }
+}
+
+async function recordPurchase(docId, resp, session) {
+  try {
+    const r = await fetch(RECORD_PURCHASE_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.access_token,
+        'apikey': SUPABASE_KEY
+      },
+      body: JSON.stringify({
+        document_id: docId,
+        fedapay_transaction_id: (resp && resp.transaction && resp.transaction.id) || null
+      })
+    });
+    const result = await r.json();
+    if (!r.ok || !result.success) throw new Error(result.error || 'Erreur inconnue');
+    alert('Paiement réussi ! Votre achat est enregistré (5 téléchargements). Téléchargement à venir (Étape 5).');
+  } catch (e) {
+    console.error(e);
+    alert('Paiement effectué, mais l\'enregistrement a échoué. Contactez-nous avec votre preuve de paiement.');
+  }
+}
+
+  const SUPABASE_URL = 'https://lmivfisdmuqbspvmvdzh.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_kCfhrFPVec2MkCl0xe4N-w_QXHgc0Gp';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const FEDAPAY_PUBLIC_KEY = 'pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg';
+const RECORD_PURCHASE_URL = SUPABASE_URL + '/functions/v1/record-purchase';
+
+function isPaymentSuccessful(resp) {
+  if (!resp) return false;
+  if (resp.reason === FedaPay.DIALOG_DISMISSED) return false;
+  if (resp.status && resp.status !== 'success') return false;
+  if (resp.transaction && resp.transaction.status && resp.transaction.status !== 'success') return false;
+  return true;
 }
   
 function renderCards(list) {
