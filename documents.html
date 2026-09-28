@@ -597,7 +597,7 @@ function renderCards(list) {
           : doc.payant
           ? `<button class="btn-dl btn-dl-payant" onclick="handleDownloadClick('${doc.id}')">
                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-               Télécharger — ${doc.prix} FCFA
+               Télécharger ( ${doc.prix} ) FCFA
              </button>`
           : `<a class="btn-dl" href="${doc.url}" target="_blank" rel="noopener">
                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
