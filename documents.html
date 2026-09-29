@@ -169,7 +169,7 @@
   color: var(--gold);
   white-space: nowrap;
 }
-.btn-dl.btn-dl-payant { background: var(--gold); }
+.btn-dl.btn-dl-payant { background: #00085b; }
 .btn-dl.btn-dl-payant:hover { background: #a5791f; }
     
 .doc-title {
@@ -579,7 +579,7 @@ function renderCards(list) {
         <div class="doc-header">
           <div class="doc-icon-wrap ${iconClass[doc.categorie] || 'icon-officiel'}">${doc.icone}</div>
           <span class="doc-tag ${tagClass[doc.categorie] || 'tag-officiel'}">${doc.tag}</span>
-          ${doc.payant ? `<span class="doc-price-badge">${doc.prix} FCFA</span>` : ''}
+          ${doc.payant ? : ''}
         </div>
         <div class="doc-title">${doc.titre}</div>
         <div class="doc-desc">${doc.description}</div>
@@ -601,7 +601,7 @@ function renderCards(list) {
              </button>`
           : `<a class="btn-dl" href="${doc.url}" target="_blank" rel="noopener">
                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-               Télécharger PDF
+               Télécharger
              </a>`
         }
       </div>`;
