@@ -482,6 +482,7 @@ async function handleDownloadClick(docId) {
     .from('document_purchases')
     .select('id, downloads_remaining')
     .eq('document_id', docId)
+    .eq('user_id', session.user.id
     .gt('downloads_remaining', 0)
     .limit(1);
 
