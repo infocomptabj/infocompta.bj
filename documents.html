@@ -578,7 +578,7 @@ function renderCards(list) {
         <div class="doc-header">
           <div class="doc-icon-wrap ${iconClass[doc.categorie] || 'icon-officiel'}">${doc.icone}</div>
           <span class="doc-tag ${tagClass[doc.categorie] || 'tag-officiel'}">${doc.tag}</span>
-          
+          ${doc.payant ? `<span class="doc-price-badge">${doc.prix} FCFA</span>` : ''}
         </div>
         <div class="doc-title">${doc.titre}</div>
         <div class="doc-desc">${doc.description}</div>
