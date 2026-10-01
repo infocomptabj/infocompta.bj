@@ -552,11 +552,9 @@ const FEDAPAY_PUBLIC_KEY = 'pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg';
 const RECORD_PURCHASE_URL = SUPABASE_URL + '/functions/v1/record-purchase';
 
 function isPaymentSuccessful(resp) {
-  if (!resp) return false;
-  if (resp.reason === FedaPay.DIALOG_DISMISSED) return false;
-  if (resp.status && resp.status !== 'success') return false;
-  if (resp.transaction && resp.transaction.status && resp.transaction.status !== 'success') return false;
-  return true;
+  if (!resp || resp.reason !== FedaPay.CHECKOUT_COMPLETED) return false;
+  const status = resp.transaction && resp.transaction.status;
+  return status === 'approved' || status === 'transferred';
 }
   
 function renderCards(list) {
