@@ -347,11 +347,10 @@
     <div class="section-sep" style="margin-top:3rem;">
       <h2>Proposer un document</h2>
     </div>
-    <div class="upload-zone" onclick="document.getElementById('upload').click()">
-      <div class="upload-icon">📤</div>
-      <p>Vous avez un document officiel à partager avec la communauté ?<br>Cliquez ici pour nous le soumettre.</p>
-      <input type="file" id="upload" style="display:none" accept=".pdf,.doc,.docx,.xlsx">
-    </div>
+  <a class="upload-zone" href="contact.html" style="display:block;text-decoration:none;">
+  <div class="upload-icon">📤</div>
+  <p>Vous avez un document officiel à partager avec la communauté ?<br>Écrivez-nous via la page Contact pour nous le soumettre.</p>
+  </a>
 
   </div>
 </main>
@@ -445,196 +444,341 @@ const documents = [
     { titre:"Guide d'application du SYSCOHADA Révisé", description:"Guide officiel OHADA d'application du SYSCOHADA révisé : règles, traitements et présentation des états financiers.", categorie:"officiel", tag:"Guide OHADA", icone:"📚", annee:"2017", source:"OHADA", url:"https://www.ohada.com/uploads/actualite/3504/Guide-d-application-du-SYSCOHADA.pdf" },
 
     /* -- Modèles comptables -- */
-    { id:"modele-bilan-syscohada", titre:"Modèle - Bilan SYSCOHADA (Système Normal)", description:"Modèle vierge de bilan selon le système normal SYSCOHADA : actif immobilisé, actif circulant, capitaux propres et dettes.", categorie:"modele", tag:"Modèle", icone:"📊", annee:"2024", source:"InfoCompta", url:"#", payant:true, prix:1500 },
-    { id:"modele-compte-resultat-syscohada", titre:"Modèle - Compte de Résultat SYSCOHADA", description:"Modèle vierge de compte de résultat : charges et produits des activités ordinaires, résultat H.A.O., impôt sur le résultat.", categorie:"modele", tag:"Modèle", icone:"📈", annee:"2024", source:"InfoCompta", url:"#", payant:true, prix:1500 },
-    { id:"modele-journal-de-caisse", titre:"Modèle - Journal de Caisse", description:"Modèle de journal de caisse journalier : recettes, dépenses, soldes, avec colonnes TVA récupérable.", categorie:"modele", tag:"Modèle", icone:"💰", annee:"2024", source:"InfoCompta", url:"#", payant:true, prix:1000 },
-    { id:"modele-tableau-immobilisations", titre:"Modèle - Tableau des Immobilisations et Amortissements", description:"Tableau de suivi des immobilisations : entrées, sorties, amortissements cumulés, valeur nette comptable.", categorie:"modele", tag:"Modèle", icone:"🏗️", annee:"2024", source:"InfoCompta", url:"#", payant:true, prix:1500 },
+     { titre:"Modèle - Liste des Comptes OHADA", description:"Liste des comptes comptables du système OHADA.", categorie:"modele", tag:"Modèle", icone:"📒", annee:"2026", source:"InfoCompta", url:"https://drive.google.com/uc?export=download&id=1xOUy-6d9fOVSHmhkbhPRmKtlTpJmJcFl" }
 
-  { titre:"Modèle - Liste des Comptes OHADA", description:"Liste des comptes comptable Du Système OHADA.", categorie:"modele", tag:"Modèle", icone:"🏗️", annee:"2026", source:"InfoCompta", url:"https://drive.google.com/uc?export=download&id=1xOUy-6d9fOVSHmhkbhPRmKtlTpJmJcFl"}
-  ];
 
 const stripeClass = { officiel:'stripe-officiel', fiscal:'stripe-fiscal', guide:'stripe-guide', modele:'stripe-modele', procedure:'stripe-procedure' };
 const iconClass   = { officiel:'icon-officiel',   fiscal:'icon-fiscal',   guide:'icon-guide',   modele:'icon-modele',   procedure:'icon-procedure' };
 const tagClass    = { officiel:'tag-officiel',     fiscal:'tag-fiscal',    guide:'tag-guide',    modele:'tag-modele',    procedure:'tag-procedure' };
 
-function icHasSession() {
-  try {
-    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
-    if (!raw) return false;
-    var parsed = JSON.parse(raw);
-    if (parsed.expires_at && parsed.expires_at * 1000 < Date.now()) return false;
-    return true;
-  } catch (e) { return false; }
-}
-
-async function handleDownloadClick(docId) {
-  const doc = documents.find(function (d) { return d.id === docId; });
-  if (!doc) return;
-
-  const { data: { session } } = await sb.auth.getSession();
-  if (!session) {
-    window.location.href = 'auth.html?redirect=documents.html';
-    return;
-  }
-
-  // Cet utilisateur a-t-il déjà acheté ce document avec des téléchargements restants ?
-  const { data: purchases, error } = await sb
-    .from('document_purchases')
-    .select('id, downloads_remaining')
-    .eq('document_id', docId)
-    .eq('user_id', session.user.id)
-    .gt('downloads_remaining', 0)
-    .limit(1);
-
-  if (error) {
-    console.error(error);
-    alert('Impossible de vérifier vos achats. Veuillez réessayer.');
-    return;
-  }
-
-  if (purchases && purchases.length > 0) {
-    // Étape 5 : téléchargement réel + décompte
-    alert('Document déjà acheté (' + purchases[0].downloads_remaining + ' téléchargements restants). Téléchargement à venir (Étape 5).');
-    return;
-  }
-
-  startPayment(doc, session);
-}
-
-function startPayment(doc, session) {
-  try {
-    FedaPay.init({
-      public_key: FEDAPAY_PUBLIC_KEY,
-      transaction: { amount: doc.prix, description: doc.titre },
-      currency: { iso: 'XOF' },
-      onComplete: function (resp) {
-        if (!isPaymentSuccessful(resp)) { console.log('Paiement annulé.', resp); return; }
-        recordPurchase(doc.id, resp, session);
-      },
-      onError: function (err) {
-        console.error('Erreur FedaPay :', err);
-        alert('Le paiement a échoué. Veuillez réessayer.');
-      }
-    }).open();
-  } catch (e) {
-    console.error(e);
-    alert('Impossible de démarrer le paiement.');
-  }
-}
-
-async function recordPurchase(docId, resp, session) {
-  try {
-    const r = await fetch(RECORD_PURCHASE_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session.access_token,
-        'apikey': SUPABASE_KEY
-      },
-      body: JSON.stringify({
-        document_id: docId,
-        fedapay_transaction_id: (resp && resp.transaction && resp.transaction.id) || null
-      })
-    });
-    const result = await r.json();
-    if (!r.ok || !result.success) throw new Error(result.error || 'Erreur inconnue');
-    alert('Paiement réussi ! Votre achat est enregistré (5 téléchargements). Téléchargement à venir (Étape 5).');
-  } catch (e) {
-    console.error(e);
-    alert('Paiement effectué, mais l\'enregistrement a échoué. Contactez-nous avec votre preuve de paiement.');
-  }
-}
-
-  const SUPABASE_URL = 'https://lmivfisdmuqbspvmvdzh.supabase.co';
+/* ═══ CONFIG ═══ */
+const SUPABASE_URL = 'https://lmivfisdmuqbspvmvdzh.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_kCfhrFPVec2MkCl0xe4N-w_QXHgc0Gp';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const FEDAPAY_PUBLIC_KEY = 'pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg';
+const FEDAPAY_PUBLIC_KEY  = 'pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg';
 const RECORD_PURCHASE_URL = SUPABASE_URL + '/functions/v1/record-purchase';
+const DOWNLOAD_URL        = SUPABASE_URL + '/functions/v1/download-document';
+const PAGE_SIZE = 30;
 
-function isPaymentSuccessful(resp) {
-  if (!resp || resp.reason !== FedaPay.CHECKOUT_COMPLETED) return false;
-  const status = resp.transaction && resp.transaction.status;
-  return status === 'approved' || status === 'transferred';
+/* ═══ STYLES AJOUTÉS (catalogue payant, fenêtre d'achat, messages) ═══ */
+(function () {
+  const s = document.createElement('style');
+  s.textContent = `
+.group-title{grid-column:1/-1;font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--navy);margin:1.6rem 0 .2rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);}
+.group-title:first-child{margin-top:0;}
+.btn-more{display:block;margin:2rem auto 0;background:transparent;border:1.5px solid var(--navy);color:var(--navy);padding:.65rem 1.6rem;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;}
+.btn-more:hover{background:var(--navy);color:#fff;}
+.btn-dl[disabled]{opacity:.65;cursor:wait;}
+#icToast{position:fixed;left:50%;bottom:1.5rem;transform:translate(-50%,20px);background:var(--navy);color:#fff;padding:.8rem 1.2rem;border-radius:var(--radius);font-size:.85rem;line-height:1.5;max-width:min(92vw,460px);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:300;}
+#icToast.show{opacity:1;transform:translate(-50%,0);}
+#icToast.err{background:#b42318;}
+.ic-modal{position:fixed;inset:0;background:rgba(15,31,53,.55);display:flex;align-items:center;justify-content:center;padding:1rem;z-index:400;}
+.ic-modal-box{background:var(--surface);border-radius:var(--radius-md);padding:1.6rem;max-width:420px;width:100%;box-shadow:var(--shadow-md);}
+.ic-modal-box h3{font-size:1.1rem;margin-bottom:.6rem;}
+.ic-modal-box p{font-size:.88rem;color:var(--muted);line-height:1.6;margin-bottom:1.2rem;}
+.ic-modal-actions{display:flex;gap:.6rem;justify-content:flex-end;flex-wrap:wrap;}
+.ic-btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);padding:.55rem 1.1rem;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:.76rem;font-weight:600;cursor:pointer;}
+`;
+  document.head.appendChild(s);
+})();
+
+/* ═══ OUTILS ═══ */
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+  });
 }
-  
-function renderCards(list) {
-  const grid  = document.getElementById('docGrid');
-  const empty = document.getElementById('emptyState');
-  grid.innerHTML = '';
-  if (list.length === 0) {
-    empty.classList.add('visible');
-    document.getElementById('statVisible').textContent = 0;
-    return;
+function fmtPrice(n) { return Number(n).toLocaleString('fr-FR') + ' FCFA'; }
+
+function toast(msg, type) {
+  let t = document.getElementById('icToast');
+  if (!t) { t = document.createElement('div'); t.id = 'icToast'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.className = 'show ' + (type || '');
+  clearTimeout(t._h);
+  t._h = setTimeout(function () { t.className = ''; }, 5500);
+}
+
+function setBusy(btn, on) {
+  if (!btn) return;
+  if (on) { btn._html = btn.innerHTML; btn.disabled = true; btn.textContent = 'Veuillez patienter…'; }
+  else { btn.disabled = false; if (btn._html) btn.innerHTML = btn._html; }
+}
+
+/* ═══ DONNÉES ═══ */
+let premiumDocs = [];        // catalogue payant (Supabase)
+let currentFilter = 'tous';
+let visibleCount = PAGE_SIZE;
+
+function allDocs() { return documents.concat(premiumDocs); }
+function findDoc(id) { return premiumDocs.find(function (d) { return d.id === id; }); }
+
+async function loadCatalog() {
+  const { data, error } = await sb.from('documents_public').select('*').order('categorie').order('titre').limit(1000);
+  if (error) throw error;
+  premiumDocs = (data || []).map(function (r) {
+    const ext = String(r.extension || '').replace('.', '').toLowerCase();
+    const isExcel = /^xls/.test(ext);
+    const rubrique = r.categorie || 'Divers';
+    return {
+      id: r.id, titre: r.titre, rubrique: rubrique,
+      categorie: 'modele', tag: ext ? ext.toUpperCase() : 'Modèle',
+      icone: isExcel ? '📗' : '📘',
+      description: (isExcel ? 'Fichier Excel' : 'Document Word') + ' prêt à l\'emploi · ' + rubrique,
+      annee: '', source: r.archive || 'InfoCompta',
+      payant: true, prix: r.prix, url: '#'
+    };
+  });
+}
+
+function updateStats() {
+  document.getElementById('statTotal').textContent = allDocs().length;
+  document.getElementById('statFree').textContent = documents.filter(function (d) { return !d.payant; }).length;
+}
+
+/* ═══ AFFICHAGE ═══ */
+const DL_ICON = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>';
+
+function cardHtml(doc) {
+  const bientot = !doc.payant && doc.url === '#';
+  let footer;
+  if (bientot) {
+    footer = `<button class="btn-dl" style="background:var(--muted);cursor:not-allowed;opacity:0.55;" disabled>${DL_ICON} Bientôt disponible</button>`;
+  } else if (doc.payant) {
+    footer = `<button class="btn-dl btn-dl-payant" data-id="${esc(doc.id)}">${DL_ICON} Télécharger · ${fmtPrice(doc.prix)}</button>`;
+  } else {
+    footer = `<a class="btn-dl" href="${esc(doc.url)}" target="_blank" rel="noopener">${DL_ICON} Télécharger</a>`;
   }
-  empty.classList.remove('visible');
-  list.forEach(doc => {
-    const bientot = !doc.payant && doc.url === '#';
-    const card = document.createElement('div');
-    card.className = 'doc-card';
-    card.innerHTML = `
+  return `
+    <div class="doc-card">
       <div class="doc-stripe ${stripeClass[doc.categorie] || 'stripe-officiel'}"></div>
       <div class="doc-body">
         <div class="doc-header">
           <div class="doc-icon-wrap ${iconClass[doc.categorie] || 'icon-officiel'}">${doc.icone}</div>
-          <span class="doc-tag ${tagClass[doc.categorie] || 'tag-officiel'}">${doc.tag}</span>
-          </div>
-        <div class="doc-title">${doc.titre}</div>
-        <div class="doc-desc">${doc.description}</div>
+          <span class="doc-tag ${tagClass[doc.categorie] || 'tag-officiel'}">${esc(doc.tag)}</span>
+        </div>
+        <div class="doc-title">${esc(doc.titre)}</div>
+        <div class="doc-desc">${esc(doc.description)}</div>
         <div class="doc-meta-row">
-          <span>📅 ${doc.annee}</span>
-          <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">🏛 ${doc.source}</span>
+          ${doc.annee ? `<span>📅 ${esc(doc.annee)}</span>` : ''}
+          <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">🏛 ${esc(doc.source)}</span>
         </div>
       </div>
-      <div class="doc-footer">
-        ${bientot
-          ? `<button class="btn-dl" style="background:var(--muted);cursor:not-allowed;opacity:0.55;" disabled>
-               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-               Bientôt disponible
-             </button>`
-          : doc.payant
-          ? `<button class="btn-dl btn-dl-payant" onclick="handleDownloadClick('${doc.id}')">
-               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-               Télécharger (${doc.prix}) FCFA
-             </button>`
-          : `<a class="btn-dl" href="${doc.url}" target="_blank" rel="noopener">
-               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-               Télécharger
-             </a>`
-        }
-      </div>`;
-    grid.appendChild(card);
-  });
-  document.getElementById('statVisible').textContent = list.length;
+      <div class="doc-footer">${footer}</div>
+    </div>`;
 }
 
-let currentFilter = 'tous';
+function renderCards(list) {
+  const grid  = document.getElementById('docGrid');
+  const empty = document.getElementById('emptyState');
+  let more = document.getElementById('loadMore');
+  if (!more) {
+    more = document.createElement('button');
+    more.id = 'loadMore';
+    more.className = 'btn-more';
+    more.onclick = function () { visibleCount += PAGE_SIZE; renderCards(getFiltered()); };
+    grid.insertAdjacentElement('afterend', more);
+  }
+
+  document.getElementById('statVisible').textContent = list.length;
+  if (list.length === 0) {
+    grid.innerHTML = '';
+    more.style.display = 'none';
+    empty.classList.add('visible');
+    return;
+  }
+  empty.classList.remove('visible');
+
+  const shown = list.slice(0, visibleCount);
+  let lastRub = null, html = '';
+  shown.forEach(function (doc) {
+    if (doc.rubrique && doc.rubrique !== lastRub) {
+      html += `<h3 class="group-title">${esc(doc.rubrique)}</h3>`;
+      lastRub = doc.rubrique;
+    }
+    html += cardHtml(doc);
+  });
+  grid.innerHTML = html;
+
+  const left = list.length - shown.length;
+  more.style.display = left > 0 ? 'block' : 'none';
+  more.textContent = 'Afficher plus (' + left + ' restants)';
+}
 
 function getFiltered() {
   const q = (document.getElementById('docSearch').value || '').toLowerCase().trim();
-  return documents.filter(doc => {
+  return allDocs().filter(function (doc) {
     const catOk = currentFilter === 'tous' || doc.categorie === currentFilter;
-    const qOk   = !q
+    const qOk = !q
       || doc.titre.toLowerCase().includes(q)
       || doc.description.toLowerCase().includes(q)
       || doc.tag.toLowerCase().includes(q)
-      || doc.source.toLowerCase().includes(q);
+      || doc.source.toLowerCase().includes(q)
+      || (doc.rubrique || '').toLowerCase().includes(q);
     return catOk && qOk;
   });
 }
 
-function filterDocs() { renderCards(getFiltered()); }
+function filterDocs() { visibleCount = PAGE_SIZE; renderCards(getFiltered()); }
 
 function setFilter(cat, btn) {
   currentFilter = cat;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
   btn.classList.add('active');
   filterDocs();
 }
 
-document.getElementById('statTotal').textContent = documents.length;
-document.getElementById('statFree').textContent = Math.round(documents.filter(d => !d.payant).length / documents.length * 100) + '%';  
-renderCards(documents);
+/* ═══ ACHAT ET TÉLÉCHARGEMENT ═══ */
+function isPaymentSuccessful(resp) {
+  if (!resp || resp.reason !== FedaPay.CHECKOUT_COMPLETED) return false;
+  return !!(resp.transaction && resp.transaction.status === 'approved');
+}
+
+async function requestDownload(docId, session) {
+  const r = await fetch(DOWNLOAD_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + session.access_token,
+      'apikey': SUPABASE_KEY
+    },
+    body: JSON.stringify({ documentId: docId })
+  });
+  const body = await r.json().catch(function () { return {}; });
+  return { ok: r.ok, status: r.status, body: body };
+}
+
+function confirmPurchase(doc, renew) {
+  return new Promise(function (resolve) {
+    const o = document.createElement('div');
+    o.className = 'ic-modal';
+    o.innerHTML = `
+      <div class="ic-modal-box" role="dialog" aria-modal="true">
+        <h3>${esc(doc.titre)}</h3>
+        <p>${renew ? 'Vos 5 téléchargements de ce document sont utilisés. ' : ''}
+        Prix : <strong>${fmtPrice(doc.prix)}</strong><br>
+        Un paiement vous donne <strong>5 téléchargements</strong> de ce document. Ensuite, un nouveau paiement est nécessaire.</p>
+        <div class="ic-modal-actions">
+          <button class="ic-btn-ghost" data-r="0">Annuler</button>
+          <button class="btn-dl btn-dl-payant" data-r="1">Payer ${fmtPrice(doc.prix)}</button>
+        </div>
+      </div>`;
+    o.addEventListener('click', function (e) {
+      const r = e.target.closest('[data-r]');
+      if (r || e.target === o) { o.remove(); resolve(!!r && r.dataset.r === '1'); }
+    });
+    document.body.appendChild(o);
+  });
+}
+
+function payWithFedaPay(doc, session) {
+  return new Promise(function (resolve) {
+    let settled = false;
+    const done = function (v) { if (!settled) { settled = true; resolve(v); } };
+    try {
+      FedaPay.init({
+        public_key: FEDAPAY_PUBLIC_KEY,
+        transaction: {
+          amount: Number(doc.prix),
+          description: doc.titre,
+          custom_metadata: { user_id: session.user.id, document_id: doc.id }
+        },
+        currency: { iso: 'XOF' },
+        onComplete: function (resp) {
+          done(isPaymentSuccessful(resp) ? resp.transaction.id : null);
+        },
+        onError: function (err) {
+          console.error('Erreur FedaPay :', err);
+          toast('Le paiement a échoué. Veuillez réessayer.', 'err');
+          done(null);
+        }
+      }).open();
+    } catch (e) {
+      console.error(e);
+      toast('Impossible de démarrer le paiement.', 'err');
+      done(null);
+    }
+  });
+}
+
+async function recordPurchase(docId, txId, session) {
+  const r = await fetch(RECORD_PURCHASE_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + session.access_token,
+      'apikey': SUPABASE_KEY
+    },
+    body: JSON.stringify({ document_id: docId, fedapay_transaction_id: txId })
+  });
+  const result = await r.json().catch(function () { return {}; });
+  if (!r.ok || !result.success) {
+    throw new Error('Paiement reçu (transaction n° ' + txId + ') mais l\'enregistrement a échoué. Contactez-nous avec ce numéro.');
+  }
+}
+
+function triggerDownload(url) {
+  const a = document.createElement('a');
+  a.href = url; a.rel = 'noopener';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+let busy = false;
+async function handleDownloadClick(docId, btn) {
+  if (busy) return;
+  const doc = findDoc(docId);
+  if (!doc) return;
+
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'auth.html?redirect=documents.html'; return; }
+
+  busy = true; setBusy(btn, true);
+  try {
+    let res = await requestDownload(doc.id, session);
+
+    if (res.status === 402 && res.body.code === 'NO_DOWNLOADS') {
+      const { count } = await sb.from('document_purchases')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', session.user.id).eq('document_id', doc.id);
+
+      setBusy(btn, false); busy = false;          // le paiement ouvre sa propre fenêtre
+      if (!(await confirmPurchase(doc, (count || 0) > 0))) return;
+      const txId = await payWithFedaPay(doc, session);
+      if (!txId) return;
+      busy = true; setBusy(btn, true);
+
+      await recordPurchase(doc.id, txId, session);
+      res = await requestDownload(doc.id, session);
+    }
+
+    if (!res.ok) throw new Error(res.body.error || 'Téléchargement impossible.');
+
+    triggerDownload(res.body.url);
+    const n = res.body.downloads_remaining;
+    toast(n > 0
+      ? 'Téléchargement lancé · ' + n + ' restant' + (n > 1 ? 's' : '')
+      : 'Téléchargement lancé · vos 5 téléchargements sont utilisés, un nouveau paiement sera nécessaire.');
+  } catch (e) {
+    console.error(e);
+    toast(e.message || 'Une erreur est survenue.', 'err');
+  } finally {
+    busy = false; setBusy(btn, false);
+  }
+}
+
+document.getElementById('docGrid').addEventListener('click', function (e) {
+  const b = e.target.closest('button[data-id]');
+  if (b) handleDownloadClick(b.dataset.id, b);
+});
+
+/* ═══ DÉMARRAGE ═══ */
+updateStats();
+renderCards(getFiltered());
+loadCatalog().then(function () { updateStats(); filterDocs(); }).catch(function (e) {
+  console.error('Catalogue :', e);
+  toast('Le catalogue des documents payants est momentanément indisponible.', 'err');
+});
 </script>
 </body>
 </html>
