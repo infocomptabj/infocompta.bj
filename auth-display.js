@@ -25,7 +25,7 @@
   const style = document.createElement('style');
   style.textContent = `
     .ic-profile-wrap{position:relative;margin-left:.75rem;flex-shrink:0}
-    .ic-avatar-btn{width:36px;height:36px;border-radius:50%;background:rgba(16,57,226,0.14);border:1.5px solid #1039E2;color:#1039E2;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;outline:none;flex-shrink:0;transition:background .2s,border-color .2s}
+    .ic-avatar-btn{width:36px;height:36px;border-radius:50%;background:rgba(16,57,226,0.14);border:1.5px solid #0b0e34;color:#ffffff;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;outline:none;flex-shrink:0;transition:background .2s,border-color .2s}
     .ic-avatar-btn:hover{background:rgba(16,57,226,0.28);border-color:#fff;color:#fff}
     .ic-drop{position:absolute;top:calc(100% + 10px);right:0;background:#fff;border:1px solid #D5DEE9;border-radius:6px;box-shadow:0 8px 32px rgba(0,8,91,0.16);min-width:220px;z-index:9999;opacity:0;pointer-events:none;transform:translateY(6px);transition:opacity .18s ease,transform .18s ease}
     .ic-drop.open{opacity:1;pointer-events:all;transform:translateY(0)}
