@@ -656,9 +656,9 @@ function confirmPurchase(doc, renew) {
     o.innerHTML = `
       <div class="ic-modal-box" role="dialog" aria-modal="true">
         <h3>${esc(doc.titre)}</h3>
-        <p>${renew ? 'Vos 5 téléchargements de ce document sont utilisés. ' : ''}
+        <p>${renew ? 'Vos 2 téléchargements de ce document sont utilisés. ' : ''}
         Prix : <strong>${fmtPrice(doc.prix)}</strong><br>
-        Un paiement vous donne <strong>5 téléchargements</strong> de ce document. Ensuite, un nouveau paiement est nécessaire.</p>
+        Un paiement vous donne <strong>2 téléchargements</strong> de ce document. Ensuite, un nouveau paiement est nécessaire.</p>
         <div class="ic-modal-actions">
           <button class="ic-btn-ghost" data-r="0">Annuler</button>
           <button class="btn-dl btn-dl-payant" data-r="1">Payer ${fmtPrice(doc.prix)}</button>
@@ -758,7 +758,7 @@ async function handleDownloadClick(docId, btn) {
     const n = res.body.downloads_remaining;
     toast(n > 0
       ? 'Téléchargement lancé · ' + n + ' restant' + (n > 1 ? 's' : '')
-      : 'Téléchargement lancé · vos 5 téléchargements sont utilisés, un nouveau paiement sera nécessaire.');
+      : 'Téléchargement lancé · vos 2 téléchargements sont utilisés, un nouveau paiement sera nécessaire.');
   } catch (e) {
     console.error(e);
     toast(e.message || 'Une erreur est survenue.', 'err');
