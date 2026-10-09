@@ -173,7 +173,7 @@ header nav ul li a {
   display: block;
 }
 header nav ul li a:hover  { color: var(--text-on-dark); background: var(--surface-teal); }
-header nav ul li a.active { color: var(--orange-lt); }
+header nav ul li a.active { color: #ffffff; }
 header nav ul li a.nav-cta {
   background: var(--orange);
   color: var(--text-on-dark);
