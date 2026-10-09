@@ -747,7 +747,25 @@ function triggerDownload(url) {
   a.href = url; a.rel = 'noopener';
   document.body.appendChild(a); a.click(); a.remove();
 }
-
+  
+async function telechargerFichier(url, filename) {
+  if (!filename) { triggerDownload(url); return; }
+  try {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const blob = await r.blob();
+    const obj = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = obj;
+    a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(obj); }, 10000);
+  } catch (e) {
+    console.warn('Téléchargement direct :', e);
+    triggerDownload(url);   // secours : nom sans accents
+  }
+}
+  
 let busy = false;
 async function handleDownloadClick(docId, btn) {
   if (busy) return;
@@ -778,7 +796,7 @@ async function handleDownloadClick(docId, btn) {
 
     if (!res.ok) throw new Error(res.body.error || 'Téléchargement impossible.');
 
-        triggerDownload(res.body.url);
+    await telechargerFichier(res.body.url, res.body.filename);
     const n = res.body.downloads_remaining;
     soldes[doc.id] = n;
     renderCards(getFiltered());
