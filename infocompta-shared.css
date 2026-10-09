@@ -29,12 +29,12 @@
 
   /* ── Bleu nuit profond (titres & corps de texte) ── */
   --navy:        #00085B;
-  --navy-dk:     #000440;
+  --navy-dk:     #0b0e34;
   --navy-lt:     #1A237A;
 
   /* ── Bleu royal (accent principal — boutons, liens, onglets actifs) ── */
-  --orange:      #1039E2;
-  --orange-lt:   #3D5AE8;
+  --orange:      #0b0e34;
+  --orange-lt:   #0b0e34;
   --orange-pale: #E7EBFC;
   --orange-line: rgba(16,57,226,0.28);
 
@@ -1191,7 +1191,7 @@ footer {
 
 /* ── Panneau gauche (fond bleu nuit profond) ── */
 .auth-left {
-  background: var(--navy-dk);
+  background: var(--);
   padding: 5rem 4rem;
   display: flex;
   flex-direction: column;
