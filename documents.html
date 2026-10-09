@@ -567,8 +567,10 @@ function cardHtml(doc) {
   let footer;
   if (bientot) {
     footer = `<button class="btn-dl" style="background:var(--muted);cursor:not-allowed;opacity:0.55;" disabled>${DL_ICON} Bientôt disponible</button>`;
-  } else if (doc.payant) {
-    footer = `<button class="btn-dl btn-dl-payant" data-id="${esc(doc.id)}">${DL_ICON} Télécharger · ${fmtPrice(doc.prix)}</button>`;
+    } else if (doc.payant) {
+    const n = soldes[doc.id] || 0;
+    const label = n > 0 ? libelleBouton(doc.id) : 'Télécharger · ' + fmtPrice(doc.prix);
+    footer = `<button class="btn-dl btn-dl-payant" data-id="${esc(doc.id)}">${DL_ICON} ${label}</button>`;
   } else {
     footer = `<a class="btn-dl" href="${esc(doc.url)}" target="_blank" rel="noopener">${DL_ICON} Télécharger</a>`;
   }
@@ -776,8 +778,10 @@ async function handleDownloadClick(docId, btn) {
 
     if (!res.ok) throw new Error(res.body.error || 'Téléchargement impossible.');
 
-    triggerDownload(res.body.url);
+        triggerDownload(res.body.url);
     const n = res.body.downloads_remaining;
+    soldes[doc.id] = n;
+    renderCards(getFiltered());
     toast(n > 0
       ? 'Téléchargement lancé · ' + n + ' restant' + (n > 1 ? 's' : '')
       : 'Téléchargement lancé · vos 2 téléchargements sont utilisés, un nouveau paiement sera nécessaire.');
@@ -797,7 +801,7 @@ document.getElementById('docGrid').addEventListener('click', function (e) {
 /* ═══ DÉMARRAGE ═══ */
 updateStats();
 renderCards(getFiltered());
-loadCatalog().then(function () { updateStats(); filterDocs(); }).catch(function (e) {
+Promise.all([loadCatalog(), chargerSoldes()]).then(function () { updateStats(); filterDocs(); }).catch(function (e) {
   console.error('Catalogue :', e);
   toast('Le catalogue des documents payants est momentanément indisponible.', 'err');
 });
