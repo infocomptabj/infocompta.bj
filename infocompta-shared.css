@@ -161,6 +161,7 @@ html.ic-authed .ic-profile-wrap {
 
 /* ── Navigation ── */
 header ul { list-style: none; display: flex; align-items: center; gap: 0.1rem; }
+/* Style commun à TOUS les liens */
 header nav ul li a {
   color: var(--text-on-dark-muted);
   font-size: 0.78rem;
@@ -169,30 +170,23 @@ header nav ul li a {
   text-transform: uppercase;
   padding: 0.45rem 0.95rem;
   border-radius: var(--radius);
-  transition: color var(--transition), background var(--transition);
+  transition: color var(--transition), background var(--transition), transform var(--transition);
   display: block;
 }
 header nav ul li a:hover  { color: var(--text-on-dark); background: var(--surface-teal); }
 header nav ul li a.active { color: #ffffff; }
-header nav ul li a {
-  background: var(--orange);
-  color: var(--text-on-dark);
-  padding: 0.4rem 1.1rem;
-  border-radius: var(--radius);
-  font-weight: 600;
-  margin-left: 0.5rem;
-  transition: background var(--transition), transform var(--transition);
-}
-.nav-cta {
+
+/* Le CTA : seule sa couleur (et un petit écart) change */
+header nav ul li a.nav-cta {
   background: #0612b3;
   color: var(--text-on-dark);
-  padding: 0.4rem 1.1rem;
-  border-radius: var(--radius);
   font-weight: 600;
   margin-left: 0.5rem;
-  transition: background var(--transition), transform var(--transition);
 }
-header nav ul li a.nav-cta:hover { background: var(--orange-lt); transform: translateY(-1px); }
+header nav ul li a.nav-cta:hover {
+  background: var(--orange-lt);
+  transform: translateY(-1px);
+}
 
 /* Hamburger */
 .hamburger {
