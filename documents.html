@@ -456,6 +456,28 @@ const SUPABASE_URL = 'https://lmivfisdmuqbspvmvdzh.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_kCfhrFPVec2MkCl0xe4N-w_QXHgc0Gp';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+  let soldes = {}; // { document_id: total restant }
+
+async function chargerSoldes() {
+  soldes = {};
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  const { data, error } = await sb
+    .from('document_purchases')
+    .select('document_id, downloads_remaining')
+    .eq('user_id', session.user.id);
+  if (error) { console.error(error); return; }
+  for (const row of data) {
+    soldes[row.document_id] = (soldes[row.document_id] || 0) + row.downloads_remaining;
+  }
+}
+
+function libelleBouton(docId) {
+  const n = soldes[docId] || 0;
+  if (n > 0) return `${n} téléchargement${n > 1 ? 's' : ''} restant${n > 1 ? 's' : ''}`;
+  return 'Télécharger';
+}
+
 const FEDAPAY_PUBLIC_KEY  = 'pk_sandbox_xVqfrpqqgrLpNa9ZPumJOvvg';
 const RECORD_PURCHASE_URL = SUPABASE_URL + '/functions/v1/record-purchase';
 const DOWNLOAD_URL        = SUPABASE_URL + '/functions/v1/download-document';
