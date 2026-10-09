@@ -1200,7 +1200,7 @@ footer {
 
 /* ── Panneau gauche (fond bleu nuit profond) ── */
 .auth-left {
-  background: var(--);
+  background: #0b0e34;
   padding: 5rem 4rem;
   display: flex;
   flex-direction: column;
