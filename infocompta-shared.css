@@ -21,7 +21,7 @@
 
 /* ═══════════ VARIABLES ═══════════ */
 :root {
-  /* ── Bleu nuit (couleur primaire — header/nav/footer) ── */
+  /* ── Bleu nuit (couleur primaire — header/nav/) ── */
   --teal:        #0b0e34;
   --teal-dk:     #000440;
   --teal-md:     #1A237A;
@@ -1719,19 +1719,14 @@ footer {
   grid-template-columns: 2fr 1fr 1fr;
   gap: 2.5rem;
 }
-..footer-brand p {
+.footer-brand p {
   font-size: 0.82rem;
   line-height: 1.7;
   color: var(--text-on-dark-dim);
-  margin: 0.8rem auto 0;
+  margin-top: 0.8rem;
   max-width: 340px;
 }
-.footer-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
+.footer-col { display: flex; flex-direction: column; gap: 0.5rem; }
 .footer-col h4 {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.7rem;
@@ -1751,7 +1746,6 @@ footer {
   color: var(--text-on-dark-dim);
   letter-spacing: 0.04em;
 }
-
 /* ── Responsive ── */
 @media (max-width: 1023px) {
   .expertises-grid { grid-template-columns: 1fr 1fr; }
