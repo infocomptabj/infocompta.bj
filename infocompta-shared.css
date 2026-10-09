@@ -174,8 +174,17 @@ header nav ul li a {
 }
 header nav ul li a:hover  { color: var(--text-on-dark); background: var(--surface-teal); }
 header nav ul li a.active { color: #ffffff; }
-header nav ul li a.nav-cta {
+header nav ul li a {
   background: var(--orange);
+  color: var(--text-on-dark);
+  padding: 0.4rem 1.1rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  margin-left: 0.5rem;
+  transition: background var(--transition), transform var(--transition);
+}
+.nav-cta {
+  background: #0612b3;
   color: var(--text-on-dark);
   padding: 0.4rem 1.1rem;
   border-radius: var(--radius);
