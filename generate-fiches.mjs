@@ -209,18 +209,6 @@ ${renderContent(s.contenu)}
 </script>
 <style>
 .fiche-hero { padding: 2.6rem 0 2.2rem; }
-.fiche-breadcrumb {
-  font-size: 0.76rem;
-  color: var(--text-on-dark-dim);
-  margin-bottom: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.35rem;
-}
-.fiche-breadcrumb a { color: var(--text-on-dark-muted); transition: color var(--transition); }
-.fiche-breadcrumb a:hover { color: var(--orange-lt); }
-.fiche-breadcrumb span.sep { opacity: 0.5; }
 .fiche-hero h1 { font-size: clamp(1.7rem, 3.2vw, 2.5rem); margin-bottom: 0.7rem; }
 .fiche-meta { display: flex; gap: 0.7rem; flex-wrap: wrap; }
 .fiche-badge {
@@ -343,15 +331,6 @@ ${renderContent(s.contenu)}
 
   <section class="hero-sm fiche-hero">
     <div class="container">
-      <div class="fiche-breadcrumb">
-        <a href="../index.html">Accueil</a>
-        <span class="sep">/</span>
-        <a href="../fiscalite-cgi-benin.html">Fiscalité CGI</a>
-        <span class="sep">/</span>
-        <a href="../fiscalite-cgi-benin.html#${livreMeta.id}">${escapeHtml(livreMeta.titre)}</a>
-        <span class="sep">/</span>
-        <span>${escapeHtml(titre)}</span>
-      </div>
       <h1>${escapeHtml(titre)}</h1>
       <div class="fiche-meta">
         <span class="fiche-badge">${livreMeta.label} — ${escapeHtml(livreMeta.titre)}</span>
