@@ -114,6 +114,34 @@
 .fiche-section li { font-size: 0.94rem; color: var(--text-md); margin-bottom: 0.4rem; line-height: 1.6; }
 .fiche-section strong { color: var(--navy); }
 
+/* Tableau : barème usufruit / nue-propriété */
+.bareme-wrap {
+  margin: -1.2rem 0 2.6rem;
+  overflow-x: auto;
+}
+.bareme-usufruit {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.94rem;
+  color: #000;
+  background: #fff;
+}
+.bareme-usufruit th,
+.bareme-usufruit td {
+  border: 1px solid #000;
+  padding: 6px 10px;
+  vertical-align: middle;
+}
+.bareme-usufruit th {
+  font-weight: 700;
+  text-align: center;
+}
+.bareme-usufruit thead th.bareme-age { width: 36%; }
+.bareme-usufruit tbody td:first-child { text-align: left; }
+.bareme-usufruit tbody td:not(:first-child) { text-align: center; }
+.bareme-usufruit sup { font-size: 0.65em; line-height: 0; }
+
 .fiche-nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -232,6 +260,30 @@
 <p>Moins de 60 ans : Usufruit 3/10e \| Nue-propriété 7/10e.</p>
 <p>Plus de 70 ans : Usufruit 1/10e \| Nue-propriété 9/10e.</p>
 <p>Note : Pour un usufruit à durée fixe, il est estimé à 2/10e de la pleine propriété pour chaque période de 10 ans.</p>
+        </div>
+
+        <div class="bareme-wrap">
+          <table class="bareme-usufruit">
+            <thead>
+              <tr>
+                <th class="bareme-age" rowspan="2">Age de l’usufruitier</th>
+                <th colspan="2">Valeur par rapport à la pleine propriété :</th>
+              </tr>
+              <tr>
+                <th>de l’usufruit</th>
+                <th>de la nue-propriété</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Moins de 20 ans révolus</td><td>7/10<sup>e</sup></td><td>3/10<sup>e</sup></td></tr>
+              <tr><td>Moins de 30 ans révolus</td><td>6/10<sup>e</sup></td><td>4/10<sup>e</sup></td></tr>
+              <tr><td>Moins de 40 ans révolus</td><td>5/10<sup>e</sup></td><td>5/10<sup>e</sup></td></tr>
+              <tr><td>Moins de 50 ans révolus</td><td>4/10<sup>e</sup></td><td>6/10<sup>e</sup></td></tr>
+              <tr><td>Moins de 60 ans révolus</td><td>3/10<sup>e</sup></td><td>7/10<sup>e</sup></td></tr>
+              <tr><td>Moins de 70 ans révolus</td><td>2/10<sup>e</sup></td><td>8/10<sup>e</sup></td></tr>
+              <tr><td>Plus de 70 ans révolus</td><td>1/10<sup>e</sup></td><td>9/10<sup>e</sup></td></tr>
+            </tbody>
+          </table>
         </div>
 
         </article>
