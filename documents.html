@@ -178,7 +178,7 @@
   white-space: nowrap;
 }
 .btn-dl.btn-dl-payant { background: #00085b; }
-.btn-dl.btn-dl-payant:hover { background: #a5791f; }
+.btn-dl.btn-dl-payant:hover { background: var(--navy-lt); }
     
 .doc-title {
   font-family: 'Cormorant Garamond', serif;
@@ -327,24 +327,25 @@
 <main>
   <div class="container" style="padding-top:2.5rem;padding-bottom:5rem;">
 
-    <div class="stats-bar">
-      <div class="stat-item">
-        <span class="stat-num" id="statTotal">0</span>
-        <span class="stat-lbl">Documents disponibles</span>
-      </div>
-      <div class="stat-divider"></div>
+        <div class="stats-bar">
       <div class="stat-item">
         <span class="stat-num" id="statVisible">0</span>
-        <span class="stat-lbl">Résultats affichés</span>
+        <span class="stat-lbl">Documents</span>
       </div>
       <div class="stat-divider"></div>
       <div class="stat-item">
-        <span class="stat-num" style="color:#00085b;" id="statFree">–</span>
-        <span class="stat-lbl">Gratuit</span>
+        <span class="stat-num" style="color:#2d7a4f;" id="statFree">–</span>
+        <span class="stat-lbl">Gratuits</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num" id="statPremium">–</span>
+        <span class="stat-lbl">Premium</span>
       </div>
     </div>
-
-    <div id="docGrid" class="doc-grid"></div>
+    
+    
+      <div id="docGrid" class="doc-grid"></div>
 
     <div class="empty-state" id="emptyState">
       <div class="empty-icon">🔍</div>
@@ -616,8 +617,8 @@ async function loadCatalog() {
 }
 
 function updateStats() {
-  document.getElementById('statTotal').textContent = allDocs().length;
-  document.getElementById('statFree').textContent = documents.filter(function (d) { return !d.payant; }).length;
+  document.getElementById('statFree').textContent = documents.length;
+  document.getElementById('statPremium').textContent = premiumDocs.length;
 }
 
 /* ═══ AFFICHAGE ═══ */
@@ -641,7 +642,10 @@ function cardHtml(doc) {
       <div class="doc-body">
         <div class="doc-header">
           <div class="doc-icon-wrap ${iconClass[doc.categorie] || 'icon-officiel'}">${doc.icone}</div>
-          <span class="doc-tag ${tagClass[doc.categorie] || 'tag-officiel'}">${esc(doc.tag)}</span>
+          <div class="doc-badges">
+            <span class="doc-tag ${tagClass[doc.categorie] || 'tag-officiel'}">${esc(doc.tag)}</span>
+            <span class="doc-access ${doc.payant ? 'access-premium' : 'access-free'}">${doc.payant ? 'Premium' : 'Gratuit'}</span>
+          </div>>
         </div>
         <div class="doc-title">${esc(doc.titre)}</div>
         <div class="doc-desc">${esc(doc.description)}</div>
