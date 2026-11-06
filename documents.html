@@ -118,15 +118,6 @@
   border-color: var(--gold-line);
 }
 .doc-card.hidden { display: none; }
-
-.doc-badges { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
-.doc-access {
-  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.07em;
-  text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
-}
-.access-free    { background: rgba(45,122,79,0.12); color: #2d7a4f; }
-.access-premium { background: var(--navy); color: #fff; }
-
 .doc-stripe { height: 3px; flex-shrink: 0; }
 .stripe-officiel  { background: linear-gradient(90deg, #1a2e4a, #2a4265); }
 .stripe-fiscal    { background: linear-gradient(90deg, var(--gold), var(--gold-lt)); }
@@ -179,7 +170,8 @@
 }
 .btn-dl.btn-dl-payant { background: #00085b; }
 .btn-dl.btn-dl-payant:hover { background: var(--navy-lt); }
-    
+.btn-dl.btn-dl-gratuit { background: #2d7a4f; }
+.btn-dl.btn-dl-gratuit:hover { background: #256b44; }    
 .doc-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.05rem;
@@ -631,10 +623,10 @@ function cardHtml(doc) {
     footer = `<button class="btn-dl" style="background:var(--muted);cursor:not-allowed;opacity:0.55;" disabled>${DL_ICON} Bientôt disponible</button>`;
     } else if (doc.payant) {
     const n = soldes[doc.id] || 0;
-    const label = n > 0 ? libelleBouton(doc.id) : 'Télécharger · ' + fmtPrice(doc.prix);
+    const label = n > 0 ? libelleBouton(doc.id) : 'Payer · ' + fmtPrice(doc.prix);
     footer = `<button class="btn-dl btn-dl-payant" data-id="${esc(doc.id)}">${DL_ICON} ${label}</button>`;
   } else {
-    footer = `<a class="btn-dl" href="${esc(doc.url)}" target="_blank" rel="noopener">${DL_ICON} Télécharger</a>`;
+    footer = `<a class="btn-dl btn-dl-gratuit" href="${esc(doc.url)}" target="_blank" rel="noopener">${DL_ICON} Télécharger · Gratuit</a>`;
   }
   return `
     <div class="doc-card">
@@ -644,7 +636,6 @@ function cardHtml(doc) {
           <div class="doc-icon-wrap ${iconClass[doc.categorie] || 'icon-officiel'}">${doc.icone}</div>
           <div class="doc-badges">
             <span class="doc-tag ${tagClass[doc.categorie] || 'tag-officiel'}">${esc(doc.tag)}</span>
-            <span class="doc-access ${doc.payant ? 'access-premium' : 'access-free'}">${doc.payant ? 'Premium' : 'Gratuit'}</span>
           </div>
         </div>
         <div class="doc-title">${esc(doc.titre)}</div>
