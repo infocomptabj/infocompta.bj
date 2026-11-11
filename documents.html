@@ -42,38 +42,22 @@
 }
 .doc-search {
   width: 100%;
-  max-width: 300px;
-  background: var(--cream);
+  max-width: none;
+  background: var(--surface);
   border: 1.5px solid var(--border);
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.87rem;
-  padding: 0.55rem 1rem;
-  border-radius: var(--radius);
+  font-size: 1rem;
+  padding: 0.85rem 1.4rem 0.85rem 3rem;
+  border-radius: 30px;
   outline: none;
   transition: border-color var(--transition), box-shadow var(--transition);
 }
+    
 .doc-search:focus {
   border-color: var(--gold);
   box-shadow: 0 0 0 3px rgba(196,147,58,0.1);
 }
-.filter-bar { display: flex; gap: 0.35rem; flex-wrap: wrap; }
-.filter-btn {
-  background: transparent;
-  border: 1.5px solid var(--border);
-  color: var(--muted);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 0.3rem 0.85rem;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.filter-btn:hover  { border-color: var(--gold); color: var(--gold); }
-.filter-btn.active { background: var(--navy); border-color: var(--navy); color: #fff; }
 
 /* STATS BAR */
 .stats-bar {
@@ -98,7 +82,7 @@
 /* DOC GRID */
 .doc-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: 1.2rem;
 }
 
@@ -268,6 +252,90 @@
 @media (max-width: 600px) {
   .doc-grid { grid-template-columns: 1fr; }
 }
+
+/* ── Colonne de catégories ── */
+.doc-wide { max-width: 1280px; }
+.doc-search-wrap { position: relative; }
+.doc-search-icon {
+  position: absolute; left: 1.2rem; top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; opacity: 0.6;
+}
+.doc-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+.doc-sidebar {
+  position: sticky;
+  top: 150px;
+  max-height: calc(100vh - 170px);
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1.5px solid var(--border-lt);
+  border-radius: var(--radius-md);
+  padding: 0.6rem;
+}
+.doc-content { min-width: 0; scroll-margin-top: 140px; }
+.result-line { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.2rem; }
+.result-line strong { color: var(--navy); }
+
+.side-toggle { display: none; }
+.side-item {
+  display: flex; justify-content: space-between; align-items: center; gap: 0.6rem;
+  width: 100%; text-align: left;
+  background: transparent; border: none; border-left: 3px solid transparent;
+  padding: 0.6rem 0.8rem;
+  font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500;
+  color: var(--text); cursor: pointer;
+  border-radius: var(--radius);
+  transition: background var(--transition);
+}
+.side-item:hover { background: var(--cream); }
+.side-item.active {
+  background: var(--orange-pale);
+  border-left-color: var(--orange-lt);
+  color: var(--navy);
+  font-weight: 700;
+}
+.side-count {
+  font-size: 0.72rem; color: var(--muted);
+  background: var(--cream); padding: 1px 8px;
+  border-radius: 20px; flex-shrink: 0;
+}
+.side-item.active .side-count { background: #fff; color: var(--navy); }
+.side-sep {
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 1rem 0.8rem 0.4rem;
+  border-top: 1px solid var(--border-lt);
+  margin-top: 0.6rem;
+}
+
+@media (max-width: 1023px) {
+  .doc-layout { grid-template-columns: 1fr; gap: 1rem; }
+  .doc-sidebar {
+    position: static; max-height: none; overflow: visible;
+    padding: 0; border: none; background: transparent;
+  }
+  .side-toggle {
+    display: flex; justify-content: space-between; align-items: center;
+    width: 100%; padding: 0.75rem 1rem;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600;
+    color: var(--navy); cursor: pointer;
+  }
+  .side-list {
+    display: none; margin-top: 0.5rem; padding: 0.5rem;
+    max-height: 60vh; overflow-y: auto;
+    background: var(--surface);
+    border: 1.5px solid var(--border-lt);
+    border-radius: var(--radius-md);
+  }
+  .doc-sidebar.open .side-list { display: block; }
+}    
   </style>
 </head>
 <body>
@@ -299,41 +367,38 @@
 </section>
 
 <div class="doc-toolbar">
-  <div class="container">
-    <div class="doc-toolbar-inner">
+  <div class="container doc-wide">
+    <div class="doc-search-wrap">
+      <span class="doc-search-icon">🔍</span>
       <input class="doc-search" type="text" id="docSearch"
-        placeholder="🔍  Rechercher un document…"
+        placeholder="Trouver un document…"
         oninput="filterDocs()">
-      <div class="filter-bar">
-        <button class="filter-btn active"   onclick="setFilter('tous',      this)">Tous</button>
-        <button class="filter-btn"          onclick="setFilter('officiel',  this)">Textes officiels</button>
-        <button class="filter-btn"          onclick="setFilter('fiscal',    this)">Fiscal</button>
-        <button class="filter-btn"          onclick="setFilter('guide',     this)">Guides</button>
-        <button class="filter-btn"          onclick="setFilter('procedure', this)">Procédures</button>
-        <button class="filter-btn"          onclick="setFilter('modele',    this)">Modèles</button>
-      </div>
     </div>
   </div>
 </div>
 
 <main>
-  <div class="container" style="padding-top:2.5rem;padding-bottom:5rem;">
+  <div class="container doc-wide" style="padding-top:2.5rem;padding-bottom:5rem;">
 
-        <div class="stats-bar">
-      <div class="stat-item">
-        <span class="stat-num" id="statVisible">0</span>
-        <span class="stat-lbl">Documents</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-num" style="color:#00085b;" id="statFree">–</span>
-        <span class="stat-lbl">Gratuits</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-num" id="statPremium">–</span>
-        <span class="stat-lbl">Premium</span>
-      </div>
+      <div class="doc-layout">
+
+      <aside class="doc-sidebar" id="docSidebar">
+        <button class="side-toggle" id="sideToggle" type="button">Catégories <span>▾</span></button>
+        <nav class="side-list" id="sideList"></nav>
+      </aside>
+
+      <section class="doc-content" id="docContent">
+        <p class="result-line"><strong id="statVisible">0</strong> documents</p>
+
+        <div id="docGrid" class="doc-grid"></div>
+
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">🔍</div>
+          <h3>Aucun résultat</h3>
+          <p>Aucun document ne correspond à votre recherche. Essayez d'autres mots-clés.</p>
+        </div>
+      </section>
+
     </div>
     
     
@@ -545,10 +610,55 @@ async function loadCatalog() {
   });
 }
 
-function updateStats() {
-  document.getElementById('statFree').textContent = documents.length;
-  document.getElementById('statPremium').textContent = premiumDocs.length;
+function updateStats() { renderSidebar(); }
+
+/* ═══ COLONNE DE CATÉGORIES ═══ */
+const CATS = [
+  ['officiel',  'Textes officiels'],
+  ['fiscal',    'Fiscalité'],
+  ['guide',     'Guides'],
+  ['procedure', 'Procédures'],
+  ['modele',    'Modèles']
+];
+
+function sideItem(key, label, n) {
+  return '<button type="button" class="side-item' + (key === currentFilter ? ' active' : '') +
+         '" data-filter="' + esc(key) + '"><span>' + esc(label) + '</span>' +
+         '<span class="side-count">' + n + '</span></button>';
 }
+
+function renderSidebar() {
+  const docs = allDocs();
+  let html = sideItem('tous', 'Tout', docs.length);
+
+  CATS.forEach(function (c) {
+    const n = docs.filter(function (d) { return d.categorie === c[0]; }).length;
+    if (n > 0) html += sideItem('cat:' + c[0], c[1], n);
+  });
+
+  const rub = {};
+  docs.forEach(function (d) { if (d.rubrique) rub[d.rubrique] = (rub[d.rubrique] || 0) + 1; });
+  const names = Object.keys(rub).sort(function (a, b) { return a.localeCompare(b, 'fr'); });
+  if (names.length) {
+    html += '<div class="side-sep">Modèles par thème</div>';
+    names.forEach(function (r) { html += sideItem('rub:' + r, r, rub[r]); });
+  }
+  document.getElementById('sideList').innerHTML = html;
+}
+
+document.getElementById('sideList').addEventListener('click', function (e) {
+  const b = e.target.closest('button[data-filter]');
+  if (!b) return;
+  currentFilter = b.dataset.filter;
+  document.getElementById('docSidebar').classList.remove('open');
+  renderSidebar();
+  filterDocs();
+  document.getElementById('docContent').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+document.getElementById('sideToggle').addEventListener('click', function () {
+  document.getElementById('docSidebar').classList.toggle('open');
+});  
 
 /* ═══ AFFICHAGE ═══ */
 const DL_ICON = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path></svg>';
@@ -623,28 +733,28 @@ function renderCards(list) {
   more.textContent = 'Afficher plus (' + left + ' restants)';
 }
 
+function matchFilter(doc) {
+  if (currentFilter === 'tous') return true;
+  const i = currentFilter.indexOf(':');
+  const kind = currentFilter.slice(0, i);
+  const val  = currentFilter.slice(i + 1);
+  return kind === 'cat' ? doc.categorie === val : doc.rubrique === val;
+}
+
 function getFiltered() {
   const q = (document.getElementById('docSearch').value || '').toLowerCase().trim();
   return allDocs().filter(function (doc) {
-    const catOk = currentFilter === 'tous' || doc.categorie === currentFilter;
     const qOk = !q
       || doc.titre.toLowerCase().includes(q)
       || doc.description.toLowerCase().includes(q)
       || doc.tag.toLowerCase().includes(q)
       || doc.source.toLowerCase().includes(q)
       || (doc.rubrique || '').toLowerCase().includes(q);
-    return catOk && qOk;
+    return matchFilter(doc) && qOk;
   });
 }
 
 function filterDocs() { visibleCount = PAGE_SIZE; renderCards(getFiltered()); }
-
-function setFilter(cat, btn) {
-  currentFilter = cat;
-  document.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
-  btn.classList.add('active');
-  filterDocs();
-}
 
 /* ═══ ACHAT ET TÉLÉCHARGEMENT ═══ */
 function isPaymentSuccessful(resp) {
