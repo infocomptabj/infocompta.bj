@@ -1,0 +1,16 @@
+name: Garder Supabase actif
+
+on:
+  schedule:
+    - cron: '0 8 */3 * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Interroger Supabase
+        run: |
+          curl --fail --silent --show-error \
+            "https://lmivfisdmuqbspvmvdzh.supabase.co/rest/v1/documents_public?select=id&limit=1" \
+            -H "apikey: sb_publishable_kCfhrFPVec2MkCl0xe4N-w_QXHgc0Gp"
