@@ -697,7 +697,7 @@ function renderSidebar() {
       const n = free.filter(function (d) { return d.categorie === c[0]; }).length;
       if (n > 0) subs += sideItem('gcat:' + c[0], c[1], n, true);
     });
-    html += sideGroup('gratuit', 'Modèles gratuits', free.length, subs);
+    html += sideGroup('gratuit', 'Documents gratuits', free.length, subs);
   }
 
   if (paid.length) {
@@ -707,7 +707,7 @@ function renderSidebar() {
     Object.keys(rub)
       .sort(function (a, b) { return a.localeCompare(b, 'fr'); })
       .forEach(function (r) { subs += sideItem('rub:' + r, r, rub[r], true); });
-    html += sideGroup('payant', 'Modèles payants', paid.length, subs);
+    html += sideGroup('payant', 'Documents payants', paid.length, subs);
   }
 
   document.getElementById('sideList').innerHTML = html;
