@@ -1,6 +1,6 @@
 /**
- * comptes-data.js — InfoCompta
- * Source officielle : Plan Comptable Général OHADA — Classe 1
+ * comptes-data.js : InfoCompta
+ * Source officielle : Plan Comptable Général OHADA : Classe 1
  *
  * Chaque entrée contient :
  *   libelle, classe, nature, sens,
@@ -31,7 +31,7 @@ const comptesData = {
 
   "101": {
     libelle: "Capital social",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "Le Capital social traduit le montant des valeurs apportées par les associés. Dans les sociétés, le capital initial correspond à la valeur des apports (nature ou espèces) effectués par les associés à la création de l'entreprise tels qu'ils figurent dans les statuts. Il est divisé en actions ou parts d'une même valeur nominale. Au cours de la vie sociale, le capital peut, sur décision des organes compétents, être augmenté ou diminué pour diverses raisons, notamment : apports et/ou retraits de capital, affectation de résultats et incorporation de réserves. Pour certaines sociétés, la loi prévoit la limitation de la responsabilité des associés à l'égard des créanciers sociaux en fixant le montant minimum du capital social.",
@@ -69,7 +69,7 @@ const comptesData = {
     textes_ref: ["AUSC art. 67 à 72", "AUSC art. 387 (SA)", "AUSC art. 311 (SARL)"],
     exemples_ecritures: [
         {
-          libelle: "Constitution de la société — apport en numéraire",
+          libelle: "Constitution de la société : apport en numéraire",
           debit: "4612 – Associés, apports en numéraire",
           credit: "101 – Capital social"
         },
@@ -88,7 +88,7 @@ const comptesData = {
 
   "1011": {
     libelle: "Capital souscrit, non appelé",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "Enregistre la fraction du capital social souscrite par les actionnaires mais dont la libération n'a pas encore été demandée par les organes compétents.",
@@ -119,7 +119,7 @@ const comptesData = {
 
   "1012": {
     libelle: "Capital souscrit, appelé, non versé",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "Représente la fraction de capital appelée (exigée) par la société mais non encore versée par les actionnaires. La créance personnalisée sur chaque actionnaire est portée au débit du compte 467.",
@@ -141,7 +141,7 @@ const comptesData = {
           credit: "1013 – Capital souscrit, appelé, versé, non amorti"
         },
         {
-          libelle: "Appel de fonds — personnalisation de la créance",
+          libelle: "Appel de fonds : personnalisation de la créance",
           debit: "467 – Actionnaires, restant dû sur capital appelé",
           credit: "109 – Actionnaires, capital souscrit non appelé"
         },
@@ -150,7 +150,7 @@ const comptesData = {
 
   "1013": {
     libelle: "Capital souscrit, appelé, versé, non amorti",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "Représente la fraction du capital effectivement libérée par les actionnaires et non encore remboursée. C'est le sous-compte le plus courant dans une société en activité normale.",
@@ -182,7 +182,7 @@ const comptesData = {
 
   "1014": {
     libelle: "Capital souscrit, appelé, versé, amorti",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "Isole la contre-valeur des actions de jouissance, c'est-à-dire les actions dont le capital nominal a été remboursé aux actionnaires par prélèvement sur les bénéfices ou réserves, le capital social restant inchangé.",
@@ -208,7 +208,7 @@ const comptesData = {
 
   "1018": {
     libelle: "Capital souscrit, soumis à des conditions particulières",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "Enregistre le capital provenant d'opérations particulières prévues par la législation, telles que l'incorporation de plus-values nettes à long terme ou l'émission de titres spéciaux.",
@@ -228,7 +228,7 @@ const comptesData = {
 
   "102": {
     libelle: "Capital par dotation",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "Le Capital par dotation représente la contrepartie de l'intégration au patrimoine des entreprises publiques, des immobilisations et fonds affectés, sur décision de l'Autorité publique, au fonctionnement de ces entreprises. Cette dotation peut aussi se réaliser par transformation de dettes.",
@@ -275,7 +275,7 @@ const comptesData = {
 
   "103": {
     libelle: "Capital personnel",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif, peut être négatif)",
     sens: "Créditeur (peut être débiteur sans changer de position au bilan)",
     contenu: "A la création de l'entreprise exploitée sous la forme individuelle, le capital initial représente le montant des apports en nature ou en espèces effectués par l'entrepreneur à titre définitif et des dettes qu'il décide d'inscrire au bilan. Ce capital initial est modifié ultérieurement par les apports et les retraits de capital ainsi que par l'affectation des résultats.",
@@ -300,7 +300,7 @@ const comptesData = {
       "Virements bancaires, fiches de caisse, relevés de banque"
     ],
     comptes_lies: ["104","131","139"],
-    textes_ref: ["SC OHADA — Entreprises individuelles"],
+    textes_ref: ["SC OHADA : Entreprises individuelles"],
     exemples_ecritures: [
         {
           libelle: "Apport initial de l'exploitant individuel",
@@ -322,7 +322,7 @@ const comptesData = {
 
   "104": {
     libelle: "Compte de l'exploitant",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (soldé à chaque clôture)",
     sens: "Débiteur ou Créditeur en cours d'exercice",
     contenu: "Ce compte sert à établir la situation de l'entrepreneur en ce qui concerne :\n\nles apports et compléments d'apports financiers et/ou de biens et services effectués à titre temporaire en cours d'exercice. Ces apports et compléments d'apports financiers peuvent consister en des versements dans la caisse ou sur un compte bancaire de l'entreprise ou en des règlements de dépenses de l'entreprise sur la trésorerie privée de l'exploitant ;\nles retraits effectués au cours de l'exercice pour son usage personnel ou celui de sa famille et dans le cadre de l'exploitation. Ceux-ci consistent en des :\nprélèvements en nature de biens et services, objets de l'activité, qui concourent à la détermination du résultat ;\nprélèvements financiers opérés sur un compte de trésorerie affecté à l'activité, qu'il s'agisse de prélèvements directs (retraits de fonds) ou indirects (paiement d'une dépense privée).",
@@ -352,7 +352,7 @@ const comptesData = {
       "Virements bancaires, fiches de caisse, relevés de banque"
     ],
     comptes_lies: ["103","131","139"],
-    textes_ref: ["SC OHADA — Entreprises individuelles"],
+    textes_ref: ["SC OHADA : Entreprises individuelles"],
     exemples_ecritures: [
         {
           libelle: "Apport temporaire de l'exploitant en cours d'exercice",
@@ -374,7 +374,7 @@ const comptesData = {
 
   "105": {
     libelle: "Primes liées aux capitaux propres",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "La prime peut être analysée comme étant un droit d'entrée demandé au nouvel actionnaire d'autant que l'action vaut, avant augmentation du capital, beaucoup plus que sa valeur nominale. Elle représente une partie des apports purs et simples non comprise dans le capital social.\n\nLes primes liées aux capitaux propres doivent figurer distinctement au passif du bilan dans les rubriques appropriées. Selon la nature des opérations d'augmentation de capital, en nature ou en espèces, il y a lieu de distinguer quatre (4) catégories de primes, d'émission, de fusion, d'apport et de conversion.",
@@ -429,7 +429,7 @@ const comptesData = {
 
   "106": {
     libelle: "Écarts de réévaluation",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "L'écart de réévaluation représente la contrepartie au passif du bilan des augmentations de valeur d'éléments actifs soit dans le cadre d'une réévaluation légale, soit dans celui d'une réévaluation libre.\n\nLa différence entre les valeurs réévaluées et les valeurs nettes précédemment comptabilisées constitue l'écart de réévaluation.\n\nL'écart de réévaluation s'inscrit distinctement au passif du bilan dans les capitaux propres.",
@@ -451,7 +451,7 @@ const comptesData = {
       "Décisions de l'AGE portant augmentation de capital par incorporation de tout ou partie de l'écart"
     ],
     comptes_lies: ["1061","1062","10","21","22"],
-    textes_ref: ["SC OHADA — Réévaluation des actifs", "Législation nationale de réévaluation légale"],
+    textes_ref: ["SC OHADA : Réévaluation des actifs", "Législation nationale de réévaluation légale"],
     exemples_ecritures: [
         {
           libelle: "Réévaluation d'un bâtiment (plus-value de 5 000 000 F)",
@@ -468,8 +468,8 @@ const comptesData = {
 
   "109": {
     libelle: "Actionnaires, capital souscrit non appelé",
-    classe: "Classe 1 — Ressources Durables",
-    nature: "Compte de bilan (Actif — en déduction des capitaux propres au passif)",
+    classe: "Classe 1 : Ressources Durables",
+    nature: "Compte de bilan (Actif : en déduction des capitaux propres au passif)",
     sens: "Débiteur",
     contenu: "Ce compte retrace la créance de la société sur les actionnaires, pour la fraction du capital non encore appelé par les organes compétents en cas de libération partielle. Celle-ci peut être consécutive aux opérations de constitution d'une société ou d'augmentation de capital.",
     fonctionnement: {
@@ -495,7 +495,7 @@ const comptesData = {
           credit: "1011 – Capital souscrit, non appelé"
         },
         {
-          libelle: "Appel de fonds — réduction de la créance",
+          libelle: "Appel de fonds : réduction de la créance",
           debit: "467 – Actionnaires, restant dû sur capital appelé",
           credit: "109 – Actionnaires, capital souscrit non appelé"
         },
@@ -504,7 +504,7 @@ const comptesData = {
 
   "11": {
     libelle: "Réserves",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "Les réserves correspondent à des bénéfices laissés à la disposition de l'entreprise et non incorporés au capital.\n\nL'obligation de constituer des réserves résulte des dispositions statutaires ou réglementaires et des décisions des organes compétents.",
@@ -539,7 +539,7 @@ const comptesData = {
       "Décisions de l'AGO portant répartition des résultats"
     ],
     comptes_lies: ["111","112","113","1131","1133","118","131","1301","101","465","129","139"],
-    textes_ref: ["AUSC art. 143 et 144 — réserve légale 20% du capital"],
+    textes_ref: ["AUSC art. 143 et 144 : réserve légale 20% du capital"],
     exemples_ecritures: [
         {
           libelle: "Dotation à la réserve légale (5 % du bénéfice)",
@@ -561,7 +561,7 @@ const comptesData = {
 
   "111": {
     libelle: "Réserve légale",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "Constate l'obligation annuelle de constitution d'un fonds de réserve légale, en application des dispositions juridiques régissant certains types de sociétés (SA et SARL notamment). La réserve légale cesse d'être obligatoire lorsque son montant atteint 20% du capital social.",
@@ -582,18 +582,18 @@ const comptesData = {
 
   "12": {
     libelle: "Report à nouveau",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif si créditeur, négatif si débiteur)",
     sens: "Créditeur (bénéfice reporté) ou Débiteur (perte reportée)",
     contenu: "Le report à nouveau correspond au montant soit des bénéfices d'exercices antérieurs dont l'affectation a été reportée sur les exercices ultérieurs, soit des pertes constatées à la clôture d'exercices antérieurs qui n'ont pas été compensées par des prélèvements opérés sur les bénéfices, les réserves ou le capital.\n\nLe report à nouveau est inscrit au passif du bilan où il doit figurer sur une ligne distincte : en moins si son solde est débiteur, et en plus si son solde est créditeur. Il constitue un élément des capitaux propres.",
     subdivisions: {
       "121":  "Report à nouveau créditeur",
       "1211": "Bénéfice net à reporter",
-      "1213": "Bénéfice — correction d'erreur",
+      "1213": "Bénéfice : correction d'erreur",
       "129":  "Report à nouveau débiteur",
       "1291": "Perte nette à reporter",
-      "1292": "Perte — amortissements réputés différés",
-      "1293": "Perte — correction d'erreur"
+      "1292": "Perte : amortissements réputés différés",
+      "1293": "Perte : correction d'erreur"
     },
     fonctionnement: {
       credit: [
@@ -633,7 +633,7 @@ const comptesData = {
 
   "13": {
     libelle: "Résultat net de l'exercice",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif si bénéfice, Actif si perte)",
     sens: "Créditeur (bénéfice) ou Débiteur (perte)",
     contenu: "Le résultat net de l'exercice peut être défini de deux façons :\n\n1. différence entre les produits (reçus ou à recevoir) et les charges (payées ou à payer) de la période ;\n\n2. variation des capitaux propres entre le début et la clôture de l'exercice, hors nouveaux apports et retraits d'apports et hors réévaluation.\n\nQuel que soit son signe, le résultat net de l'exercice est inscrit au passif du bilan sur la ligne correspondante, parmi les capitaux propres.",
@@ -670,15 +670,15 @@ const comptesData = {
     },
     controle: ["Soldes des comptes de gestion (classes 6, 7 et 8)"],
     comptes_lies: ["130","131","132","133","134","135","136","137","138","139","11","12","101","103","465"],
-    textes_ref: ["SC OHADA — États financiers annuels", "Compte de résultat OHADA"],
+    textes_ref: ["SC OHADA : États financiers annuels", "Compte de résultat OHADA"],
     exemples_ecritures: [
         {
-          libelle: "Clôture — virement des produits au résultat",
+          libelle: "Clôture : virement des produits au résultat",
           debit: "70 / 71 / 72 / 77… – Comptes de produits",
           credit: "131 – Résultat net : Bénéfice"
         },
         {
-          libelle: "Clôture — virement des charges au résultat",
+          libelle: "Clôture : virement des charges au résultat",
           debit: "139 – Résultat net : Perte",
           credit: "60 / 61 / 62… – Comptes de charges"
         },
@@ -692,7 +692,7 @@ const comptesData = {
 
   "14": {
     libelle: "Subventions d'investissement",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "Les subventions d'investissement sont des aides financières non remboursables accordées aux entreprises (publiques ou privées), pour différentes raisons : acquisition, création de valeurs immobilisées (subventions d'équipement) ou financement d'activités à long terme, afin de pourvoir au remplacement ou à la remise en état des immobilisations.\n\nElles peuvent également consister en l'octroi de biens et services.",
@@ -719,7 +719,7 @@ const comptesData = {
         "À la date de cession de l'actif financé par la subvention : solde non encore repris, par le crédit du compte 865"
       ]
     },
-    commentaires: "Le compte 14 permet d'échelonner sur plusieurs exercices l'enrichissement provenant de la subvention. La quote-part reprise chaque exercice est égale :\n— au montant de la dotation aux amortissements de l'exercice pour les immobilisations amortissables ;\n— à un montant déterminé par la durée d'inaliénabilité pour les immobilisations non amortissables, ou à défaut au 1/10e du montant de la subvention.\n\nDes dérogations peuvent être admises selon les circonstances particulières (régime juridique, objet de l'activité, conditions posées par l'autorité de tutelle).",
+    commentaires: "Le compte 14 permet d'échelonner sur plusieurs exercices l'enrichissement provenant de la subvention. La quote-part reprise chaque exercice est égale :\n- au montant de la dotation aux amortissements de l'exercice pour les immobilisations amortissables ;\n- à un montant déterminé par la durée d'inaliénabilité pour les immobilisations non amortissables, ou à défaut au 1/10e du montant de la subvention.\n\nDes dérogations peuvent être admises selon les circonstances particulières (régime juridique, objet de l'activité, conditions posées par l'autorité de tutelle).",
     exclusions: {
       texte: "Ne doit pas enregistrer les subventions d'exploitation ni les subventions d'équilibre.",
       comptes: ["71 – Subventions d'exploitation", "88 – Subventions d'équilibre"]
@@ -729,7 +729,7 @@ const comptesData = {
       "Tableau d'amortissement des biens acquis pour vérification du rythme de reprise"
     ],
     comptes_lies: ["141","142","148","865","21","22","4494","4582"],
-    textes_ref: ["SC OHADA — Traitement des subventions d'investissement"],
+    textes_ref: ["SC OHADA : Traitement des subventions d'investissement"],
     exemples_ecritures: [
         {
           libelle: "Réception d'une subvention d'équipement en numéraire",
@@ -751,7 +751,7 @@ const comptesData = {
 
   "15": {
     libelle: "Provisions réglementées et fonds assimilés",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "Les provisions réglementées sont des provisions à caractère purement fiscal ou réglementaire, comptabilisées non pas en application de principes comptables, mais suivant des dispositions légales et réglementaires (lois de finances, par exemple).\n\nPeuvent être classées dans cette catégorie, les provisions :\n\nautorisées spécialement pour certaines professions (reconstitution de gisements miniers et pétroliers) ;\npour hausse des prix et fluctuation des cours ;\npour investissement.\nOnt notamment le caractère de fonds assimilés, lorsqu'ils sont prévus par la législation fiscale :\n\nles amortissements dérogatoires ;\nles plus-values de cession à réinvestir ;\nles fonds réglementés ;\nla provision spéciale de réévaluation, lorsque la législation fiscale n'autorisant pas la déductibilité du supplément d'amortissement (concept dit de \"neutralité fiscale\") impose la comptabilisation sous cette forme.",
@@ -778,7 +778,7 @@ const comptesData = {
         "Annulation ou diminution des provisions réglementées, par le crédit du compte 86 – Reprises H.A.O."
       ]
     },
-    commentaires: "Du fait de leur caractère de réserves non libérées d'impôt (charge latente différée), les provisions réglementées sont inscrites au passif parmi les capitaux propres. Elles sont créées et augmentées exclusivement par « Dotations H.A.O. » (compte 85) et réduites ou annulées exclusivement par « Reprises H.A.O. » (compte 86).\n\nExemple — Plus-values à réinvestir (compte 152) :\n→ La plus-value est constatée par différence entre compte 81 et 82\n→ L'engagement de réemploi est comptabilisé : Débit 851 / Crédit 152\n→ En l'absence de réinvestissement dans le délai légal, reprise intégrale : Débit 152 / Crédit 861\n→ En cas de réinvestissement, reprise partielle annuelle à hauteur de la différence entre l'amortissement global et l'amortissement sur le coût net de la plus-value.",
+    commentaires: "Du fait de leur caractère de réserves non libérées d'impôt (charge latente différée), les provisions réglementées sont inscrites au passif parmi les capitaux propres. Elles sont créées et augmentées exclusivement par « Dotations H.A.O. » (compte 85) et réduites ou annulées exclusivement par « Reprises H.A.O. » (compte 86).\n\nExemple : Plus-values à réinvestir (compte 152) :\n→ La plus-value est constatée par différence entre compte 81 et 82\n→ L'engagement de réemploi est comptabilisé : Débit 851 / Crédit 152\n→ En l'absence de réinvestissement dans le délai légal, reprise intégrale : Débit 152 / Crédit 861\n→ En cas de réinvestissement, reprise partielle annuelle à hauteur de la différence entre l'amortissement global et l'amortissement sur le coût net de la plus-value.",
     exclusions: {
       texte: "Ne doit pas enregistrer les provisions pour risques et charges futurs, ni les dépréciations de l'actif.",
       comptes: ["19 – Provisions financières pour risques et charges", "29 – Provisions pour dépréciation", "39", "49", "59"]
@@ -790,7 +790,7 @@ const comptesData = {
       "Décisions des assemblées sur la répartition du résultat et législation applicable"
     ],
     comptes_lies: ["151","152","153","154","155","156","157","158","85","86"],
-    textes_ref: ["Code Général des Impôts national applicable", "SC OHADA — Provisions réglementées"],
+    textes_ref: ["Code Général des Impôts national applicable", "SC OHADA : Provisions réglementées"],
     exemples_ecritures: [
         {
           libelle: "Dotation aux amortissements dérogatoires",
@@ -812,7 +812,7 @@ const comptesData = {
 
   "16": {
     libelle: "Emprunts et dettes assimilées",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "Les emprunts et les dettes assimilées sont des ressources financières externes, contractées auprès d'établissements de crédit et/ou de tiers divers, affectées de façon durable au financement des moyens d'exploitation ou de production. Remboursables à terme, ils participent concurremment avec les capitaux propres à la couverture des besoins durables de l'entreprise.",
@@ -862,7 +862,7 @@ const comptesData = {
       "Engagements de l'État et des organismes internationaux"
     ],
     comptes_lies: ["161","162","163","164","165","166","167","168","671","206","52","481"],
-    textes_ref: ["SC OHADA — Emprunts et dettes financières"],
+    textes_ref: ["SC OHADA : Emprunts et dettes financières"],
     exemples_ecritures: [
         {
           libelle: "Obtention d'un emprunt bancaire",
@@ -884,7 +884,7 @@ const comptesData = {
 
   "17": {
     libelle: "Dettes de crédit-bail et contrats assimilés",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "Ce compte enregistre le montant correspondant à la valeur d'entrée du bien acquis par contrats de crédit-bail et assimilés. Cette valeur est celle figurant dans le contrat ou la somme actualisée des redevances de créditbail.",
@@ -918,7 +918,7 @@ const comptesData = {
       "Échéanciers de remboursement"
     ],
     comptes_lies: ["172","173","176","21","22","623","672","481"],
-    textes_ref: ["SC OHADA — Traitement du crédit-bail (traitement de référence)"],
+    textes_ref: ["SC OHADA : Traitement du crédit-bail (traitement de référence)"],
     exemples_ecritures: [
         {
           libelle: "Entrée d'un bien en crédit-bail à l'actif",
@@ -940,7 +940,7 @@ const comptesData = {
 
   "18": {
     libelle: "Dettes liées à des participations et comptes de liaison",
-    classe: "Classe 1 — Ressources Durables",
+    classe: "Classe 1 : Ressources Durables",
     nature: "Compte de bilan (Passif)",
     sens: "Créditeur",
     contenu: "Les dettes liées à des participations sont des emprunts contractés auprès d'entreprises liées ou avec lesquelles elles ont un lien de participation.\n\nLes dettes liées à des participations figurent au passif du bilan parmi les dettes financières diverses.\n\nLe compte de liaison des établissements et succursales est un compte de bilan ouvert au nom de l'établissement. Il fonctionne comme un compte courant, de sorte que toutes les opérations réalisées entre le siège et l'établissement y soient enregistrées comme s'il s'agissait d'un tiers. En conséquence, il conviendra :\n\nde créer, au siège, un compte de liaison au nom de chaque établissement ou succursale ;\nde créer, dans l'établissement ou la succursale, un compte réfléchi au nom du siège.\nLes opérations entre le siège et l'établissement ou la succursale sont à enregistrer de manière symétrique, dans la même période comptable et sur la base des mêmes pièces justificatives. Il en résulte que les comptes de liaison sont égaux et de sens contraire dans la comptabilité du siège et dans celle de l'établissement ou la succursale.",
@@ -980,7 +980,7 @@ const comptesData = {
       "Virements"
     ],
     comptes_lies: ["181","182","183","184","185","186","187","188","671","26","40","16","164"],
-    textes_ref: ["SC OHADA — Transactions intra-groupe et comptes de liaison"],
+    textes_ref: ["SC OHADA : Transactions intra-groupe et comptes de liaison"],
     exemples_ecritures: [
         {
           libelle: "Emprunt contracté auprès d'une filiale",
@@ -1002,8 +1002,8 @@ const comptesData = {
 
   "19": {
     libelle: "Provisions financières pour risques et charges",
-    classe: "Classe 1 — Ressources Durables",
-    nature: "Compte de bilan (Passif — dettes financières)",
+    classe: "Classe 1 : Ressources Durables",
+    nature: "Compte de bilan (Passif : dettes financières)",
     sens: "Créditeur",
     contenu: "Les provisions financières pour risques et charges sont des provisions destinées à couvrir des charges, des risques et pertes nettement précisés quant à leur objet que des événements survenus ou en cours rendent probables, mais comportant un élément d'incertitude quant à leur montant ou leur réalisation prévisible à plus d'un an.\n\nLes provisions financières pour risques et charges sont inscrites au passif du bilan dans les dettes financières et ressources assimilées.",
     subdivisions: {
@@ -1042,7 +1042,7 @@ const comptesData = {
       "Appréciation de l'échéance du risque (doit être supérieure à 1 an)"
     ],
     comptes_lies: ["191","192","193","194","195","196","197","198","691","697","79","85","86","499"],
-    textes_ref: ["SC OHADA — Provisions pour risques et charges", "Principe de prudence OHADA"],
+    textes_ref: ["SC OHADA : Provisions pour risques et charges", "Principe de prudence OHADA"],
     exemples_ecritures: [
         {
           libelle: "Constitution d'une provision pour litige",
@@ -1063,7 +1063,7 @@ const comptesData = {
   },
 
   /* ═══════════════════════════════════════════════════════════════
-     CLASSE 2 — COMPTES D'ACTIF IMMOBILISÉ
+     CLASSE 2 : COMPTES D'ACTIF IMMOBILISÉ
      Source officielle : Plan Comptable Général OHADA
   ═══════════════════════════════════════════════════════════════ */
 
@@ -1074,15 +1074,15 @@ const comptesData = {
     sens: "Débiteur",
     contenu: "L'actif immobilisé comprend les charges immobilisées et les immobilisations. Les immobilisations représentent les biens et valeurs destinés à rester durablement dans l'entreprise : immobilisations incorporelles, corporelles et financières. Les immobilisations louées par l'entreprise et qui concourent à son exploitation sont également inscrites au bilan. Les immobilisations entièrement amorties demeurent inscrites au bilan aussi longtemps qu'elles subsistent dans l'entreprise.",
     fonctionnement: { credit: [], debit: [] },
-    commentaires: "Valeur d'entrée des immobilisations :\n— Bien acquis à titre onéreux : coût d'acquisition (prix d'achat + frais accessoires, hors taxes récupérables)\n— Bien produit par l'entreprise : coût de production (matières + charges directes + charges indirectes rattachables)\n— Bien acquis à titre gratuit : valeur vénale\n— Bien reçu en apport en nature : valeur figurant dans l'acte d'apport\n\nMême en cas d'absence ou d'insuffisance de bénéfice, l'entreprise procède aux amortissements et provisions nécessaires pour que le bilan donne une image fidèle.",
+    commentaires: "Valeur d'entrée des immobilisations :\n: Bien acquis à titre onéreux : coût d'acquisition (prix d'achat + frais accessoires, hors taxes récupérables)\n: Bien produit par l'entreprise : coût de production (matières + charges directes + charges indirectes rattachables)\n: Bien acquis à titre gratuit : valeur vénale\n: Bien reçu en apport en nature : valeur figurant dans l'acte d'apport\n\nMême en cas d'absence ou d'insuffisance de bénéfice, l'entreprise procède aux amortissements et provisions nécessaires pour que le bilan donne une image fidèle.",
     comptes_lies: ["20","21","22","23","24","25","26","27","28","29"],
-    textes_ref: ["Acte Uniforme OHADA — Classe 2 Actif immobilisé"],
+    textes_ref: ["Acte Uniforme OHADA : Classe 2 Actif immobilisé"],
     exemples_ecritures: []
   },
 
   "20": {
     libelle: "Charges immobilisées",
-    classe: "Classe 2 — Actif Immobilisé",
+    classe: "Classe 2 : Actif Immobilisé",
     nature: "Compte de bilan (Actif fictif)",
     sens: "Débiteur",
     contenu: "Les charges immobilisées sont des charges à caractère général ayant une incidence sur le résultat de l'entreprise. Elles sont non répétitives et peuvent engendrer soit des économies, soit des gains sur les exercices ultérieures.\n\nLes charges immobilisées constituent des actifs fictifs. Elles figurent à l'actif du bilan et comprennent :\n\nles frais d'établissement : ce sont des dépenses engagées à la constitution de l'entreprise (honoraires, droits d'enregistrement, frais de formalités légales, frais de prospection, frais de publicité et de lancement ... ) ou dans le cadre d'opérations tendant à maintenir ou à promouvoir le développement de l'entreprise (augmentation du capital, restructuration) ;\nles charges à répartir sur plusieurs exercices : ce sont des charges engagées au cours d'un exercice, mais qui concernent également les exercices suivants :\nsoit parce qu'elles se rapportent à une production déterminée à venir pour laquelle les chances de succès commercial et de rentabilité économique sont démontrées ;\nsoit parce qu'elles ont été engendrées :\npar l'émission d'un emprunt (frais d'émission d'emprunts) et peuvent être réparties sur la durée de l'emprunt,\nou par l'acquisition d'une immobilisation ;\nles primes de remboursement des obligations qui se rapportent à des emprunts obligataires à primes.",
@@ -1128,7 +1128,7 @@ const comptesData = {
       "Bons de souscription des obligations"
     ],
     comptes_lies: ["201","202","206","78","848","6811","6872","16"],
-    textes_ref: ["SC OHADA — Charges immobilisées et actifs fictifs"],
+    textes_ref: ["SC OHADA : Charges immobilisées et actifs fictifs"],
     exemples_ecritures: [
         {
           libelle: "Immobilisation des frais de constitution",
@@ -1150,7 +1150,7 @@ const comptesData = {
 
   "21": {
     libelle: "Immobilisations incorporelles",
-    classe: "Classe 2 — Actif Immobilisé",
+    classe: "Classe 2 : Actif Immobilisé",
     nature: "Compte de bilan (Actif)",
     sens: "Débiteur",
     contenu: "Les immobilisations incorporelles sont des immobilisations immatérielles et tous les autres éléments susceptibles de générer des avantages futurs.\n\nElles ont la nature de biens acquis ou créés par l'entreprise, non pour être vendus ou transformés, mais pour être utilisés de manière durable, directement ou indirectement, pour la réalisation des opérations professionnelles ou non.",
@@ -1192,7 +1192,7 @@ const comptesData = {
       "Contrats de concession"
     ],
     comptes_lies: ["211","212","213","214","215","216","217","218","219","281","291","72","81","654","10","46"],
-    textes_ref: ["SC OHADA — Immobilisations incorporelles"],
+    textes_ref: ["SC OHADA : Immobilisations incorporelles"],
     exemples_ecritures: [
         {
           libelle: "Acquisition d'un logiciel",
@@ -1214,7 +1214,7 @@ const comptesData = {
 
   "22": {
     libelle: "Terrains",
-    classe: "Classe 2 — Actif Immobilisé",
+    classe: "Classe 2 : Actif Immobilisé",
     nature: "Compte de bilan (Actif)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre la valeur des terrains dont l'entreprise est propriétaire et de ceux qui sont mis à sa disposition par des tiers.",
@@ -1267,7 +1267,7 @@ const comptesData = {
       "Titres de propriété"
     ],
     comptes_lies: ["221","222","223","224","225","226","227","228","229","282","292","81","10","46"],
-    textes_ref: ["SC OHADA — Immobilisations corporelles — Terrains"],
+    textes_ref: ["SC OHADA : Immobilisations corporelles : Terrains"],
     exemples_ecritures: [
         {
           libelle: "Acquisition d'un terrain nu",
@@ -1289,7 +1289,7 @@ const comptesData = {
 
   "23": {
     libelle: "Bâtiments, installations techniques et agencements",
-    classe: "Classe 2 — Actif Immobilisé",
+    classe: "Classe 2 : Actif Immobilisé",
     nature: "Compte de bilan (Actif)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre le montant des opérations ayant trait aux apports effectués par les associés ou à l'acquisition et à la création par l'entreprise de bâtiments, installations et agencements, de même que leur cession, disparition et mise au rebut.",
@@ -1337,7 +1337,7 @@ const comptesData = {
         "Et le débit du compte 283 – Amortissements des bâtiments, installations et agencements, à concurrence des amortissements pratiqués"
       ]
     },
-    commentaires: "La valeur des terrains n'est pas comprise dans celle des bâtiments — ils font l'objet d'évaluations distinctes.\n\nSont à inclure dans la valeur des bâtiments :\n— Le coût de la peinture extérieure et intérieure des constructions neuves\n— Le coût de tous les aménagements permanents (chauffage, climatisation, conduites d'eau, gaz, électricité)\n— Le coût du matériel normalement installé avant que le bâtiment soit occupé\n\nLes bâtiments et installations en cours (compte 239) sont ceux non terminés à la clôture mais appartenant déjà à l'entreprise. Après achèvement, ils sont portés au débit des comptes 231 à 238 par le crédit du compte 239. L'amortissement ne peut commencer qu'à partir de la mise en service effective.",
+    commentaires: "La valeur des terrains n'est pas comprise dans celle des bâtiments - ils font l'objet d'évaluations distinctes.\n\nSont à inclure dans la valeur des bâtiments :\n: Le coût de la peinture extérieure et intérieure des constructions neuves\n: Le coût de tous les aménagements permanents (chauffage, climatisation, conduites d'eau, gaz, électricité)\n: Le coût du matériel normalement installé avant que le bâtiment soit occupé\n\nLes bâtiments et installations en cours (compte 239) sont ceux non terminés à la clôture mais appartenant déjà à l'entreprise. Après achèvement, ils sont portés au débit des comptes 231 à 238 par le crédit du compte 239. L'amortissement ne peut commencer qu'à partir de la mise en service effective.",
     exclusions: {
       texte: "Ne doit pas enregistrer les biens corporels disparaissant par le premier usage ou d'une durée d'utilisation inférieure à un an (petit outillage).",
       comptes: ["Compte approprié de la classe 6"]
@@ -1348,7 +1348,7 @@ const comptesData = {
       "Factures"
     ],
     comptes_lies: ["231","232","233","234","235","237","238","239","283","293","81","72","10","46"],
-    textes_ref: ["SC OHADA — Immobilisations corporelles — Bâtiments"],
+    textes_ref: ["SC OHADA : Immobilisations corporelles : Bâtiments"],
     exemples_ecritures: [
         {
           libelle: "Construction d'un bâtiment par un tiers",
@@ -1370,7 +1370,7 @@ const comptesData = {
 
   "24": {
     libelle: "Matériel",
-    classe: "Classe 2 — Actif Immobilisé",
+    classe: "Classe 2 : Actif Immobilisé",
     nature: "Compte de bilan (Actif)",
     sens: "Débiteur",
     contenu: "Le matériel (machines, mobiliers) est constitué par l'ensemble des objets et instruments avec (et ou par) lesquels :\n\nsont extraits, transformés ou façonnés les matières ou fournitures ;\nsont fournis les services qui sont l'objet même de la profession exercée.",
@@ -1422,7 +1422,7 @@ const comptesData = {
         "Et le débit du compte 81 – Valeurs comptables des cessions d'immobilisations (ou 654) pour le solde (valeur nette comptable)"
       ]
     },
-    commentaires: "Les matériels d'emballage récupérables sont destinés à être utilisés durablement comme instrument de travail.\n\nLa remise à neuf et les transformations importantes des matériels sont comptabilisées avec les matériels eux-mêmes, si ces travaux entraînent une augmentation de leur durée de vie initiale ou une meilleure adaptation aux exigences de la production.\n\n245 – Matériel de transport : véhicules et appareils servant au transport des biens et des personnes. Les transformations, améliorations et frais annexes d'achat de matériels d'occasion y sont rattachés.\n\n246 – Immobilisations animales et agricoles : animaux de trait, reproducteurs, de garde, et plantations. Ne comprend pas les animaux achetés ou élevés pour être commercialisés (qui font partie du stock — classe 3).\n\n2443 – Matériel bureautique : ardoises électroniques, écrans et progiciels de substitution au papier, matériel de téléconférence, messagerie vocale, modems de communication, etc.",
+    commentaires: "Les matériels d'emballage récupérables sont destinés à être utilisés durablement comme instrument de travail.\n\nLa remise à neuf et les transformations importantes des matériels sont comptabilisées avec les matériels eux-mêmes, si ces travaux entraînent une augmentation de leur durée de vie initiale ou une meilleure adaptation aux exigences de la production.\n\n245 – Matériel de transport : véhicules et appareils servant au transport des biens et des personnes. Les transformations, améliorations et frais annexes d'achat de matériels d'occasion y sont rattachés.\n\n246 – Immobilisations animales et agricoles : animaux de trait, reproducteurs, de garde, et plantations. Ne comprend pas les animaux achetés ou élevés pour être commercialisés (qui font partie du stock : classe 3).\n\n2443 – Matériel bureautique : ardoises électroniques, écrans et progiciels de substitution au papier, matériel de téléconférence, messagerie vocale, modems de communication, etc.",
     exclusions: {
       texte: "Ne doit pas enregistrer les biens corporels disparaissant par le premier usage, d'une durée de vie inférieure à un an, ou de très faible valeur.",
       comptes: ["Comptes de la classe 6"]
@@ -1434,7 +1434,7 @@ const comptesData = {
       "Recoupements avec les assurances payées et les taxes sur matériels roulants"
     ],
     comptes_lies: ["241","242","243","244","245","246","247","248","249","284","294","81","72","10","46"],
-    textes_ref: ["SC OHADA — Immobilisations corporelles — Matériel"],
+    textes_ref: ["SC OHADA : Immobilisations corporelles : Matériel"],
     exemples_ecritures: [
         {
           libelle: "Acquisition d'un véhicule",
@@ -1456,7 +1456,7 @@ const comptesData = {
 
   "25": {
     libelle: "Avances et acomptes versés sur immobilisations",
-    classe: "Classe 2 — Actif Immobilisé",
+    classe: "Classe 2 : Actif Immobilisé",
     nature: "Compte de bilan (Actif)",
     sens: "Débiteur",
     contenu: "Sommes versées par l'entreprise à des tiers pour des commandes en cours d'immobilisations. Le solde de ce compte représente la créance de l'entreprise sur ses fournisseurs d'immobilisations.",
@@ -1483,7 +1483,7 @@ const comptesData = {
       "Versements effectués"
     ],
     comptes_lies: ["251","252","295","21","22","23","24","40","48"],
-    textes_ref: ["SC OHADA — Avances sur immobilisations"],
+    textes_ref: ["SC OHADA : Avances sur immobilisations"],
     exemples_ecritures: [
         {
           libelle: "Versement d'un acompte à un fournisseur d'immobilisation",
@@ -1491,7 +1491,7 @@ const comptesData = {
           credit: "52 – Banques"
         },
         {
-          libelle: "Réception de la facture définitive — soldage de l'acompte",
+          libelle: "Réception de la facture définitive : soldage de l'acompte",
           debit: "231 – Bâtiments (montant total)",
           credit: "252 – Avances (acompte) + 481 – Fournisseurs (solde)"
         },
@@ -1500,7 +1500,7 @@ const comptesData = {
 
   "26": {
     libelle: "Titres de participation",
-    classe: "Classe 2 — Actif Immobilisé",
+    classe: "Classe 2 : Actif Immobilisé",
     nature: "Compte de bilan (Actif)",
     sens: "Débiteur",
     contenu: "Les titres de participation sont constitués par les droits dans le capital d'autres entreprises, matérialisés ou non par des titres, afin de créer un lien durable avec celles-ci et de contribuer à l'activité et au développement de la société détentrice.",
@@ -1522,7 +1522,7 @@ const comptesData = {
         "En cas de cession de titres, par le débit du compte 81 – Valeurs comptables des cessions d'immobilisations"
       ]
     },
-    commentaires: "Sont présumés être des titres de participation : les titres acquis par OPA ou OPE, et les titres représentant au moins 10% du capital social d'une entreprise.\n\nDegrés de contrôle :\n— Contrôle exclusif (261) : détention directe ou indirecte conférant la majorité des droits de vote, ou fraction > 40% sans autre associé dominant\n— Contrôle conjoint (262) : partage du contrôle entre un nombre limité d'associés, décisions par commun accord\n— Influence notable (263) : détention directe ou indirecte d'au moins 1/5e (20%) des droits de vote\n\nLes titres de participation figurent à l'actif pour leur coût d'acquisition (montant brut), majoré des frais accessoires d'achat.\n\nEn cas de libération partielle, la part non libérée est inscrite au compte 472 – Versements restant à effectuer sur titres non libérés.\n\n266 – Parts dans des G.I.E. : enregistre les prises et cessions de parts sociales dans les groupements d'intérêt économique, à l'exclusion des avances aux G.I.E. (compte 2774).",
+    commentaires: "Sont présumés être des titres de participation : les titres acquis par OPA ou OPE, et les titres représentant au moins 10% du capital social d'une entreprise.\n\nDegrés de contrôle :\n: Contrôle exclusif (261) : détention directe ou indirecte conférant la majorité des droits de vote, ou fraction > 40% sans autre associé dominant\n: Contrôle conjoint (262) : partage du contrôle entre un nombre limité d'associés, décisions par commun accord\n: Influence notable (263) : détention directe ou indirecte d'au moins 1/5e (20%) des droits de vote\n\nLes titres de participation figurent à l'actif pour leur coût d'acquisition (montant brut), majoré des frais accessoires d'achat.\n\nEn cas de libération partielle, la part non libérée est inscrite au compte 472 – Versements restant à effectuer sur titres non libérés.\n\n266 – Parts dans des G.I.E. : enregistre les prises et cessions de parts sociales dans les groupements d'intérêt économique, à l'exclusion des avances aux G.I.E. (compte 2774).",
     exclusions: {
       texte: "Ne doit pas enregistrer les titres de placement ni les titres immobilisés.",
       comptes: ["50 – Titres de placement", "274 – Titres immobilisés"]
@@ -1532,7 +1532,7 @@ const comptesData = {
       "Ordres d'achat et de vente en Bourse"
     ],
     comptes_lies: ["261","262","263","265","266","268","296","472","81","10","50","274"],
-    textes_ref: ["SC OHADA — Titres de participation", "AUSC — Définition du contrôle et de l'influence notable"],
+    textes_ref: ["SC OHADA : Titres de participation", "AUSC : Définition du contrôle et de l'influence notable"],
     exemples_ecritures: [
         {
           libelle: "Acquisition de titres de participation (10 % d'une filiale)",
@@ -1554,7 +1554,7 @@ const comptesData = {
 
   "27": {
     libelle: "Autres immobilisations financières",
-    classe: "Classe 2 — Actif Immobilisé",
+    classe: "Classe 2 : Actif Immobilisé",
     nature: "Compte de bilan (Actif)",
     sens: "Débiteur",
     contenu: "Les autres immobilisations financières comprennent :\n\nles titres autres que les titres de participation, que l'entreprise n'a ni l'intention, ni la possibilité de revendre dans un bref délai ;\nles prêts nés en vertu de dispositions contractuelles ;\nles créances non commerciales assimilées à des prêts (dépôts et cautionnements).",
@@ -1625,7 +1625,7 @@ const comptesData = {
       "Reconnaissances de dettes de tiers, virements bancaires"
     ],
     comptes_lies: ["271","272","273","274","275","276","277","278","297","472","26","50"],
-    textes_ref: ["SC OHADA — Autres immobilisations financières"],
+    textes_ref: ["SC OHADA : Autres immobilisations financières"],
     exemples_ecritures: [
         {
           libelle: "Versement d'un dépôt de garantie (loyer)",
@@ -1647,8 +1647,8 @@ const comptesData = {
 
   "28": {
     libelle: "Amortissements",
-    classe: "Classe 2 — Actif Immobilisé",
-    nature: "Compte de bilan (Actif — valeur négative en déduction des immobilisations brutes)",
+    classe: "Classe 2 : Actif Immobilisé",
+    nature: "Compte de bilan (Actif : valeur négative en déduction des immobilisations brutes)",
     sens: "Créditeur",
     contenu: "L'amortissement est la constatation comptable obligatoire de l'amoindrissement de la valeur des immobilisations qui se déprécient de façon certaine et irréversible avec le temps, l'usage ou en raison du changement de techniques, de l'évolution des marchés ou de toute autre cause.\n\nIl consiste à répartir le coût du bien sur la durée probable d'utilisation selon un plan prédéfini. Le coût du bien pour l'entreprise s'entend de la différence entre son coût d'entrée et sa valeur résiduelle prévisionnelle. Cette dernière est nulle lorsque la durée probable de vie du bien coïncide avec sa durée d'utilisation dans l'entreprise.\n\nToute modification significative dans l'environnement économique, technique et juridique ou des conditions d'utilisation du bien est susceptible d'entraîner la révision du plan d'amortissement en cours d'exécution.\n\nLes amortissements sont inscrits distinctement à l'actif en diminution de la valeur brute des biens correspondants pour donner leur valeur comptable nette.",
     subdivisions: {
@@ -1703,7 +1703,7 @@ const comptesData = {
       "Tableaux d'amortissement par immobilisation"
     ],
     comptes_lies: ["281","282","283","284","681","85","798","862","21","22","23","24"],
-    textes_ref: ["SC OHADA — Amortissements des immobilisations"],
+    textes_ref: ["SC OHADA : Amortissements des immobilisations"],
     exemples_ecritures: [
         {
           libelle: "Dotation aux amortissements d'un bâtiment (fin d'exercice)",
@@ -1725,8 +1725,8 @@ const comptesData = {
 
   "29": {
     libelle: "Provisions pour dépréciation",
-    classe: "Classe 2 — Actif Immobilisé",
-    nature: "Compte de bilan (Actif — valeur négative en déduction des immobilisations brutes)",
+    classe: "Classe 2 : Actif Immobilisé",
+    nature: "Compte de bilan (Actif : valeur négative en déduction des immobilisations brutes)",
     sens: "Créditeur",
     contenu: "La provision pour dépréciation des immobilisations constate l'amoindrissement probable de la valeur d'un élément d'actif résultant de causes dont les effets ne sont pas jugés irréversibles. Cette provision est constatée par une dotation au compte de résultat.\n\nLes provisions pour dépréciation sont inscrites distinctement à l'actif, en diminution de la valeur brute des biens correspondants pour donner leur valeur comptable nette (V.C.N.).\n\nMême en cas d'absence ou d'insuffisance de bénéfice au cours de l'exercice, il doit être procédé aux provisions nécessaires pour couvrir les dépréciations.",
     subdivisions: {
@@ -1771,7 +1771,7 @@ const comptesData = {
         "Ou par le crédit du compte 863 – Reprises de provisions pour dépréciation H.A.O."
       ]
     },
-    commentaires: "Les provisions pour dépréciation résultent de l'évaluation des moins-values constatées sur les éléments d'actif non amortissables (terrains, fonds commercial) ou des dépréciations exceptionnelles des immobilisations amortissables dont le caractère n'est pas définitif.\n\nÉvaluation des titres à la clôture :\n— Titres cotés : cours moyen boursier du dernier mois\n— Titres non cotés : valeur probable de négociation\n\nRègle de non-compensation : les plus-values sur titres en hausse ne compensent pas les moins-values sur titres en baisse. Toutefois, en cas de baisse anormale et momentanée de certains titres cotés, l'entreprise peut, sous sa responsabilité, inclure tout ou partie de la moins-value dans la provision, dans la mesure d'une compensation avec des plus-values normales constatées sur d'autres titres.\n\nUne provision supplémentaire peut être constituée lors d'événements exceptionnels (faillite, par exemple).\n\nLes provisions doivent être pratiquées à la clôture de l'exercice, même en l'absence de bénéfice, aussi bien sur les immobilisations acquises que sur celles en cours de fabrication.",
+    commentaires: "Les provisions pour dépréciation résultent de l'évaluation des moins-values constatées sur les éléments d'actif non amortissables (terrains, fonds commercial) ou des dépréciations exceptionnelles des immobilisations amortissables dont le caractère n'est pas définitif.\n\nÉvaluation des titres à la clôture :\n: Titres cotés : cours moyen boursier du dernier mois\n: Titres non cotés : valeur probable de négociation\n\nRègle de non-compensation : les plus-values sur titres en hausse ne compensent pas les moins-values sur titres en baisse. Toutefois, en cas de baisse anormale et momentanée de certains titres cotés, l'entreprise peut, sous sa responsabilité, inclure tout ou partie de la moins-value dans la provision, dans la mesure d'une compensation avec des plus-values normales constatées sur d'autres titres.\n\nUne provision supplémentaire peut être constituée lors d'événements exceptionnels (faillite, par exemple).\n\nLes provisions doivent être pratiquées à la clôture de l'exercice, même en l'absence de bénéfice, aussi bien sur les immobilisations acquises que sur celles en cours de fabrication.",
     exclusions: {
       texte: "Ne doit pas enregistrer les dépréciations des stocks, des comptes de tiers, ni des comptes de trésorerie.",
       comptes: ["39 – Dépréciations des stocks", "49 – Dépréciations et risques provisionnés (Tiers)", "59 – Dépréciations et risques provisionnés (Trésorerie)"]
@@ -1783,7 +1783,7 @@ const comptesData = {
       "Livre d'inventaire"
     ],
     comptes_lies: ["291","292","293","294","295","296","297","691","697","853","791","797","863"],
-    textes_ref: ["SC OHADA — Provisions pour dépréciation des immobilisations"],
+    textes_ref: ["SC OHADA : Provisions pour dépréciation des immobilisations"],
     exemples_ecritures: [
         {
           libelle: "Provision pour dépréciation d'un fonds commercial",
@@ -1804,7 +1804,7 @@ const comptesData = {
   },
 
   /* ═══════════════════════════════════════════════════════════════
-     CLASSE 3 — COMPTES DE STOCKS
+     CLASSE 3 : COMPTES DE STOCKS
   ═══════════════════════════════════════════════════════════════ */
 
   "3": {
@@ -1814,15 +1814,15 @@ const comptesData = {
     sens: "Débiteur",
     contenu: "Les stocks sont formés de l'ensemble des marchandises, matières premières et fournitures liées, produits intermédiaires, produits finis ainsi que des produits et services en cours qui sont la propriété de l'entreprise à la date de l'inventaire.",
     fonctionnement: { debit: [], credit: [] },
-    commentaires: "Méthodes d'évaluation des sorties :\n— Coût Moyen Pondéré (C.M.P.)\n— Premier Entré Premier Sorti (P.E.P.S.)\n\nDeux systèmes d'inventaire :\n— Inventaire permanent : connaissance à chaque instant du montant des stocks, du coût des marchandises vendues et des matières engagées dans la fabrication\n— Inventaire intermittent : connaissance des existants uniquement à la clôture, par inventaire extra-comptable\n\nValeur d'entrée en stocks :\n— Biens achetés : coût direct d'achat (prix CAF + frais accessoires, sous déduction des RRR, hors taxes récupérables)\n— Produits fabriqués : coût de production\n— Déchets, rebuts et produits de récupération : cours du jour ou valeur probable de réalisation",
+    commentaires: "Méthodes d'évaluation des sorties :\n: Coût Moyen Pondéré (C.M.P.)\n: Premier Entré Premier Sorti (P.E.P.S.)\n\nDeux systèmes d'inventaire :\n: Inventaire permanent : connaissance à chaque instant du montant des stocks, du coût des marchandises vendues et des matières engagées dans la fabrication\n: Inventaire intermittent : connaissance des existants uniquement à la clôture, par inventaire extra-comptable\n\nValeur d'entrée en stocks :\n: Biens achetés : coût direct d'achat (prix CAF + frais accessoires, sous déduction des RRR, hors taxes récupérables)\n: Produits fabriqués : coût de production\n: Déchets, rebuts et produits de récupération : cours du jour ou valeur probable de réalisation",
     comptes_lies: ["31","32","33","34","35","36","37","38","39"],
-    textes_ref: ["Acte Uniforme OHADA portant organisation et harmonisation des comptabilités des entreprises — Classe 3"],
+    textes_ref: ["Acte Uniforme OHADA portant organisation et harmonisation des comptabilités des entreprises : Classe 3"],
     exemples_ecritures: []
   },
 
   "31": {
     libelle: "Marchandises",
-    classe: "Classe 3 — Stocks",
+    classe: "Classe 3 : Stocks",
     nature: "Compte de bilan (Actif circulant)",
     sens: "Débiteur",
     contenu: "Les marchandises sont les objets, matières et fournitures, acquis par l'entreprise et destinés à être revendus en l'état.",
@@ -1837,14 +1837,14 @@ const comptesData = {
     },
     fonctionnement: {
       debit: [
-        "Inventaire intermittent — clôture : stock final constaté par inventaire extra-comptable (méthode P.E.P.S. ou C.M.P.), par le crédit du compte 6031 – Variations des stocks de marchandises",
-        "Inventaire permanent — entrée en stock : coût des marchandises achetées (prix d'achat + frais accessoires), par le crédit du compte 6031",
-        "Inventaire permanent — clôture : différences en plus constatées par rapport à l'inventaire permanent, par le crédit du compte 6031"
+        "Inventaire intermittent : clôture : stock final constaté par inventaire extra-comptable (méthode P.E.P.S. ou C.M.P.), par le crédit du compte 6031 – Variations des stocks de marchandises",
+        "Inventaire permanent : entrée en stock : coût des marchandises achetées (prix d'achat + frais accessoires), par le crédit du compte 6031",
+        "Inventaire permanent : clôture : différences en plus constatées par rapport à l'inventaire permanent, par le crédit du compte 6031"
       ],
       credit: [
-        "Inventaire intermittent — clôture : stock initial soldé, par le débit du compte 6031",
-        "Inventaire permanent — sortie de stock : coût des marchandises vendues calculé selon P.E.P.S. ou C.M.P., par le débit du compte 6031",
-        "Inventaire permanent — clôture : différences en moins constatées par rapport à l'inventaire permanent, par le débit du compte 6031"
+        "Inventaire intermittent : clôture : stock initial soldé, par le débit du compte 6031",
+        "Inventaire permanent : sortie de stock : coût des marchandises vendues calculé selon P.E.P.S. ou C.M.P., par le débit du compte 6031",
+        "Inventaire permanent : clôture : différences en moins constatées par rapport à l'inventaire permanent, par le débit du compte 6031"
       ]
     },
     commentaires: "Le compte 31 est subdivisé selon les besoins de l'entreprise, conformément à la nomenclature des biens et services en usage dans chaque État-partie.\n\nLes marchandises H.A.O. (compte 318) ne sont distinguées que si leur montant est supérieur à 5 % du total de l'actif circulant.",
@@ -1854,7 +1854,7 @@ const comptesData = {
     },
     controle: ["Inventaire extra-comptable", "Factures d'achats et de frais accessoires"],
     comptes_lies: ["311","312","318","391","6031","601"],
-    textes_ref: ["SC OHADA — Compte 31 Marchandises"],
+    textes_ref: ["SC OHADA : Compte 31 Marchandises"],
     exemples_ecritures: [
         {
           libelle: "Constatation du stock final (inventaire intermittent)",
@@ -1876,7 +1876,7 @@ const comptesData = {
 
   "32": {
     libelle: "Matières premières et fournitures liées",
-    classe: "Classe 3 — Stocks",
+    classe: "Classe 3 : Stocks",
     nature: "Compte de bilan (Actif circulant)",
     sens: "Débiteur",
     contenu: "Les matières premières et fournitures liées sont les objets, matières et fournitures achetés pour être incorporés aux produits fabriqués.",
@@ -1887,14 +1887,14 @@ const comptesData = {
     },
     fonctionnement: {
       debit: [
-        "Inventaire intermittent — clôture : stock final (méthode P.E.P.S. ou C.M.P.), par le crédit du compte 6032 – Variations des stocks de matières premières et fournitures liées",
-        "Inventaire permanent — entrée en stock : coût d'acquisition (prix d'achat + frais accessoires), par le crédit du compte 6032",
-        "Inventaire permanent — clôture : différences en plus par rapport à l'inventaire permanent, par le crédit du compte 6032"
+        "Inventaire intermittent : clôture : stock final (méthode P.E.P.S. ou C.M.P.), par le crédit du compte 6032 – Variations des stocks de matières premières et fournitures liées",
+        "Inventaire permanent : entrée en stock : coût d'acquisition (prix d'achat + frais accessoires), par le crédit du compte 6032",
+        "Inventaire permanent : clôture : différences en plus par rapport à l'inventaire permanent, par le crédit du compte 6032"
       ],
       credit: [
-        "Inventaire intermittent — clôture : stock initial soldé, par le débit du compte 6032",
-        "Inventaire permanent — sortie de stock : coût P.E.P.S. ou C.M.P., par le débit du compte 6032",
-        "Inventaire permanent — clôture : différences en moins par rapport à l'inventaire permanent, par le débit du compte 6032"
+        "Inventaire intermittent : clôture : stock initial soldé, par le débit du compte 6032",
+        "Inventaire permanent : sortie de stock : coût P.E.P.S. ou C.M.P., par le débit du compte 6032",
+        "Inventaire permanent : clôture : différences en moins par rapport à l'inventaire permanent, par le débit du compte 6032"
       ]
     },
     commentaires: "Les matières dites consommables ne font pas partie des « fournitures liées » et sont classées dans le compte 33 – Autres approvisionnements.",
@@ -1904,7 +1904,7 @@ const comptesData = {
     },
     controle: ["Inventaire extra-comptable", "Factures d'achats et de frais accessoires"],
     comptes_lies: ["321","322","323","392","6032","602"],
-    textes_ref: ["SC OHADA — Compte 32 Matières premières et fournitures liées"],
+    textes_ref: ["SC OHADA : Compte 32 Matières premières et fournitures liées"],
     exemples_ecritures: [
         {
           libelle: "Constatation du stock final de matières premières",
@@ -1921,7 +1921,7 @@ const comptesData = {
 
   "33": {
     libelle: "Autres approvisionnements",
-    classe: "Classe 3 — Stocks",
+    classe: "Classe 3 : Stocks",
     nature: "Compte de bilan (Actif circulant)",
     sens: "Débiteur",
     contenu: "Les autres approvisionnements sont fabrication ou à l'exploitation, sans des matières, des fournitures acquises entrer dans la composition des par l'entreprise et qui concourent à la produits fabriqués ou traités.",
@@ -1939,14 +1939,14 @@ const comptesData = {
     },
     fonctionnement: {
       debit: [
-        "Inventaire intermittent — clôture : stock final (méthode P.E.P.S. ou C.M.P.), par le crédit du compte 6033 – Variations des stocks d'autres approvisionnements",
-        "Inventaire permanent — entrée en stock : coût d'acquisition (prix d'achat + frais accessoires), par le crédit du compte 6033",
-        "Inventaire permanent — clôture : différences en plus par rapport à l'inventaire permanent, par le crédit du compte 6033"
+        "Inventaire intermittent : clôture : stock final (méthode P.E.P.S. ou C.M.P.), par le crédit du compte 6033 – Variations des stocks d'autres approvisionnements",
+        "Inventaire permanent : entrée en stock : coût d'acquisition (prix d'achat + frais accessoires), par le crédit du compte 6033",
+        "Inventaire permanent : clôture : différences en plus par rapport à l'inventaire permanent, par le crédit du compte 6033"
       ],
       credit: [
-        "Inventaire intermittent — clôture : stock initial soldé, par le débit du compte 6033",
-        "Inventaire permanent — sortie de stock : coût P.E.P.S. ou C.M.P., par le débit du compte 6033",
-        "Inventaire permanent — clôture : différences en moins par rapport à l'inventaire permanent, par le débit du compte 6033"
+        "Inventaire intermittent : clôture : stock initial soldé, par le débit du compte 6033",
+        "Inventaire permanent : sortie de stock : coût P.E.P.S. ou C.M.P., par le débit du compte 6033",
+        "Inventaire permanent : clôture : différences en moins par rapport à l'inventaire permanent, par le débit du compte 6033"
       ]
     },
     commentaires: "Le compte 33 peut comprendre des pièces de rechange, du petit outillage et, le cas échéant, du matériel mobile dont la destination définitive (immobilisation ou entretien) n'est pas encore connue.",
@@ -1956,7 +1956,7 @@ const comptesData = {
     },
     controle: ["Inventaire extra-comptable", "Factures d'achats et de frais accessoires"],
     comptes_lies: ["331","332","333","334","335","338","393","6033","604"],
-    textes_ref: ["SC OHADA — Compte 33 Autres approvisionnements"],
+    textes_ref: ["SC OHADA : Compte 33 Autres approvisionnements"],
     exemples_ecritures: [
         {
           libelle: "Constatation du stock final d'autres approvisionnements",
@@ -1973,7 +1973,7 @@ const comptesData = {
 
   "34": {
     libelle: "Produits en cours",
-    classe: "Classe 3 — Stocks",
+    classe: "Classe 3 : Stocks",
     nature: "Compte de bilan (Actif circulant)",
     sens: "Débiteur",
     contenu: "Les produits en cours sont des biens et services en voie de formation ou de transformation à la clôture de l'exercice.",
@@ -1993,12 +1993,12 @@ const comptesData = {
     },
     fonctionnement: {
       debit: [
-        "Inventaire intermittent — fin d'exercice : montant constaté des en-cours déterminé en comptabilité analytique ou extra-comptable, par le crédit du compte 734 – Variations des stocks de produits en cours",
-        "Inventaire permanent — à chaque incorporation de frais dans les en-cours : montant déterminé en comptabilité analytique, par le crédit du compte 734"
+        "Inventaire intermittent : fin d'exercice : montant constaté des en-cours déterminé en comptabilité analytique ou extra-comptable, par le crédit du compte 734 – Variations des stocks de produits en cours",
+        "Inventaire permanent : à chaque incorporation de frais dans les en-cours : montant déterminé en comptabilité analytique, par le crédit du compte 734"
       ],
       credit: [
-        "Inventaire intermittent — fin d'exercice : montant initial des en-cours soldé, par le débit du compte 734",
-        "Inventaire permanent — à chaque sortie des en-cours achevés transférés en produits finis ou intermédiaires au coût de production, par le débit du compte 734"
+        "Inventaire intermittent : fin d'exercice : montant initial des en-cours soldé, par le débit du compte 734",
+        "Inventaire permanent : à chaque sortie des en-cours achevés transférés en produits finis ou intermédiaires au coût de production, par le débit du compte 734"
       ]
     },
     commentaires: "Les produits en cours ne sont pas inscrits à un compte de magasin.\n\nLes travaux en cours (compte 342) concernent des biens d'équipement lourd, immeubles ou constructions à long délai de fabrication, dont la propriété n'est pas encore transférée à l'acheteur.",
@@ -2008,7 +2008,7 @@ const comptesData = {
     },
     controle: ["Inventaire extra-comptable", "Évaluation des coûts de production"],
     comptes_lies: ["341","342","343","344","394","734"],
-    textes_ref: ["SC OHADA — Compte 34 Produits en cours"],
+    textes_ref: ["SC OHADA : Compte 34 Produits en cours"],
     exemples_ecritures: [
         {
           libelle: "Constatation des produits en cours à la clôture",
@@ -2025,7 +2025,7 @@ const comptesData = {
 
   "35": {
     libelle: "Services en cours",
-    classe: "Classe 3 — Stocks",
+    classe: "Classe 3 : Stocks",
     nature: "Compte de bilan (Actif circulant)",
     sens: "Débiteur",
     contenu: "Les services en cours sont des études et prestations en cours d'exécution, dont la remise définitive à l'acheteur ou au passeur d'ordre n'est pas encore intervenue.",
@@ -2040,11 +2040,11 @@ const comptesData = {
     fonctionnement: {
       debit: [
         "Fin d'exercice : montant constaté des en-cours (déterminé en comptabilité analytique ou extra-comptable), par le crédit du compte 735 – Variations des en-cours de services",
-        "Inventaire permanent — à chaque incorporation de frais dans les en-cours, par le crédit du compte 735"
+        "Inventaire permanent : à chaque incorporation de frais dans les en-cours, par le crédit du compte 735"
       ],
       credit: [
         "Fin d'exercice : montant des en-cours existant en début d'exercice soldé, par le débit du compte 735",
-        "Inventaire permanent — à chaque sortie des en-cours achevés et vendus au coût de production, par le débit du compte 735"
+        "Inventaire permanent : à chaque sortie des en-cours achevés et vendus au coût de production, par le débit du compte 735"
       ]
     },
     commentaires: "Les montants d'études et de prestations déjà engagées et non encore facturées (études d'organisation, transport international, etc.) peuvent être suivis en inventaire permanent ou seulement constatés en inventaire intermittent, selon l'organisation de l'entreprise.",
@@ -2054,7 +2054,7 @@ const comptesData = {
     },
     controle: ["Inventaire extra-comptable", "Évaluation des coûts de production"],
     comptes_lies: ["351","352","395","735"],
-    textes_ref: ["SC OHADA — Compte 35 Services en cours"],
+    textes_ref: ["SC OHADA : Compte 35 Services en cours"],
     exemples_ecritures: [
         {
           libelle: "Constatation des services (études) en cours à la clôture",
@@ -2071,7 +2071,7 @@ const comptesData = {
 
   "36": {
     libelle: "Produits finis",
-    classe: "Classe 3 — Stocks",
+    classe: "Classe 3 : Stocks",
     nature: "Compte de bilan (Actif circulant)",
     sens: "Débiteur",
     contenu: "Les produits finis sont les produits fabriqués par l'entreprise qui ont atteint le stade final de production. Ils sont destinés à être vendus, loués ou fournis.",
@@ -2081,14 +2081,14 @@ const comptesData = {
     },
     fonctionnement: {
       debit: [
-        "Inventaire intermittent — fin d'exercice : stock final évalué au coût réel de production (corps certains) ou P.E.P.S./C.M.P. (biens interchangeables), par le crédit du compte 736 – Variations des stocks de produits finis",
-        "Inventaire permanent — entrée en stock : coût de production déterminé par la comptabilité analytique, par le crédit du compte 736",
-        "Inventaire permanent — clôture : différences en plus par rapport à l'inventaire permanent, par le crédit du compte 736"
+        "Inventaire intermittent : fin d'exercice : stock final évalué au coût réel de production (corps certains) ou P.E.P.S./C.M.P. (biens interchangeables), par le crédit du compte 736 – Variations des stocks de produits finis",
+        "Inventaire permanent : entrée en stock : coût de production déterminé par la comptabilité analytique, par le crédit du compte 736",
+        "Inventaire permanent : clôture : différences en plus par rapport à l'inventaire permanent, par le crédit du compte 736"
       ],
       credit: [
-        "Inventaire intermittent — fin d'exercice : stock initial soldé, par le débit du compte 736",
-        "Inventaire permanent — sortie de stock : coût réel (corps certains) ou P.E.P.S./C.M.P. (biens interchangeables), par le débit du compte 736",
-        "Inventaire permanent — clôture : différences en moins par rapport à l'inventaire permanent, par le débit du compte 736"
+        "Inventaire intermittent : fin d'exercice : stock initial soldé, par le débit du compte 736",
+        "Inventaire permanent : sortie de stock : coût réel (corps certains) ou P.E.P.S./C.M.P. (biens interchangeables), par le débit du compte 736",
+        "Inventaire permanent : clôture : différences en moins par rapport à l'inventaire permanent, par le débit du compte 736"
       ]
     },
     commentaires: "Lorsque l'entreprise vend indistinctement des produits achetés et des produits fabriqués en tous points semblables (se distinguant seulement par leur origine), elle peut n'ouvrir qu'un seul compte pour les deux. Les sorties sont alors créditées par le débit du compte 6031 et du compte 736 selon un prorata déterminé sous sa propre responsabilité.",
@@ -2098,7 +2098,7 @@ const comptesData = {
     },
     controle: ["Inventaire extra-comptable", "Évaluation des coûts de production"],
     comptes_lies: ["361","362","396","736","6031"],
-    textes_ref: ["SC OHADA — Compte 36 Produits finis"],
+    textes_ref: ["SC OHADA : Compte 36 Produits finis"],
     exemples_ecritures: [
         {
           libelle: "Entrée de produits finis en stock (inventaire permanent)",
@@ -2115,7 +2115,7 @@ const comptesData = {
 
   "37": {
     libelle: "Produits intermédiaires et résiduels",
-    classe: "Classe 3 — Stocks",
+    classe: "Classe 3 : Stocks",
     nature: "Compte de bilan (Actif circulant)",
     sens: "Débiteur",
     contenu: "Les produits intermédiaires sont des produits ayant atteint un stade déterminé de fabrication et disponibles pour des fabrications ultérieures.",
@@ -2130,25 +2130,25 @@ const comptesData = {
     },
     fonctionnement: {
       debit: [
-        "Inventaire intermittent — clôture : stock final de produits intermédiaires (coût réel ou P.E.P.S./C.M.P.), par le crédit du compte 7371 – Variations des stocks de produits intermédiaires",
-        "Inventaire intermittent — clôture : valeur estimée du stock final de produits résiduels, par le crédit du compte 7372 – Variations des stocks de produits résiduels",
+        "Inventaire intermittent : clôture : stock final de produits intermédiaires (coût réel ou P.E.P.S./C.M.P.), par le crédit du compte 7371 – Variations des stocks de produits intermédiaires",
+        "Inventaire intermittent : clôture : valeur estimée du stock final de produits résiduels, par le crédit du compte 7372 – Variations des stocks de produits résiduels",
         "Produits de récupération provenant de la fabrication ou de la mise hors service d'immobilisations (non affectables aux comptes 31, 32 ou 33), par le crédit du compte 7372",
-        "Inventaire permanent — entrée en stock : coût de production déterminé par la comptabilité analytique, par le crédit du compte 737"
+        "Inventaire permanent : entrée en stock : coût de production déterminé par la comptabilité analytique, par le crédit du compte 737"
       ],
       credit: [
-        "Inventaire intermittent — clôture : stocks initiaux soldés, par le débit du compte 7371 ou 7372",
-        "Inventaire permanent — sortie de stock : coût réel ou P.E.P.S./C.M.P., par le débit du compte 737",
-        "Inventaire permanent — clôture : différences en moins par rapport à l'inventaire permanent, par le débit du compte 737"
+        "Inventaire intermittent : clôture : stocks initiaux soldés, par le débit du compte 7371 ou 7372",
+        "Inventaire permanent : sortie de stock : coût réel ou P.E.P.S./C.M.P., par le débit du compte 737",
+        "Inventaire permanent : clôture : différences en moins par rapport à l'inventaire permanent, par le débit du compte 737"
       ]
     },
-    commentaires: "Les produits résiduels comprennent :\n— Déchets et rebuts : résidus de toutes natures impropres à une utilisation ou un écoulement normal\n— Produits de la récupération : matières récupérées à la suite de la mise hors service d'immobilisations\n\nLe compte 372 n'est ouvert que si les déchets et rebuts ne peuvent pas être normalement introduits dans la nomenclature des biens et services de l'entreprise.\n\nLorsque l'entreprise utilise indistinctement un produit intermédiaire fabriqué et une matière achetée identiques, elle peut n'ouvrir qu'un seul compte en créditant les sorties par le débit du compte 7371 et du compte 6032 selon un prorata.",
+    commentaires: "Les produits résiduels comprennent :\n: Déchets et rebuts : résidus de toutes natures impropres à une utilisation ou un écoulement normal\n: Produits de la récupération : matières récupérées à la suite de la mise hors service d'immobilisations\n\nLe compte 372 n'est ouvert que si les déchets et rebuts ne peuvent pas être normalement introduits dans la nomenclature des biens et services de l'entreprise.\n\nLorsque l'entreprise utilise indistinctement un produit intermédiaire fabriqué et une matière achetée identiques, elle peut n'ouvrir qu'un seul compte en créditant les sorties par le débit du compte 7371 et du compte 6032 selon un prorata.",
     exclusions: {
       texte: "Ne doit pas enregistrer les produits en cours (non inscriptibles en compte de magasin), les produits d'immobilisations démontées en attente d'affectation définitive, ni les produits de récupération définitivement affectés à d'autres stocks.",
       comptes: ["34 – Produits en cours", "38 – Stocks en cours de route (en attente)", "31, 32 ou 33 selon affectation définitive"]
     },
     controle: ["Inventaire extra-comptable", "Évaluation des coûts de production des produits concernés"],
     comptes_lies: ["371","372","397","7371","7372","737","6032"],
-    textes_ref: ["SC OHADA — Compte 37 Produits intermédiaires et résiduels"],
+    textes_ref: ["SC OHADA : Compte 37 Produits intermédiaires et résiduels"],
     exemples_ecritures: [
         {
           libelle: "Entrée de produits intermédiaires en stock",
@@ -2165,8 +2165,8 @@ const comptesData = {
 
   "38": {
     libelle: "Stocks en cours de route, en consignation ou en dépôt",
-    classe: "Classe 3 — Stocks",
-    nature: "Compte de bilan (Actif circulant — compte de passage)",
+    classe: "Classe 3 : Stocks",
+    nature: "Compte de bilan (Actif circulant : compte de passage)",
     sens: "Débiteur",
     contenu: "Ce sont des marchandises, matières, fournitures ou produits fabriqués, expédiés par le fournisseur et non encore réceptionnés par l'entreprise ou détenus chez des tiers mais dont l'entreprise est propriétaire.",
     subdivisions: {
@@ -2181,12 +2181,12 @@ const comptesData = {
     },
     fonctionnement: {
       debit: [
-        "Inventaire intermittent — fin d'exercice : stocks en cours de route à leur coût approché ou standard (le coût réel n'étant pas connu), par le crédit des sous-comptes 603 concernés",
-        "Inventaire permanent — stocks non encore réceptionnés (coût approché ou standard), par le crédit des sous-comptes 603 concernés"
+        "Inventaire intermittent : fin d'exercice : stocks en cours de route à leur coût approché ou standard (le coût réel n'étant pas connu), par le crédit des sous-comptes 603 concernés",
+        "Inventaire permanent : stocks non encore réceptionnés (coût approché ou standard), par le crédit des sous-comptes 603 concernés"
       ],
       credit: [
-        "Inventaire intermittent — clôture : stocks en cours de route de début d'exercice soldés, par le débit des sous-comptes 603 concernés",
-        "Inventaire permanent — dès réception par l'entreprise, le consignataire ou le dépositaire : ventilation dans les comptes de stocks appropriés de la classe 3, par le débit de ces comptes"
+        "Inventaire intermittent : clôture : stocks en cours de route de début d'exercice soldés, par le débit des sous-comptes 603 concernés",
+        "Inventaire permanent : dès réception par l'entreprise, le consignataire ou le dépositaire : ventilation dans les comptes de stocks appropriés de la classe 3, par le débit de ces comptes"
       ]
     },
     commentaires: "Le compte 38 est un compte de passage. En inventaire permanent, dès réception, les stocks sont ventilés dans les comptes appropriés (31, 32, 33, 36, etc.).\n\nEn inventaire intermittent, le compte 38 est utilisé exceptionnellement si les stocks ne sont pas encore réceptionnés à la date d'établissement des comptes annuels.\n\nEn fin de période, le détail par catégorie des stocks figurant au bilan dans le compte 38 doit être inscrit dans l'État annexé.",
@@ -2196,7 +2196,7 @@ const comptesData = {
     },
     controle: ["Inventaire extra-comptable", "Factures d'achat", "Documents de transport (connaissements, lettres de voiture)"],
     comptes_lies: ["381","382","383","386","387","388","398","603"],
-    textes_ref: ["SC OHADA — Compte 38 Stocks en cours de route"],
+    textes_ref: ["SC OHADA : Compte 38 Stocks en cours de route"],
     exemples_ecritures: [
         {
           libelle: "Stocks en cours de route à la clôture (inventaire intermittent)",
@@ -2213,8 +2213,8 @@ const comptesData = {
 
   "39": {
     libelle: "Dépréciations des stocks",
-    classe: "Classe 3 — Stocks",
-    nature: "Compte de bilan (Actif — valeur négative, en déduction des stocks bruts)",
+    classe: "Classe 3 : Stocks",
+    nature: "Compte de bilan (Actif : valeur négative, en déduction des stocks bruts)",
     sens: "Créditeur",
     contenu: "Ce sont des dépréciations subies par des stocks de marchandises, de matières, et autres approvisionnements résultant de causes diverses dont les effets ne sont pas jugés irréversibles.",
     subdivisions: {
@@ -2237,14 +2237,14 @@ const comptesData = {
         "Ou par le crédit du compte 849 – Reprises de charges provisionnées H.A.O."
       ]
     },
-    commentaires: "Calcul de la provision :\nValeur comptable (coût réel d'achat ou de production selon P.E.P.S. ou C.M.P.) − Valeur actuelle au jour de l'inventaire\n\nValeur actuelle :\n— Marchandises, en-cours et produits finis : valeur probable de réalisation\n— Matières et fournitures : coût d'achat au cours du jour de l'inventaire\n\nRègles importantes :\n— Les éléments détériorés, défraîchis ou démodés doivent faire l'objet d'une provision\n— La provision doit être constituée même si son montant est incertain\n— La provision est obligatoire même en l'absence ou en cas d'insuffisance de bénéfices (principe de prudence)\n— Les événements générateurs survenus après la clôture ne sont pas pris en compte dans l'exercice",
+    commentaires: "Calcul de la provision :\nValeur comptable (coût réel d'achat ou de production selon P.E.P.S. ou C.M.P.) − Valeur actuelle au jour de l'inventaire\n\nValeur actuelle :\n: Marchandises, en-cours et produits finis : valeur probable de réalisation\n: Matières et fournitures : coût d'achat au cours du jour de l'inventaire\n\nRègles importantes :\n: Les éléments détériorés, défraîchis ou démodés doivent faire l'objet d'une provision\n: La provision doit être constituée même si son montant est incertain\n: La provision est obligatoire même en l'absence ou en cas d'insuffisance de bénéfices (principe de prudence)\n: Les événements générateurs survenus après la clôture ne sont pas pris en compte dans l'exercice",
     exclusions: {
       texte: "Ne doit pas enregistrer les provisions pour dépréciation de l'actif immobilisé (classe 2), des clients et comptes rattachés, ni des comptes de trésorerie.",
       comptes: ["29 – Provisions pour dépréciation (actif immobilisé)", "49 – Dépréciations et risques provisionnés (Tiers)", "59 – Dépréciations et risques provisionnés (Trésorerie)"]
     },
     controle: ["Inventaire extra-comptable", "Comparaison valeur comptable / valeur de marché au jour de l'inventaire"],
     comptes_lies: ["391","392","393","394","395","396","397","398","6593","7593","839","849"],
-    textes_ref: ["SC OHADA — Compte 39 Dépréciations des stocks"],
+    textes_ref: ["SC OHADA : Compte 39 Dépréciations des stocks"],
     exemples_ecritures: [
         {
           libelle: "Provision pour dépréciation de marchandises",
@@ -2260,7 +2260,7 @@ const comptesData = {
   },
 
   /* ═══════════════════════════════════════════════════════════════
-     CLASSE 4 — COMPTES DE TIERS
+     CLASSE 4 : COMPTES DE TIERS
   ═══════════════════════════════════════════════════════════════ */
 
   "4": {
@@ -2272,14 +2272,14 @@ const comptesData = {
     fonctionnement: { debit: [], credit: [] },
     commentaires: "Aucune compensation n'est admise au bilan entre les comptes de tiers à solde débiteur et à solde créditeur. Les avances et acomptes versés sur commandes figurent à l'actif ; les avances et acomptes reçus des clients figurent au passif.",
     comptes_lies: ["40","41","42","43","44","45","46","47","48","49"],
-    textes_ref: ["Acte Uniforme OHADA — Classe 4 Comptes de tiers"],
+    textes_ref: ["Acte Uniforme OHADA : Classe 4 Comptes de tiers"],
     exemples_ecritures: []
   },
 
   "40": {
     libelle: "Fournisseurs et comptes rattachés",
-    classe: "Classe 4 — Comptes de Tiers",
-    nature: "Compte de bilan (Passif — dettes d'exploitation)",
+    classe: "Classe 4 : Comptes de Tiers",
+    nature: "Compte de bilan (Passif : dettes d'exploitation)",
     sens: "Créditeur",
     contenu: "Les fournisseurs d'exploitation sont des tiers auxquels l'entreprise a recours pour ses achats de fournitures de toutes natures et de services.",
     subdivisions: {
@@ -2325,7 +2325,7 @@ const comptesData = {
     },
     controle: ["Factures fournisseurs", "Chèques de règlement", "Effets à payer"],
     comptes_lies: ["401","402","408","409","481","445","773","6","3"],
-    textes_ref: ["SC OHADA — Compte 40 Fournisseurs et comptes rattachés"],
+    textes_ref: ["SC OHADA : Compte 40 Fournisseurs et comptes rattachés"],
     exemples_ecritures: [
         {
           libelle: "Réception d'une facture fournisseur (achat HT + TVA)",
@@ -2347,8 +2347,8 @@ const comptesData = {
 
   "41": {
     libelle: "Clients et comptes rattachés",
-    classe: "Classe 4 — Comptes de Tiers",
-    nature: "Compte de bilan (Actif — créances d'exploitation)",
+    classe: "Classe 4 : Comptes de Tiers",
+    nature: "Compte de bilan (Actif : créances d'exploitation)",
     sens: "Débiteur",
     contenu: "Les clients d'exploitation sont des tiers auxquels l'entreprise vend les biens ou services, objet de son activité.",
     subdivisions: {
@@ -2401,7 +2401,7 @@ const comptesData = {
     },
     controle: ["Factures clients", "Chèques de règlement", "Effets à recevoir", "Dossiers contentieux", "Relances clients", "Impayés"],
     comptes_lies: ["411","412","414","415","416","418","419","485","443","491","70","673"],
-    textes_ref: ["SC OHADA — Compte 41 Clients et comptes rattachés"],
+    textes_ref: ["SC OHADA : Compte 41 Clients et comptes rattachés"],
     exemples_ecritures: [
         {
           libelle: "Émission d'une facture de vente (HT + TVA)",
@@ -2423,8 +2423,8 @@ const comptesData = {
 
   "42": {
     libelle: "Personnel",
-    classe: "Classe 4 — Comptes de Tiers",
-    nature: "Compte de bilan (Passif — dettes salariales / Actif — avances)",
+    classe: "Classe 4 : Comptes de Tiers",
+    nature: "Compte de bilan (Passif : dettes salariales / Actif : avances)",
     sens: "Créditeur (en général)",
     contenu: "Le compte Personnel enregistre l'ensemble des opérations qui interviennent entre l'entreprise et les personnes qui lui sont liées par un contrat de travail. Par extension, les opérations qui concernent les représentants du personnel ou les organismes similaires lui sont rattachées.\n\nLe personnel de l'entreprise comprend :\n\nle personnel de direction et d'encadrement, les employés, les ouvriers et les occasionnels indépendamment de leur situation ou de leurs fonctions ;\nles représentants salariés ;\nles associés et les dirigeants de société qui exercent des fonctions techniques ;\nles membres de la famille de l'exploitant exerçant un emploi salarié.",
     subdivisions: {
@@ -2472,7 +2472,7 @@ const comptesData = {
     },
     controle: ["Fiches de paie", "Déclarations sociales", "Contrats de prêts", "Procès-verbaux de saisie-arrêt", "Avis à tiers détenteur"],
     comptes_lies: ["421","422","423","424","425","426","427","428","43","66","272","46"],
-    textes_ref: ["SC OHADA — Compte 42 Personnel"],
+    textes_ref: ["SC OHADA : Compte 42 Personnel"],
     exemples_ecritures: [
         {
           libelle: "Comptabilisation des salaires bruts",
@@ -2494,8 +2494,8 @@ const comptesData = {
 
   "43": {
     libelle: "Organismes sociaux",
-    classe: "Classe 4 — Comptes de Tiers",
-    nature: "Compte de bilan (Passif — dettes sociales)",
+    classe: "Classe 4 : Comptes de Tiers",
+    nature: "Compte de bilan (Passif : dettes sociales)",
     sens: "Créditeur",
     contenu: "Ce compte enregistre, d'une part, le montant des cotisations sociales salariales et patronales dues aux organismes sociaux et, d'autre part, les règlements de cotisations effectués à leur profit.",
     subdivisions: {
@@ -2530,7 +2530,7 @@ const comptesData = {
     },
     controle: ["Fiches de paie", "Bordereaux de déclarations sociales", "Livres de paie"],
     comptes_lies: ["431","432","433","438","422","664"],
-    textes_ref: ["SC OHADA — Compte 43 Organismes sociaux"],
+    textes_ref: ["SC OHADA : Compte 43 Organismes sociaux"],
     exemples_ecritures: [
         {
           libelle: "Cotisations patronales (charges sociales)",
@@ -2552,7 +2552,7 @@ const comptesData = {
 
   "44": {
     libelle: "État et Collectivités publiques",
-    classe: "Classe 4 — Comptes de Tiers",
+    classe: "Classe 4 : Comptes de Tiers",
     nature: "Compte de bilan (Actif ou Passif selon solde)",
     sens: "Débiteur ou Créditeur",
     contenu: "Les opérations à inscrire à ce compte concernent d'une manière générale les opérations qui sont faites avec l'Etat et avec les diverses collectivités publiques en tant que pouvoirs publics.",
@@ -2610,14 +2610,14 @@ const comptesData = {
         "Constatation de la dette de l'État envers l'entreprise (fonds de dotation, subventions), par le crédit des comptes des classes 1 et 4, ou des classes 7 et 8"
       ]
     },
-    commentaires: "Les opérations d'achats et de ventes avec l'État et les collectivités publiques s'inscrivent aux comptes 40 – Fournisseurs et 41 – Clients, au même titre que les opérations avec les autres tiers.\n\nLe compte 442 comprend les impôts et taxes d'État et ceux perçus pour le compte des collectivités locales.\n\nMécanisme TVA :\n— 443 (TVA facturée) : TVA collectée sur les ventes → solde créditeur\n— 445 (TVA récupérable) : TVA déductible sur achats → solde débiteur\n— 444 (TVA due) : différence entre TVA collectée et TVA déductible à reverser à l'État",
+    commentaires: "Les opérations d'achats et de ventes avec l'État et les collectivités publiques s'inscrivent aux comptes 40 – Fournisseurs et 41 – Clients, au même titre que les opérations avec les autres tiers.\n\nLe compte 442 comprend les impôts et taxes d'État et ceux perçus pour le compte des collectivités locales.\n\nMécanisme TVA :\n: 443 (TVA facturée) : TVA collectée sur les ventes → solde créditeur\n: 445 (TVA récupérable) : TVA déductible sur achats → solde débiteur\n: 444 (TVA due) : différence entre TVA collectée et TVA déductible à reverser à l'État",
     exclusions: {
       texte: "Ne doit pas enregistrer les opérations avec l'État en tant que fournisseur ou client, ni les droits de douane faisant partie intégrante du prix d'achat.",
       comptes: ["40 – Fournisseurs et comptes rattachés", "41 – Clients et comptes rattachés", "Comptes de la classe 2 ou 6 concernés"]
     },
     controle: ["Avis d'imposition", "Déclarations fiscales", "Relevés bancaires"],
     comptes_lies: ["441","442","443","444","445","446","447","448","449","64","89"],
-    textes_ref: ["SC OHADA — Compte 44 État et collectivités publiques"],
+    textes_ref: ["SC OHADA : Compte 44 État et collectivités publiques"],
     exemples_ecritures: [
         {
           libelle: "TVA collectée sur ventes",
@@ -2630,7 +2630,7 @@ const comptesData = {
           credit: "401 – Fournisseurs"
         },
         {
-          libelle: "Déclaration TVA — versement du solde dû",
+          libelle: "Déclaration TVA : versement du solde dû",
           debit: "443 – État, TVA facturée",
           credit: "4452 – TVA récupérable (solde) + 52 – Banques (TVA nette)"
         },
@@ -2639,7 +2639,7 @@ const comptesData = {
 
   "45": {
     libelle: "Organismes internationaux",
-    classe: "Classe 4 — Comptes de Tiers",
+    classe: "Classe 4 : Comptes de Tiers",
     nature: "Compte de bilan (Actif ou Passif selon solde)",
     sens: "Débiteur ou Créditeur",
     contenu: "Les opérations à inscrire à ce compte concernent les dettes et créances autres que celles liées à l'activité de l'entreprise.\n\nElles concernent exclusivement le montant des dépenses dont l'entreprise doit assumer la charge, les dettes des organismes internationaux vis-à-vis de l'entreprise et, d'autre part, les dettes de l'entreprise vis-àvis des organismes internationaux et le règlement par ces derniers des sommes dues à l'entreprise.",
@@ -2667,7 +2667,7 @@ const comptesData = {
     },
     controle: ["Relevés bancaires", "Avis de versement", "Avis d'octroi de subventions"],
     comptes_lies: ["451","452","458","40","41"],
-    textes_ref: ["SC OHADA — Compte 45 Organismes internationaux"],
+    textes_ref: ["SC OHADA : Compte 45 Organismes internationaux"],
     exemples_ecritures: [
         {
           libelle: "Subvention d'équipement à recevoir d'un organisme international",
@@ -2684,7 +2684,7 @@ const comptesData = {
 
   "46": {
     libelle: "Associés et Groupe",
-    classe: "Classe 4 — Comptes de Tiers",
+    classe: "Classe 4 : Comptes de Tiers",
     nature: "Compte de bilan (Actif ou Passif selon solde)",
     sens: "Débiteur ou Créditeur",
     contenu: "Le compte 46 enregistre :\n\nd'une part les créances/dettes envers les associés résultant des divers mouvements du capital social ;\nd'autre part les créances/dettes temporaires en \"comptes courants\".\nEn ce qui concerne ces derniers, le plan de comptes distingue les associés ordinaires et, dans le cas d'appartenance à un groupe, les autres sociétés du groupe.",
@@ -2717,14 +2717,14 @@ const comptesData = {
         "Fonds prélevés par les associés ou règlements effectués pour leur compte, par le crédit des comptes de trésorerie (ou des comptes de charges)"
       ]
     },
-    commentaires: "Sont réputés associés les membres des sociétés de capitaux, de personnes, de fait et en participation.\n\nLes créances/dettes envers les sociétés du groupe autres que celles du compte 466 sont comptabilisées :\n— Aux comptes 40/41 pour les opérations commerciales\n— Aux comptes 16, 18 et 27 pour les opérations financières",
+    commentaires: "Sont réputés associés les membres des sociétés de capitaux, de personnes, de fait et en participation.\n\nLes créances/dettes envers les sociétés du groupe autres que celles du compte 466 sont comptabilisées :\n: Aux comptes 40/41 pour les opérations commerciales\n: Aux comptes 16, 18 et 27 pour les opérations financières",
     exclusions: {
       texte: "Ne doit pas enregistrer les emprunts et prêts des associés, ni la dette des associés représentative du capital souscrit non appelé.",
       comptes: ["16 – Emprunts et dettes assimilées", "27 – Autres immobilisations financières", "109 – Actionnaires, capital souscrit non appelé"]
     },
     controle: ["Décisions des Assemblées d'actionnaires"],
     comptes_lies: ["461","462","463","465","466","467","101","109","16","27"],
-    textes_ref: ["SC OHADA — Compte 46 Associés et Groupe"],
+    textes_ref: ["SC OHADA : Compte 46 Associés et Groupe"],
     exemples_ecritures: [
         {
           libelle: "Dividendes mis en distribution",
@@ -2746,7 +2746,7 @@ const comptesData = {
 
   "47": {
     libelle: "Débiteurs et créditeurs divers",
-    classe: "Classe 4 — Comptes de Tiers",
+    classe: "Classe 4 : Comptes de Tiers",
     nature: "Compte de bilan (Actif ou Passif selon solde)",
     sens: "Débiteur ou Créditeur",
     contenu: "Ce compte enregistre les opérations en instance de régularisation et relatives aux créances et dettes liées à l'acquisition de titres, des charges non consommées, des produits constatés d'avance, des écarts sur opérations libellées en monnaies étrangères, et des créances sur travaux non encore facturables.",
@@ -2764,11 +2764,11 @@ const comptesData = {
       "475":  "Créances sur travaux non encore facturables",
       "476":  "Charges constatées d'avance",
       "477":  "Produits constatés d'avance",
-      "478":  "Écarts de conversion — Actif",
+      "478":  "Écarts de conversion : Actif",
       "4781": "Diminution des créances",
       "4782": "Augmentation des dettes",
       "4788": "Différences compensées par couverture de change",
-      "479":  "Écarts de conversion — Passif",
+      "479":  "Écarts de conversion : Passif",
       "4791": "Augmentation des créances",
       "4792": "Diminution des dettes",
       "4798": "Différences compensées par couverture de change"
@@ -2778,12 +2778,12 @@ const comptesData = {
         "Dettes contractées ou remboursements de créances, par le débit des comptes de trésorerie",
         "Apports temporaires de l'exploitant, par le débit des comptes de trésorerie",
         "Virements restant à effectuer sur titres non totalement libérés, par le débit du compte 26, 274 ou 50",
-        "Clôture — produits constatés d'avance (perçus mais rattachés à l'exercice suivant), par le débit des comptes de produits concernés"
+        "Clôture : produits constatés d'avance (perçus mais rattachés à l'exercice suivant), par le débit des comptes de produits concernés"
       ],
       debit: [
         "Créances sur les tiers ou remboursements de dettes, par le crédit de comptes de tiers ou de trésorerie",
         "Retraits de l'exploitant, par le crédit d'un compte de trésorerie",
-        "Clôture — charges constatées d'avance (payées mais rattachées à l'exercice suivant), par le crédit des comptes de charges concernés"
+        "Clôture : charges constatées d'avance (payées mais rattachées à l'exercice suivant), par le crédit des comptes de charges concernés"
       ]
     },
     commentaires: "471 – Comptes d'attente : utilisés pour les opérations ne pouvant être imputées immédiatement. Ils doivent être soldés au plus tard à la clôture (sauf impossibilité justifiée dans l'État annexé) et ne doivent pas figurer au bilan.\n\n472 – Titres non libérés : lors de l'acquisition de titres non entièrement libérés, la valeur globale est portée au compte d'actif immobilisé, y compris les montants non encore appelés, lesquels figurent au compte 472.\n\n475 – Créances sur travaux non encore facturables : produits nets partiels sur contrats pluriexercices.\n\n478/479 – Écarts de conversion : constatent, à la clôture, les écarts entre créances et dettes en devises converties en unités monétaires légales et leur évaluation à la date de clôture.",
@@ -2793,7 +2793,7 @@ const comptesData = {
     },
     controle: ["Contrats", "Conventions", "Décomptes de régularisation", "Chèques", "Relevés de banque"],
     comptes_lies: ["471","472","474","475","476","477","478","479","26","274","50"],
-    textes_ref: ["SC OHADA — Compte 47 Débiteurs et créditeurs divers"],
+    textes_ref: ["SC OHADA : Compte 47 Débiteurs et créditeurs divers"],
     exemples_ecritures: [
         {
           libelle: "Charge constatée d'avance (assurance payée pour l'exercice suivant)",
@@ -2815,7 +2815,7 @@ const comptesData = {
 
   "48": {
     libelle: "Créances et dettes hors activités ordinaires",
-    classe: "Classe 4 — Comptes de Tiers",
+    classe: "Classe 4 : Comptes de Tiers",
     nature: "Compte de bilan (Actif ou Passif selon solde)",
     sens: "Débiteur ou Créditeur",
     contenu: "Ce sont des créances et des dettes consécutives à des opérations effectuées par l'entreprise mais n'ayant pas de lien direct avec l'activité ordinaire de l'entreprise.",
@@ -2851,10 +2851,10 @@ const comptesData = {
     },
     controle: ["Chèques", "Effets de commerce", "Contrats d'acquisition d'immobilisations", "Factures", "Ordres de mouvement en Bourse"],
     comptes_lies: ["481","482","483","484","485","486","488","40","41","8"],
-    textes_ref: ["SC OHADA — Compte 48 Créances et dettes H.A.O."],
+    textes_ref: ["SC OHADA : Compte 48 Créances et dettes H.A.O."],
     exemples_ecritures: [
         {
-          libelle: "Acquisition d'une immobilisation — facture non encore payée",
+          libelle: "Acquisition d'une immobilisation : facture non encore payée",
           debit: "23 – Bâtiments",
           credit: "481 – Fournisseurs d'investissements"
         },
@@ -2864,7 +2864,7 @@ const comptesData = {
           credit: "52 – Banques"
         },
         {
-          libelle: "Cession d'une immobilisation — créance sur l'acheteur",
+          libelle: "Cession d'une immobilisation : créance sur l'acheteur",
           debit: "485 – Créances sur cessions d'immobilisations",
           credit: "82 – Produits des cessions d'immobilisations"
         },
@@ -2873,8 +2873,8 @@ const comptesData = {
 
   "49": {
     libelle: "Dépréciations et risques provisionnés (Tiers)",
-    classe: "Classe 4 — Comptes de Tiers",
-    nature: "Compte de bilan (Actif — valeur négative en déduction des créances / Passif — risques provisionnés)",
+    classe: "Classe 4 : Comptes de Tiers",
+    nature: "Compte de bilan (Actif : valeur négative en déduction des créances / Passif : risques provisionnés)",
     sens: "Créditeur",
     contenu: "Ce sont des dépréciations subies par des comptes de tiers résultant de causes diverses dont les effets ne sont pas jugés irréversibles.",
     subdivisions: {
@@ -2901,22 +2901,22 @@ const comptesData = {
     },
     fonctionnement: {
       credit: [
-        "Clôture — dépréciations constatées sur les éléments d'actif de la classe 4 (comptes 41 à 48) ou provisions pour risques à court terme (compte 499), par le débit du compte 659 – Charges provisionnées d'exploitation",
+        "Clôture : dépréciations constatées sur les éléments d'actif de la classe 4 (comptes 41 à 48) ou provisions pour risques à court terme (compte 499), par le débit du compte 659 – Charges provisionnées d'exploitation",
         "Ou par le débit du compte 839 – Charges provisionnées H.A.O."
       ],
       debit: [
-        "Clôture — reprise des dépréciations et provisions dont les raisons ont cessé d'exister, par le crédit du compte 759 – Reprises de charges provisionnées d'exploitation",
+        "Clôture : reprise des dépréciations et provisions dont les raisons ont cessé d'exister, par le crédit du compte 759 – Reprises de charges provisionnées d'exploitation",
         "Ou par le crédit du compte 849 – Reprises de charges provisionnées H.A.O."
       ]
     },
-    commentaires: "Pour constituer une provision, l'entreprise doit :\n— Préciser exactement la nature et l'objet des créances à déprécier\n— Justifier les motifs qui rendent les créances douteuses ou litigieuses\n\nLa provision doit être constituée même si son montant est incertain et même en l'absence de bénéfices (principe de prudence). Les événements générateurs survenus après la clôture ne sont pas pris en compte dans l'exercice.\n\nLe compte 499 – Risques provisionnés enregistre les pertes probables à moins d'un an d'origine exploitation ou H.A.O.",
+    commentaires: "Pour constituer une provision, l'entreprise doit :\n: Préciser exactement la nature et l'objet des créances à déprécier\n: Justifier les motifs qui rendent les créances douteuses ou litigieuses\n\nLa provision doit être constituée même si son montant est incertain et même en l'absence de bénéfices (principe de prudence). Les événements générateurs survenus après la clôture ne sont pas pris en compte dans l'exercice.\n\nLe compte 499 – Risques provisionnés enregistre les pertes probables à moins d'un an d'origine exploitation ou H.A.O.",
     exclusions: {
       texte: "Ne doit pas enregistrer les provisions pour risques et charges à plus d'un an, ni les provisions pour dépréciation de l'actif immobilisé ou des comptes de trésorerie.",
       comptes: ["19 – Provisions financières pour risques et charges", "29 – Provisions pour dépréciation (actif immobilisé)", "59 – Dépréciations et risques provisionnés (Trésorerie)"]
     },
     controle: ["Courriers et protêts", "Justificatifs du caractère douteux ou litigieux de la créance"],
     comptes_lies: ["490","491","492","493","494","495","496","497","498","499","659","759","839","849"],
-    textes_ref: ["SC OHADA — Compte 49 Dépréciations et risques provisionnés (Tiers)"],
+    textes_ref: ["SC OHADA : Compte 49 Dépréciations et risques provisionnés (Tiers)"],
     exemples_ecritures: [
         {
           libelle: "Provision pour dépréciation d'une créance douteuse",
@@ -2937,7 +2937,7 @@ const comptesData = {
   },
 
   /* ═══════════════════════════════════════════════════════════════
-     CLASSE 5 — COMPTES DE TRÉSORERIE
+     CLASSE 5 : COMPTES DE TRÉSORERIE
   ═══════════════════════════════════════════════════════════════ */
 
   "5": {
@@ -2949,14 +2949,14 @@ const comptesData = {
     fonctionnement: { debit: [], credit: [] },
     commentaires: "Les comptes de la classe 5 peuvent être assortis de comptes de provisions pour dépréciation (compte 59), notamment pour les titres de placement. Ces provisions résultent de l'évaluation comptable des moins-values constatées sur les éléments d'actif considérés.",
     comptes_lies: ["50","51","52","53","54","56","57","58","59"],
-    textes_ref: ["Acte Uniforme OHADA — Classe 5 Trésorerie"],
+    textes_ref: ["Acte Uniforme OHADA : Classe 5 Trésorerie"],
     exemples_ecritures: []
   },
 
   "50": {
     libelle: "Titres de placement",
-    classe: "Classe 5 — Trésorerie",
-    nature: "Compte de bilan (Actif — trésorerie)",
+    classe: "Classe 5 : Trésorerie",
+    nature: "Compte de bilan (Actif : trésorerie)",
     sens: "Débiteur",
     contenu: "Ce sont des titres cessibles, acquis en vue d'en retirer un revenu direct ou une plus-value à brève échéance.",
     subdivisions: {
@@ -3002,7 +3002,7 @@ const comptesData = {
     },
     controle: ["Ordres d'achat et de vente", "Bordereaux de banque", "Contrats", "Relevés de titres en portefeuille"],
     comptes_lies: ["501","502","503","504","505","506","508","590","677","777","6311"],
-    textes_ref: ["SC OHADA — Compte 50 Titres de placement"],
+    textes_ref: ["SC OHADA : Compte 50 Titres de placement"],
     exemples_ecritures: [
         {
           libelle: "Acquisition de titres de placement (actions cotées)",
@@ -3024,8 +3024,8 @@ const comptesData = {
 
   "51": {
     libelle: "Valeurs à encaisser",
-    classe: "Classe 5 — Trésorerie",
-    nature: "Compte de bilan (Actif — trésorerie)",
+    classe: "Classe 5 : Trésorerie",
+    nature: "Compte de bilan (Actif : trésorerie)",
     sens: "Débiteur",
     contenu: "Les valeurs à encaisser sont les effets, chèques et autres valeurs transmis à la banque et dont l'entreprise attend l'encaissement à l'échéance.",
     subdivisions: {
@@ -3049,14 +3049,14 @@ const comptesData = {
         "Du montant des effets pour solde, par le débit des comptes de trésorerie concernés"
       ]
     },
-    commentaires: "Distinctions importantes :\n— Effets à encaisser (511) : effets en portefeuille autres que ceux des clients (compte 412)\n— Effets à l'encaissement (512) : effets transmis à la banque en vue de l'encaissement à l'échéance\n— Chèques à encaisser (513) : chèques reçus des clients non encore transmis à la banque\n— Chèques à l'encaissement (514) : chèques transmis à la banque non encore crédités\n— Cartes de crédit à encaisser (515) : paiements par cartes jusqu'à l'avis de crédit bancaire\n\nEn cours d'exercice, l'utilisation du compte 51 n'est pas obligatoire. À la clôture de l'exercice, il est obligatoire d'y inscrire : (1) les chèques non encore remis en banque ; (2) les coupons échus détenus par l'entreprise.",
+    commentaires: "Distinctions importantes :\n: Effets à encaisser (511) : effets en portefeuille autres que ceux des clients (compte 412)\n: Effets à l'encaissement (512) : effets transmis à la banque en vue de l'encaissement à l'échéance\n: Chèques à encaisser (513) : chèques reçus des clients non encore transmis à la banque\n: Chèques à l'encaissement (514) : chèques transmis à la banque non encore crédités\n: Cartes de crédit à encaisser (515) : paiements par cartes jusqu'à l'avis de crédit bancaire\n\nEn cours d'exercice, l'utilisation du compte 51 n'est pas obligatoire. À la clôture de l'exercice, il est obligatoire d'y inscrire : (1) les chèques non encore remis en banque ; (2) les coupons échus détenus par l'entreprise.",
     exclusions: {
       texte: "Ne doit pas enregistrer les effets à payer à plus d'un an d'échéance, ni les effets remis à l'escompte.",
       comptes: ["16 – Emprunts et dettes assimilées", "56 – Banques, crédits de trésorerie et d'escompte"]
     },
     controle: ["Effets", "Chèques", "Bordereaux de remise d'effets ou de chèques", "Relevés de banque"],
     comptes_lies: ["511","512","513","514","515","518","591","52","56"],
-    textes_ref: ["SC OHADA — Compte 51 Valeurs à encaisser"],
+    textes_ref: ["SC OHADA : Compte 51 Valeurs à encaisser"],
     exemples_ecritures: [
         {
           libelle: "Réception d'un chèque client non encore remis en banque",
@@ -3069,7 +3069,7 @@ const comptesData = {
           credit: "513 – Chèques à encaisser"
         },
         {
-          libelle: "Clôture — coupon échu non encore encaissé",
+          libelle: "Clôture : coupon échu non encore encaissé",
           debit: "518 – Autres valeurs à l'encaissement",
           credit: "772 – Revenus de participations"
         },
@@ -3078,8 +3078,8 @@ const comptesData = {
 
   "52": {
     libelle: "Banques",
-    classe: "Classe 5 — Trésorerie",
-    nature: "Compte de bilan (Actif — ou Passif si découvert)",
+    classe: "Classe 5 : Trésorerie",
+    nature: "Compte de bilan (Actif : ou Passif si découvert)",
     sens: "Débiteur (créditeur si découvert)",
     contenu: "Ce compte enregistre les opérations financières effectuées entre l'entreprise, les banques agréées dans un Etat-partie et les autres banques.\n\nLa liste des banques agréées est tenue par l'organisme chargé de la surveillance bancaire.",
     subdivisions: {
@@ -3105,7 +3105,7 @@ const comptesData = {
     },
     controle: ["Relevés bancaires", "États de rapprochement bancaire"],
     comptes_lies: ["521","522","523","524","592","51","56","57","58"],
-    textes_ref: ["SC OHADA — Compte 52 Banques"],
+    textes_ref: ["SC OHADA : Compte 52 Banques"],
     exemples_ecritures: [
         {
           libelle: "Encaissement d'un virement client",
@@ -3119,7 +3119,7 @@ const comptesData = {
         },
         {
           libelle: "Découvert bancaire (solde créditeur en fin de période)",
-          debit: "— (solde créditeur inscrit au passif)",
+          debit: ": (solde créditeur inscrit au passif)",
           credit: "56 – Banques, crédits de trésorerie et d'escompte"
         },
       ]
@@ -3127,8 +3127,8 @@ const comptesData = {
 
   "53": {
     libelle: "Établissements financiers et assimilés",
-    classe: "Classe 5 — Trésorerie",
-    nature: "Compte de bilan (Actif — ou Passif si découvert)",
+    classe: "Classe 5 : Trésorerie",
+    nature: "Compte de bilan (Actif : ou Passif si découvert)",
     sens: "Débiteur (créditeur si découvert)",
     contenu: "Ce compte enregistre les opérations entre l'entreprise et les Chèques postaux et le Trésor dans un Etat de la Région et les autres établissements financiers.",
     subdivisions: {
@@ -3153,7 +3153,7 @@ const comptesData = {
     },
     controle: ["Relevés de chèques postaux", "Relevés du Trésor", "États de rapprochement"],
     comptes_lies: ["531","532","533","536","538","593","52"],
-    textes_ref: ["SC OHADA — Compte 53 Établissements financiers et assimilés"],
+    textes_ref: ["SC OHADA : Compte 53 Établissements financiers et assimilés"],
     exemples_ecritures: [
         {
           libelle: "Dépôt de fonds aux chèques postaux",
@@ -3170,8 +3170,8 @@ const comptesData = {
 
   "54": {
     libelle: "Instruments de trésorerie",
-    classe: "Classe 5 — Trésorerie",
-    nature: "Compte de bilan (Actif — trésorerie)",
+    classe: "Classe 5 : Trésorerie",
+    nature: "Compte de bilan (Actif : trésorerie)",
     sens: "Débiteur",
     contenu: "Les \"Instruments de trésorerie\" appartiennent à la catégorie des \"instruments financiers\".\n\nIls comprennent :\n\nles options de taux ;\nles options de change ;\nles options sur actions ;\nles instruments de trésorerie à terme.\nLa qualification et la classification de ces différents instruments sont opérées en fonction de la motivation ou de l'intention de l'entreprise.",
     subdivisions: {
@@ -3185,14 +3185,14 @@ const comptesData = {
       debit: [],
       credit: []
     },
-    commentaires: "La qualification et la classification de ces instruments sont opérées en fonction de la motivation ou de l'intention de l'entreprise.\n\nRègles d'évaluation selon le marché :\n— Marchés organisés dotés d'une parfaite liquidité : évaluation au prix du marché (mark to market)\n— Autres marchés : évaluation au coût historique (règle de prudence)\n\nLe fonctionnement détaillé sera précisé en rapport avec le développement des marchés financiers.",
+    commentaires: "La qualification et la classification de ces instruments sont opérées en fonction de la motivation ou de l'intention de l'entreprise.\n\nRègles d'évaluation selon le marché :\n: Marchés organisés dotés d'une parfaite liquidité : évaluation au prix du marché (mark to market)\n: Autres marchés : évaluation au coût historique (règle de prudence)\n\nLe fonctionnement détaillé sera précisé en rapport avec le développement des marchés financiers.",
     exclusions: {
       texte: "Ne doit pas enregistrer les opérations de crédits de trésorerie.",
       comptes: ["56 – Banques, crédits de trésorerie et d'escompte"]
     },
     controle: ["Relevés et états de rapprochement bancaires"],
     comptes_lies: ["541","542","543","544","545","594","56"],
-    textes_ref: ["SC OHADA — Compte 54 Instruments de trésorerie"],
+    textes_ref: ["SC OHADA : Compte 54 Instruments de trésorerie"],
     exemples_ecritures: [
         {
           libelle: "Acquisition d'une option de change",
@@ -3209,8 +3209,8 @@ const comptesData = {
 
   "56": {
     libelle: "Banques, crédits de trésorerie et d'escompte",
-    classe: "Classe 5 — Trésorerie",
-    nature: "Compte de bilan (Passif — dettes financières à court terme)",
+    classe: "Classe 5 : Trésorerie",
+    nature: "Compte de bilan (Passif : dettes financières à court terme)",
     sens: "Créditeur",
     contenu: "Ce compte enregistre, d'une part, le montant de crédits de trésorerie inscrit au compte courant de l'établissement dispensateur de ces concours avec lequel l'entreprise est en relation d'affaires et, d'autre part, le montant nominal des effets escomptés.",
     subdivisions: {
@@ -3236,7 +3236,7 @@ const comptesData = {
     },
     controle: ["Attestations de la banque sur les crédits de trésorerie", "Relevés bancaires", "Bordereaux de remise des effets à l'escompte"],
     comptes_lies: ["561","564","565","566","52","415","675"],
-    textes_ref: ["SC OHADA — Compte 56 Crédits de trésorerie et d'escompte"],
+    textes_ref: ["SC OHADA : Compte 56 Crédits de trésorerie et d'escompte"],
     exemples_ecritures: [
         {
           libelle: "Mise en place d'un crédit de trésorerie",
@@ -3258,8 +3258,8 @@ const comptesData = {
 
   "57": {
     libelle: "Caisse",
-    classe: "Classe 5 — Trésorerie",
-    nature: "Compte de bilan (Actif — trésorerie)",
+    classe: "Classe 5 : Trésorerie",
+    nature: "Compte de bilan (Actif : trésorerie)",
     sens: "Débiteur (jamais créditeur)",
     contenu: "Le compte Caisse retrace opérations d'encaissement et les de paiement effectuées en espèces pour les besoins de l'entreprise.",
     subdivisions: {
@@ -3281,14 +3281,14 @@ const comptesData = {
         "Règlements effectués par la caisse (décaissements en espèces), par le débit des comptes concernés"
       ]
     },
-    commentaires: "Le solde du compte Caisse doit toujours correspondre exactement à la somme disponible réellement. Il ne peut être que débiteur ou nul.\n\nUn solde créditeur signifie que l'entreprise a déboursé davantage d'espèces qu'elle n'en a reçu — ce qui constitue une présomption d'irrégularité de la comptabilité.\n\nIl peut être ouvert autant de sous-comptes que nécessaire (par siège, par succursale, en UML, en devises).",
+    commentaires: "Le solde du compte Caisse doit toujours correspondre exactement à la somme disponible réellement. Il ne peut être que débiteur ou nul.\n\nUn solde créditeur signifie que l'entreprise a déboursé davantage d'espèces qu'elle n'en a reçu : ce qui constitue une présomption d'irrégularité de la comptabilité.\n\nIl peut être ouvert autant de sous-comptes que nécessaire (par siège, par succursale, en UML, en devises).",
     exclusions: {
       texte: "Ne doit pas enregistrer les chèques de voyage, chèques de banque, timbres fiscaux, timbres postaux et figurines d'affranchissement, effets de commerce, ni les paiements par cartes de crédit.",
       comptes: ["518 – Autres valeurs à l'encaissement (chèques de voyage)", "513 ou 514 – Chèques à encaisser/à l'encaissement", "64 – Impôts et taxes (timbres fiscaux)", "616 – Transports de plis (affranchissement)", "515 – Cartes de crédit à encaisser"]
     },
     controle: ["Procès-verbaux de caisse", "États de reddition de la caisse", "Bordereaux de situation journalière"],
     comptes_lies: ["571","572","573","52","51"],
-    textes_ref: ["SC OHADA — Compte 57 Caisse"],
+    textes_ref: ["SC OHADA : Compte 57 Caisse"],
     exemples_ecritures: [
         {
           libelle: "Encaissement d'un règlement en espèces",
@@ -3310,8 +3310,8 @@ const comptesData = {
 
   "58": {
     libelle: "Régies d'avances, accréditifs et virements internes",
-    classe: "Classe 5 — Trésorerie",
-    nature: "Compte de bilan (Actif — comptes de passage)",
+    classe: "Classe 5 : Trésorerie",
+    nature: "Compte de bilan (Actif : comptes de passage)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre le montant des avances aux régisseurs, le montant des accréditifs ainsi que la régularisation desdites avances et le règlement des accréditifs.",
     subdivisions: {
@@ -3337,7 +3337,7 @@ const comptesData = {
     },
     controle: ["Relevés bancaires", "Vérification que les comptes 585 et 588 sont soldés à la clôture de l'exercice"],
     comptes_lies: ["581","582","585","588","52","57"],
-    textes_ref: ["SC OHADA — Compte 58 Régies d'avances et virements internes"],
+    textes_ref: ["SC OHADA : Compte 58 Régies d'avances et virements internes"],
     exemples_ecritures: [
         {
           libelle: "Avance à un régisseur de chantier",
@@ -3359,8 +3359,8 @@ const comptesData = {
 
   "59": {
     libelle: "Dépréciations et risques provisionnés (Trésorerie)",
-    classe: "Classe 5 — Trésorerie",
-    nature: "Compte de bilan (Actif — valeur négative en déduction / Passif — risques financiers)",
+    classe: "Classe 5 : Trésorerie",
+    nature: "Compte de bilan (Actif : valeur négative en déduction / Passif : risques financiers)",
     sens: "Créditeur",
     contenu: "Ce compte enregistre l'amoindrissement de la valeur des titres et valeurs liquides, des avoirs en banque, et autres éléments financiers résultant de causes précises quant à leur nature, mais dont les effets ne sont pas jugés irréversibles ainsi que les reprises de charges provisionnées s'y rapportant.\n\nIl enregistre également les provisions de caractère financier pour risques à moins d'un an.",
     subdivisions: {
@@ -3373,10 +3373,10 @@ const comptesData = {
     },
     fonctionnement: {
       credit: [
-        "Clôture — dépréciations constatées sur les éléments d'actif de la classe 5 et pertes probables financières à moins d'un an (compte 599), par le débit du compte 679 – Charges provisionnées financières"
+        "Clôture : dépréciations constatées sur les éléments d'actif de la classe 5 et pertes probables financières à moins d'un an (compte 599), par le débit du compte 679 – Charges provisionnées financières"
       ],
       debit: [
-        "Ouverture de l'exercice — reprise des dépréciations et provisions existant à la clôture précédente, par le crédit du compte 779 – Reprises de charges provisionnées financières"
+        "Ouverture de l'exercice : reprise des dépréciations et provisions existant à la clôture précédente, par le crédit du compte 779 – Reprises de charges provisionnées financières"
       ]
     },
     commentaires: "Pour les titres de placement (compte 590) : la provision s'appuie sur la valeur en Bourse à la clôture (titres cotés) ou la valeur de négociation potentielle (titres non cotés).\n\nCompte 599 – Risques provisionnés à caractère financier : pertes probables à moins d'un an d'origine financière (exemple : provisions pour pertes de change).\n\nMêmes règles que pour les dépréciations des classes 3 et 4 : provision obligatoire même en l'absence de bénéfices (principe de prudence), et uniquement pour des dépréciations subies à la clôture de l'exercice.",
@@ -3386,7 +3386,7 @@ const comptesData = {
     },
     controle: ["Cours de Bourse à la clôture", "Évaluations de titres", "Cours du change"],
     comptes_lies: ["590","591","592","593","594","599","679","779","50","51","52"],
-    textes_ref: ["SC OHADA — Compte 59 Dépréciations et risques provisionnés (Trésorerie)"],
+    textes_ref: ["SC OHADA : Compte 59 Dépréciations et risques provisionnés (Trésorerie)"],
     exemples_ecritures: [
         {
           libelle: "Provision pour dépréciation d'un compte bancaire (devise)",
@@ -3402,7 +3402,7 @@ const comptesData = {
   },
 
   /* ═══════════════════════════════════════════════════════════════
-     CLASSE 6 — COMPTES DE CHARGES DES ACTIVITÉS ORDINAIRES
+     CLASSE 6 : COMPTES DE CHARGES DES ACTIVITÉS ORDINAIRES
   ═══════════════════════════════════════════════════════════════ */
 
   "6": {
@@ -3414,13 +3414,13 @@ const comptesData = {
     fonctionnement: { debit: [], credit: [] },
     commentaires: "À la clôture de l'exercice, tous les comptes de charges de la classe 6 sont virés pour solde au débit du compte 13 – Résultat net de l'exercice.",
     comptes_lies: ["60","603","61","62","63","64","65","659","66","67","68","69"],
-    textes_ref: ["Acte Uniforme OHADA — Classe 6 Charges des activités ordinaires"],
+    textes_ref: ["Acte Uniforme OHADA : Classe 6 Charges des activités ordinaires"],
     exemples_ecritures: []
   },
 
   "60": {
     libelle: "Achats",
-    classe: "Classe 6 — Charges",
+    classe: "Classe 6 : Charges",
     nature: "Compte de gestion (Charges)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre, le montant des factures d'achat et la valeur des retours de matières, fournitures et marchandises aux fournisseurs ainsi que les rabais, remises et ristournes hors factures obtenus des fournisseurs de biens.",
@@ -3446,9 +3446,9 @@ const comptesData = {
       "6047": "Fournitures de bureau",
       "6049": "Rabais, remises et ristournes obtenus (non ventilés)",
       "605":  "Autres achats",
-      "6051": "Fournitures non stockables — eau",
-      "6052": "Fournitures non stockables — électricité",
-      "6053": "Fournitures non stockables — autres énergies",
+      "6051": "Fournitures non stockables : eau",
+      "6052": "Fournitures non stockables : électricité",
+      "6053": "Fournitures non stockables : autres énergies",
       "6054": "Fournitures d'entretien non stockables",
       "6055": "Fournitures de bureau non stockables",
       "6056": "Achats de petit matériel et outillage",
@@ -3477,7 +3477,7 @@ const comptesData = {
     },
     controle: ["Factures et avoirs fournisseurs", "Bons de commande", "États d'inventaire"],
     comptes_lies: ["601","602","604","605","608","40","408","773","603"],
-    textes_ref: ["SC OHADA — Compte 60 Achats"],
+    textes_ref: ["SC OHADA : Compte 60 Achats"],
     exemples_ecritures: [
         {
           libelle: "Achat de marchandises à crédit (HT)",
@@ -3499,7 +3499,7 @@ const comptesData = {
 
   "603": {
     libelle: "Variations des stocks de biens achetés",
-    classe: "Classe 6 — Charges",
+    classe: "Classe 6 : Charges",
     nature: "Compte de gestion (Charges ou produit selon solde)",
     sens: "Débiteur ou Créditeur",
     contenu: "Ce compte enregistre les variations de stocks de biens et de marchandises achetés en retraçant les opérations relatives aux entrées en stocks, aux sorties de stocks, et aux différences constatées entre l'inventaire comptable permanent et l'inventaire physique.\n\nLes variations de stocks sont évaluées différemment selon le système d'inventaire utilisé.",
@@ -3510,14 +3510,14 @@ const comptesData = {
     },
     fonctionnement: {
       debit: [
-        "Inventaire intermittent — clôture : valeur du stock initial, par le crédit des comptes de stocks concernés (solde des stocks initiaux)",
-        "Inventaire permanent — en cours : sorties de stocks, par le crédit des comptes de stocks concernés",
-        "Inventaire permanent — clôture : différences en moins entre inventaire comptable et inventaire physique, par le crédit des stocks concernés"
+        "Inventaire intermittent : clôture : valeur du stock initial, par le crédit des comptes de stocks concernés (solde des stocks initiaux)",
+        "Inventaire permanent : en cours : sorties de stocks, par le crédit des comptes de stocks concernés",
+        "Inventaire permanent : clôture : différences en moins entre inventaire comptable et inventaire physique, par le crédit des stocks concernés"
       ],
       credit: [
-        "Inventaire intermittent — clôture : valeur du stock final (inventaire physique), par le débit des comptes de stocks concernés",
-        "Inventaire permanent — en cours : entrées en stocks, par le débit des comptes de stocks concernés",
-        "Inventaire permanent — clôture : différences en plus entre inventaire comptable et inventaire physique, par le débit des comptes de stocks concernés"
+        "Inventaire intermittent : clôture : valeur du stock final (inventaire physique), par le débit des comptes de stocks concernés",
+        "Inventaire permanent : en cours : entrées en stocks, par le débit des comptes de stocks concernés",
+        "Inventaire permanent : clôture : différences en plus entre inventaire comptable et inventaire physique, par le débit des comptes de stocks concernés"
       ]
     },
     commentaires: "Le solde des sous-comptes du compte 603 mesure la différence entre la valeur brute des stocks de biens achetés à la clôture et leur valeur brute à l'ouverture de l'exercice.\n\nSolde débiteur = diminution des stocks (déstockage) → aggrave les charges.\nSolde créditeur = augmentation des stocks → réduit les charges nettes.\n\nÀ la clôture, le compte 603 est viré pour solde au compte 13 – Résultat net de l'exercice.",
@@ -3527,7 +3527,7 @@ const comptesData = {
     },
     controle: ["Inventaire physique", "Décompte physique et évaluation des stocks"],
     comptes_lies: ["6031","6032","6033","31","32","33","38","13"],
-    textes_ref: ["SC OHADA — Compte 603 Variations des stocks de biens achetés"],
+    textes_ref: ["SC OHADA : Compte 603 Variations des stocks de biens achetés"],
     exemples_ecritures: [
         {
           libelle: "Solde du stock initial (inventaire intermittent)",
@@ -3544,7 +3544,7 @@ const comptesData = {
 
   "61": {
     libelle: "Transports",
-    classe: "Classe 6 — Charges",
+    classe: "Classe 6 : Charges",
     nature: "Compte de gestion (Charges)",
     sens: "Débiteur",
     contenu: "Les frais de transport comprennent le montant des charges de port ou transports engagés par l'entreprise, à 611 TRANSPORTS SUR ACHATS (1) l'occasion des achats, des ventes, des déplacements de son personnel ou de l'expédition de plis.",
@@ -3576,7 +3576,7 @@ const comptesData = {
     },
     controle: ["Factures et avoirs fournisseurs", "Documents de transport (connaissements, lettres de voiture)", "Inventaire des figurines d'affranchissement", "Bons de course"],
     comptes_lies: ["611","612","613","614","616","618","40","476","13"],
-    textes_ref: ["SC OHADA — Compte 61 Transports"],
+    textes_ref: ["SC OHADA : Compte 61 Transports"],
     exemples_ecritures: [
         {
           libelle: "Facture de transporteur pour livraison",
@@ -3593,7 +3593,7 @@ const comptesData = {
 
   "62": {
     libelle: "Services extérieurs A",
-    classe: "Classe 6 — Charges",
+    classe: "Classe 6 : Charges",
     nature: "Compte de gestion (Charges)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre le montant des factures, paiements et rémunérations versés aux prestataires extérieurs à l'entreprise pour les services consommés, ainsi que les rabais, remises et ristournes obtenus hors factures.",
@@ -3653,19 +3653,19 @@ const comptesData = {
         "Pour solde à la clôture : par le débit du compte 13 – Résultat net de l'exercice"
       ]
     },
-    commentaires: "Les services sont classés par nature. La consommation de services est rapportée à la période comptable par le jeu de comptes d'abonnements ou de régularisation.\n\nNe sont pas considérés comme services consommés (classés avec les produits dans la fabrication desquels ils sont incorporés) :\n— Les travaux à façon\n— Les sous-traitances industrielles\n— Les frais de réparation effectués par le fabricant du produit",
+    commentaires: "Les services sont classés par nature. La consommation de services est rapportée à la période comptable par le jeu de comptes d'abonnements ou de régularisation.\n\nNe sont pas considérés comme services consommés (classés avec les produits dans la fabrication desquels ils sont incorporés) :\n: Les travaux à façon\n: Les sous-traitances industrielles\n: Les frais de réparation effectués par le fabricant du produit",
     exclusions: {
       texte: "Ne doit pas enregistrer les frais d'acquisition directement rattachables aux immobilisations.",
       comptes: ["Comptes de la classe 2"]
     },
     controle: ["Factures et avoirs fournisseurs", "Dispositions des contrats"],
     comptes_lies: ["621","622","623","624","625","626","627","628","40","476","13"],
-    textes_ref: ["SC OHADA — Compte 62 Services extérieurs A"]
+    textes_ref: ["SC OHADA : Compte 62 Services extérieurs A"]
   },
 
   "63": {
     libelle: "Services extérieurs B",
-    classe: "Classe 6 — Charges",
+    classe: "Classe 6 : Charges",
     nature: "Compte de gestion (Charges)",
     sens: "Débiteur",
     contenu: "Ces deux comptes enregistrent le montant des factures, paiements et rémunérations versés aux prestataires extérieurs à l'entreprise et les éventuels rabais, remises et ristournes obtenus hors factures sur les services extérieurs consommés.",
@@ -3718,7 +3718,7 @@ const comptesData = {
     },
     controle: ["Factures et avoirs fournisseurs", "Dispositions des contrats"],
     comptes_lies: ["631","632","633","634","635","637","638","40","476","667","13"],
-    textes_ref: ["SC OHADA — Compte 63 Services extérieurs B"],
+    textes_ref: ["SC OHADA : Compte 63 Services extérieurs B"],
     exemples_ecritures: [
         {
           libelle: "Facture d'honoraires d'un avocat",
@@ -3740,7 +3740,7 @@ const comptesData = {
 
   "64": {
     libelle: "Impôts et taxes",
-    classe: "Classe 6 — Charges",
+    classe: "Classe 6 : Charges",
     nature: "Compte de gestion (Charges)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre le montant des charges correspondant à des versements obligatoires à l'Etat et aux collectivités publiques pour subvenir à des dépenses publiques, ou encore des versements institués par les autorités pour le financement d'actions d'intérêt général.",
@@ -3782,7 +3782,7 @@ const comptesData = {
     },
     controle: ["Déclarations fiscales", "Avis d'imposition", "Règlements à l'ordre du Trésor"],
     comptes_lies: ["641","645","646","647","648","44","89","13"],
-    textes_ref: ["SC OHADA — Compte 64 Impôts et taxes"],
+    textes_ref: ["SC OHADA : Compte 64 Impôts et taxes"],
     exemples_ecritures: [
         {
           libelle: "Paiement de la patente annuelle",
@@ -3804,7 +3804,7 @@ const comptesData = {
 
   "65": {
     libelle: "Autres charges",
-    classe: "Classe 6 — Charges",
+    classe: "Classe 6 : Charges",
     nature: "Compte de gestion (Charges)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre le montant des charges, souvent accessoires, qui entrent dans les consommations de l'exercice en provenance de tiers pour le calcul de la valeur ajoutée de gestion.",
@@ -3837,12 +3837,12 @@ const comptesData = {
     },
     controle: ["Factures", "Notifications de cessation de paiement", "Calculs de comptabilité analytique (compte 653)"],
     comptes_lies: ["651","652","653","654","658","831","13"],
-    textes_ref: ["SC OHADA — Compte 65 Autres charges"]
+    textes_ref: ["SC OHADA : Compte 65 Autres charges"]
   },
 
   "659": {
     libelle: "Charges provisionnées d'exploitation",
-    classe: "Classe 6 — Charges",
+    classe: "Classe 6 : Charges",
     nature: "Compte de gestion (Charges)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre les dotations pour dépréciation des éléments de l'actif circulant ainsi que les dotations aux provisions pour risques à court terme.",
@@ -3854,7 +3854,7 @@ const comptesData = {
     },
     fonctionnement: {
       debit: [
-        "Dépréciations de l'actif circulant, par le crédit des comptes 39 et 49 (sauf 499) — actifs soustractifs",
+        "Dépréciations de l'actif circulant, par le crédit des comptes 39 et 49 (sauf 499) : actifs soustractifs",
         "Risques provisionnés à court terme, par le crédit du compte 499 – Risques provisionnés (passif)"
       ],
       credit: [
@@ -3868,12 +3868,12 @@ const comptesData = {
     },
     controle: ["Factures", "Notifications de cessation de paiements", "Relevés"],
     comptes_lies: ["6591","6593","6594","6598","39","49","499","839","13"],
-    textes_ref: ["SC OHADA — Compte 659 Charges provisionnées d'exploitation"]
+    textes_ref: ["SC OHADA : Compte 659 Charges provisionnées d'exploitation"]
   },
 
   "66": {
     libelle: "Charges de personnel",
-    classe: "Classe 6 — Charges",
+    classe: "Classe 6 : Charges",
     nature: "Compte de gestion (Charges)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre l'ensemble des rémunérations du personnel de l'entreprise, qu'il s'agisse d'appointements et salaires, de commissions, de congés payés, de primes, de gratifications, d'indemnités de logement ou d'indemnités diverses, et, le cas échéant, les rémunérations de l'exploitant individuel, en contrepartie du travail fourni. Il enregistre aussi les charges sociales payées par l'entreprise au titre des salaires, ainsi que les avantages en nature.\n\nPar ailleurs il est débité en fin d'exercice des montants facturés à l'entreprise au titre du \"Personnel\" extérieur, intérimaire, détaché ou prêté.",
@@ -3934,7 +3934,7 @@ const comptesData = {
     },
     controle: ["Livres de paie", "Fiches de paie", "Déclarations sociales et fiscales"],
     comptes_lies: ["661","662","663","664","666","667","668","422","43","44","637","781","13"],
-    textes_ref: ["SC OHADA — Compte 66 Charges de personnel"],
+    textes_ref: ["SC OHADA : Compte 66 Charges de personnel"],
     exemples_ecritures: [
         {
           libelle: "Comptabilisation des salaires bruts du mois",
@@ -3956,7 +3956,7 @@ const comptesData = {
 
   "67": {
     libelle: "Frais financiers et charges assimilées",
-    classe: "Classe 6 — Charges",
+    classe: "Classe 6 : Charges",
     nature: "Compte de gestion (Charges)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre l'ensemble des charges financières dues à différents tiers intervenant dans le financement de l'entreprise (à l'exclusion de la rémunération des capitaux propres et à celle des services bancaires).",
@@ -4005,7 +4005,7 @@ const comptesData = {
     },
     controle: ["Relevés de banque", "Décomptes d'intérêt"],
     comptes_lies: ["671","672","673","674","675","676","677","678","679","59","72","16","13"],
-    textes_ref: ["SC OHADA — Compte 67 Frais financiers et charges assimilées"],
+    textes_ref: ["SC OHADA : Compte 67 Frais financiers et charges assimilées"],
     exemples_ecritures: [
         {
           libelle: "Intérêts sur emprunt bancaire courus à la clôture",
@@ -4027,7 +4027,7 @@ const comptesData = {
 
   "68": {
     libelle: "Dotations aux amortissements",
-    classe: "Classe 6 — Charges",
+    classe: "Classe 6 : Charges",
     nature: "Compte de gestion (Charges calculées)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre, au titre de l'exercice, les dotations aux amortissements, d'exploitation et à caractère financier, dans leur conception économique et comptable (et non pas fiscale).",
@@ -4055,7 +4055,7 @@ const comptesData = {
     },
     controle: ["Plans et tableaux d'amortissement"],
     comptes_lies: ["681","687","28","85","151","13"],
-    textes_ref: ["SC OHADA — Compte 68 Dotations aux amortissements"],
+    textes_ref: ["SC OHADA : Compte 68 Dotations aux amortissements"],
     exemples_ecritures: [
         {
           libelle: "Amortissement d'un bâtiment en fin d'exercice (4 %)",
@@ -4077,7 +4077,7 @@ const comptesData = {
 
   "69": {
     libelle: "Dotations aux provisions",
-    classe: "Classe 6 — Charges",
+    classe: "Classe 6 : Charges",
     nature: "Compte de gestion (Charges calculées)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre, au titre de l'exercice, les dotations aux provisions d'exploitation et à caractère financier, en couverture de dépréciations, risques, charges ou pertes à prévoir.",
@@ -4099,14 +4099,14 @@ const comptesData = {
         "Pour solde à la clôture de l'exercice, par le débit du compte 13 – Résultat net de l'exercice"
       ]
     },
-    commentaires: "Règles de comptabilisation des provisions :\n— Création ou ajustement en hausse : débit 69 / crédit 19 ou 29\n— Ajustement en baisse ou annulation : débit 19 ou 29 / crédit 79 – Reprises de provisions\n— Lorsqu'un risque ou une charge provisionnée se réalise : comptabilisation dans un compte approprié de la classe 6 ou 8, puis reprise intégrale de la provision (débit 19 ou 29 / crédit 79)\n\nLe compte 69 concerne exclusivement les provisions pour dépréciation de l'actif immobilisé et les provisions pour risques et charges à plus d'un an.",
+    commentaires: "Règles de comptabilisation des provisions :\n: Création ou ajustement en hausse : débit 69 / crédit 19 ou 29\n: Ajustement en baisse ou annulation : débit 19 ou 29 / crédit 79 – Reprises de provisions\n: Lorsqu'un risque ou une charge provisionnée se réalise : comptabilisation dans un compte approprié de la classe 6 ou 8, puis reprise intégrale de la provision (débit 19 ou 29 / crédit 79)\n\nLe compte 69 concerne exclusivement les provisions pour dépréciation de l'actif immobilisé et les provisions pour risques et charges à plus d'un an.",
     exclusions: {
       texte: "Ne doit pas enregistrer les dotations aux provisions H.A.O., les charges provisionnées sur actif circulant (stocks, créances), ni les dépréciations sur éléments de trésorerie.",
       comptes: ["85 – Dotations H.A.O.", "659 – Charges provisionnées d'exploitation", "679 – Charges provisionnées financières"]
     },
     controle: ["Documents justifiant les charges à prévoir", "Dépréciations d'éléments d'actif", "Risques sur opérations de l'exercice"],
     comptes_lies: ["691","697","19","29","79","85","659","679","13"],
-    textes_ref: ["SC OHADA — Compte 69 Dotations aux provisions"],
+    textes_ref: ["SC OHADA : Compte 69 Dotations aux provisions"],
     exemples_ecritures: [
         {
           libelle: "Dotation aux provisions pour dépréciation d'immobilisations",
@@ -4127,7 +4127,7 @@ const comptesData = {
   },
 
   /* ═══════════════════════════════════════════════════════════════
-     CLASSE 7 — COMPTES DE PRODUITS DES ACTIVITÉS ORDINAIRES
+     CLASSE 7 : COMPTES DE PRODUITS DES ACTIVITÉS ORDINAIRES
   ═══════════════════════════════════════════════════════════════ */
 
   "7": {
@@ -4139,13 +4139,13 @@ const comptesData = {
     fonctionnement: { debit: [], credit: [] },
     commentaires: "À la clôture de l'exercice, tous les comptes de produits de la classe 7 sont virés pour solde au crédit du compte 13 – Résultat net de l'exercice.",
     comptes_lies: ["70","71","72","73","75","759","77","78","79"],
-    textes_ref: ["Acte Uniforme OHADA — Classe 7 Produits des activités ordinaires"],
+    textes_ref: ["Acte Uniforme OHADA : Classe 7 Produits des activités ordinaires"],
     exemples_ecritures: []
   },
 
   "70": {
     libelle: "Ventes",
-    classe: "Classe 7 — Produits",
+    classe: "Classe 7 : Produits",
     nature: "Compte de gestion (Produits)",
     sens: "Créditeur",
     contenu: "Ce compte enregistre les ressources de l'entreprise provenant de la vente des marchandises, des travaux effectués et des services rendus à des tiers.",
@@ -4206,7 +4206,7 @@ const comptesData = {
     },
     controle: ["Factures de ventes", "Factures d'avoirs", "Vérification des marges"],
     comptes_lies: ["701","702","703","704","705","706","707","41","443","673","13"],
-    textes_ref: ["SC OHADA — Compte 70 Ventes"],
+    textes_ref: ["SC OHADA : Compte 70 Ventes"],
     exemples_ecritures: [
         {
           libelle: "Vente de marchandises à crédit (HT + TVA)",
@@ -4228,7 +4228,7 @@ const comptesData = {
 
   "71": {
     libelle: "Subventions d'exploitation",
-    classe: "Classe 7 — Produits",
+    classe: "Classe 7 : Produits",
     nature: "Compte de gestion (Produits)",
     sens: "Créditeur",
     contenu: "Ce sont des aides financières accordées par l'Etat, des collectivités publiques ou des tiers, qui ne sont ni des fonds de dotation, ni des subventions d'investissement. Elles sont destinées à compenser l'insuffisance du prix de vente administré, ou à faire face à des charges d'exploitation.",
@@ -4257,7 +4257,7 @@ const comptesData = {
     },
     controle: ["Courriers d'octroi des subventions"],
     comptes_lies: ["711","712","713","718","4495","4582","13"],
-    textes_ref: ["SC OHADA — Compte 71 Subventions d'exploitation"],
+    textes_ref: ["SC OHADA : Compte 71 Subventions d'exploitation"],
     exemples_ecritures: [
         {
           libelle: "Subvention d'exploitation acquise (notification)",
@@ -4274,7 +4274,7 @@ const comptesData = {
 
   "72": {
     libelle: "Production immobilisée",
-    classe: "Classe 7 — Produits",
+    classe: "Classe 7 : Produits",
     nature: "Compte de gestion (Produits)",
     sens: "Créditeur",
     contenu: "Ce compte enregistre le coût de production des travaux faits par l'entreprise pour elle même.",
@@ -4291,17 +4291,17 @@ const comptesData = {
         "Pour solde à la clôture : par le crédit du compte 13 – Résultat net de l'exercice"
       ]
     },
-    commentaires: "Le coût de production est déterminé par la comptabilité analytique de gestion ou par des calculs extra-comptables intégrant :\n— Le coût d'acquisition des matériaux consommés\n— Les charges directes de production et les charges indirectes rattachables\n— Les frais financiers sur emprunts exclusivement affectés au financement de la fabrication (période de fabrication)\n\nSert également à transférer les intérêts intercalaires d'emprunts (initialement comptabilisés au compte 67) vers le compte d'immobilisation concerné.",
+    commentaires: "Le coût de production est déterminé par la comptabilité analytique de gestion ou par des calculs extra-comptables intégrant :\n: Le coût d'acquisition des matériaux consommés\n: Les charges directes de production et les charges indirectes rattachables\n: Les frais financiers sur emprunts exclusivement affectés au financement de la fabrication (période de fabrication)\n\nSert également à transférer les intérêts intercalaires d'emprunts (initialement comptabilisés au compte 67) vers le compte d'immobilisation concerné.",
     exclusions: {
       texte: "Ne doit pas enregistrer les frais d'établissement et les charges à répartir.",
       comptes: ["78 – Transferts de charges", "848 – Transferts de charges H.A.O."]
     },
     controle: ["Immobilisations portées à l'actif", "Charges saisies par la comptabilité analytique"],
     comptes_lies: ["721","722","726","21","23","24","67","13"],
-    textes_ref: ["SC OHADA — Compte 72 Production immobilisée"],
+    textes_ref: ["SC OHADA : Compte 72 Production immobilisée"],
     exemples_ecritures: [
         {
-          libelle: "Production immobilisée — travaux réalisés pour soi-même",
+          libelle: "Production immobilisée : travaux réalisés pour soi-même",
           debit: "23 – Bâtiments / 24 – Matériel",
           credit: "72 – Production immobilisée"
         },
@@ -4315,7 +4315,7 @@ const comptesData = {
 
   "73": {
     libelle: "Variations des stocks de biens et services produits",
-    classe: "Classe 7 — Produits",
+    classe: "Classe 7 : Produits",
     nature: "Compte de gestion (Produits ou charge selon solde)",
     sens: "Créditeur (ou débiteur si déstockage)",
     contenu: "Ce compte enregistre les variations de stocks de biens et de services produits en retraçant les opérations relatives aux entrées en stocks, aux sorties de stocks et aux différences constatées à la clôture de l'exercice entre l'inventaire comptable permanent et l'inventaire physique et, dans le cas de l'inventaire intermittent, le stock initial et le stock final, ou leur différence.",
@@ -4333,14 +4333,14 @@ const comptesData = {
     },
     fonctionnement: {
       credit: [
-        "Inventaire intermittent — clôture : valeur du stock final, par le débit des comptes de stocks concernés",
-        "Inventaire permanent — en cours : entrées en stocks (en-cours, produits fabriqués), par le débit des comptes de stocks concernés",
-        "Inventaire permanent — clôture : différences en plus entre inventaire comptable et inventaire physique, par le débit des comptes de stocks"
+        "Inventaire intermittent : clôture : valeur du stock final, par le débit des comptes de stocks concernés",
+        "Inventaire permanent : en cours : entrées en stocks (en-cours, produits fabriqués), par le débit des comptes de stocks concernés",
+        "Inventaire permanent : clôture : différences en plus entre inventaire comptable et inventaire physique, par le débit des comptes de stocks"
       ],
       debit: [
-        "Inventaire intermittent — clôture : valeur du stock initial (pour solde), par le crédit des comptes de stocks concernés",
-        "Inventaire permanent — en cours : sorties de stocks (virements d'en-cours ou ventes), par le crédit des comptes de stocks concernés",
-        "Inventaire permanent — clôture : différences en moins entre inventaire comptable et inventaire physique, par le crédit des comptes de stocks"
+        "Inventaire intermittent : clôture : valeur du stock initial (pour solde), par le crédit des comptes de stocks concernés",
+        "Inventaire permanent : en cours : sorties de stocks (virements d'en-cours ou ventes), par le crédit des comptes de stocks concernés",
+        "Inventaire permanent : clôture : différences en moins entre inventaire comptable et inventaire physique, par le crédit des comptes de stocks"
       ]
     },
     commentaires: "Solde créditeur = augmentation des stocks (stockage) → production de la période supérieure aux ventes.\nSolde débiteur = diminution des stocks (déstockage) → il est porté en négatif du côté des produits dans le Compte de résultat.\n\nÀ la clôture, le compte 73 est viré pour solde au compte 13 – Résultat net de l'exercice.",
@@ -4350,7 +4350,7 @@ const comptesData = {
     },
     controle: ["Fiches d'inventaire", "Évaluation des stocks", "Comptabilité analytique"],
     comptes_lies: ["734","735","736","737","34","35","36","37","603","13"],
-    textes_ref: ["SC OHADA — Compte 73 Variations des stocks de biens et services produits"],
+    textes_ref: ["SC OHADA : Compte 73 Variations des stocks de biens et services produits"],
     exemples_ecritures: [
         {
           libelle: "Stock final de produits finis > stock initial (stockage)",
@@ -4367,7 +4367,7 @@ const comptesData = {
 
   "75": {
     libelle: "Autres produits",
-    classe: "Classe 7 — Produits",
+    classe: "Classe 7 : Produits",
     nature: "Compte de gestion (Produits)",
     sens: "Créditeur",
     contenu: "Ce sont tous les produits divers qui ne proviennent pas directement de l'activité productrice ou commerciale de l'entreprise, ni de son activité financière ou de ses relations avec l'Etat (subventions) mais qui relèvent néanmoins de ses activités ordinaires.",
@@ -4396,7 +4396,7 @@ const comptesData = {
     },
     controle: ["Factures", "Avis bancaires", "Correspondances échangées"],
     comptes_lies: ["752","753","754","758","41","13"],
-    textes_ref: ["SC OHADA — Compte 75 Autres produits"],
+    textes_ref: ["SC OHADA : Compte 75 Autres produits"],
     exemples_ecritures: [
         {
           libelle: "Produit de cession courante d'une immobilisation",
@@ -4413,7 +4413,7 @@ const comptesData = {
 
   "759": {
     libelle: "Reprises de charges provisionnées d'exploitation",
-    classe: "Classe 7 — Produits",
+    classe: "Classe 7 : Produits",
     nature: "Compte de gestion (Produits)",
     sens: "Créditeur",
     contenu: "Ce compte enregistre les annulations ou les régularisations en baisse des provisions à court terme sur éléments de l'actif circulant et des risques provisionnés",
@@ -4438,7 +4438,7 @@ const comptesData = {
     },
     controle: ["Relevé des décisions de gestion des organes compétents"],
     comptes_lies: ["7591","7593","7594","7598","39","49","659","13"],
-    textes_ref: ["SC OHADA — Compte 759 Reprises de charges provisionnées d'exploitation"],
+    textes_ref: ["SC OHADA : Compte 759 Reprises de charges provisionnées d'exploitation"],
     exemples_ecritures: [
         {
           libelle: "Reprise de provision pour dépréciation de stock",
@@ -4455,7 +4455,7 @@ const comptesData = {
 
   "77": {
     libelle: "Revenus financiers et produits assimilés",
-    classe: "Classe 7 — Produits",
+    classe: "Classe 7 : Produits",
     nature: "Compte de gestion (Produits financiers)",
     sens: "Créditeur",
     contenu: "Ce sont les ressources que tire l'entreprise de ses activités financières.",
@@ -4478,7 +4478,7 @@ const comptesData = {
     fonctionnement: {
       credit: [
         "Produits financiers acquis, par le débit des comptes de tiers concernés ou des comptes de trésorerie",
-        "Compte 779 — reprise des dépréciations des comptes de trésorerie et des risques provisionnés financiers existant en début d'exercice, par le débit du compte 59 – Dépréciations et risques provisionnés (Trésorerie)"
+        "Compte 779 : reprise des dépréciations des comptes de trésorerie et des risques provisionnés financiers existant en début d'exercice, par le débit du compte 59 – Dépréciations et risques provisionnés (Trésorerie)"
       ],
       debit: [
         "Pour solde à la clôture : par le crédit du compte 13 – Résultat net de l'exercice"
@@ -4491,7 +4491,7 @@ const comptesData = {
     },
     controle: ["Virements bancaires", "Décomptes d'intérêts", "Factures avec escompte", "Bordereaux de cession de titres", "Encaissement des coupons"],
     comptes_lies: ["771","772","773","774","776","777","778","779","59","50","27","13"],
-    textes_ref: ["SC OHADA — Compte 77 Revenus financiers et produits assimilés"],
+    textes_ref: ["SC OHADA : Compte 77 Revenus financiers et produits assimilés"],
     exemples_ecritures: [
         {
           libelle: "Intérêts sur prêt accordé au personnel",
@@ -4513,8 +4513,8 @@ const comptesData = {
 
   "78": {
     libelle: "Transferts de charges",
-    classe: "Classe 7 — Produits",
-    nature: "Compte de gestion (Produits — compte de liaison)",
+    classe: "Classe 7 : Produits",
+    nature: "Compte de gestion (Produits : compte de liaison)",
     sens: "Créditeur",
     contenu: "Ce compte sert à l'imputation de charges d'exploitation ou financières qui doivent être, en raison de leur nature, affectées à un compte de bilan (à l'exception des immobilisations pour lesquelles le compte 72 est utilisé) ou à un autre compte de charges.",
     subdivisions: {
@@ -4524,7 +4524,7 @@ const comptesData = {
     fonctionnement: {
       credit: [
         "Charges d'exploitation ou financières à transférer, par le débit des comptes de bilan concernés (autres que les immobilisations)",
-        "Ou par le débit des comptes de charges concernés (transfert de charges à charges — ex : avantages en nature accordés au personnel)"
+        "Ou par le débit des comptes de charges concernés (transfert de charges à charges : ex : avantages en nature accordés au personnel)"
       ],
       debit: [
         "Pour solde à la clôture : par le crédit du compte 13 – Résultat net de l'exercice"
@@ -4537,12 +4537,12 @@ const comptesData = {
     },
     controle: ["Relevé des décisions de gestion des organes compétents"],
     comptes_lies: ["781","787","201","202","66","72","848","13"],
-    textes_ref: ["SC OHADA — Compte 78 Transferts de charges"]
+    textes_ref: ["SC OHADA : Compte 78 Transferts de charges"]
   },
 
   "79": {
     libelle: "Reprises de provisions",
-    classe: "Classe 7 — Produits",
+    classe: "Classe 7 : Produits",
     nature: "Compte de gestion (Produits)",
     sens: "Créditeur",
     contenu: "Ce compte enregistre les annulations et les rajustements en baisse des provisions financières pour risques et charges, ainsi que des provisions pour dépréciation des éléments de l'actif immobilisé.",
@@ -4572,7 +4572,7 @@ const comptesData = {
     },
     controle: ["Relevé des décisions des organes compétents"],
     comptes_lies: ["791","797","798","19","29","69","86","759","779","849","13"],
-    textes_ref: ["SC OHADA — Compte 79 Reprises de provisions"],
+    textes_ref: ["SC OHADA : Compte 79 Reprises de provisions"],
     exemples_ecritures: [
         {
           libelle: "Reprise de provision pour litiges (procès gagné)",
@@ -4588,7 +4588,7 @@ const comptesData = {
   },
 
   /* ═══════════════════════════════════════════════════════════════
-     CLASSE 8 — COMPTES DES AUTRES CHARGES ET DES AUTRES PRODUITS
+     CLASSE 8 : COMPTES DES AUTRES CHARGES ET DES AUTRES PRODUITS
   ═══════════════════════════════════════════════════════════════ */
 
   "8": {
@@ -4596,17 +4596,17 @@ const comptesData = {
     classe: "Classe 8",
     nature: "Classe de comptes",
     sens: "Débiteur ou Créditeur",
-    contenu: "La classe 8 enregistre les charges et produits correspondant à des opérations qui ne se rapportent pas à l'activité ordinaire de l'entreprise (H.A.O. — Hors Activités Ordinaires). Figurent également dans cette classe la participation des travailleurs aux bénéfices et l'impôt sur le résultat.",
+    contenu: "La classe 8 enregistre les charges et produits correspondant à des opérations qui ne se rapportent pas à l'activité ordinaire de l'entreprise (H.A.O. : Hors Activités Ordinaires). Figurent également dans cette classe la participation des travailleurs aux bénéfices et l'impôt sur le résultat.",
     fonctionnement: { debit: [], credit: [] },
     commentaires: "La notion H.A.O. doit être appréhendée de façon restrictive : restructurations d'entreprises, catastrophes naturelles, événements extraordinaires par essence non prévisibles et dépourvus de caractère récurrent. Toute autre charge ou produit est ordinaire, y compris les amendes fiscales et les charges sur exercices antérieurs liées aux activités courantes.",
     comptes_lies: ["81","82","83","84","85","86","87","88","89"],
-    textes_ref: ["Acte Uniforme OHADA — Classe 8 Autres charges et autres produits"],
+    textes_ref: ["Acte Uniforme OHADA : Classe 8 Autres charges et autres produits"],
     exemples_ecritures: []
   },
 
   "81": {
     libelle: "Valeurs comptables des cessions d'immobilisations",
-    classe: "Classe 8 — H.A.O.",
+    classe: "Classe 8 : H.A.O.",
     nature: "Compte de gestion (Charges H.A.O.)",
     sens: "Débiteur",
     contenu: "Ce compte sert à déterminer la valeur comptable nette des éléments de l'actif immobilisé cédés. Pour les biens non amortissables, cette valeur est la valeur d'entrée, sans déduction des éventuelles provisions pour dépréciation. Pour les biens amortissables, elle est la différence entre la valeur d'entrée brute des immobilisations cédées et le cumul des amortissements pratiqués depuis l'entrée du bien dans le patrimoine de l'entreprise jusqu'à la date de sa cession.",
@@ -4630,7 +4630,7 @@ const comptesData = {
     },
     controle: ["Procès-verbal de mise au rebut", "Factures de vente", "Procès-verbal de destruction", "Tableaux d'amortissement"],
     comptes_lies: ["811","812","816","82","2","28","654","754","13"],
-    textes_ref: ["SC OHADA — Compte 81 Valeurs comptables des cessions d'immobilisations"],
+    textes_ref: ["SC OHADA : Compte 81 Valeurs comptables des cessions d'immobilisations"],
     exemples_ecritures: [
         {
           libelle: "Cession d'un véhicule (valeur brute 5 M, amort. 3 M)",
@@ -4647,7 +4647,7 @@ const comptesData = {
 
   "82": {
     libelle: "Produits des cessions d'immobilisations",
-    classe: "Classe 8 — H.A.O.",
+    classe: "Classe 8 : H.A.O.",
     nature: "Compte de gestion (Produits H.A.O.)",
     sens: "Créditeur",
     contenu: "Ce compte enregistre le produit net de la cession : dans le cas de vente, prix résultant de l'accord entre les cocontractants et figurant sur l'acte de vente diminué des commissions et des frais de vente ; dans le cas d'apport, montant contractuel, etc.",
@@ -4672,7 +4672,7 @@ const comptesData = {
     },
     controle: ["Factures de cession d'immobilisations", "Commissions et frais de vente"],
     comptes_lies: ["821","822","826","81","485","654","754","13"],
-    textes_ref: ["SC OHADA — Compte 82 Produits des cessions d'immobilisations"],
+    textes_ref: ["SC OHADA : Compte 82 Produits des cessions d'immobilisations"],
     exemples_ecritures: [
         {
           libelle: "Prix de cession d'un véhicule",
@@ -4689,7 +4689,7 @@ const comptesData = {
 
   "83": {
     libelle: "Charges hors activités ordinaires",
-    classe: "Classe 8 — H.A.O.",
+    classe: "Classe 8 : H.A.O.",
     nature: "Compte de gestion (Charges H.A.O.)",
     sens: "Débiteur",
     contenu: "Ce sont les charges qui ne sont pas liées à l'activité ordinaire de l'entreprise et qui, de ce fait, n'ont généralement pas de caractère récurrent. Elles comprennent des charges constatées et des charges provisionnées.",
@@ -4709,14 +4709,14 @@ const comptesData = {
         "Pour solde à la clôture de l'exercice, par le débit du compte 13 – Résultat net de l'exercice"
       ]
     },
-    commentaires: "Seules les charges liées à la restructuration de l'entreprise ou à des événements extraordinaires (phénomènes naturels : tempêtes, raz-de-marée, tremblements de terre, invasions acridiennes...) relèvent du H.A.O.\n\nToute autre charge est ordinaire — y compris les amendes fiscales ou pénales, et les charges sur exercices antérieurs liées aux activités courantes.\n\nLorsque la charge H.A.O. probable est envisagée à court terme (< 1 an) → charge provisionnée (compte 839).\nLorsque la charge H.A.O. probable est envisagée à plus d'un an → dotation aux provisions (compte 854).",
+    commentaires: "Seules les charges liées à la restructuration de l'entreprise ou à des événements extraordinaires (phénomènes naturels : tempêtes, raz-de-marée, tremblements de terre, invasions acridiennes...) relèvent du H.A.O.\n\nToute autre charge est ordinaire : y compris les amendes fiscales ou pénales, et les charges sur exercices antérieurs liées aux activités courantes.\n\nLorsque la charge H.A.O. probable est envisagée à court terme (< 1 an) → charge provisionnée (compte 839).\nLorsque la charge H.A.O. probable est envisagée à plus d'un an → dotation aux provisions (compte 854).",
     exclusions: {
       texte: "Ne doit pas enregistrer les provisions pour risques et charges H.A.O. à plus d'un an.",
       comptes: ["854 – Dotations aux provisions pour risques et charges H.A.O."]
     },
     controle: ["Factures", "Évaluations", "Tableaux d'amortissements", "Calculs de plus-values"],
     comptes_lies: ["831","834","835","836","839","48","854","13"],
-    textes_ref: ["SC OHADA — Compte 83 Charges hors activités ordinaires"],
+    textes_ref: ["SC OHADA : Compte 83 Charges hors activités ordinaires"],
     exemples_ecritures: [
         {
           libelle: "Charge H.A.O. constatée (restructuration)",
@@ -4733,7 +4733,7 @@ const comptesData = {
 
   "84": {
     libelle: "Produits hors activités ordinaires",
-    classe: "Classe 8 — H.A.O.",
+    classe: "Classe 8 : H.A.O.",
     nature: "Compte de gestion (Produits H.A.O.)",
     sens: "Créditeur",
     contenu: "Ce sont des produits qui ne sont pas liés à l'activité ordinaire de l'entreprise et sont donc dépourvus de caractère récurrent.\n\nIls comprennent des produits constatés, des reprises de charges provisionnées et des transferts de charges.",
@@ -4761,10 +4761,10 @@ const comptesData = {
     },
     controle: ["Analyse des charges immobilisées", "Factures", "Évaluations", "Tableaux de provisions"],
     comptes_lies: ["841","845","846","848","849","4998","20","86","13"],
-    textes_ref: ["SC OHADA — Compte 84 Produits hors activités ordinaires"],
+    textes_ref: ["SC OHADA : Compte 84 Produits hors activités ordinaires"],
     exemples_ecritures: [
         {
-          libelle: "Produit H.A.O. — indemnité exceptionnelle reçue",
+          libelle: "Produit H.A.O. : indemnité exceptionnelle reçue",
           debit: "52 – Banques",
           credit: "841 – Produits H.A.O. constatés"
         },
@@ -4778,7 +4778,7 @@ const comptesData = {
 
   "85": {
     libelle: "Dotations hors activités ordinaires",
-    classe: "Classe 8 — H.A.O.",
+    classe: "Classe 8 : H.A.O.",
     nature: "Compte de gestion (Charges calculées H.A.O.)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre les dotations aux amortissements et aux provisions qui ne concernent pas l'activité ordinaire de l'entreprise.",
@@ -4806,7 +4806,7 @@ const comptesData = {
     },
     controle: ["Évaluation de la provision", "Tableaux d'amortissement fiscal"],
     comptes_lies: ["851","852","853","854","858","15","19","29","28","86","13"],
-    textes_ref: ["SC OHADA — Compte 85 Dotations hors activités ordinaires"],
+    textes_ref: ["SC OHADA : Compte 85 Dotations hors activités ordinaires"],
     exemples_ecritures: [
         {
           libelle: "Dotation aux amortissements dérogatoires (complément fiscal)",
@@ -4823,7 +4823,7 @@ const comptesData = {
 
   "86": {
     libelle: "Reprises hors activités ordinaires",
-    classe: "Classe 8 — H.A.O.",
+    classe: "Classe 8 : H.A.O.",
     nature: "Compte de gestion (Produits H.A.O.)",
     sens: "Créditeur",
     contenu: "Ce compte enregistre les annulations et rajustements en baisse des provisions, amortissements et subventions qui ne sont pas liés à l'activité ordinaire de l'entreprise.",
@@ -4844,14 +4844,14 @@ const comptesData = {
         "Pour solde à la clôture de l'exercice, par le crédit du compte 13 – Résultat net de l'exercice"
       ]
     },
-    commentaires: "Toute provision constituée via le compte 85 doit être reprise au cours d'un exercice ultérieur par le compte 86, l'année de survenance de la charge ou l'année où l'appréciation est modifiée.\n\n865 – Reprises de subventions d'investissement : le montant repris chaque exercice correspond :\n— Pour les immobilisations amortissables : dotation aux amortissements × (montant subvention / montant investissement)\n— Pour les immobilisations non amortissables : 1/10 du montant de la subvention par an (ou durée d'inaliénabilité contractuelle)",
+    commentaires: "Toute provision constituée via le compte 85 doit être reprise au cours d'un exercice ultérieur par le compte 86, l'année de survenance de la charge ou l'année où l'appréciation est modifiée.\n\n865 – Reprises de subventions d'investissement : le montant repris chaque exercice correspond :\n: Pour les immobilisations amortissables : dotation aux amortissements × (montant subvention / montant investissement)\n: Pour les immobilisations non amortissables : 1/10 du montant de la subvention par an (ou durée d'inaliénabilité contractuelle)",
     exclusions: {
       texte: "Ne doit pas enregistrer les reprises de charges provisionnées, les reprises de provisions d'exploitation ou financières, ni les dotations aux provisions d'exploitation.",
       comptes: ["759 – Reprises de charges provisionnées d'exploitation", "791 – Reprises de provisions d'exploitation", "797 – Reprises de provisions financières", "691 / 697 – Dotations aux provisions d'exploitation / financières"]
     },
     controle: ["Tableaux d'amortissements", "Décisions de subventions", "Tableaux de reprises de subvention", "Tableaux de reprises des écarts de réévaluation", "Tableaux de reprises de la plus-value de cession à réinvestir"],
     comptes_lies: ["861","862","863","864","865","868","15","19","29","14","85","13"],
-    textes_ref: ["SC OHADA — Compte 86 Reprises hors activités ordinaires"],
+    textes_ref: ["SC OHADA : Compte 86 Reprises hors activités ordinaires"],
     exemples_ecritures: [
         {
           libelle: "Reprise d'amortissements dérogatoires",
@@ -4868,7 +4868,7 @@ const comptesData = {
 
   "87": {
     libelle: "Participation des travailleurs",
-    classe: "Classe 8 — H.A.O.",
+    classe: "Classe 8 : H.A.O.",
     nature: "Compte de gestion (Répartition du résultat)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre les montants prélevés sur les bénéfices réalisés et affectés par l'entreprise à un fonds légal ou contractuel à l'avantage des travailleurs.",
@@ -4892,7 +4892,7 @@ const comptesData = {
     },
     controle: ["Conventions d'entreprise", "Accords d'entreprise"],
     comptes_lies: ["871","872","878","426","13"],
-    textes_ref: ["SC OHADA — Compte 87 Participation des travailleurs"],
+    textes_ref: ["SC OHADA : Compte 87 Participation des travailleurs"],
     exemples_ecritures: [
         {
           libelle: "Participation des travailleurs aux bénéfices",
@@ -4909,7 +4909,7 @@ const comptesData = {
 
   "88": {
     libelle: "Subventions d'équilibre",
-    classe: "Classe 8 — H.A.O.",
+    classe: "Classe 8 : H.A.O.",
     nature: "Compte de gestion (Produits)",
     sens: "Créditeur",
     contenu: "Ce compte enregistre le montant des subventions allouées par l'Etat ou l'un de ses démembrements à l'entreprise, pour lui permettre de compenser, en totalité ou partiellement, des pertes survenues dans des circonstances exceptionnelles.",
@@ -4934,19 +4934,19 @@ const comptesData = {
     },
     controle: ["Décrets ou arrêtés ministériels", "Décisions de collectivités publiques accordant la subvention"],
     comptes_lies: ["881","884","886","888","14","71","13"],
-    textes_ref: ["SC OHADA — Compte 88 Subventions d'équilibre"],
+    textes_ref: ["SC OHADA : Compte 88 Subventions d'équilibre"],
     exemples_ecritures: [
         {
           libelle: "Subvention d'équilibre accordée par l'État",
           debit: "52 – Banques",
-          credit: "881 – Subventions d'équilibre — État"
+          credit: "881 – Subventions d'équilibre : État"
         },
       ]
   },
 
   "89": {
     libelle: "Impôts sur le résultat",
-    classe: "Classe 8 — H.A.O.",
+    classe: "Classe 8 : H.A.O.",
     nature: "Compte de gestion (Prélèvement obligatoire sur résultat)",
     sens: "Débiteur",
     contenu: "C'est la part de bénéfice affectée obligatoirement à l'Etat au titre de l'impôt sur le résultat.",
@@ -4976,7 +4976,7 @@ const comptesData = {
     },
     controle: ["Liasse fiscale", "Notifications et rappels d'impôt de la Direction Générale des Impôts (D.G.I.)"],
     comptes_lies: ["891","892","895","899","441","64","13"],
-    textes_ref: ["SC OHADA — Compte 89 Impôts sur le résultat"],
+    textes_ref: ["SC OHADA : Compte 89 Impôts sur le résultat"],
     exemples_ecritures: [
         {
           libelle: "Constatation de l'impôt sur les bénéfices dû",
@@ -4997,7 +4997,7 @@ const comptesData = {
   },
 
   /* ═══════════════════════════════════════════════════════════════
-     CLASSE 9 — ENGAGEMENTS HORS BILAN ET COMPTABILITÉ ANALYTIQUE
+     CLASSE 9 : ENGAGEMENTS HORS BILAN ET COMPTABILITÉ ANALYTIQUE
   ═══════════════════════════════════════════════════════════════ */
 
   "9": {
@@ -5007,15 +5007,15 @@ const comptesData = {
     sens: "Débiteur ou Créditeur selon convention",
     contenu: "La classe 9 permet d'enregistrer les engagements hors bilan (comptes 90-91) et les opérations de comptabilité analytique de gestion (comptes 92-99). Son usage est facultatif, mais facilite la confection de l'État annexé.",
     fonctionnement: { debit: [], credit: [] },
-    commentaires: "Engagements hors bilan : droits et obligations dont les effets chiffrables sur le patrimoine sont subordonnés à des conditions ou événements ultérieurs. Ils doivent faire l'objet d'une convention écrite pour être enregistrés.\n\nDeux rubriques :\n— Engagements obtenus (droits) : enregistrés par convention au débit des comptes 901 à 904\n— Engagements accordés (obligations) : enregistrés par convention au crédit des comptes 905 à 908\nLeurs contreparties figurent aux comptes 911 à 918.\n\nComptabilité analytique (92-99) : usage laissé à l'initiative des entreprises selon leur structure, politique des coûts et organisation.",
+    commentaires: "Engagements hors bilan : droits et obligations dont les effets chiffrables sur le patrimoine sont subordonnés à des conditions ou événements ultérieurs. Ils doivent faire l'objet d'une convention écrite pour être enregistrés.\n\nDeux rubriques :\n: Engagements obtenus (droits) : enregistrés par convention au débit des comptes 901 à 904\n: Engagements accordés (obligations) : enregistrés par convention au crédit des comptes 905 à 908\nLeurs contreparties figurent aux comptes 911 à 918.\n\nComptabilité analytique (92-99) : usage laissé à l'initiative des entreprises selon leur structure, politique des coûts et organisation.",
     comptes_lies: ["901","902","903","904","905","906","907","908","911","92","93","94","95","96","97","98","99"],
-    textes_ref: ["Acte Uniforme OHADA — Classe 9 Engagements hors bilan et comptabilité analytique"],
+    textes_ref: ["Acte Uniforme OHADA : Classe 9 Engagements hors bilan et comptabilité analytique"],
     exemples_ecritures: []
   },
 
   "9011": {
     libelle: "Crédits confirmés obtenus",
-    classe: "Classe 9 — Engagements hors bilan (obtenus)",
+    classe: "Classe 9 : Engagements hors bilan (obtenus)",
     nature: "Compte hors bilan (Engagement de financement obtenu)",
     sens: "Débiteur",
     contenu: "Le solde débiteur de ce compte représente la partie non utilisée des crédits qu'une banque s'est engagée, d'une façon irrévocable, à accorder à l'entreprise, y compris les crédits documentaires import-export confirmés.",
@@ -5027,7 +5027,7 @@ const comptesData = {
     exclusions: { texte: "Ne doit pas enregistrer les dépôts de garantie (dépôt) sur CREDOC.", comptes: ["275 – Dépôts et cautionnements versés"] },
     controle: ["Lettres de notification de la banque"],
     comptes_lies: ["9111"],
-    textes_ref: ["SC OHADA — Compte 9011 Crédits confirmés obtenus"],
+    textes_ref: ["SC OHADA : Compte 9011 Crédits confirmés obtenus"],
     exemples_ecritures: [
         {
           libelle: "Notification d'un crédit documentaire confirmé",
@@ -5044,7 +5044,7 @@ const comptesData = {
 
   "9012": {
     libelle: "Emprunts restant à encaisser",
-    classe: "Classe 9 — Engagements hors bilan (obtenus)",
+    classe: "Classe 9 : Engagements hors bilan (obtenus)",
     nature: "Compte hors bilan (Engagement de financement obtenu)",
     sens: "Débiteur",
     contenu: "Ce compte enregistre la partie non encore encaissée des emprunts contractés par l'entreprise auprès des tiers autres que les établissements bancaires, notamment les filiales et les sociétés - mères.",
@@ -5056,7 +5056,7 @@ const comptesData = {
     exclusions: { texte: "Ne doit pas enregistrer les crédits bancaires notifiés non encore encaissés.", comptes: ["9011 – Crédits confirmés obtenus"] },
     controle: ["Conventions de prêts"],
     comptes_lies: ["9112"],
-    textes_ref: ["SC OHADA — Compte 9012 Emprunts restant à encaisser"],
+    textes_ref: ["SC OHADA : Compte 9012 Emprunts restant à encaisser"],
     exemples_ecritures: [
         {
           libelle: "Convention d'emprunt signée avec une société mère",
@@ -5073,7 +5073,7 @@ const comptesData = {
 
   "9021": {
     libelle: "Avals obtenus",
-    classe: "Classe 9 — Engagements hors bilan (obtenus)",
+    classe: "Classe 9 : Engagements hors bilan (obtenus)",
     nature: "Compte hors bilan (Engagement de garantie obtenu)",
     sens: "Débiteur",
     contenu: "L'avaliseur prend l'engagement de payer au créancier, à l'échéance, tout ou partie du nominal d'une lettre de change, d'un billet à ordre ou d'un chèque, à la place du tiré ou du souscripteur, en cas de défaillance éventuelle de celui-ci.",
@@ -5085,7 +5085,7 @@ const comptesData = {
     exclusions: { texte: "", comptes: [] },
     controle: ["Effets avalisés"],
     comptes_lies: ["9121"],
-    textes_ref: ["SC OHADA — Compte 9021 Avals obtenus"],
+    textes_ref: ["SC OHADA : Compte 9021 Avals obtenus"],
     exemples_ecritures: [
         {
           libelle: "Obtention d'un aval bancaire sur un effet",
@@ -5102,7 +5102,7 @@ const comptesData = {
 
   "9022": {
     libelle: "Cautions, garanties obtenues",
-    classe: "Classe 9 — Engagements hors bilan (obtenus)",
+    classe: "Classe 9 : Engagements hors bilan (obtenus)",
     nature: "Compte hors bilan (Engagement de garantie obtenu)",
     sens: "Débiteur",
     contenu: "La caution s'engage à payer l'entreprise créancière au cas où le débiteur de cette dernière n'exécuterait pas son obligation.",
@@ -5114,7 +5114,7 @@ const comptesData = {
     exclusions: { texte: "Ne doit pas enregistrer les gages, nantissements et antichrèses.", comptes: ["9028 – Autres garanties obtenues"] },
     controle: ["Conventions de prêts", "Acte constitutif de la caution"],
     comptes_lies: ["9122","9028"],
-    textes_ref: ["SC OHADA — Compte 9022 Cautions, garanties obtenues"],
+    textes_ref: ["SC OHADA : Compte 9022 Cautions, garanties obtenues"],
     exemples_ecritures: [
         {
           libelle: "Caution bancaire obtenue pour marché public",
@@ -5126,7 +5126,7 @@ const comptesData = {
 
   "9023": {
     libelle: "Hypothèques obtenues",
-    classe: "Classe 9 — Engagements hors bilan (obtenus)",
+    classe: "Classe 9 : Engagements hors bilan (obtenus)",
     nature: "Compte hors bilan (Engagement de garantie obtenu)",
     sens: "Débiteur",
     contenu: "Lorsque l'entreprise reçoit de son débiteur un immeuble en hypothèque, cette dernière lui confère le droit de faire saisir et vendre l'immeuble en quelques mains qu'il se trouve et de se faire payer par préférence sur le prix de la vente.",
@@ -5138,7 +5138,7 @@ const comptesData = {
     exclusions: { texte: "Ne doit pas enregistrer les promesses d'hypothèques, gages, nantissements et antichrèses.", comptes: ["9028 – Autres garanties obtenues"] },
     controle: ["Conventions de prêts", "Récépissés d'inscription de l'hypothèque", "Rapports d'expertise immobilière"],
     comptes_lies: ["9123","9028"],
-    textes_ref: ["SC OHADA — Compte 9023 Hypothèques obtenues"],
+    textes_ref: ["SC OHADA : Compte 9023 Hypothèques obtenues"],
     exemples_ecritures: [
         {
           libelle: "Inscription d'une hypothèque reçue en garantie",
@@ -5150,7 +5150,7 @@ const comptesData = {
 
   "9028": {
     libelle: "Autres garanties obtenues",
-    classe: "Classe 9 — Engagements hors bilan (obtenus)",
+    classe: "Classe 9 : Engagements hors bilan (obtenus)",
     nature: "Compte hors bilan (Engagement de garantie obtenu)",
     sens: "Débiteur",
     contenu: "Les autres garanties obtenues comprennent notamment le gage, le nantissement et l'antichrèse pour lesquels l'engagement porte spécialement sur un ou plusieurs biens affectés à l'entreprise créancière en vue de garantir ses droits.",
@@ -5162,7 +5162,7 @@ const comptesData = {
     exclusions: { texte: "Ne doit pas enregistrer les avals, cautions et hypothèques.", comptes: ["9021 – Avals obtenus", "9022 – Cautions, garanties obtenues", "9023 – Hypothèques obtenues"] },
     controle: ["Conventions de prêt", "Acte constitutif de la garantie", "Chèques et actions"],
     comptes_lies: ["9128","9021","9022","9023"],
-    textes_ref: ["SC OHADA — Compte 9028 Autres garanties obtenues"],
+    textes_ref: ["SC OHADA : Compte 9028 Autres garanties obtenues"],
     exemples_ecritures: [
         {
           libelle: "Nantissement de fonds de commerce reçu en garantie",
@@ -5174,7 +5174,7 @@ const comptesData = {
 
   "9031": {
     libelle: "Achats de marchandises à terme",
-    classe: "Classe 9 — Engagements hors bilan (réciproques obtenus)",
+    classe: "Classe 9 : Engagements hors bilan (réciproques obtenus)",
     nature: "Compte hors bilan (Engagement réciproque)",
     sens: "Débiteur",
     contenu: "Pour deux partenaires, les engagements réciproques se décomposent en un engagement donné par l'entreprise à son cocontractant en contrepartie d'un engagement reçu de ce dernier. A ce titre, dans le cadre des achats de marchandises à terme, le fournisseur de l'entreprise s'engage à livrer des marchandises et l'entreprise s'engage à en prendre livraison et à en payer le prix convenu à la date de livraison.",
@@ -5186,7 +5186,7 @@ const comptesData = {
     exclusions: { texte: "", comptes: [] },
     controle: ["Demandes d'achat", "Bons de commande", "Bons de livraison", "Factures"],
     comptes_lies: ["9131"],
-    textes_ref: ["SC OHADA — Compte 9031 Achats de marchandises à terme"],
+    textes_ref: ["SC OHADA : Compte 9031 Achats de marchandises à terme"],
     exemples_ecritures: [
         {
           libelle: "Bon de commande ferme reçu d'un fournisseur",
@@ -5198,7 +5198,7 @@ const comptesData = {
 
   "9033": {
     libelle: "Commandes fermes des clients",
-    classe: "Classe 9 — Engagements hors bilan (réciproques obtenus)",
+    classe: "Classe 9 : Engagements hors bilan (réciproques obtenus)",
     nature: "Compte hors bilan (Engagement réciproque)",
     sens: "Débiteur",
     contenu: "Engagements irrévocables pris par un client de régler le prix des travaux exécutés pour son compte conformément à ses spécifications et aux conditions de vente indiquées par l'entreprise.",
@@ -5210,7 +5210,7 @@ const comptesData = {
     exclusions: { texte: "", comptes: [] },
     controle: ["Bons de commande", "Bons de livraison", "Factures"],
     comptes_lies: ["9133"],
-    textes_ref: ["SC OHADA — Compte 9033 Commandes fermes des clients"],
+    textes_ref: ["SC OHADA : Compte 9033 Commandes fermes des clients"],
     exemples_ecritures: [
         {
           libelle: "Réception d'une commande ferme d'un client",
@@ -5222,7 +5222,7 @@ const comptesData = {
 
   "9041": {
     libelle: "Abandons de créances conditionnels",
-    classe: "Classe 9 — Engagements hors bilan (autres obtenus)",
+    classe: "Classe 9 : Engagements hors bilan (autres obtenus)",
     nature: "Compte hors bilan (Autre engagement obtenu)",
     sens: "Débiteur",
     contenu: "La convention d'abandon de créances assortie d'une clause de retour à meilleure fortune est caractérisée par l'extinction de la créance de l'entreprise sous condition résolutoire : l'entreprise débitrice retrouve des moyens (gains) financiers suffisants qui rétablissent sa dette originelle.",
@@ -5234,7 +5234,7 @@ const comptesData = {
     exclusions: { texte: "", comptes: [] },
     controle: ["Grosses du jugement", "Conventions"],
     comptes_lies: ["9141"],
-    textes_ref: ["SC OHADA — Compte 9041 Abandons de créances conditionnels"],
+    textes_ref: ["SC OHADA : Compte 9041 Abandons de créances conditionnels"],
     exemples_ecritures: [
         {
           libelle: "Abandon de créances conditionnel consenti à une filiale",
@@ -5246,7 +5246,7 @@ const comptesData = {
 
   "9061": {
     libelle: "Avals accordés",
-    classe: "Classe 9 — Engagements hors bilan (accordés)",
+    classe: "Classe 9 : Engagements hors bilan (accordés)",
     nature: "Compte hors bilan (Engagement de garantie accordé)",
     sens: "Créditeur",
     contenu: "Par l'aval, l'entreprise prend l'engagement de payer au bénéficiaire, et à l'échéance, tout ou partie du nominal d'une lettre de change, d'un billet à ordre ou d'un chèque, à la place du tiré ou du souscripteur éventuellement défaillant.",
@@ -5258,7 +5258,7 @@ const comptesData = {
     exclusions: { texte: "", comptes: [] },
     controle: ["Effets avalisés", "Décisions des organes compétents"],
     comptes_lies: ["9161"],
-    textes_ref: ["SC OHADA — Compte 9061 Avals accordés"],
+    textes_ref: ["SC OHADA : Compte 9061 Avals accordés"],
     exemples_ecritures: [
         {
           libelle: "Aval accordé sur une lettre de change d'un client",
@@ -5270,7 +5270,7 @@ const comptesData = {
 
   "9062": {
     libelle: "Cautions, garanties accordées",
-    classe: "Classe 9 — Engagements hors bilan (accordés)",
+    classe: "Classe 9 : Engagements hors bilan (accordés)",
     nature: "Compte hors bilan (Engagement de garantie accordé)",
     sens: "Créditeur",
     contenu: "L'entreprise, en tant que caution, promet à un créancier de le payer si le débiteur de ce dernier n'exécute pas son obligation.",
@@ -5282,7 +5282,7 @@ const comptesData = {
     exclusions: { texte: "Ne doit pas enregistrer les gages, nantissements et antichrèses.", comptes: ["9068 – Autres garanties accordées"] },
     controle: ["Conventions de prêts", "Actes constitutifs de la caution", "Lettres d'intention ou lettres de confort", "Décisions des organes compétents"],
     comptes_lies: ["9162","9068"],
-    textes_ref: ["SC OHADA — Compte 9062 Cautions, garanties accordées"],
+    textes_ref: ["SC OHADA : Compte 9062 Cautions, garanties accordées"],
     exemples_ecritures: [
         {
           libelle: "Caution accordée à un fournisseur pour marché",
@@ -5294,7 +5294,7 @@ const comptesData = {
 
   "9063": {
     libelle: "Hypothèques accordées",
-    classe: "Classe 9 — Engagements hors bilan (accordés)",
+    classe: "Classe 9 : Engagements hors bilan (accordés)",
     nature: "Compte hors bilan (Engagement de garantie accordé)",
     sens: "Créditeur",
     contenu: "Lorsque l'entreprise donne à son créancier un immeuble en hypothèque, cette hypothèque confère à ce créancier le droit de faire saisir et vendre l'immeuble en quelques mains qu'il se trouve et de se faire payer par préférence sur le prix de la vente.",
@@ -5306,7 +5306,7 @@ const comptesData = {
     exclusions: { texte: "Ne doit pas enregistrer les promesses d'hypothèques, gages, nantissements et antichrèses.", comptes: ["9068 – Autres garanties accordées"] },
     controle: ["Conventions de prêts", "Récépissés d'inscription de l'hypothèque", "Rapports d'expertise immobilière"],
     comptes_lies: ["9163","9068"],
-    textes_ref: ["SC OHADA — Compte 9063 Hypothèques accordées"],
+    textes_ref: ["SC OHADA : Compte 9063 Hypothèques accordées"],
     exemples_ecritures: [
         {
           libelle: "Hypothèque accordée à la banque sur le bâtiment",
@@ -5318,7 +5318,7 @@ const comptesData = {
 
   "9068": {
     libelle: "Autres garanties accordées",
-    classe: "Classe 9 — Engagements hors bilan (accordés)",
+    classe: "Classe 9 : Engagements hors bilan (accordés)",
     nature: "Compte hors bilan (Engagement de garantie accordé)",
     sens: "Créditeur",
     contenu: "Les autres garanties accordées comprennent notamment le gage, le nantissement et l'antichrèse pour lesquels l'engagement porte spécialement sur un ou plusieurs biens affectés par l'entreprise à l'acquittement de ses obligations.",
@@ -5330,7 +5330,7 @@ const comptesData = {
     exclusions: { texte: "Ne doit pas enregistrer les avals, cautions et hypothèques.", comptes: ["9061 – Avals accordés", "9062 – Cautions, garanties accordées", "9063 – Hypothèques accordées"] },
     controle: ["Conventions de prêt", "Acte constitutif de la garantie"],
     comptes_lies: ["9168","9061","9062","9063"],
-    textes_ref: ["SC OHADA — Compte 9068 Autres garanties accordées"],
+    textes_ref: ["SC OHADA : Compte 9068 Autres garanties accordées"],
     exemples_ecritures: [
         {
           libelle: "Nantissement accordé sur le matériel",
@@ -5342,7 +5342,7 @@ const comptesData = {
 
   "9071": {
     libelle: "Ventes de marchandises à terme",
-    classe: "Classe 9 — Engagements hors bilan (réciproques accordés)",
+    classe: "Classe 9 : Engagements hors bilan (réciproques accordés)",
     nature: "Compte hors bilan (Engagement réciproque accordé)",
     sens: "Créditeur",
     contenu: "Pour deux partenaires, les engagements réciproques se décomposent en un engagement donné par l'entreprise à son cocontractant en contrepartie d'un engagement reçu de ce dernier. A ce titre, dans le cadre des ventes de marchandises à terme, l'entreprise s'engage à livrer des marchandises et son client s'engage à en prendre livraison et à en payer le prix à la date de livraison.",
@@ -5354,7 +5354,7 @@ const comptesData = {
     exclusions: { texte: "", comptes: [] },
     controle: ["Bons de commande", "Bons de livraison", "Factures"],
     comptes_lies: ["9171"],
-    textes_ref: ["SC OHADA — Compte 9071 Ventes de marchandises à terme"],
+    textes_ref: ["SC OHADA : Compte 9071 Ventes de marchandises à terme"],
     exemples_ecritures: [
         {
           libelle: "Engagement de livraison de marchandises à un client",
@@ -5366,7 +5366,7 @@ const comptesData = {
 
   "9073": {
     libelle: "Commandes fermes aux fournisseurs",
-    classe: "Classe 9 — Engagements hors bilan (réciproques accordés)",
+    classe: "Classe 9 : Engagements hors bilan (réciproques accordés)",
     nature: "Compte hors bilan (Engagement réciproque accordé)",
     sens: "Créditeur",
     contenu: "Dans le cadre d'une commande ferme, l'entreprise s'engage de façon irrévocable à payer le prix des travaux exécutés pour son compte conformément aux spécifications contenues dans sa commande.",
@@ -5378,7 +5378,7 @@ const comptesData = {
     exclusions: { texte: "", comptes: [] },
     controle: ["Bons de commande", "Factures"],
     comptes_lies: ["9173"],
-    textes_ref: ["SC OHADA — Compte 9073 Commandes fermes aux fournisseurs"],
+    textes_ref: ["SC OHADA : Compte 9073 Commandes fermes aux fournisseurs"],
     exemples_ecritures: [
         {
           libelle: "Commande ferme passée à un fournisseur",
@@ -5390,7 +5390,7 @@ const comptesData = {
 
   "9081": {
     libelle: "Annulations conditionnelles de dettes",
-    classe: "Classe 9 — Engagements hors bilan (autres accordés)",
+    classe: "Classe 9 : Engagements hors bilan (autres accordés)",
     nature: "Compte hors bilan (Autre engagement accordé)",
     sens: "Créditeur",
     contenu: "La convention d'annulation de dettes assortie d'une clause de retour à meilleure fortune est caractérisée par l'extinction de la dette de l'entreprise sous condition résolutoire : l'entreprise retrouve des moyens (gains) financiers suffisants qui rétablissent sa dette originelle.",
@@ -5402,7 +5402,7 @@ const comptesData = {
     exclusions: { texte: "", comptes: [] },
     controle: ["Grosses du jugement", "Conventions", "Décisions des organes compétents"],
     comptes_lies: ["9181"],
-    textes_ref: ["SC OHADA — Compte 9081 Annulations conditionnelles de dettes"],
+    textes_ref: ["SC OHADA : Compte 9081 Annulations conditionnelles de dettes"],
     exemples_ecritures: [
         {
           libelle: "Annulation conditionnelle d'une dette fournisseur",
@@ -5414,7 +5414,7 @@ const comptesData = {
 
   "9082": {
     libelle: "Engagements de retraite",
-    classe: "Classe 9 — Engagements hors bilan (autres accordés)",
+    classe: "Classe 9 : Engagements hors bilan (autres accordés)",
     nature: "Compte hors bilan (Autre engagement accordé)",
     sens: "Créditeur",
     contenu: "Ce compte enregistre les sommes que l'entreprise s'est engagée à verser à ses salariés et/ou à ses dirigeants, lorsque ces derniers feront valoir leurs droits à la retraite sous forme : d'indemnités de départ (versement d'un capital) ou de complément de pension (versé tout au long de leur retraite et même au- delà s'il existe une clause de réversion en faveur du conjoint ou des enfants à charge).",
@@ -5422,11 +5422,11 @@ const comptesData = {
       credit: ["À la première constatation et à chaque fin d'exercice lors d'augmentation des engagements, par le débit du compte de contrepartie 9182"],
       debit: ["Au départ à la retraite et à chaque fin d'exercice lors d'une diminution des engagements, par le crédit du compte de contrepartie 9182"]
     },
-    commentaires: "Méthodes actuarielles d'évaluation possibles :\n— Méthode rétrospective avec salaire de fin d'exercice\n— Méthode rétrospective avec salaire de fin de carrière\n— Méthode prospective",
+    commentaires: "Méthodes actuarielles d'évaluation possibles :\n: Méthode rétrospective avec salaire de fin d'exercice\n: Méthode rétrospective avec salaire de fin de carrière\n: Méthode prospective",
     exclusions: { texte: "", comptes: [] },
     controle: ["Conventions collectives", "Décisions des organes compétents"],
     comptes_lies: ["9182"],
-    textes_ref: ["SC OHADA — Compte 9082 Engagements de retraite"],
+    textes_ref: ["SC OHADA : Compte 9082 Engagements de retraite"],
     exemples_ecritures: [
         {
           libelle: "Constatation d'un engagement de retraite en fin d'exercice",
@@ -5438,16 +5438,16 @@ const comptesData = {
 
   "92-99": {
     libelle: "Comptabilité analytique de gestion",
-    classe: "Classe 9 — Comptabilité analytique",
+    classe: "Classe 9 : Comptabilité analytique",
     nature: "Comptes de gestion interne (usage facultatif)",
     sens: "Débiteur ou Créditeur",
     contenu: "Les comptes 92 à 99 sont réservés à la comptabilité analytique de gestion, laissée à l'initiative de chaque entreprise selon sa structure, sa politique des coûts et son organisation.",
     fonctionnement: { debit: [], credit: [] },
-    commentaires: "Structure proposée :\n— 92 : Comptes réfléchis (miroir des charges de la classe 6)\n— 93 : Comptes de reclassements\n— 94 : Comptes de coûts\n— 95 : Comptes de stocks\n— 96 : Comptes d'écarts sur coûts préétablis\n— 97 : Comptes de différences de traitement comptable\n— 98 : Comptes de résultats\n— 99 : Comptes de liaisons internes\n\nLes comptes à deux chiffres 92 à 99 sont de caractère suffisamment général pour répondre aux besoins de toute entreprise, qui les subdivise à sa convenance.",
+    commentaires: "Structure proposée :\n: 92 : Comptes réfléchis (miroir des charges de la classe 6)\n: 93 : Comptes de reclassements\n: 94 : Comptes de coûts\n: 95 : Comptes de stocks\n: 96 : Comptes d'écarts sur coûts préétablis\n: 97 : Comptes de différences de traitement comptable\n: 98 : Comptes de résultats\n: 99 : Comptes de liaisons internes\n\nLes comptes à deux chiffres 92 à 99 sont de caractère suffisamment général pour répondre aux besoins de toute entreprise, qui les subdivise à sa convenance.",
     exclusions: { texte: "", comptes: [] },
     controle: [],
     comptes_lies: ["92","93","94","95","96","97","98","99"],
-    textes_ref: ["SC OHADA — Comptes 92-99 Comptabilité analytique de gestion"],
+    textes_ref: ["SC OHADA : Comptes 92-99 Comptabilité analytique de gestion"],
     exemples_ecritures: []
   }
 
