@@ -3,7 +3,20 @@
 <head>
   <meta name="supabase-url" content="https://lmivfisdmuqbspvmvdzh.supabase.co">
   <meta name="supabase-key" content="sb_publishable_kCfhrFPVec2MkCl0xe4N-w_QXHgc0Gp">
-  <script src="auth-init.js"></script>
+ <script>
+(function () {
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+        document.documentElement.classList.add('ic-authed');
+      }
+    }
+  } catch (e) {}
+})();
+</script>
+<script src="auth-display.js" defer></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Compte — InfoCompta</title>
@@ -217,6 +230,7 @@
       <li><a href="auth.html" class="nav-cta">Connexion</a></li>
     </ul>
   </nav>
+   <div class="ic-profile-wrap" id="icAuthSlot"></div>
 </header>
 
 <section class="hero-sm hero-detail" id="heroDetail">
