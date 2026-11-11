@@ -305,13 +305,22 @@
   border-radius: 20px; flex-shrink: 0;
 }
 .side-item.active .side-count { background: #fff; color: var(--navy); }
-.side-sep {
-  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--muted);
-  padding: 1rem 0.8rem 0.4rem;
-  border-top: 1px solid var(--border-lt);
-  margin-top: 0.6rem;
+.side-group { font-weight: 700; }
+.side-group .side-label { flex: 1; text-align: left; }
+.side-arrow {
+  display: inline-block; width: 1rem;
+  font-size: 0.7rem; color: var(--muted);
+  transition: transform 0.2s ease;
 }
+.side-group.open .side-arrow { transform: rotate(90deg); }
+.side-subs {
+  display: none;
+  margin: 0 0 0.4rem 1rem;
+  padding-left: 0.4rem;
+  border-left: 1px solid var(--border-lt);
+}
+.side-subs.open { display: block; }
+.side-sub { font-size: 0.82rem; padding: 0.45rem 0.7rem; }
 
 @media (max-width: 1023px) {
   .doc-layout { grid-template-columns: 1fr; gap: 1rem; }
@@ -650,46 +659,88 @@ async function loadCatalog() {
 function updateStats() { renderSidebar(); }
 
 /* ═══ COLONNE DE CATÉGORIES ═══ */
-const CATS = [
+const FREE_CATS = [
   ['officiel',  'Textes officiels'],
   ['fiscal',    'Fiscalité'],
   ['guide',     'Guides'],
   ['procedure', 'Procédures'],
   ['modele',    'Modèles']
 ];
+let openGroups = { gratuit: false, payant: false };
 
-function sideItem(key, label, n) {
-  return '<button type="button" class="side-item' + (key === currentFilter ? ' active' : '') +
+function sideItem(key, label, n, sub) {
+  return '<button type="button" class="side-item' + (sub ? ' side-sub' : '') +
+         (key === currentFilter ? ' active' : '') +
          '" data-filter="' + esc(key) + '"><span>' + esc(label) + '</span>' +
          '<span class="side-count">' + n + '</span></button>';
 }
 
+function sideGroup(id, label, n, subsHtml) {
+  const open = openGroups[id];
+  return '<button type="button" class="side-item side-group' + (open ? ' open' : '') +
+         (currentFilter === 'grp:' + id ? ' active' : '') +
+         '" data-group="' + id + '"><span class="side-arrow">▸</span>' +
+         '<span class="side-label">' + esc(label) + '</span>' +
+         '<span class="side-count">' + n + '</span></button>' +
+         '<div class="side-subs' + (open ? ' open' : '') + '">' + subsHtml + '</div>';
+}
+
 function renderSidebar() {
   const docs = allDocs();
-  const nb = function (fn) { return docs.filter(fn).length; };
+  const free = docs.filter(function (d) { return !d.payant; });
+  const paid = docs.filter(function (d) { return d.payant; });
   let html = sideItem('tous', 'Tout', docs.length);
 
-  [['officiel', 'Textes officiels'], ['fiscal', 'Fiscalité'], ['guide', 'Guides'], ['procedure', 'Procédures']]
-    .forEach(function (c) {
-      const n = nb(function (d) { return d.categorie === c[0]; });
-      if (n > 0) html += sideItem('cat:' + c[0], c[1], n);
+  if (free.length) {
+    let subs = '';
+    FREE_CATS.forEach(function (c) {
+      const n = free.filter(function (d) { return d.categorie === c[0]; }).length;
+      if (n > 0) subs += sideItem('gcat:' + c[0], c[1], n, true);
     });
-
-  const nGratuit = nb(function (d) { return d.categorie === 'modele' && !d.payant; });
-  const nPayant  = nb(function (d) { return d.categorie === 'modele' && d.payant; });
-  if (nGratuit > 0) html += sideItem('mod:gratuit', 'Modèles gratuits', nGratuit);
-  if (nPayant  > 0) html += sideItem('mod:payant',  'Modèles payants',  nPayant);
-
-  const rub = {};
-  docs.forEach(function (d) { if (d.rubrique) rub[d.rubrique] = (rub[d.rubrique] || 0) + 1; });
-  const names = Object.keys(rub).sort(function (a, b) { return a.localeCompare(b, 'fr'); });
-  if (names.length) {
-    html += '<div class="side-sep">Modèles par thème</div>';
-    names.forEach(function (r) { html += sideItem('rub:' + r, r, rub[r]); });
+    html += sideGroup('gratuit', 'Modèles gratuits', free.length, subs);
   }
+
+  if (paid.length) {
+    const rub = {};
+    paid.forEach(function (d) { rub[d.rubrique] = (rub[d.rubrique] || 0) + 1; });
+    let subs = '';
+    Object.keys(rub)
+      .sort(function (a, b) { return a.localeCompare(b, 'fr'); })
+      .forEach(function (r) { subs += sideItem('rub:' + r, r, rub[r], true); });
+    html += sideGroup('payant', 'Modèles payants', paid.length, subs);
+  }
+
   document.getElementById('sideList').innerHTML = html;
 }
 
+document.getElementById('sideList').addEventListener('click', function (e) {
+  const g = e.target.closest('button[data-group]');
+  if (g) {
+    const id = g.dataset.group;
+    if (openGroups[id] && currentFilter === 'grp:' + id) {
+      openGroups[id] = false;                 // 2e clic : on replie
+    } else {
+      openGroups[id] = true;                  // on déplie et on filtre sur le groupe
+      currentFilter = 'grp:' + id;
+    }
+    renderSidebar();
+    filterDocs();
+    return;
+  }
+  const b = e.target.closest('button[data-filter]');
+  if (!b) return;
+  currentFilter = b.dataset.filter;
+  document.getElementById('docSidebar').classList.remove('open');
+  renderSidebar();
+  filterDocs();
+  document.getElementById('docContent').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+document.getElementById('sideToggle').addEventListener('click', function () {
+  document.getElementById('docSidebar').classList.toggle('open');
+});
+
+  
 /* ═══ AFFICHAGE ═══ */
 const DL_ICON = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path></svg>';
 
@@ -768,9 +819,10 @@ function matchFilter(doc) {
   const i = currentFilter.indexOf(':');
   const kind = currentFilter.slice(0, i);
   const val  = currentFilter.slice(i + 1);
-  if (kind === 'cat') return doc.categorie === val;
-  if (kind === 'mod') return doc.categorie === 'modele' && (val === 'payant' ? !!doc.payant : !doc.payant);
-  return doc.rubrique === val;
+  if (kind === 'grp')  return val === 'payant' ? !!doc.payant : !doc.payant;
+  if (kind === 'gcat') return !doc.payant && doc.categorie === val;
+  if (kind === 'rub')  return !!doc.payant && doc.rubrique === val;
+  return true;
 }
 
 function getFiltered() {
