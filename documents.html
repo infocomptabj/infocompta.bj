@@ -490,7 +490,44 @@ function iconeParExtension(ext) {
 ═══════════════════════════════════════════════════════ */
 const documents = [
 
+    /* -- Fiscalité -- */
+    { titre:"Code Général des Impôts 2026 - Bénin", description:"Version officielle du Code Général des Impôts du Bénin, édition 2026.", categorie:"fiscal", tag:"CGI", annee:"2026", source:"DGI Bénin", url:"documents/CGI-2026-Benin.pdf" },
+    { titre:"Code Général des Impôts 2025 - Bénin", description:"Version officielle du Code Général des Impôts du Bénin, édition 2025.", categorie:"fiscal", tag:"CGI", annee:"2025", source:"DGI Bénin", url:"documents/CGI-2025-Benin.pdf" },
+    { titre:"Code Général des Impôts - Version Citoyenne", description:"Version simplifiée et accessible du CGI, conçue pour le grand public.", categorie:"fiscal", tag:"CGI", annee:"", source:"DGI Bénin", url:"documents/CGI-Version-Citoyenne.pdf" },
+    { titre:"Loi de Finances 2026 - Bénin", description:"Loi de finances initiale pour la gestion 2026.", categorie:"fiscal", tag:"Loi de Finances", annee:"2026", source:"DGI Bénin", url:"documents/Loi-de-Finances-2026-Benin.pdf" },
+    { titre:"Loi de Finances Rectificative 2026 - Bénin", description:"Loi de finances rectificative pour la gestion 2026.", categorie:"fiscal", tag:"LF Rectificative", annee:"2026", source:"DGI Bénin", url:"documents/Loi-de-Finances-Rectificative-2026-Benin.pdf" },
+    { titre:"Convention Fiscale Bénin - France", description:"Convention fiscale entre le Bénin et la France.", categorie:"fiscal", tag:"Convention fiscale", annee:"", source:"DGI Bénin", url:"documents/Convention-Fiscale-France.pdf" },
+    { titre:"Convention Fiscale Bénin - Norvège", description:"Convention fiscale entre le Bénin et la Norvège.", categorie:"fiscal", tag:"Convention fiscale", annee:"", source:"DGI Bénin", url:"documents/Convention-Fiscale-Norvege.pdf" },
+    { titre:"Convention Fiscale Bénin - Maroc", description:"Convention fiscale entre le Bénin et le Maroc.", categorie:"fiscal", tag:"Convention fiscale", annee:"", source:"DGI Bénin", url:"documents/Convention-Fiscale-Maroc.pdf" },
+    { titre:"Rescrits Fiscaux 2026", description:"Recueil des rescrits fiscaux 2026.", categorie:"fiscal", tag:"Rescrits", annee:"2026", source:"DGI Bénin", url:"documents/Rescrits-Fiscaux-2026.pdf" },
+    { titre:"Système Fiscal de Référence - Bénin 2021", description:"Présentation du système fiscal de référence du Bénin.", categorie:"fiscal", tag:"Fiscalité", annee:"2021", source:"DGI Bénin", url:"documents/Systeme-Fiscal-Reference-2021.pdf" },
 
+    /* -- Guides -- */
+    { titre:"Guide des Normes de Services de la DGI 2026", description:"Standards de qualité et normes de service de la DGI à destination des contribuables.", categorie:"guide", tag:"Guide DGI", annee:"2026", source:"DGI Bénin", url:"documents/Guide-Normes-Services-DGI-2026.pdf" },
+    { titre:"Guide sur le Contentieux Fiscal et les Recours Gracieux", description:"Guide sur le contentieux fiscal et les recours gracieux.", categorie:"guide", tag:"Guide", annee:"2024", source:"DGI Bénin", url:"documents/Guide-Contentieux-Fiscal-Recours-Gracieux-2024.pdf" },
+    { titre:"Charte du Contribuable Vérifié", description:"Charte du contribuable vérifié : droits et obligations lors d'un contrôle fiscal.", categorie:"guide", tag:"Charte", annee:"2024", source:"DGI Bénin", url:"documents/Charte-Contribuable-Verifie-2024.pdf" },
+    { titre:"Sommaire de la Politique Fiscale 2026", description:"Synthèse des orientations et mesures de la politique fiscale béninoise pour 2026.", categorie:"guide", tag:"Politique fiscale", annee:"2026", source:"DGI Bénin", url:"documents/Sommaire-Politique-Fiscale-2026.pdf" },
+    { titre:"Sommaire de la Politique Fiscale 2025", description:"Synthèse des orientations et mesures de la politique fiscale béninoise pour 2025.", categorie:"guide", tag:"Politique fiscale", annee:"2025", source:"DGI Bénin", url:"documents/Sommaire-Politique-Fiscale-2025.pdf" },
+    { titre:"Mémento de la Fiscalité Environnementale", description:"Mémento sur la fiscalité environnementale au Bénin.", categorie:"guide", tag:"Mémento", annee:"", source:"DGI Bénin", url:"documents/Memento-Fiscalite-Environnementale.pdf" },
+    { titre:"Régime Fiscal des ONG et des Associations (OSC)", description:"Traitement fiscal des ONG, associations et organisations de la société civile.", categorie:"guide", tag:"Guide", annee:"", source:"DGI Bénin", url:"documents/Regime-Fiscal-ONG-Associations.pdf" },
+
+    /* -- Procédures -- */
+    { titre:"Livre des Procédures Fiscales du Bénin 2024", description:"Texte officiel regroupant les procédures fiscales : contrôle, contentieux, recouvrement et droits du contribuable.", categorie:"procedure", tag:"Procédures", annee:"2024", source:"DGI Bénin", url:"documents/Livre-Procedures-Fiscales-2024.pdf" },
+    { titre:"Manuel de Procédures de la Recette Nationale des Impôts (RNI)", description:"Manuel des procédures de la Recette Nationale des Impôts.", categorie:"procedure", tag:"Procédures", annee:"", source:"DGI Bénin", url:"documents/Manuel-Procedures-RNI.pdf" },
+    { titre:"Régime Fiscal des Projets", description:"Traitement fiscal applicable aux projets de développement.", categorie:"procedure", tag:"Procédures", annee:"", source:"DGI Bénin", url:"documents/Regime-Fiscal-Projets.pdf" },
+
+    /* -- Textes officiels -- */
+    { titre:"Code de l'Électricité du Bénin", description:"Code de l'électricité de la République du Bénin.", categorie:"officiel", tag:"Code", annee:"", source:"République du Bénin", url:"documents/Code-Electricite-Benin.pdf" },
+    { titre:"Code des Investissements du Bénin", description:"Code des investissements de la République du Bénin.", categorie:"officiel", tag:"Code", annee:"", source:"République du Bénin", url:"documents/Code-Investissements-Benin.pdf" },
+    { titre:"Code Minier du Bénin", description:"Code minier de la République du Bénin.", categorie:"officiel", tag:"Code", annee:"", source:"République du Bénin", url:"documents/Code-Minier-Benin.pdf" },
+    { titre:"Code Pétrolier du Bénin", description:"Code pétrolier de la République du Bénin.", categorie:"officiel", tag:"Code", annee:"", source:"République du Bénin", url:"documents/Code-Petrolier-Benin.pdf" },
+    { titre:"Loi sur les MPME du Bénin", description:"Loi relative aux micro, petites et moyennes entreprises.", categorie:"officiel", tag:"Loi", annee:"", source:"République du Bénin", url:"documents/Loi-MPME-Benin.pdf" },
+    { titre:"Loi sur la Zone Franche Industrielle du Bénin", description:"Loi relative à la zone franche industrielle.", categorie:"officiel", tag:"Loi", annee:"", source:"République du Bénin", url:"documents/Loi-Zone-Franche-Industrielle-Benin.pdf" },
+    { titre:"Zones Économiques Spéciales du Bénin", description:"Texte relatif aux zones économiques spéciales.", categorie:"officiel", tag:"Loi", annee:"", source:"République du Bénin", url:"documents/Zones-Economiques-Speciales-Benin.pdf" },
+    { titre:"Code d'Éthique et de Déontologie des Agents de la DGI", description:"Code d'éthique et de déontologie applicable aux agents de la Direction Générale des Impôts du Bénin.", categorie:"officiel", tag:"Code", annee:"2019", source:"DGI Bénin", url:"documents/Code-Ethique-Deontologie-DGI-2019.pdf" },
+    { titre:"Nouveau Code Pénal du Bénin", description:"Code pénal de la République du Bénin.", categorie:"officiel", tag:"Code", annee:"2018", source:"République du Bénin", url:"documents/Code-Penal-2018.pdf" },
+    { titre:"Convention de Vienne sur les Relations Consulaires", description:"Convention de Vienne sur les relations consulaires.", categorie:"officiel", tag:"Convention", annee:"", source:"Nations unies", url:"documents/Convention-Vienne-Relations-Consulaires.pdf" },
+    { titre:"Convention de Vienne sur les Relations Diplomatiques", description:"Convention de Vienne sur les relations diplomatiques.", categorie:"officiel", tag:"Convention", annee:"", source:"Nations unies", url:"documents/Convention-Vienne-Relations-Diplomatiques.pdf" },
 
     /* -- Modèles comptables -- */
     { titre:"Modèle - Liste des Comptes OHADA", description:"Liste des comptes comptables du système OHADA.", categorie:"modele", tag:"Modèle", type:"texte", annee:"2026", source:"InfoCompta", url:"https://drive.google.com/uc?export=download&id=1xOUy-6d9fOVSHmhkbhPRmKtlTpJmJcFl" }
