@@ -629,12 +629,19 @@ function sideItem(key, label, n) {
 
 function renderSidebar() {
   const docs = allDocs();
+  const nb = function (fn) { return docs.filter(fn).length; };
   let html = sideItem('tous', 'Tout', docs.length);
 
-  CATS.forEach(function (c) {
-    const n = docs.filter(function (d) { return d.categorie === c[0]; }).length;
-    if (n > 0) html += sideItem('cat:' + c[0], c[1], n);
-  });
+  [['officiel', 'Textes officiels'], ['fiscal', 'Fiscalité'], ['guide', 'Guides'], ['procedure', 'Procédures']]
+    .forEach(function (c) {
+      const n = nb(function (d) { return d.categorie === c[0]; });
+      if (n > 0) html += sideItem('cat:' + c[0], c[1], n);
+    });
+
+  const nGratuit = nb(function (d) { return d.categorie === 'modele' && !d.payant; });
+  const nPayant  = nb(function (d) { return d.categorie === 'modele' && d.payant; });
+  if (nGratuit > 0) html += sideItem('mod:gratuit', 'Modèles gratuits', nGratuit);
+  if (nPayant  > 0) html += sideItem('mod:payant',  'Modèles payants',  nPayant);
 
   const rub = {};
   docs.forEach(function (d) { if (d.rubrique) rub[d.rubrique] = (rub[d.rubrique] || 0) + 1; });
@@ -645,20 +652,6 @@ function renderSidebar() {
   }
   document.getElementById('sideList').innerHTML = html;
 }
-
-document.getElementById('sideList').addEventListener('click', function (e) {
-  const b = e.target.closest('button[data-filter]');
-  if (!b) return;
-  currentFilter = b.dataset.filter;
-  document.getElementById('docSidebar').classList.remove('open');
-  renderSidebar();
-  filterDocs();
-  document.getElementById('docContent').scrollIntoView({ behavior: 'smooth', block: 'start' });
-});
-
-document.getElementById('sideToggle').addEventListener('click', function () {
-  document.getElementById('docSidebar').classList.toggle('open');
-});  
 
 /* ═══ AFFICHAGE ═══ */
 const DL_ICON = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path></svg>';
@@ -738,7 +731,9 @@ function matchFilter(doc) {
   const i = currentFilter.indexOf(':');
   const kind = currentFilter.slice(0, i);
   const val  = currentFilter.slice(i + 1);
-  return kind === 'cat' ? doc.categorie === val : doc.rubrique === val;
+  if (kind === 'cat') return doc.categorie === val;
+  if (kind === 'mod') return doc.categorie === 'modele' && (val === 'payant' ? !!doc.payant : !doc.payant);
+  return doc.rubrique === val;
 }
 
 function getFiltered() {
