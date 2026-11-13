@@ -1735,28 +1735,29 @@ footer {
 .footer-brand p {
   font-size: 0.82rem;
   line-height: 1.7;
-  color: var(--text-on-dark-dim);
+  color: #ffffff;
   margin-top: 0.8rem;
   max-width: 340px;
 }
 .footer-col { display: flex; flex-direction: column; gap: 0.5rem; }
 .footer-col h4 {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.6em;
   text-transform: uppercase;
-  color: var(--orange-lt);
+  color: #ffffff;
   margin-bottom: 0.4rem;
-}
-.footer-col a { font-size: 0.82rem; color: var(--text-on-dark-dim); transition: color var(--transition); }
+  margin: 0 0 14px;
+  }
+.footer-col a { font-size: 0.82rem; color: #ffffff; transition: color var(--transition); }
 .footer-col a:hover { color: var(--orange-lt); }
 .footer-bottom {
   border-top: 1px solid var(--border-dark);
   text-align: center;
   padding: 1.2rem 1rem;
   font-size: 0.75rem;
-  color: var(--text-on-dark-dim);
+  color: #ffffff;
   letter-spacing: 0.04em;
 }
 /* ── Responsive ── */
