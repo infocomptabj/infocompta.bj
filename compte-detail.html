@@ -31,24 +31,6 @@
    sont hérités de infocompta-shared.css
 ═══════════════════════════════════════════════════════ */
 
-/* ── HERO FICHE — le fond (image + liseré) vient de .hero-sm ── */
-.hero-detail .breadcrumb {
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.65);
-  margin-bottom: 0.8rem;
-  letter-spacing: 0.05em;
-}
-.hero-detail .breadcrumb a { color: rgba(255,255,255,0.8); text-decoration: none; }
-.hero-detail .breadcrumb a:hover { color: #fff; }
-.hero-detail .code-badge {
-  display: inline-block;
-  font-family: 'Courier New', monospace;
-  font-size: 2.8rem; font-weight: 700;
-  color: #fff; line-height: 1; margin-bottom: 0.4rem;
-}
-.hero-detail h1 { color: #fff; font-size: clamp(1.1rem, 2.5vw, 1.6rem); margin-bottom: 0.3rem; }
-.hero-detail .classe-label { color: rgba(255,255,255,0.7); font-size: 0.8rem; }
-
 /* ── LAYOUT FICHE ── */
 .detail-layout {
   display: grid;
@@ -233,14 +215,10 @@
    <div class="ic-profile-wrap" id="icAuthSlot"></div>
 </header>
 
-<section class="hero-sm hero-detail" id="heroDetail">
+<section class="hero-sm" id="heroDetail">
   <div class="container">
-    <div class="breadcrumb">
-    <span id="breadCode">-</span>
-    </div>
-    <div class="code-badge" id="heroCode">—</div>
-    <h1 id="heroLibelle">Chargement…</h1>
-    <p class="classe-label" id="heroClasse"></p>
+    <h1><span id="heroCode">—</span> · <span id="heroLibelle">Chargement…</span></h1>
+    <p id="heroClasse"></p>
   </div>
 </section>
 
@@ -313,7 +291,6 @@ const code   = params.get('code') || '';
 const compte = comptesData[code];
 
 document.title = compte ? `Compte ${code} — InfoCompta` : `Compte introuvable — InfoCompta`;
-document.getElementById('breadCode').textContent = code || '?';
 document.getElementById('heroCode').textContent  = code || '?';
 
 if (compte) {
