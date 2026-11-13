@@ -232,7 +232,7 @@ header nav ul li a.nav-cta:hover {
 /* ═══════════ FOOTER ═══════════ */
 footer {
   flex-shrink: 0;
-  background:linear-gradient(90deg, #082a61, #071c3f 50.96%, #060f1f)
+  background:linear-gradient(90deg, #082a61, #071c3f 50.96%, #060f1f);
   border-top: 1px solid rgba(255,255,255,0.08);
 }
 .footer-inner {
