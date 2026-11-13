@@ -158,6 +158,18 @@ html.ic-authed .ic-profile-wrap {
   vertical-align: middle;
   margin: 0 1px;
 }
+.logo {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 4px 12px;
+  border-radius: var(--radius-md);
+}
+.logo img {
+  height: 42px;
+  width: auto;
+  display: block;
+}
 
 /* ── Navigation ── */
 header ul { list-style: none; display: flex; align-items: center; gap: 0.1rem; }
@@ -941,7 +953,8 @@ footer {
 /* ═══════════ RESPONSIVE GLOBAL ═══════════ */
 @media (max-width: 1023px) {
   header { padding: 0 1.2rem; height: 58px; }
-  .logo  { font-size: 1.3rem; }
+ .logo { padding: 3px 8px; }
+.logo img { height: 34px; }
   header nav { display: none; }
   header nav.open {
     display: block;
