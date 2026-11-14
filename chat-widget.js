@@ -73,17 +73,18 @@ const STYLE = `
   #ic-fab {
     position: fixed; bottom: 24px; right: 24px; z-index: 9998;
     width: 56px; height: 56px; border-radius: 50%;
-    background: var(--ic-dark); border: 2px solid var(--ic-accent);
+    background: #fff; border: 2px solid var(--ic-accent);
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     box-shadow: 0 8px 28px rgba(0,8,91,.35);
     transition: transform .2s, box-shadow .2s, background .2s;
   }
-  #ic-fab:hover { transform: translateY(-2px); background: var(--ic-navy); box-shadow: 0 12px 34px rgba(0,8,91,.45); }
+  #ic-fab:hover { transform: translateY(-2px); background: var(--ic-accent-pale); box-shadow: 0 12px 34px rgba(0,8,91,.45); }
   #ic-fab:focus-visible, .ic-hbtn:focus-visible, .ic-chip:focus-visible, .ic-qr:focus-visible,
   #ic-send:focus-visible, #ic-input:focus-visible, .ic-copy-btn:focus-visible {
     outline: 2px solid var(--ic-accent); outline-offset: 2px;
   }
   #ic-fab svg { width: 24px; height: 24px; fill: #fff; }
+  #ic-fab img { width: 32px; height: auto; }
   #ic-notif {
     position: absolute; top: -2px; right: -2px; width: 13px; height: 13px;
     border-radius: 50%; background: #FF1414; border: 2px solid #fff; display: none;
@@ -114,7 +115,11 @@ const STYLE = `
     background: rgba(16,57,226,.18); border: 1px solid rgba(16,57,226,.45);
     display: flex; align-items: center; justify-content: center;
   }
-  .ic-header-logo svg { width: 18px; height: 18px; fill: #fff; }
+  .ic-header-logo {
+  width: 40px; height: 40px; border-radius: 9px; flex-shrink: 0;
+  background: #fff; border: 1px solid var(--ic-border-lt);
+  display: flex; align-items: center; justify-content: center;
+}
   .ic-header-info { flex: 1; min-width: 0; }
   .ic-header-info h3 { font-family: 'Outfit', 'DM Sans', sans-serif; font-size: 15px; font-weight: 700; color: #fff; line-height: 1.2; margin: 0; }
   .ic-header-info p { font-size: 11px; color: rgba(255,255,255,.68); margin: 2px 0 0; }
@@ -203,6 +208,10 @@ const STYLE = `
   .ic-tbl th { font-weight: 600; color: var(--ic-text-md); }
   .ic-tbl tr.ic-total td { font-weight: 700; color: var(--ic-navy); border-bottom: 2px solid var(--ic-navy); }
   .ic-note { font-size: 11.5px; color: var(--ic-muted); margin-top: 6px; line-height: 1.5; }
+  .ic-md-wrap { overflow-x: auto; margin: 6px 0; }
+  .ic-md-tbl { border-collapse: collapse; font-size: 12.5px; width: 100%; }
+  .ic-md-tbl th, .ic-md-tbl td { border: 1px solid var(--ic-border-lt); padding: 5px 7px; text-align: left; vertical-align: top; }
+  .ic-md-tbl th { background: var(--ic-accent-pale); color: var(--ic-text-md); font-weight: 600; }
 
   .ic-qrs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
   .ic-qr {
@@ -274,6 +283,25 @@ const SVG = {
   bot:   '<svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM7 9h10v2H7V9zm6 5H7v-2h6v2zm4-6H7V6h10v2z"/></svg>',
   logo:  '<svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6L23 9 12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg>'
 };
+  // Logo InfoCompta (iC) en image data-URI : pas de conflit d'identifiants de dégradés
+const LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 385.75 344"><defs>' +
+'<linearGradient id="a" gradientUnits="userSpaceOnUse" x1="31.37" y1="22.42" x2="63.03" y2="73.14"><stop offset="0" stop-color="#FFD004"/><stop offset="1" stop-color="#EE8C02"/></linearGradient>' +
+'<linearGradient id="b" gradientUnits="userSpaceOnUse" x1="-9.23" y1="142.85" x2="95.65" y2="233.41"><stop offset="0" stop-color="#013DA5"/><stop offset="1" stop-color="#000F32"/></linearGradient>' +
+'<linearGradient id="c" gradientUnits="userSpaceOnUse" x1="149.61" y1="45.46" x2="237.64" y2="160.32"><stop offset="0" stop-color="#013289"/><stop offset="1" stop-color="#000E2E"/></linearGradient>' +
+'<linearGradient id="d" gradientUnits="userSpaceOnUse" x1="219.37" y1="216.73" x2="309.24" y2="297.92"><stop offset="0" stop-color="#012A75"/><stop offset="1" stop-color="#00133C"/></linearGradient>' +
+'<linearGradient id="e" gradientUnits="userSpaceOnUse" x1="190.66" y1="168.07" x2="205.77" y2="209.7"><stop offset="0" stop-color="#6BCF2E"/><stop offset="1" stop-color="#51A41F"/></linearGradient>' +
+'<linearGradient id="f" gradientUnits="userSpaceOnUse" x1="228.76" y1="141.36" x2="251.44" y2="192.15"><stop offset="0" stop-color="#72D432"/><stop offset="1" stop-color="#50A31E"/></linearGradient>' +
+'<linearGradient id="g" gradientUnits="userSpaceOnUse" x1="268.55" y1="113.24" x2="296.14" y2="176.27"><stop offset="0" stop-color="#FFC803"/><stop offset="1" stop-color="#EC8C02"/></linearGradient>' +
+'<linearGradient id="h" gradientUnits="userSpaceOnUse" x1="128.43" y1="199.48" x2="137.82" y2="330.2"><stop offset="0" stop-color="#FECB01"/><stop offset="1" stop-color="#FEAA04"/></linearGradient></defs>' +
+'<circle fill="url(#a)" cx="47.2" cy="47.79" r="34.49"/>' +
+'<path fill="url(#b)" d="M8.39 105.51C7.41 119.32 8.25 133.56 8.25 147.5C8.25 176.33 8.25 205.17 8.25 234C8.25 256.37 7.18 281.12 21.75 299.45C38.68 286.85 51.15 278.44 70 268.48C76.88 264.84 84.23 261.71 90.89 257.99C74.45 231.56 77.5 213.89 77.5 184.25C77.5 150.21 78.38 115.82 77.36 81.95C63.63 84.89 21.53 99.55 8.39 105.51Z"/>' +
+'<path fill="url(#c)" d="M114.5 248.4C127.79 243.73 163.98 229.77 175.39 223.74C161.09 204.31 152.05 190.96 150.58 165.75C147.41 111.6 193.3 63.65 247.5 64.89C280.13 65.64 297.63 78.29 321 98.73C334.72 90.4 356.48 74.85 368.7 64.49C357.94 49.45 342.51 37.44 326.25 28.53C269.58 -2.52 195.56 1.53 144 41.12C97.17 77.07 75.05 140.23 89.84 197.5C94.57 215.82 102.36 233.86 114.5 248.4Z"/>' +
+'<path fill="url(#d)" d="M147.33 279.49C158.15 287.85 171.56 293.74 184.75 297.81C237.06 313.92 298.34 302.43 340.75 267.54C355 255.82 370.22 240.88 377.4 223.82C363.78 217.11 339.3 206.63 325 201.82C319.5 207.95 314.31 214.67 308.25 220.45C291.23 236.7 268.72 246.01 245.5 248.32C236.96 249.16 216.34 244.87 213 245.66C205.76 247.37 198.68 252.44 192 255.66C177.02 262.88 160.82 270.13 147.33 279.49Z"/>' +
+'<path fill="url(#e)" d="M182.5 165.5L216.25 165.5L216.25 209.25L182.5 221Z"/>' +
+'<path fill="url(#f)" d="M224.25 137L258 137L258 194.25L224.25 205.25Z"/>' +
+'<path fill="url(#g)" d="M266.25 107.5L300.5 107.5L300.5 179.75L266.25 190.25Z"/>' +
+'<path fill="url(#h)" d="M172.14 327.58C151.45 328.23 130.83 330.02 110 327.04C103.94 326.18 91.51 324.24 90.63 316.5C89.87 309.82 98.73 303.27 103.25 299.66C118.46 287.53 136.15 278.32 153.25 269.17C200.3 244 248.59 221.09 296.75 198.12C313.28 190.24 329.8 182.35 346.25 174.32C354.01 170.53 362.51 166.91 369.64 162.58C358.05 165.49 346.07 170.26 334.5 174.24C314.4 181.15 294.27 187.96 274.25 195.09C222.71 213.44 171.02 231.89 121 254.14C100.05 263.46 79.41 273.36 59.75 285.21C49.92 291.14 38.61 297.77 32.11 307.5C20.06 325.53 48.25 331.55 60.5 333.5C86.48 337.61 148.07 335.52 172.14 327.58Z"/></svg>';
+const LOGO_IMG = '<img src="data:image/svg+xml;charset=utf-8,' + encodeURIComponent(LOGO_SVG) + '" alt="InfoCompta" width="28" height="25" style="display:block">';
 
 // ── Outils texte ───────────────────────────────────────────────
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -789,7 +817,8 @@ function aiSystem(ctx) {
     'RÈGLES STRICTES\n1. Réponds UNIQUEMENT à partir du CONTEXTE ci-dessous. N’invente aucun taux, date, article ni numéro de compte.\n' +
     '2. Si le contexte ne contient pas la réponse, écris exactement : « Je n’ai pas cette information dans les données d’InfoCompta. » puis oriente vers la page Contact ou la fiche concernée.\n' +
     '3. Cite les comptes entre crochets, par exemple [401], et la source (plan OHADA InfoCompta ou CGI Bénin 2026).\n' +
-    '4. Termine par : « Information indicative : vérifiez dans le texte officiel. »\n\nCONTEXTE\n' + ctx;
+    '4. Termine par : « Information indicative : vérifiez dans le texte officiel. »\n' +
+    '5. N’utilise ni tableau Markdown (|), ni balise HTML (<br>) : uniquement des paragraphes courts et des listes à puces.\n\nCONTEXTE\n' + ctx;
 }
 async function askAI(text) {
   if (CFG.aiMode === 'off') return notFound();
@@ -921,9 +950,9 @@ function buildWidget() {
 
   const wrap = document.createElement('div');
   wrap.innerHTML =
-    '<button id="ic-fab" type="button" aria-label="Ouvrir l’assistant InfoCompta"><div id="ic-notif"></div>' + SVG.bot + '</button>' +
+    '<button id="ic-fab" type="button" aria-label="Ouvrir l’assistant InfoCompta"><div id="ic-notif"></div>' + LOGO_IMG + '</button>' +
     '<div id="ic-panel" role="dialog" aria-label="Assistant InfoCompta">' +
-      '<div class="ic-header"><div class="ic-header-logo">' + SVG.logo + '</div>' +
+      '<div class="ic-header"><div class="ic-header-logo">' + LOGO_IMG + '</div>' +
         '<div class="ic-header-info"><h3>Assistant InfoCompta</h3><p>Plan OHADA · CGI Bénin 2026</p></div>' +
         '<div class="ic-header-btns"><button type="button" class="ic-hbtn" id="ic-clear-btn" title="Effacer la conversation" aria-label="Effacer la conversation">' + SVG.trash + '</button>' +
         '<button type="button" class="ic-hbtn" id="ic-close-btn" title="Fermer" aria-label="Fermer">' + SVG.close + '</button></div></div>' +
