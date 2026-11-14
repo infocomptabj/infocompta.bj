@@ -34,54 +34,27 @@
 .intro-text h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); margin-bottom: 1rem; }
 .intro-text p  { font-size: 0.95rem; color: var(--text-md); line-height: 1.8; margin-bottom: 1rem; }
 
-/* Visual panel */
+/* Visuel d'illustration (image) */
 .intro-visual {
-  background: var(--navy);
+  background: var(--surface);
+  border: 1.5px solid var(--border-lt);
   border-radius: var(--radius-md);
-  padding: 2.5rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
   position: relative;
   overflow: hidden;
 }
 .intro-visual::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 70% 60% at 80% 20%, rgba(196,147,58,0.1) 0%, transparent 60%);
-}
-.intro-visual::after {
-  content: '';
-  position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--gold), var(--gold-lt), transparent);
+  background: linear-gradient(90deg, transparent, var(--orange-lt) 35%, var(--orange) 65%, transparent);
 }
-.intro-visual > * { position: relative; z-index: 1; }
-
-.stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.stat-box {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: var(--radius);
-  padding: 1.3rem 1rem;
-  text-align: center;
-}
-.stat-box-val {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--gold-lt);
-  line-height: 1;
-  margin-bottom: 4px;
-}
-.stat-box-lbl { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.05em; }
-
-.intro-visual-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 1.2rem;
-  font-style: italic;
+.intro-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* VALEURS */
@@ -247,25 +220,12 @@
           <p>Aujourd'hui, InfoCompta propose le plan comptable OHADA complet, un assistant IA spécialisé en fiscalité béninoise, et une bibliothèque de documents officiels.</p>
         </div>
         <div class="intro-visual fade-in">
-          <div class="intro-visual-title">"Rendre la comptabilité OHADA accessible à tous"</div>
-          <div class="stat-row">
-            <div class="stat-box">
-              <div class="stat-box-val">9</div>
-              <div class="stat-box-lbl">Classes OHADA</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-box-val">100%</div>
-              <div class="stat-box-lbl">Gratuit</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-box-val">CGI</div>
-              <div class="stat-box-lbl">Bénin intégré</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-box-val">IA</div>
-              <div class="stat-box-lbl">Assistant 24h/24</div>
-            </div>
-          </div>
+          <picture>
+            <source srcset="images/about-visual.webp" type="image/webp">
+            <img src="images/about-visual.png" width="1200" height="800"
+                 alt="InfoCompta : de la charge administrative à la comptabilité maîtrisée, avec plan comptable, documents et assistant"
+                 loading="lazy">
+          </picture>
         </div>
       </div>
     </div>
