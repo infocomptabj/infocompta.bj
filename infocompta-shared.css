@@ -161,7 +161,7 @@ html.ic-authed .ic-profile-wrap {
 .logo {
   display: flex;
   align-items: center;
-  background: #fff;
+  background: #ffffff00;
   padding: 4px 12px;
   border-radius: var(--radius-md);
 }
