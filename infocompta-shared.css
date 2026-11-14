@@ -23,6 +23,7 @@
 :root {
   /* ── Bleu nuit (couleur primaire — header/nav/) ── */
   --teal:        #0b0e34;
+  --header-bg: linear-gradient(270deg, #082a61, #071c3f 50.96%, #060f1f);
   --teal-dk:     #000440;
   --teal-md:     #1A237A;
   --teal-lt:     #3D4A9E;
@@ -112,7 +113,7 @@ main { flex: 1 0 auto; }
 
 /* ═══════════ HEADER ═══════════ */
 header {
-  background: linear-gradient(270deg, #082a61, #071c3f 50.96%, #060f1f);
+  background: var(--header-bg);
   padding: 0 3.5rem;
   position: sticky;
   top: 0;
@@ -961,7 +962,7 @@ footer {
     position: fixed;
     top: 58px;
     left: 0; right: 0;
-    background: var(--teal);
+    background: background: var(--header-bg);
     border-top: 1px solid rgba(255,255,255,0.08);
     box-shadow: 0 12px 40px rgba(0,0,0,0.35);
     z-index: 199;
