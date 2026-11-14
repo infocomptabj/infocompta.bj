@@ -338,7 +338,7 @@ footer {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--orange);
+  background: var(--header-bg);
   color: var(--text-on-dark);
   font-family: 'Outfit', sans-serif;
   font-size: 0.78rem;
