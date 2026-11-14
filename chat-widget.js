@@ -1,1034 +1,1008 @@
 // ═══════════════════════════════════════════════════════════════
 //  chat-widget.js — InfoCompta (version 4.0)
 //
-//  Assistant qui répond à partir des données du site :
-//   • Quel compte utiliser ? (plan comptable OHADA, comptes-data.js)
-//   • Fiche d'un compte : fonctionnement, écritures, comptes liés
-//   • Taux, échéances, pénalités du CGI Bénin (Docs-context.js)
-//   • Calculs : ITS, TVA, AIB, IRF, TPS
-//   • Recherche de documents (catalogue Supabase)
-//   • Téléchargements restants de l'utilisateur connecté
+//  Fonctions (sans IA, réponses issues des données du site) :
+//   • Quel compte utiliser ?     → recherche dans comptes-data.js
+//   • Trouver un document        → catalogue Supabase (documents_public)
+//   • Fiches fiscales + calendrier → Docs-context.js (CGI Bénin 2026)
+//   • Calculateurs ITS / TVA / AIB
+//   • Mes téléchargements        → achats de l’utilisateur connecté
+//  Fonction avec IA (optionnelle) : explications, uniquement à partir
+//  des données ci-dessus, via /api/chat.
 //
-//  Aucune IA n'est appelée par défaut (CONFIG.useAI = false).
+//  INSTALLATION (inchangée) — dans chaque page, avant </body> :
+//    <script src="comptes-data.js"></script>
+//    <script src="Docs-context.js"></script>
+//    <script src="chat-widget.js"></script>
 //
-//  INSTALLATION (avant </body>, dans cet ordre) :
-//  <script src="comptes-data.js"></script>
-//  <script src="Docs-context.js"></script>
-//  <script src="chat-widget.js"></script>
+//  RÉGLAGES (facultatif) — avant chat-widget.js :
+//    <script>window.IC_CHAT_CONFIG = { aiMode: 'connected' };</script>
+//    aiMode : 'off' (pas d’IA) | 'connected' (utilisateurs connectés) | 'all'
 // ═══════════════════════════════════════════════════════════════
 
 (function () {
 'use strict';
 
-/* ───────── Réglages ───────── */
-const CONFIG = {
-  useAI: false,            // true : les questions sans réponse locale vont à /api/chat
-  aiEndpoint: '/api/chat'
+const CFG = Object.assign({
+  aiMode: 'connected',
+  aiEndpoint: '/api/chat',
+  aiMaxPerSession: 15,
+  supabaseUrl: 'https://lmivfisdmuqbspvmvdzh.supabase.co',
+  supabaseKey: 'sb_publishable_kCfhrFPVec2MkCl0xe4N-w_QXHgc0Gp',
+  authStorageKey: 'sb-lmivfisdmuqbspvmvdzh-auth-token'
+}, window.IC_CHAT_CONFIG || {});
+
+// ── Données du site ────────────────────────────────────────────
+const ACC = () => (typeof comptesData !== 'undefined' ? comptesData : {});
+const CGI = () => (typeof DOCS_CONTEXT !== 'undefined' && DOCS_CONTEXT.cgi ? DOCS_CONTEXT.cgi : {});
+
+// Barèmes utilisés par les calculateurs (CGI Bénin 2026)
+const TVA_RATE = 0.18;
+const VPS_RATE = 0.04;
+const ITS_BAREME = [            // [de, à, taux] — art. 119 à 129
+  [0, 60000, 0],
+  [60000, 150000, 0.10],
+  [150000, 250000, 0.15],
+  [250000, 500000, 0.19],
+  [500000, Infinity, 0.30]
+];
+const AIB_RATES = {
+  std:   { rate: 0.01, label: 'Importations, achats et fournitures (fournisseur immatriculé à l’IFU)' },
+  serv:  { rate: 0.03, label: 'Prestations de services (fournisseur immatriculé à l’IFU)' },
+  noifu: { rate: 0.05, label: 'Fournisseur non immatriculé à l’IFU' }
 };
-const SUPABASE_URL = 'https://lmivfisdmuqbspvmvdzh.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_kCfhrFPVec2MkCl0xe4N-w_QXHgc0Gp';
-const TOKEN_KEY    = 'sb-lmivfisdmuqbspvmvdzh-auth-token';
 
-const PAGE       = location.pathname.split('/').pop() || 'index.html';
-const _code      = new URLSearchParams(location.search).get('code') || '';
-const STORE_KEY  = 'icw_chat_' + location.pathname + (_code ? '_' + _code : '');
-const MAX_STORED = 30;
-
-/* ───────── Style ───────── */
+// ── Style (palette InfoCompta : bleu nuit, bleu royal, gris bleuté) ──
 const STYLE = `
-.icw-root {
-  --icw-night:#0b0e34; --icw-navy:#00085B; --icw-royal:#1039E2; --icw-royal-dk:#0815b3;
-  --icw-pale:#E7EBFC;  --icw-steel:#A2B5CB; --icw-line:#D5DEE9; --icw-mist:#F5F7FB;
-  --icw-muted:#6B7A96; --icw-ok:#2f7a2a;
-  font-family:'DM Sans','Segoe UI',system-ui,sans-serif;
-}
-.icw-root *, .icw-root *::before, .icw-root *::after { box-sizing:border-box; }
+  #ic-fab, #ic-panel, #ic-toast {
+    --ic-navy: #00085B;
+    --ic-dark: #0b0e34;
+    --ic-accent: #1039E2;
+    --ic-accent-dk: #0612b3;
+    --ic-accent-pale: #E7EBFC;
+    --ic-border: #A2B5CB;
+    --ic-border-lt: #D5DEE9;
+    --ic-cream: #F5F7FB;
+    --ic-text: #00085B;
+    --ic-text-md: #1A237A;
+    --ic-muted: #6B7A96;
+    --ic-ok: #2d7a4f;
+    font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+  }
 
-/* Bouton d'ouverture */
-#icw-fab {
-  position:fixed; right:24px; bottom:24px; z-index:9998;
-  width:56px; height:56px; border-radius:50%;
-  background:var(--icw-night); border:2px solid var(--icw-royal);
-  display:flex; align-items:center; justify-content:center; cursor:pointer;
-  box-shadow:0 6px 24px rgba(0,8,91,.35);
-  transition:transform .2s ease, box-shadow .2s ease;
-}
-#icw-fab:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(0,8,91,.45); }
-#icw-fab svg { width:24px; height:24px; fill:#fff; }
-#icw-dot {
-  position:absolute; top:-2px; right:-2px; width:12px; height:12px; border-radius:50%;
-  background:#FF1414; border:2px solid #fff; display:none;
-}
+  #ic-fab {
+    position: fixed; bottom: 24px; right: 24px; z-index: 9998;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--ic-dark); border: 2px solid var(--ic-accent);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 28px rgba(0,8,91,.35);
+    transition: transform .2s, box-shadow .2s, background .2s;
+  }
+  #ic-fab:hover { transform: translateY(-2px); background: var(--ic-navy); box-shadow: 0 12px 34px rgba(0,8,91,.45); }
+  #ic-fab:focus-visible, .ic-hbtn:focus-visible, .ic-chip:focus-visible, .ic-qr:focus-visible,
+  #ic-send:focus-visible, #ic-input:focus-visible, .ic-copy-btn:focus-visible {
+    outline: 2px solid var(--ic-accent); outline-offset: 2px;
+  }
+  #ic-fab svg { width: 24px; height: 24px; fill: #fff; }
+  #ic-notif {
+    position: absolute; top: -2px; right: -2px; width: 13px; height: 13px;
+    border-radius: 50%; background: #FF1414; border: 2px solid #fff; display: none;
+  }
 
-/* Fenêtre */
-#icw-panel {
-  position:fixed; right:24px; bottom:92px; z-index:9997;
-  width:min(392px, calc(100vw - 32px));
-  height:min(590px, calc(100vh - 116px));
-  display:flex; flex-direction:column; overflow:hidden;
-  background:#fff; border:1px solid var(--icw-line); border-radius:16px;
-  box-shadow:0 18px 56px rgba(0,8,91,.28);
-  opacity:0; pointer-events:none; transform:translateY(12px);
-  transition:opacity .2s ease, transform .2s ease;
-}
-#icw-panel.open { opacity:1; pointer-events:auto; transform:none; }
+  #ic-panel {
+    position: fixed; bottom: 92px; right: 24px; z-index: 9997;
+    width: min(400px, calc(100vw - 32px));
+    height: min(620px, calc(100vh - 116px));
+    background: #fff; border: 1px solid var(--ic-border-lt); border-radius: 12px;
+    box-shadow: 0 18px 60px rgba(0,8,91,.28);
+    display: flex; flex-direction: column; overflow: hidden;
+    opacity: 0; pointer-events: none; transform: translateY(12px);
+    transition: opacity .2s, transform .2s;
+  }
+  #ic-panel.open { opacity: 1; pointer-events: all; transform: translateY(0); }
 
-.icw-head {
-  position:relative; flex-shrink:0;
-  background:var(--icw-night); padding:13px 14px;
-  display:flex; align-items:center; gap:11px;
-}
-.icw-head::after {
-  content:''; position:absolute; left:0; right:0; top:0; height:2px;
-  background:linear-gradient(90deg, transparent, var(--icw-royal) 30%, #3d6bff 60%, transparent);
-}
-.icw-badge {
-  width:34px; height:34px; border-radius:9px; flex-shrink:0;
-  background:var(--icw-royal); color:#fff;
-  display:flex; align-items:center; justify-content:center;
-  font-family:'Outfit','DM Sans',sans-serif; font-weight:800; font-size:14px; letter-spacing:.02em;
-}
-.icw-title { flex:1; min-width:0; }
-.icw-title strong { display:block; font-family:'Outfit','DM Sans',sans-serif; font-size:15.5px; font-weight:700; color:#fff; line-height:1.2; }
-.icw-title span   { display:block; font-size:11.5px; color:rgba(255,255,255,.62); margin-top:2px; }
-.icw-hbtn {
-  width:30px; height:30px; border-radius:8px; border:none; cursor:pointer;
-  background:rgba(255,255,255,.1); color:rgba(255,255,255,.8);
-  display:flex; align-items:center; justify-content:center; flex-shrink:0;
-  transition:background .15s ease;
-}
-.icw-hbtn:hover { background:rgba(255,255,255,.22); color:#fff; }
-.icw-hbtn svg { width:15px; height:15px; fill:currentColor; }
+  .ic-header {
+    position: relative; background: var(--ic-dark); padding: 13px 14px;
+    display: flex; align-items: center; gap: 11px; flex-shrink: 0;
+  }
+  .ic-header::after {
+    content: ''; position: absolute; left: 0; right: 0; top: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--ic-accent) 30%, #0815b3 60%, transparent);
+  }
+  .ic-header-logo {
+    width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+    background: rgba(16,57,226,.18); border: 1px solid rgba(16,57,226,.45);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ic-header-logo svg { width: 18px; height: 18px; fill: #fff; }
+  .ic-header-info { flex: 1; min-width: 0; }
+  .ic-header-info h3 { font-family: 'Outfit', 'DM Sans', sans-serif; font-size: 15px; font-weight: 700; color: #fff; line-height: 1.2; margin: 0; }
+  .ic-header-info p { font-size: 11px; color: rgba(255,255,255,.68); margin: 2px 0 0; }
+  .ic-header-btns { display: flex; gap: 6px; }
+  .ic-hbtn {
+    background: rgba(255,255,255,.1); border: none; color: rgba(255,255,255,.8);
+    cursor: pointer; width: 30px; height: 30px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; transition: background .18s;
+  }
+  .ic-hbtn:hover { background: rgba(255,255,255,.22); color: #fff; }
 
-/* Raccourcis */
-.icw-chips {
-  flex-shrink:0; display:flex; gap:6px; overflow-x:auto; scrollbar-width:none;
-  padding:9px 12px; background:var(--icw-mist); border-bottom:1px solid var(--icw-line);
-}
-.icw-chips::-webkit-scrollbar { display:none; }
-.icw-chip {
-  flex-shrink:0; white-space:nowrap; cursor:pointer;
-  padding:5px 12px; border-radius:20px; font:inherit; font-size:12px; font-weight:500;
-  color:var(--icw-navy); background:#fff; border:1px solid var(--icw-steel);
-  transition:background .15s ease, color .15s ease, border-color .15s ease;
-}
-.icw-chip:hover { background:var(--icw-navy); border-color:var(--icw-navy); color:#fff; }
-.icw-chip.is-current { background:var(--icw-pale); border-color:var(--icw-royal); color:var(--icw-royal-dk); }
+  .ic-chips {
+    padding: 9px 12px; background: var(--ic-cream); border-bottom: 1px solid var(--ic-border-lt);
+    display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; flex-shrink: 0;
+  }
+  .ic-chips::-webkit-scrollbar { display: none; }
+  .ic-chip {
+    flex-shrink: 0; padding: 5px 12px; background: #fff; border: 1px solid var(--ic-border);
+    border-radius: 20px; font-size: 12px; font-weight: 500; color: var(--ic-navy);
+    cursor: pointer; white-space: nowrap; font-family: inherit;
+    transition: background .18s, color .18s, border-color .18s;
+  }
+  .ic-chip:hover { background: var(--ic-navy); color: #fff; border-color: var(--ic-navy); }
 
-/* Messages */
-#icw-messages {
-  flex:1; overflow-y:auto; padding:14px 13px; background:var(--icw-mist);
-  display:flex; flex-direction:column; gap:12px; scroll-behavior:smooth;
-}
-#icw-messages::-webkit-scrollbar { width:4px; }
-#icw-messages::-webkit-scrollbar-thumb { background:var(--icw-steel); border-radius:4px; }
-.icw-msg { display:flex; flex-direction:column; gap:5px; max-width:90%; }
-.icw-msg.user { align-self:flex-end; align-items:flex-end; }
-.icw-msg.bot  { align-self:flex-start; }
-.icw-bubble { padding:10px 13px; border-radius:12px; font-size:13.5px; line-height:1.6; word-break:break-word; }
-.icw-msg.bot  .icw-bubble { background:#fff; color:#10163f; border:1px solid var(--icw-line); border-top-left-radius:4px; }
-.icw-msg.user .icw-bubble { background:var(--icw-navy); color:#fff; border-top-right-radius:4px; }
-.icw-bubble p { margin:0; }
-.icw-bubble p + p, .icw-bubble p + ul, .icw-bubble ul + p, .icw-bubble .icw-ledger + p, .icw-bubble p + .icw-ledger { margin-top:8px; }
-.icw-bubble strong { font-weight:700; color:var(--icw-navy); }
-.icw-msg.user .icw-bubble strong { color:#fff; }
-.icw-list { margin:6px 0 0; padding-left:17px; }
-.icw-list li { margin-bottom:3px; }
-.icw-h { font-family:'Outfit','DM Sans',sans-serif; font-weight:700; color:var(--icw-navy); }
-.icw-pre { margin:7px 0; padding:9px 11px; background:#10163f; color:#e6eaff; border-radius:8px; overflow-x:auto; font-size:12px; line-height:1.55; }
+  .ic-messages {
+    flex: 1; overflow-y: auto; padding: 14px 13px; display: flex; flex-direction: column;
+    gap: 12px; scroll-behavior: smooth; background: var(--ic-cream);
+  }
+  .ic-messages::-webkit-scrollbar { width: 4px; }
+  .ic-messages::-webkit-scrollbar-thumb { background: var(--ic-border); border-radius: 4px; }
 
-/* Numéros de compte */
-.icw-code {
-  display:inline-block; padding:0 6px; border-radius:4px; text-decoration:none;
-  font-family:'Courier New',monospace; font-size:12px; font-weight:700;
-  color:var(--icw-royal-dk); background:var(--icw-pale); border:1px solid rgba(16,57,226,.22);
-}
-.icw-code:hover { background:var(--icw-royal); border-color:var(--icw-royal); color:#fff; }
+  .ic-msg { display: flex; gap: 8px; }
+  .ic-msg.user { flex-direction: row-reverse; }
+  .ic-avatar {
+    width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; align-self: flex-end;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Outfit', 'DM Sans', sans-serif; font-size: 13px; font-weight: 700;
+  }
+  .ic-msg.ai .ic-avatar { background: var(--ic-dark); color: #fff; }
+  .ic-msg.user .ic-avatar { background: var(--ic-accent); color: #fff; }
+  .ic-msg-body { display: flex; flex-direction: column; gap: 5px; max-width: 90%; min-width: 0; }
+  .ic-msg.user .ic-msg-body { align-items: flex-end; max-width: 82%; }
 
-/* Écriture en T */
-.icw-ledger { margin:8px 0 0; background:#fff; border:1px solid var(--icw-steel); border-radius:8px; overflow:hidden; }
-.icw-ledger + .icw-ledger { margin-top:7px; }
-.icw-ledger-title { padding:7px 10px; font-size:12.5px; font-weight:600; color:var(--icw-navy); background:var(--icw-mist); border-bottom:1px solid var(--icw-steel); }
-.icw-ledger-t { display:grid; grid-template-columns:1fr 1fr; }
-.icw-ledger-col { padding:7px 10px 8px; font-size:12.5px; line-height:1.5; min-width:0; }
-.icw-ledger-col + .icw-ledger-col { border-left:1px solid var(--icw-steel); }
-.icw-ledger-h { font-family:'Outfit','DM Sans',sans-serif; font-size:11.5px; font-weight:600; color:var(--icw-muted); margin-bottom:2px; }
-.icw-ledger-v { margin-top:2px; }
+  .ic-bubble { padding: 10px 13px; border-radius: 10px; font-size: 13.5px; line-height: 1.6; word-break: break-word; }
+  .ic-msg.ai .ic-bubble { background: #fff; color: var(--ic-text); border: 1px solid var(--ic-border-lt); border-bottom-left-radius: 3px; }
+  .ic-msg.user .ic-bubble { background: var(--ic-navy); color: #fff; border-bottom-right-radius: 3px; }
+  .ic-bubble p { margin: 0 0 6px; }
+  .ic-bubble p:last-child { margin-bottom: 0; }
+  .ic-bubble strong { font-weight: 700; }
+  .ic-bubble ul { padding-left: 17px; margin: 5px 0; }
+  .ic-bubble li { margin-bottom: 3px; }
+  .ic-bubble pre { background: var(--ic-dark); color: #e2e8f0; border-radius: 7px; padding: 10px 12px; margin: 7px 0; overflow-x: auto; font-size: 12px; line-height: 1.6; }
 
-/* Suites proposées et liens */
-.icw-follow { display:flex; flex-wrap:wrap; gap:6px; }
-.icw-pill, .icw-act {
-  font:inherit; font-size:12px; font-weight:500; cursor:pointer; text-decoration:none;
-  padding:4px 11px; border-radius:16px;
-  transition:background .15s ease, color .15s ease;
-}
-.icw-pill { color:var(--icw-royal-dk); background:#fff; border:1px solid var(--icw-royal); }
-.icw-pill:hover { background:var(--icw-pale); }
-.icw-act  { color:#fff; background:var(--icw-royal); border:1px solid var(--icw-royal); }
-.icw-act:hover { background:var(--icw-royal-dk); }
+  .ic-ctag {
+    display: inline-block; font-family: 'Courier New', monospace; font-size: 12px; font-weight: 700;
+    padding: 1px 7px; background: var(--ic-accent-pale); border: 1px solid rgba(16,57,226,.28);
+    border-radius: 4px; color: var(--ic-accent); text-decoration: none;
+  }
+  .ic-ctag:hover { background: var(--ic-accent); color: #fff; }
+  .ic-link { color: var(--ic-accent); font-weight: 600; font-size: 12.5px; text-decoration: none; }
+  .ic-link:hover { text-decoration: underline; }
 
-.icw-meta { display:flex; align-items:center; gap:8px; font-size:11px; color:var(--icw-muted); }
-.icw-copy {
-  display:inline-flex; align-items:center; gap:4px; padding:2px 4px; border:none; border-radius:5px;
-  background:none; color:var(--icw-muted); font:inherit; font-size:11px; cursor:pointer;
-}
-.icw-copy svg { width:13px; height:13px; fill:currentColor; }
-.icw-copy:hover { color:var(--icw-royal); }
-.icw-copy.copied { color:var(--icw-ok); }
+  .ic-card {
+    background: var(--ic-cream); border: 1px solid var(--ic-border-lt); border-left: 3px solid var(--ic-accent);
+    border-radius: 8px; padding: 10px 12px; margin: 8px 0 0;
+  }
+  .ic-card:first-child { margin-top: 0; }
+  .ic-card-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .ic-card-head strong { font-family: 'Outfit', 'DM Sans', sans-serif; font-size: 14px; color: var(--ic-navy); }
+  .ic-card-sub { font-size: 12px; color: var(--ic-muted); margin: 2px 0 6px; }
+  .ic-price { font-weight: 700; color: var(--ic-navy); margin-bottom: 4px; }
+  .ic-ecr { background: #fff; border: 1px solid var(--ic-border-lt); border-radius: 6px; padding: 7px 9px; margin: 6px 0; font-size: 12.5px; }
+  .ic-ecr > span { display: block; font-weight: 600; margin-bottom: 3px; }
+  .ic-ecr b { display: inline-block; width: 16px; color: var(--ic-accent); }
+  .ic-ul { padding-left: 16px; margin: 4px 0 2px; }
+  .ic-ul li { margin-bottom: 3px; font-size: 12.8px; }
+  .ic-muted { color: var(--ic-muted); }
 
-.icw-typing { display:flex; gap:4px; width:fit-content; padding:11px 13px; background:#fff; border:1px solid var(--icw-line); border-radius:12px; border-top-left-radius:4px; }
-.icw-typing span { width:6px; height:6px; border-radius:50%; background:var(--icw-royal); animation:icw-bounce .9s infinite; }
-.icw-typing span:nth-child(2) { animation-delay:.15s; }
-.icw-typing span:nth-child(3) { animation-delay:.3s; }
-@keyframes icw-bounce { 0%,80%,100%{ transform:translateY(0); opacity:.55 } 40%{ transform:translateY(-6px); opacity:1 } }
+  .ic-card details { margin: 6px 0 0; }
+  .ic-card summary { cursor: pointer; font-weight: 600; font-size: 12.8px; color: var(--ic-text-md); }
+  .ic-card summary:hover { color: var(--ic-accent); }
 
-/* Saisie */
-.icw-input-area { flex-shrink:0; display:flex; align-items:flex-end; gap:8px; padding:10px 12px; background:#fff; border-top:1px solid var(--icw-line); }
-#icw-input {
-  flex:1; resize:none; max-height:100px; padding:9px 12px; border-radius:10px;
-  border:1.5px solid var(--icw-steel); background:var(--icw-mist); color:#10163f;
-  font:inherit; font-size:13.5px; line-height:1.45; outline:none;
-  transition:border-color .15s ease, box-shadow .15s ease;
-}
-#icw-input:focus { border-color:var(--icw-royal); box-shadow:0 0 0 3px rgba(16,57,226,.12); background:#fff; }
-#icw-input::placeholder { color:var(--icw-muted); }
-#icw-send {
-  width:40px; height:40px; flex-shrink:0; border:none; border-radius:10px; cursor:pointer;
-  background:var(--icw-navy); display:flex; align-items:center; justify-content:center;
-  transition:background .15s ease;
-}
-#icw-send:hover { background:var(--icw-royal); }
-#icw-send:disabled { opacity:.45; cursor:not-allowed; }
-#icw-send svg { width:16px; height:16px; fill:#fff; }
-.icw-foot { flex-shrink:0; padding:0 12px 8px; background:#fff; text-align:center; font-size:10.5px; color:var(--icw-muted); }
+  .ic-tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 6px 0; }
+  .ic-tbl th, .ic-tbl td { padding: 4px 6px; border-bottom: 1px solid var(--ic-border-lt); text-align: right; }
+  .ic-tbl th:first-child, .ic-tbl td:first-child { text-align: left; }
+  .ic-tbl th { font-weight: 600; color: var(--ic-text-md); }
+  .ic-tbl tr.ic-total td { font-weight: 700; color: var(--ic-navy); border-bottom: 2px solid var(--ic-navy); }
+  .ic-note { font-size: 11.5px; color: var(--ic-muted); margin-top: 6px; line-height: 1.5; }
 
-#icw-toast {
-  position:fixed; right:28px; bottom:100px; z-index:99999; padding:7px 14px; border-radius:8px;
-  background:var(--icw-navy); color:#fff; font-size:12px; opacity:0; pointer-events:none; transition:opacity .2s ease;
-}
-#icw-toast.show { opacity:1; }
+  .ic-qrs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+  .ic-qr {
+    background: #fff; border: 1px solid var(--ic-accent); color: var(--ic-accent);
+    border-radius: 18px; padding: 5px 12px; font-size: 12.5px; font-weight: 500;
+    cursor: pointer; font-family: inherit; transition: background .18s, color .18s;
+  }
+  .ic-qr:hover { background: var(--ic-accent); color: #fff; }
 
-.icw-root :focus-visible { outline:2px solid var(--icw-royal); outline-offset:2px; }
+  .ic-copy-btn {
+    display: inline-flex; align-items: center; background: none; border: none;
+    color: var(--ic-muted); cursor: pointer; font-size: 11.5px; padding: 2px 3px;
+    border-radius: 5px; font-family: inherit; align-self: flex-start;
+  }
+  .ic-copy-btn svg { width: 13px; height: 13px; fill: currentColor; }
+  .ic-copy-btn .ic-copy-label { max-width: 0; overflow: hidden; white-space: nowrap; transition: max-width .2s, margin-left .2s; }
+  .ic-copy-btn:hover, .ic-copy-btn:focus-visible { color: var(--ic-accent); }
+  .ic-copy-btn:hover .ic-copy-label, .ic-copy-btn:focus-visible .ic-copy-label, .ic-copy-btn.copied .ic-copy-label { max-width: 50px; margin-left: 4px; }
+  .ic-copy-btn.copied { color: var(--ic-ok) !important; }
 
-@media (max-width:480px) {
-  #icw-panel { right:8px; left:8px; width:auto; bottom:80px; height:min(78vh, calc(100vh - 100px)); }
-  #icw-fab { right:16px; bottom:16px; }
-}
-@media (prefers-reduced-motion:reduce) {
-  #icw-panel, #icw-fab, .icw-chip, .icw-pill, .icw-act { transition:none; }
-  .icw-typing span { animation:none; }
-  #icw-messages { scroll-behavior:auto; }
-}
+  .ic-typing { display: flex; gap: 4px; padding: 11px 13px; background: #fff; border: 1px solid var(--ic-border-lt); border-radius: 10px; border-bottom-left-radius: 3px; width: fit-content; }
+  .ic-typing span { width: 6px; height: 6px; background: var(--ic-accent); border-radius: 50%; animation: ic-bounce .9s infinite; }
+  .ic-typing span:nth-child(2) { animation-delay: .15s; }
+  .ic-typing span:nth-child(3) { animation-delay: .3s; }
+  @keyframes ic-bounce { 0%,80%,100% { transform: translateY(0); } 40% { transform: translateY(-6px); } }
+
+  .ic-input-area { padding: 10px 12px; background: #fff; border-top: 1px solid var(--ic-border-lt); display: flex; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+  #ic-input {
+    flex: 1; border: 1.5px solid var(--ic-border); border-radius: 6px; padding: 9px 12px;
+    font-family: inherit; font-size: 13.5px; color: var(--ic-text); resize: none; outline: none;
+    max-height: 100px; line-height: 1.5; background: #fff; transition: border-color .18s, box-shadow .18s;
+  }
+  #ic-input:focus { border-color: var(--ic-accent); box-shadow: 0 0 0 3px rgba(16,57,226,.12); }
+  #ic-input::placeholder { color: var(--ic-muted); }
+  #ic-send {
+    width: 40px; height: 40px; flex-shrink: 0; border-radius: 6px; background: var(--ic-accent-dk);
+    border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background .18s, transform .18s;
+  }
+  #ic-send:hover { background: var(--ic-accent); transform: translateY(-1px); }
+  #ic-send:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+  #ic-send svg { width: 16px; height: 16px; fill: #fff; }
+
+  .ic-footer { text-align: center; font-size: 10.5px; color: var(--ic-muted); padding: 5px 8px 7px; background: #fff; flex-shrink: 0; }
+
+  #ic-toast {
+    position: fixed; bottom: 96px; right: 28px; z-index: 99999; background: var(--ic-navy); color: #fff;
+    padding: 8px 14px; border-radius: 6px; font-size: 12.5px;
+    opacity: 0; pointer-events: none; transition: opacity .2s;
+  }
+  #ic-toast.show { opacity: 1; }
+
+  @media (max-width: 480px) {
+    #ic-panel { right: 8px; left: 8px; width: auto; bottom: 80px; height: calc(100dvh - 100px); }
+    #ic-fab { bottom: 16px; right: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #ic-panel, #ic-fab, .ic-copy-btn .ic-copy-label { transition: none; }
+    .ic-typing span { animation: none; }
+  }
 `;
 
 const SVG = {
-  chat:  '<svg viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM7 9h10v2H7V9zm0 4h7v2H7v-2zm0-6h10v2H7V7z"/></svg>',
   send:  '<svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>',
-  close: '<svg viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>',
-  trash: '<svg viewBox="0 0 24 24"><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>',
-  copy:  '<svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>',
-  check: '<svg viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>'
+  close: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>',
+  trash: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>',
+  copy:  '<svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>',
+  check: '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>',
+  bot:   '<svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM7 9h10v2H7V9zm6 5H7v-2h6v2zm4-6H7V6h10v2z"/></svg>',
+  logo:  '<svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6L23 9 12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg>'
 };
 
-/* ───────── Outils de texte ───────── */
-function esc(s) {
-  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
-    return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
-  });
-}
-function norm(s) {
-  return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[’']/g, ' ')
-    .replace(/[^a-z0-9%\s-]/g, ' ')
-    .replace(/(?<!\d)-|-(?!\d)/g, ' ')
-    .replace(/\s+/g, ' ').trim();
-}
-function stem(w) { return w.length > 3 ? w.replace(/(es|s|x|e)$/, '') : w; }
-function oneLine(s, n) {
-  const t = String(s == null ? '' : s).replace(/\s+/g, ' ').trim();
-  return n && t.length > n ? t.slice(0, n - 1).trim() + '…' : t;
-}
-function money(n) {
-  return Math.round(n).toLocaleString('fr-FR').replace(/[\u202f\u00a0]/g, '\u00a0') + '\u00a0FCFA';
-}
-function pct(n) { return (Math.round(n * 1000) / 10).toString().replace('.', ',') + '\u00a0%'; }
-function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+// ── Outils texte ───────────────────────────────────────────────
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+const STOP = new Set(['le', 'la', 'les', 'un', 'une', 'des', 'du', 'de', 'et', 'ou', 'au', 'aux', 'en', 'ai', 'pour', 'par', 'sur', 'dans', 'que', 'qui', 'quoi', 'est', 'sont', 'ce', 'cet', 'cette', 'mon', 'ma', 'mes', 'quel', 'quelle', 'quels', 'quelles', 'comment', 'faire', 'utiliser', 'compte', 'comptes', 'comptabiliser', 'enregistrer', 'ecriture', 'ecritures', 'passer', 'dois', 'doit', 'peut', 'puis', 'vous', 'nous', 'son', 'ses', 'avec', 'sans', 'cherche', 'trouver', 'besoin']);
+const words = s => norm(s).split(' ').filter(w => w.length > 2 && !STOP.has(w));
+const stem = w => (w.length > 4 ? w.replace(/(es|s|x)$/, '') : w);
+const stems = s => words(s).map(stem);
+const short = (s, n) => { const t = String(s || '').replace(/\s+/g, ' ').trim(); return t.length > n ? t.slice(0, n - 1).trimEnd() + '…' : t; };
+const NB = '\u00a0';
+const fmt = n => Math.round(n).toLocaleString('fr-FR').replace(/[\u202f\u00a0\s]/g, NB) + NB + 'FCFA';
+const pageName = () => (location.pathname.split('/').pop() || 'index.html') + location.search;
+const loginUrl = () => 'auth.html?redirect=' + encodeURIComponent(pageName());
 
-const STOP = new Set(('le la les de du des un une et ou pour sur en au aux a je j jai ai dans par mon ma mes quel quelle quels ' +
-  'quelles compte comptes quoi que qui est ce cest cette comment faut il utiliser utilise enregistrer comptabiliser passer ' +
-  'ecriture y ne pas se sa son ses avec sans plus vous nous dois doit peut puis d l s n c qu faire quand ou').split(' '));
-const DOC_STOP = new Set('document documents modele modeles fichier fichiers telecharger telechargement cherche chercher trouver trouve besoin veux voudrais avoir lien existe'.split(' '));
-
-const SYNRAW = {
-  loyer:['location','locatif'], salaire:['remuneration','personnel'], paie:['remuneration','personnel'],
-  carburant:['combustible','achat'], electricite:['energie','achat'], eau:['achat'], telephone:['telecommunication'],
-  internet:['telecommunication'], voyage:['deplacement','transport'], virement:['banque'], espece:['caisse'],
-  dette:['fournisseur','emprunt'], pret:['emprunt'], vehicule:['materiel','transport'], ordinateur:['materiel','informatique'],
-  creance:['client'], impaye:['douteux','client'], honoraire:['conseil'], impot:['taxe'], taxe:['impot'],
-  dividende:['associe'], avance:['acompte'], acompte:['avance'], marchandise:['achat','vente'], cotisation:['social']
+// Synonymes pour la recherche de comptes
+const SYN = {
+  loyer: ['location', 'locatif', 'bail'], loyers: ['location', 'locatif', 'bail'],
+  salaire: ['remuneration', 'appointement', 'personnel'], salaires: ['remuneration', 'appointement', 'personnel'],
+  paie: ['personnel', 'remuneration'], employe: ['personnel'], personnel: ['personnel'],
+  vehicule: ['transport', 'automobile', 'materiel'], voiture: ['transport', 'automobile', 'materiel'],
+  carburant: ['combustible', 'carburant'], electricite: ['electricite', 'energie'],
+  telephone: ['telephone', 'telecommunication'], internet: ['telecommunication'],
+  assurance: ['assurance', 'prime'], publicite: ['publicite', 'annonce'],
+  pret: ['pret', 'emprunt'], emprunt: ['emprunt', 'pret'],
+  banque: ['banque'], caisse: ['caisse', 'espece'], especes: ['caisse', 'espece'],
+  dividende: ['dividende', 'associe'], dividendes: ['dividende', 'associe'],
+  amortissement: ['amortissement', 'dotation'], honoraires: ['honoraire', 'conseil'],
+  voyage: ['transport', 'deplacement', 'mission'], reparation: ['entretien', 'reparation'],
+  cnss: ['organisme social', 'securite sociale'], cotisation: ['cotisation', 'organisme social'],
+  impot: ['impot', 'taxe'], taxe: ['impot', 'taxe'], creance: ['creance', 'client'],
+  provision: ['provision', 'depreciation'], stock: ['stock', 'marchandise']
 };
-const SYN = {};
-Object.keys(SYNRAW).forEach(function (k) { SYN[stem(k)] = SYNRAW[k].map(stem); });
 
-function tokensOf(q, extraStop) {
-  return norm(q).split(' ').filter(function (w) {
-    return w && w.length > 1 && !STOP.has(w) && !(extraStop && extraStop.has(w)) && !/^\d+$/.test(w);
-  }).map(stem);
-}
-function expandTokens(tokens) {
-  const out = new Set(tokens);
-  tokens.forEach(function (t) { (SYN[t] || []).forEach(function (x) { out.add(x); }); });
-  return Array.from(out);
-}
-
-/* ───────── Données du site ───────── */
-let DATA = {}, FISC = {}, INDEX = [], SUBPARENT = {}, SUBLABEL = {};
-
-function mkItem(code, parent, label, kind, extra) {
-  const text = norm(label);
-  return { code: code, parent: parent, label: label, kind: kind, text: text, extra: extra,
-           words: text.split(' ').filter(Boolean).map(stem) };
-}
-function prepareData() {
-  DATA = (typeof comptesData !== 'undefined' && comptesData) ? comptesData : {};
-  FISC = (typeof DOCS_CONTEXT !== 'undefined' && DOCS_CONTEXT && DOCS_CONTEXT.cgi) ? DOCS_CONTEXT.cgi : {};
-  INDEX = []; SUBPARENT = {}; SUBLABEL = {};
-  Object.keys(DATA).forEach(function (code) {
-    const d = DATA[code];
-    const extra = norm((d.contenu || '').slice(0, 500) + ' ' +
-      (d.exemples_ecritures || []).map(function (e) { return e.libelle; }).join(' '));
-    INDEX.push(mkItem(code, code, d.libelle, 'account', extra));
-    Object.keys(d.subdivisions || {}).forEach(function (sc) {
-      if (DATA[sc] || SUBPARENT[sc]) return;
-      SUBPARENT[sc] = code; SUBLABEL[sc] = d.subdivisions[sc];
-      INDEX.push(mkItem(sc, code, d.subdivisions[sc], 'sub', ''));
-    });
-  });
-}
-function resolveCode(c) {
-  c = String(c || '').trim();
-  if (!c) return null;
-  if (DATA[c]) return c;
-  if (SUBPARENT[c]) return SUBPARENT[c];
-  for (let n = c.length - 1; n >= 1; n--) { if (DATA[c.slice(0, n)]) return c.slice(0, n); }
-  return null;
-}
-function labelFor(c) { return (DATA[c] && DATA[c].libelle) || SUBLABEL[c] || ''; }
-
-/* ───────── Mise en forme des réponses ───────── */
-function inline(s) {
-  let h = esc(s);
-  h = h.replace(/\[(\d[\d-]*[a-zA-Z]?)\]/g, function (m, c) {
-    const t = resolveCode(c);
-    return t ? '<a class="icw-code" href="compte-detail.html?code=' + encodeURIComponent(t) + '" target="_blank" rel="noopener">' + c + '</a>' : m;
-  });
-  return h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-}
-function ledgerValues(v) {
-  return String(v).split(' + ').map(function (part) {
-    const m = part.match(/^(\d[\d-]*)\s[–-]\s(.*)$/);
-    const t = m && resolveCode(m[1]);
-    const html = t
-      ? '<a class="icw-code" href="compte-detail.html?code=' + encodeURIComponent(t) + '" target="_blank" rel="noopener">' + esc(m[1]) + '</a> ' + esc(m[2])
-      : esc(part);
-    return '<div class="icw-ledger-v">' + html + '</div>';
-  }).join('');
-}
-function ledger(entries) {
-  return entries.map(function (line) {
-    const p = line.split(' | ');
-    return '<div class="icw-ledger"><div class="icw-ledger-title">' + esc(p[0] || '') + '</div>' +
-      '<div class="icw-ledger-t">' +
-        '<div class="icw-ledger-col"><div class="icw-ledger-h">Débit</div>' + ledgerValues(p[1] || '') + '</div>' +
-        '<div class="icw-ledger-col"><div class="icw-ledger-h">Crédit</div>' + ledgerValues(p[2] || '') + '</div>' +
-      '</div></div>';
-  }).join('');
-}
-function format(raw) {
-  const L = String(raw).split('\n'); const out = []; let i = 0;
-  const isBlock = function (s) { return /^(```|::ecr |[•-] |#{1,3} )/.test(s); };
-  while (i < L.length) {
-    const line = L[i];
-    if (/^```/.test(line)) {
-      const buf = []; i++;
-      while (i < L.length && !/^```/.test(L[i])) { buf.push(L[i]); i++; }
-      i++; out.push('<pre class="icw-pre">' + esc(buf.join('\n')) + '</pre>'); continue;
-    }
-    if (/^::ecr /.test(line)) {
-      const ent = [];
-      while (i < L.length && /^::ecr /.test(L[i])) { ent.push(L[i].slice(6)); i++; }
-      out.push(ledger(ent)); continue;
-    }
-    if (/^[•-] /.test(line)) {
-      const it = [];
-      while (i < L.length && /^[•-] /.test(L[i])) { it.push(L[i].slice(2)); i++; }
-      out.push('<ul class="icw-list">' + it.map(function (x) { return '<li>' + inline(x) + '</li>'; }).join('') + '</ul>'); continue;
-    }
-    if (/^#{1,3} /.test(line)) { out.push('<p class="icw-h">' + inline(line.replace(/^#+ /, '')) + '</p>'); i++; continue; }
-    if (!line.trim()) { i++; continue; }
-    const p = [];
-    while (i < L.length && L[i].trim() && !isBlock(L[i])) { p.push(inline(L[i])); i++; }
-    out.push('<p>' + p.join('<br>') + '</p>');
-  }
-  return out.join('');
-}
-function plain(raw) {
-  return String(raw)
-    .replace(/^::ecr (.*)$/gm, function (m, e) { const p = e.split(' | '); return p[0] + '\n  Débit : ' + (p[1] || '') + '\n  Crédit : ' + (p[2] || ''); })
-    .replace(/```[\w]*\n?/g, '').replace(/\*\*/g, '').replace(/\[(\d[\d-]*[a-zA-Z]?)\]/g, '$1');
-}
-function A(text, o) {
-  o = o || {};
-  return { text: text, src: o.src || '', actions: o.actions || [], suggestions: o.suggestions || [] };
-}
-
-/* ───────── Plan comptable : recherche et fiches ───────── */
-function wordScore(words, t) {
-  let best = 0;
-  for (let i = 0; i < words.length; i++) {
-    const w = words[i];
-    if (w === t) return 6;
-    if (t.length >= 5 && w.length >= 5 && w.slice(0, 5) === t.slice(0, 5)) best = 5;
-  }
-  return best;
-}
-function searchAccounts(q, limit) {
-  const toks = expandTokens(tokensOf(q));
-  if (!toks.length) return [];
-  const res = [];
-  INDEX.forEach(function (it) {
-    let s = 0;
-    toks.forEach(function (t) {
-      const w = wordScore(it.words, t);
-      if (w) s += w;
-      else if (t.length > 3 && it.text.indexOf(t) !== -1) s += 3;
-      else if (t.length > 3 && it.extra.indexOf(t) !== -1) s += 1;
-    });
-    if (s > 0) res.push({ it: it, s: s + (it.kind === 'account' ? 1 : 0) });
-  });
-  res.sort(function (a, b) { return b.s - a.s; });
-  if (!res.length || res[0].s < 6) return [];
-  const min = res[0].s * 0.6;
-  return res.filter(function (r) { return r.s >= min; }).slice(0, limit || 4);
-}
-function accountSuggestions(code) {
-  return [
-    { label: 'Fonctionnement',      ask: 'fonctionnement du compte ' + code },
-    { label: 'Exemples d’écritures', ask: 'exemples d’écritures du compte ' + code },
-    { label: 'Comptes liés',        ask: 'comptes liés au compte ' + code }
-  ];
-}
-function ficheLink(code) { return { label: 'Ouvrir la fiche', href: 'compte-detail.html?code=' + encodeURIComponent(code) }; }
-
-function answerAccounts(q) {
-  const hits = searchAccounts(q, 4);
-  if (!hits.length) return null;
-  const lines = ['**Comptes possibles**'];
-  hits.forEach(function (h) {
-    const it = h.it;
-    lines.push('• [' + it.code + '] ' + it.label + (it.kind === 'sub' ? ' (dans [' + it.parent + '] ' + DATA[it.parent].libelle + ')' : ''));
-  });
-  const top = hits[0].it, acc = DATA[top.parent];
-  const ex = acc && acc.exemples_ecritures && acc.exemples_ecritures[0];
-  if (ex) {
-    lines.push('', 'Exemple avec le compte [' + top.parent + '] :');
-    lines.push('::ecr ' + String(ex.libelle).replace(/\|/g, '/') + ' | ' + String(ex.debit).replace(/\|/g, '/') + ' | ' + String(ex.credit).replace(/\|/g, '/'));
-  }
-  return A(lines.join('\n'), { src: 'Plan comptable OHADA', actions: [ficheLink(top.parent)], suggestions: accountSuggestions(top.parent) });
-}
-function accountSummary(raw) {
-  const code = resolveCode(raw); if (!code) return null;
-  const d = DATA[code];
-  const lines = ['**[' + code + '] ' + d.libelle + '**'];
-  if (code !== raw && labelFor(raw)) lines.unshift('[' + raw + '] ' + labelFor(raw) + ' est une subdivision du compte [' + code + '].');
-  const meta = [];
-  if (d.nature) meta.push('Nature : ' + d.nature);
-  if (d.sens)   meta.push('Sens normal : ' + d.sens);
-  if (meta.length) lines.push(meta.join('\n'));
-  if (d.contenu) lines.push(oneLine(d.contenu, 380));
-  return A(lines.join('\n\n'), { src: 'Plan comptable OHADA', actions: [ficheLink(code)], suggestions: accountSuggestions(code) });
-}
-function accountFacet(raw, facet) {
-  const code = resolveCode(raw); if (!code) return null;
-  const d = DATA[code];
-  const head = '**[' + code + '] ' + d.libelle + '**';
-  let body = '';
-  if (facet === 'fonct') {
-    const f = d.fonctionnement || {};
-    const deb = (f.debit || []).slice(0, 4), cre = (f.credit || []).slice(0, 4);
-    if (!deb.length && !cre.length) body = 'Ce compte est un compte de regroupement : le détail du fonctionnement se trouve dans ses subdivisions.';
-    else {
-      if (deb.length) body += '**Le compte est débité**\n' + deb.map(function (x) { return '• ' + oneLine(x, 220); }).join('\n');
-      if (cre.length) body += (body ? '\n\n' : '') + '**Le compte est crédité**\n' + cre.map(function (x) { return '• ' + oneLine(x, 220); }).join('\n');
-      if ((f.debit || []).length > 4 || (f.credit || []).length > 4) body += '\n\nLa suite est dans la fiche.';
-    }
-  } else if (facet === 'ecr') {
-    const ex = (d.exemples_ecritures || []).slice(0, 4);
-    body = ex.length
-      ? ex.map(function (e) { return '::ecr ' + String(e.libelle).replace(/\|/g, '/') + ' | ' + String(e.debit).replace(/\|/g, '/') + ' | ' + String(e.credit).replace(/\|/g, '/'); }).join('\n')
-      : 'Aucun exemple d’écriture n’est encore enregistré pour ce compte.';
-  } else if (facet === 'lies') {
-    const l = (d.comptes_lies || []).slice(0, 12);
-    body = l.length ? l.map(function (c) { return '• [' + c + '] ' + (labelFor(c) || ''); }).join('\n') : 'Aucun compte lié n’est indiqué.';
-  } else if (facet === 'excl') {
-    const e = d.exclusions;
-    if (e && (e.texte || (e.comptes || []).length)) {
-      body = (e.texte ? e.texte : '') + ((e.comptes || []).length ? '\n\n**À utiliser à la place**\n' + e.comptes.slice(0, 6).map(function (x) { return '• ' + x; }).join('\n') : '');
-    } else body = 'Aucune exclusion n’est indiquée pour ce compte.';
-  }
-  const prefix = (code !== raw && labelFor(raw)) ? '[' + raw + '] ' + labelFor(raw) + ' relève du compte [' + code + '].\n\n' : '';
-  return A(prefix + head + '\n\n' + body, { src: 'Plan comptable OHADA', actions: [ficheLink(code)], suggestions: accountSuggestions(code) });
-}
-function detectFacet(n) {
-  if (/fonctionnement|fonctionne|mouvement|\bdebit|\bcredit/.test(n)) return 'fonct';
-  if (/ecriture|exemple|journal/.test(n)) return 'ecr';
-  if (/\blies?\b|associes?/.test(n)) return 'lies';
-  if (/exclu|a eviter|confond/.test(n)) return 'excl';
-  if (/explique|explication|\brole\b|definition|presente|decris/.test(n)) return 'fiche';
-  return null;
-}
-
-/* ───────── Fiscalité Bénin ───────── */
-const TOPICS = [
-  ['retenues_source',      /\baib\b|acompte sur impot|retenue a la source/],
-  ['TPVI',                 /plus value immobiliere|\btpvi\b/],
-  ['IRCM',                 /\bircm\b|dividende|capitaux mobiliers/],
-  ['IRF',                  /\birf\b|revenus? fonciers?|(impot|taxe|retenue).*loyer|loyer.*(impot|taxe|retenue)/],
-  ['TFU',                  /\btfu\b|taxe fonciere/],
-  ['TVM',                  /\btvm\b|vehicules? a moteur|vignette/],
-  ['TPS',                  /\btps\b|taxe professionnelle synthetique/],
-  ['VPS',                  /\bvps\b|versement patronal/],
-  ['ITS',                  /\bits\b|traitements? et salaires|impot sur (le |les )?salaires?/],
-  ['IBA',                  /\biba\b|benefices? d affaires/],
-  ['IS',                   /\bis\b|impot sur (les )?societes/],
-  ['TAFA',                 /\btafa\b|activites financieres/],
-  ['TVA',                  /\btva\b|taxe sur la valeur ajoutee/],
-  ['patentes_licences',    /patente|licence/],
-  ['droits_accises',       /accise/],
-  ['droits_enregistrement',/droits? d enregistrement/],
-  ['droits_timbre',        /timbre/],
-  ['obligations_generales',/\bifu\b|mecef|facture normalisee|facturation|enseigne/],
-  ['controle_impot',       /controle fiscal|verification de comptabilite|flagrance|ecsfp/],
-  ['recours',              /recours|reclamation|contentieux|gracieux/],
-  ['regimes_incitatifs',   /incitatif|start ?up|\bcga\b|centre de gestion|entreprise nouvelle/],
-  ['calendrier_fiscal',    /calendrier|echeancier|agenda fiscal/],
-  ['sanctions_generales',  /sanction|penalite|amende|majoration/]
-];
-const TOPIC_TITLE = {
-  IS:'Impôt sur les sociétés (IS)', IBA:'Impôt sur les bénéfices d’affaires (IBA)', IRCM:'Revenus des capitaux mobiliers (IRCM)',
-  IRF:'Impôt sur les revenus fonciers (IRF)', TPVI:'Taxe sur les plus-values immobilières', ITS:'Impôt sur les traitements et salaires (ITS)',
-  retenues_source:'Retenues à la source (AIB)', TFU:'Taxe foncière unique (TFU)', TVM:'Taxe sur les véhicules à moteur',
-  TPS:'Taxe professionnelle synthétique (TPS)', VPS:'Versement patronal sur salaires (VPS)', patentes_licences:'Patentes et licences',
-  TVA:'Taxe sur la valeur ajoutée (TVA)', TAFA:'Taxe sur les activités financières (TAFA)', droits_accises:'Droits d’accises',
-  droits_enregistrement:'Droits d’enregistrement', droits_timbre:'Droits de timbre', obligations_generales:'Obligations des contribuables',
-  sanctions_generales:'Sanctions fiscales', controle_impot:'Contrôle de l’impôt', recours:'Recours du contribuable',
-  calendrier_fiscal:'Calendrier fiscal', regimes_incitatifs:'Régimes incitatifs'
-};
-const TOPIC_ASK = {
-  IS:'IS', IBA:'IBA', IRCM:'IRCM', IRF:'IRF', TPVI:'plus-value immobilière', ITS:'ITS', retenues_source:'AIB', TFU:'TFU', TVM:'TVM',
-  TPS:'TPS', VPS:'VPS', patentes_licences:'patente', TVA:'TVA', TAFA:'TAFA', droits_accises:'accises', droits_enregistrement:'droits d’enregistrement',
-  droits_timbre:'timbre', obligations_generales:'IFU et facturation', sanctions_generales:'sanctions fiscales', controle_impot:'contrôle fiscal',
-  recours:'recours fiscal', calendrier_fiscal:'calendrier fiscal', regimes_incitatifs:'régimes incitatifs'
-};
-const FACET_KEYS = {
-  taux:        /^(taux|bareme|minimum|calcul|montants|droits_fixes|tarifs|abattements|base_imposable)/,
-  echeance:    /(declaration|paiement|versement|acomptes)/,
-  penalite:    /(penalite|sanction)/,
-  exoneration: /exoneration/,
-  definition:  /^(definition|description|base_imposable|nature)/
-};
-const DEFAULT_KEYS = /^(definition|description|nom|base_imposable|taux|bareme|minimum|montants|declaration|paiement|versement|penalite|sanction|calcul|mecanisme|types|voie|dispositif|prescription|champ|reduction)/;
-const FACET_LABEL = { taux:'Taux', echeance:'Échéances', penalite:'Pénalités', exoneration:'Exonérations', definition:'Définition' };
-
-function detectTopic(n) {
-  for (let i = 0; i < TOPICS.length; i++) { if (TOPICS[i][1].test(n)) return TOPICS[i][0]; }
-  return null;
-}
-function detectTaxFacet(n) {
-  if (/exonere|exoneration|dispense/.test(n)) return 'exoneration';
-  if (/penalite|sanction|amende|majoration|retard/.test(n)) return 'penalite';
-  if (/echeance|declar|paiement|payer|verser|delai|quand|date limite/.test(n)) return 'echeance';
-  if (/\btaux\b|bareme|pourcentage|tarif|combien/.test(n)) return 'taux';
-  if (/c est quoi|definition|qu est ce|explique/.test(n)) return 'definition';
-  return null;
-}
-function prettyKey(k) { return k.replace(/_/g, ' ').replace(/^./, function (c) { return c.toUpperCase(); }); }
-function itemText(it) {
-  if (it == null) return '';
-  if (typeof it !== 'object') return oneLine(it, 240);
-  if (it.mois && it.obligation) return '**' + it.mois + '** : ' + oneLine(it.obligation, 220);
-  const ent = Object.keys(it).map(function (k) {
-    const v = oneLine(it[k], 200);
-    return /taux|montant|sanction|echeance|droit$|tarif|avantage/.test(k) ? '**' + v + '**' : v;
-  });
-  return ent.length === 2 ? ent[0] + ' : ' + ent[1] : ent.join(' — ');
-}
-function renderArray(arr, max) {
-  const shown = arr.slice(0, max).map(function (x) { return '• ' + itemText(x); });
-  if (arr.length > max) shown.push('• … ' + (arr.length - max) + ' autre(s) dans le CGI');
-  return shown.join('\n');
-}
-function renderObj(obj, facet, depth) {
-  const out = [];
-  Object.keys(obj).forEach(function (k) {
-    const v = obj[k];
-    if (v == null) return;
-    if (v && typeof v === 'object' && !Array.isArray(v)) {
-      if (depth < 3) {
-        const inner = renderObj(v, facet, depth + 1);
-        if (inner) out.push((v.nom ? '**' + v.nom + '**\n' : '**' + prettyKey(k) + '**\n') + inner);
-      }
-      return;
-    }
-    const ok = facet ? FACET_KEYS[facet].test(k) : DEFAULT_KEYS.test(k);
-    if (!ok || k === 'nom') return;
-    const label = prettyKey(k);
-    if (typeof v === 'string') out.push('**' + label + '** : ' + oneLine(v, 260));
-    else if (Array.isArray(v)) out.push('**' + label + '**\n' + renderArray(v, depth ? 5 : 6));
-  });
-  return out.join('\n\n');
-}
-function renderSection(topic, facet) {
-  const sec = FISC[topic];
-  if (!sec) return '';
-  let body = Array.isArray(sec) ? renderArray(sec, 12) : renderObj(sec, facet, 0);
-  if (!body && facet) body = 'Cette rubrique n’a pas d’élément « ' + FACET_LABEL[facet].toLowerCase() + ' » dans la base.';
-  return body;
-}
-function cutLong(text, max) {
-  if (text.length <= max) return { text: text, cut: false };
-  const part = text.slice(0, max); const i = part.lastIndexOf('\n');
-  return { text: (i > max * 0.5 ? part.slice(0, i) : part).trim(), cut: true };
-}
-function answerTopic(topic, facet) {
-  if (!FISC[topic]) return null;
-  const body = renderSection(topic, facet);
-  const head = '**' + TOPIC_TITLE[topic] + '**' + (facet ? ' : ' + FACET_LABEL[facet].toLowerCase() : '');
-  const c = cutLong(head + '\n\n' + body, 2600);
-  const sug = [];
-  ['taux', 'echeance', 'penalite', 'exoneration'].forEach(function (f) {
-    if (f !== facet && topic !== 'calendrier_fiscal') sug.push({ label: FACET_LABEL[f], ask: TOPIC_ASK[topic] + ' ' + FACET_LABEL[f].toLowerCase() });
-  });
-  return A(c.text + (c.cut ? '\n\nLa suite est dans le CGI.' : ''), {
-    src: 'CGI Bénin 2026', suggestions: sug.slice(0, 3),
-    actions: [{ label: 'Voir la fiscalité CGI', href: 'fiscalite-cgi-benin.html' }]
-  });
-}
-
-/* ───────── Calculs ───────── */
-const ITS_TR = [[0, 60000, 0], [60000, 150000, 0.10], [150000, 250000, 0.15], [250000, 500000, 0.19], [500000, Infinity, 0.30]];
+// Montants : « 350 000 », « 350.000 », « 1,5 million », « 200k »
 function parseAmount(text) {
-  const t = String(text).replace(/[\u00a0\u202f]/g, ' ').replace(/\d+(?:[.,]\d+)?\s*%/g, ' ');
-  const re = /(\d{1,3}(?:[ .]\d{3})+|\d+)(?:[.,](\d+))?\s*(millions?|mille|k\b)?/gi;
-  const vals = []; let m;
-  while ((m = re.exec(t))) {
-    let n = parseFloat(m[1].replace(/[ .]/g, '') + (m[2] ? '.' + m[2] : ''));
-    const u = (m[3] || '').toLowerCase();
-    if (/^million/.test(u)) n *= 1e6; else if (u === 'mille' || u === 'k') n *= 1e3;
-    vals.push(n);
-  }
-  const big = vals.filter(function (v) { return v >= 100; });
-  const noYear = big.filter(function (v) { return !(v >= 1990 && v <= 2100); });
-  return noYear.length ? noYear[0] : (big.length ? big[0] : null);
-}
-function detectTool(n) {
-  if (/\bits\b|impot sur (le |les )?salaires?/.test(n)) return 'its';
-  if (/\btva\b/.test(n)) return 'tva';
-  if (/\baib\b/.test(n)) return 'aib';
-  if (/\birf\b|impot sur (les )?loyers?|revenus? fonciers?/.test(n)) return 'irf';
-  if (/\btps\b/.test(n)) return 'tps';
-  return null;
-}
-const TOOL_PROMPT = {
-  its: 'Indiquez la base imposable mensuelle en FCFA, par exemple 350 000.',
-  tva: 'Indiquez le montant en FCFA, par exemple « TVA sur 100 000 HT » ou « 118 000 TTC ».',
-  aib: 'Indiquez le montant de la facture en FCFA, par exemple 250 000.',
-  irf: 'Indiquez le loyer brut en FCFA, par exemple 150 000.',
-  tps: 'Indiquez les recettes annuelles en FCFA, par exemple 8 000 000.'
-};
-function runTool(tool, amt, n) {
-  const sug = function (t) { return [{ label: 'Taux', ask: t + ' taux' }, { label: 'Échéances', ask: t + ' échéances' }]; };
-  const note = 'Calcul indicatif d’après le CGI 2026 : vérifiez les textes en vigueur.';
-  if (tool === 'tva') {
-    const ttc = /ttc/.test(n) && !/\bht\b/.test(n);
-    const ht = ttc ? amt / 1.18 : amt, tva = ht * 0.18;
-    return A('**TVA à 18 %**\n• Montant HT : ' + money(ht) + '\n• TVA : ' + money(tva) + '\n• Montant TTC : ' + money(ht + tva) +
-      '\n\nTaux normal. Les exportations sont à 0 %. ' + note, { src: 'Calcul indicatif', suggestions: sug('TVA') });
-  }
-  if (tool === 'its') {
-    let total = 0; const rows = [];
-    ITS_TR.forEach(function (t) {
-      if (amt > t[0]) {
-        const part = Math.min(amt, t[1]) - t[0], tax = part * t[2]; total += tax;
-        const lo = t[0] ? (t[0] + 1).toLocaleString('fr-FR') : '0';
-        const hi = t[1] === Infinity ? 'plus' : t[1].toLocaleString('fr-FR');
-        rows.push('• ' + (t[1] === Infinity ? 'Au-delà de ' + t[0].toLocaleString('fr-FR') : lo + ' à ' + hi) + ' : ' + money(part) + ' × ' + pct(t[2]) + ' = **' + money(tax) + '**');
-      }
-    });
-    return A('**ITS sur une base mensuelle de ' + money(amt) + '**\n' + rows.join('\n') +
-      '\n\n**ITS mensuel : ' + money(total) + '** (taux moyen ' + pct(total / amt) + ')\nVersement patronal (VPS, 4 %) : ' + money(amt * 0.04) +
-      '\n\nLa redevance ORTB n’est pas incluse. ' + note, { src: 'Calcul indicatif', suggestions: sug('ITS') });
-  }
-  if (tool === 'aib') {
-    return A('**AIB sur ' + money(amt) + '**\n• 1 % (importations, achats et travaux, fournisseurs avec IFU) : ' + money(amt * 0.01) +
-      '\n• 3 % (prestations de services, prestataires avec IFU) : ' + money(amt * 0.03) +
-      '\n• 5 % (fournisseurs sans IFU, factures normalisées pour la TPS) : ' + money(amt * 0.05) +
-      '\n\nChoisissez le taux selon la nature de l’opération. ' + note, { src: 'Calcul indicatif', suggestions: sug('AIB') });
-  }
-  if (tool === 'irf') {
-    return A('**IRF sur un loyer brut de ' + money(amt) + '**\n• Taux normal 12 % : ' + money(amt * 0.12) +
-      '\n• Retenue à 10 % si le bailleur relève de l’IBA ou de l’IS : ' + money(amt * 0.10) +
-      '\n\nLa redevance ORTB de 4\u00a0000\u00a0FCFA s’ajoute à l’impôt dû. ' + note, { src: 'Calcul indicatif', suggestions: sug('IRF') });
-  }
-  if (tool === 'tps') {
-    const brut = amt * 0.05, du = Math.max(brut, 10000);
-    return A('**TPS sur des recettes annuelles de ' + money(amt) + '**\n• 5 % des recettes : ' + money(brut) +
-      '\n• Minimum de perception : ' + money(10000) + '\n• **TPS due : ' + money(du) + '**\n\nLa redevance ORTB de 4\u00a0000\u00a0FCFA s’ajoute. ' + note,
-      { src: 'Calcul indicatif', suggestions: sug('TPS') });
-  }
-  return null;
+  const t = String(text).toLowerCase().replace(/[\u00a0\u202f]/g, ' ');
+  const m = t.match(/(\d[\d\s.,]*\d|\d)\s*(millions?|milliards?|mille|k)?(?![a-z])/);
+  if (!m) return null;
+  let num = m[1].replace(/\s/g, '');
+  if (/^\d{1,3}(\.\d{3})+$/.test(num)) num = num.replace(/\./g, '');
+  else num = num.replace(/,/g, '.');
+  let v = parseFloat(num);
+  if (isNaN(v)) return null;
+  const u = m[2] || '';
+  if (/^milliard/.test(u)) v *= 1e9; else if (/^million/.test(u)) v *= 1e6; else if (/^(mille|k)$/.test(u)) v *= 1e3;
+  return v;
 }
 
-/* ───────── Documents et compte utilisateur ───────── */
-let CATALOG = null;
-async function loadCatalog() {
-  if (CATALOG) return CATALOG;
-  try { const c = sessionStorage.getItem('icw_catalog'); if (c) { CATALOG = JSON.parse(c); return CATALOG; } } catch (e) {}
-  const r = await fetch(SUPABASE_URL + '/rest/v1/documents_public?select=id,titre,categorie,extension,prix&limit=1000', { headers: { apikey: SUPABASE_KEY } });
-  if (!r.ok) throw new Error('HTTP ' + r.status);
-  CATALOG = await r.json();
-  try { sessionStorage.setItem('icw_catalog', JSON.stringify(CATALOG)); } catch (e) {}
-  return CATALOG;
+// Mise en forme des réponses de l’IA (texte échappé avant tout)
+function md(raw) {
+  const pres = [];
+  const t0 = esc(raw).replace(/```[\w]*\n?([\s\S]*?)```/g, (_, c) => { pres.push(c.trim()); return '\u0000' + (pres.length - 1) + '\u0000'; });
+  const out = []; let inUl = false;
+  t0.split('\n').forEach(ln => {
+    const m = ln.match(/^\s*(?:[-•*]|\d+\.)\s+(.*)$/);
+    if (m) { if (!inUl) { out.push('<ul>'); inUl = true; } out.push('<li>' + m[1] + '</li>'); }
+    else { if (inUl) { out.push('</ul>'); inUl = false; } out.push(ln + '<br>'); }
+  });
+  if (inUl) out.push('</ul>');
+  return out.join('')
+    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*])\*(?!\s)([^*]+?)\*/g, '$1<em>$2</em>')
+    .replace(/(<br>)+$/, '')
+    .replace(/\[(\d+[a-zA-Z0-9-]*)\]/g, (m, c) => ACC()[c] ? accTag(c) : m)
+    .replace(/\u0000(\d+)\u0000/g, (_, i) => '<pre>' + pres[i] + '</pre>');
 }
-async function answerDocs(q) {
-  const docsLink = function (term) { return { label: 'Ouvrir les documents', href: 'documents.html' + (term ? '?q=' + encodeURIComponent(term) : '') }; };
-  let cat;
-  try { cat = await loadCatalog(); }
-  catch (e) { return A('Le catalogue est momentanément indisponible. Vous pouvez parcourir la page Documents.', { src: 'Catalogue InfoCompta', actions: [docsLink('')] }); }
-  const toks = tokensOf(q, DOC_STOP);
-  if (!toks.length) {
-    const cnt = {};
-    cat.forEach(function (d) { cnt[d.categorie] = (cnt[d.categorie] || 0) + 1; });
-    const names = Object.keys(cnt).sort(function (a, b) { return cnt[b] - cnt[a]; }).slice(0, 6);
-    return A('Le catalogue compte **' + cat.length + ' modèles** à télécharger, classés par thème. Dites-moi ce que vous cherchez, par exemple « contrat de bail » ou « procès-verbal ».',
-      { src: 'Catalogue InfoCompta', actions: [docsLink('')], suggestions: names.map(function (c) { return { label: c, ask: 'document ' + c }; }) });
-  }
-  const scored = cat.map(function (d) {
-    const tw = norm(d.titre).split(' ').map(stem), cw = norm(d.categorie).split(' ').map(stem);
-    let s = 0; toks.forEach(function (t) { s += wordScore(tw, t) ? 5 : 0; s += wordScore(cw, t) ? 2 : 0; });
-    return { d: d, s: s };
-  }).filter(function (x) { return x.s >= 5; }).sort(function (a, b) { return b.s - a.s; });
-  const term = q.replace(/[?!.]/g, '').trim();
-  if (!scored.length) {
-    return A('Je n’ai trouvé aucun modèle pour « ' + oneLine(term, 60) + ' ». Essayez un mot plus court, ou parcourez la page Documents.', { src: 'Catalogue InfoCompta', actions: [docsLink('')] });
-  }
-  const top = scored.slice(0, 5);
-  const lines = ['**' + scored.length + ' modèle' + (scored.length > 1 ? 's' : '') + ' trouvé' + (scored.length > 1 ? 's' : '') + '**'];
-  top.forEach(function (x) { lines.push('• ' + x.d.titre + ' : ' + money(x.d.prix) + (x.d.extension ? ' (' + String(x.d.extension).replace('.', '').toUpperCase() + ')' : '')); });
-  if (scored.length > top.length) lines.push('• … et ' + (scored.length - top.length) + ' autre(s)');
-  return A(lines.join('\n'), { src: 'Catalogue InfoCompta', actions: [docsLink(toks.join(' '))] });
-}
+
+// Texte avec **gras** (pour mes propres messages)
+const bold = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+const accTag = c => '<a class="ic-ctag" href="compte-detail.html?code=' + encodeURIComponent(c) + '" target="_blank" rel="noopener">' + esc(c) + '</a>';
+
+// ── État ───────────────────────────────────────────────────────
+const PAGE_CODE = (new URLSearchParams(window.location.search).get('code') || '').trim();
+const STORE_KEY = 'infocompta_chat_v4_' + window.location.pathname + (PAGE_CODE ? '_' + PAGE_CODE : '');
+const MAX_STORED = 20;
+const HIST_MAX = 6;
+let icOpen = false, icBusy = false, icRestored = false;
+let hist = loadHist();
+let flow = null;
+let catalogPromise = null;
+
+function loadHist() { try { const r = localStorage.getItem(STORE_KEY); return r ? JSON.parse(r) : []; } catch (_) { return []; } }
+function saveHist() { try { localStorage.setItem(STORE_KEY, JSON.stringify(hist.slice(-MAX_STORED))); } catch (_) {} }
+const pageCode = () => (/compte-detail/.test(location.pathname) && ACC()[PAGE_CODE]) ? PAGE_CODE : '';
+
 function getSession() {
   try {
-    const raw = localStorage.getItem(TOKEN_KEY); if (!raw) return null;
+    const raw = localStorage.getItem(CFG.authStorageKey);
+    if (!raw) return null;
     const p = JSON.parse(raw);
+    if (!p || !p.user || !p.access_token) return null;
     if (p.expires_at && p.expires_at * 1000 < Date.now()) return null;
-    return (p.access_token && p.user && p.user.id) ? { token: p.access_token, uid: p.user.id } : null;
-  } catch (e) { return null; }
+    return p;
+  } catch (_) { return null; }
 }
-async function answerDownloads() {
-  const s = getSession();
-  if (!s) return A('Connectez-vous pour voir les téléchargements qu’il vous reste.', { src: 'Votre compte', actions: [{ label: 'Se connecter', href: 'auth.html?redirect=' + encodeURIComponent(PAGE) }] });
-  let rows;
-  try {
-    const r = await fetch(SUPABASE_URL + '/rest/v1/document_purchases?select=document_id,downloads_remaining&downloads_remaining=gt.0&user_id=eq.' + encodeURIComponent(s.uid),
-      { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + s.token } });
-    if (r.status === 401) return A('Votre session a expiré. Reconnectez-vous pour consulter vos téléchargements.', { src: 'Votre compte', actions: [{ label: 'Se connecter', href: 'auth.html?redirect=' + encodeURIComponent(PAGE) }] });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    rows = await r.json();
-  } catch (e) {
-    return A('Je n’ai pas pu lire vos achats pour le moment. Réessayez dans un instant.', { src: 'Votre compte' });
-  }
-  const docsLink = { label: 'Ouvrir les documents', href: 'documents.html' };
-  if (!rows.length) return A('Il ne vous reste aucun téléchargement. Chaque achat donne 2 téléchargements du document.', { src: 'Votre compte', actions: [docsLink] });
-  const tot = {}; rows.forEach(function (r) { tot[r.document_id] = (tot[r.document_id] || 0) + r.downloads_remaining; });
-  let titles = {};
-  try { (await loadCatalog()).forEach(function (d) { titles[d.id] = d.titre; }); } catch (e) {}
-  const lines = ['**Vos téléchargements restants**'];
-  Object.keys(tot).forEach(function (id) { lines.push('• ' + (titles[id] || id) + ' : ' + tot[id]); });
-  return A(lines.join('\n'), { src: 'Votre compte', actions: [docsLink] });
+const aiAvailable = () => CFG.aiMode === 'all' || (CFG.aiMode === 'connected' && !!getSession());
+
+// ── Supabase (lecture seule, clé publique) ─────────────────────
+async function sbGet(path, token) {
+  const headers = { apikey: CFG.supabaseKey };
+  if (token) headers.Authorization = 'Bearer ' + token;
+  const r = await fetch(CFG.supabaseUrl + '/rest/v1/' + path, { headers });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
 }
-
-/* ───────── Moteur de réponse ───────── */
-let pending = null;
-const HIST = (function () { try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch (e) { return []; } })();
-
-async function answer(text) {
-  const n = norm(text);
-
-  if (pending) {
-    const amt = parseAmount(text);
-    if (amt != null) { const t = pending; pending = null; const r = runTool(t, amt, n); if (r) return r; }
-    else if (/^(non|annule|stop|laisse)/.test(n)) { pending = null; return A('D’accord, j’annule ce calcul.'); }
-    else pending = null;
-  }
-
-  if (/^(bonjour|bonsoir|salut|hello|coucou|bjr)\b/.test(n) && n.split(' ').length <= 3) {
-    return A('Bonjour. Que cherchez-vous : un compte, un taux, une échéance fiscale ou un document ?', { suggestions: starterSuggestions() });
-  }
-  if (/^(merci|ok merci|super merci|parfait)/.test(n)) return A('Avec plaisir. N’hésitez pas si vous avez une autre question.');
-  if (/^(aide|menu|que sais tu faire|que peux tu faire|fonctions?)/.test(n)) {
-    return A('Voici ce que je sais faire :\n• Trouver le compte à utiliser pour une opération\n• Expliquer un compte, son fonctionnement et ses écritures\n• Donner les taux, échéances et pénalités du CGI Bénin\n• Calculer l’ITS, la TVA, l’AIB, l’IRF et la TPS\n• Chercher un modèle de document\n• Indiquer vos téléchargements restants', { suggestions: starterSuggestions() });
-  }
-
-  if (/telechargements? restants?|mes telechargements|mes achats|combien de telechargements/.test(n)) return answerDownloads();
-
-  const tool = detectTool(n);
-  if (tool) {
-    const amt = parseAmount(text);
-    const infoFacet = /\btaux\b|bareme|echeance|penalite|exonere|definition|c est quoi/.test(n);
-    if (amt != null && !infoFacet) { const r = runTool(tool, amt, n); if (r) return r; }
-    if (!infoFacet && /calcul|simul|combien/.test(n)) {
-      pending = tool; return A(TOOL_PROMPT[tool]);
-    }
-  }
-
-  const explicit = n.match(/compte\s*(?:n\s*)?(\d{1,4}(?:-\d{2})?)\b/) || n.match(/^(\d{1,4})$/);
-  const facet = detectFacet(n);
-  if (explicit) {
-    const r = facet && facet !== 'fiche' ? accountFacet(explicit[1], facet) : accountSummary(explicit[1]);
-    if (r) return r;
-    return A('Je ne trouve pas le compte ' + explicit[1] + ' dans le plan comptable. Vérifiez le numéro ou décrivez l’opération.', { src: 'Plan comptable OHADA', suggestions: starterSuggestions() });
-  }
-  if (_code && /\bce compte\b/.test(n)) {
-    const r = facet && facet !== 'fiche' ? accountFacet(_code, facet) : accountSummary(_code);
-    if (r) return r;
-  }
-
-  if (/(document|modele|fichier|telecharg|contrat|statut|convention|kit|logiciel|procuration|proces verbal)/.test(n) && !/telechargements? restants?/.test(n)) {
-    return answerDocs(text);
-  }
-
-  const topic = detectTopic(n);
-  const taxFacet = detectTaxFacet(n);
-  const cueAccount = /compte|ecriture|debit|credit|comptabilis|enregistr|passer|imputer|journal/.test(n);
-
-  if (/calendrier|echeancier|agenda fiscal|date limite|quand (declarer|payer|verser)|echeances?\b/.test(n) && !topic) {
-    return answerTopic('calendrier_fiscal', null);
-  }
-  if (cueAccount) {
-    const r = answerAccounts(text); if (r) return r;
-  }
-  if (topic) {
-    const r = answerTopic(topic, topic === 'calendrier_fiscal' ? null : taxFacet); if (r) return r;
-  }
-  const r2 = answerAccounts(text); if (r2) return r2;
-
-  if (CONFIG.useAI) { const ai = await askAI(text); if (ai) return ai; }
-
-  return A('Je n’ai pas trouvé de réponse à « ' + oneLine(text, 70) + ' » dans le plan comptable ni dans les fiches fiscales. Reformulez avec le nom du compte, de l’impôt ou du document.',
-    { suggestions: starterSuggestions(), actions: [{ label: 'Nous écrire', href: 'contact.html' }] });
+function loadCatalog() {
+  if (catalogPromise) return catalogPromise;
+  catalogPromise = (async () => {
+    try { const c = sessionStorage.getItem('ic_catalog_v1'); if (c) return JSON.parse(c); } catch (_) {}
+    const data = await sbGet('documents_public?select=id,titre,categorie,prix,extension&order=titre&limit=1000');
+    try { sessionStorage.setItem('ic_catalog_v1', JSON.stringify(data)); } catch (_) {}
+    return data;
+  })();
+  catalogPromise.catch(() => { catalogPromise = null; });
+  return catalogPromise;
 }
 
-function starterSuggestions() {
-  return [
-    { label: 'Quel compte pour un loyer ?', ask: 'Quel compte pour un loyer ?' },
-    { label: 'Taux de TVA',                 ask: 'taux de TVA' },
-    { label: 'Calculer l’ITS de 350 000',   ask: 'calculer ITS 350000' }
-  ];
+// ═══ RECHERCHE DE COMPTES ══════════════════════════════════════
+let _idx = null;
+function buildIndex() {
+  if (_idx) return _idx;
+  _idx = Object.entries(ACC()).map(([code, d]) => ({
+    code, d,
+    label: new Set(stems(d.libelle)),
+    subs: Object.entries(d.subdivisions || {}).map(([c, l]) => ({ code: c, st: new Set(stems(l)) })),
+    ex: new Set(stems((d.exemples_ecritures || []).map(e => e.libelle).join(' '))),
+    body: new Set(stems((d.contenu || '').slice(0, 600)))
+  }));
+  return _idx;
 }
+const hasAny = (set, group) => group.some(g => set.has(g));
 
-/* IA facultative : réponses limitées aux données du site */
-async function askAI(text) {
-  try {
-    const ctx = [];
-    searchAccounts(text, 3).forEach(function (h) {
-      const d = DATA[h.it.parent]; if (!d) return;
-      ctx.push('Compte ' + h.it.parent + ' — ' + d.libelle + '\n' + oneLine(d.contenu || '', 400));
+function searchAccounts(q, max) {
+  const raw = [...new Set(words(q))];
+  if (!raw.length) return [];
+  const groups = raw.map(w => [...new Set([stem(w)].concat((SYN[w] || []).flatMap(stems)))]);
+  const phrase = norm(q);
+  const out = [];
+  buildIndex().forEach(e => {
+    let score = 0, hit = 0;
+    groups.forEach(g => {
+      let h = 0;
+      if (hasAny(e.label, g)) { score += 6; h = 1; }
+      if (e.subs.some(s => hasAny(s.st, g))) { score += 4; h = 1; }
+      if (hasAny(e.ex, g)) { score += 3; h = 1; }
+      if (hasAny(e.body, g)) { score += 1; h = 1; }
+      hit += h;
     });
-    const topic = detectTopic(norm(text));
-    if (topic) ctx.push(TOPIC_TITLE[topic] + '\n' + renderSection(topic, null));
-    if (!ctx.length) return null;
-    const system = 'Tu es l’assistant du site InfoCompta (plan comptable OHADA et fiscalité du Bénin). Réponds uniquement à partir du CONTEXTE ci-dessous. ' +
-      'Si l’information n’y figure pas, réponds exactement : « Je n’ai pas cette information dans la base InfoCompta. » N’invente aucun taux, montant ni article. ' +
-      'Devise : FCFA. Réponds en français, de façon concise, et cite les comptes entre crochets, par exemple [401].\n\nCONTEXTE\n' + ctx.join('\n\n');
-    const msgs = HIST.slice(-6).map(function (m) { return { role: m.r === 'u' ? 'user' : 'assistant', content: m.t }; });
-    const resp = await fetch(CONFIG.aiEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ system: system, messages: msgs }) });
-    if (!resp.ok) return null;
+    if (!hit) return;
+    if (groups.length > 1 && hit / groups.length < 0.6) return;
+    if (norm(e.d.libelle).includes(phrase)) score += 10;
+    if (e.code.length === 1) score -= 3;
+    out.push({ code: e.code, score });
+  });
+  out.sort((a, b) => b.score - a.score || a.code.length - b.code.length);
+  return out.filter(r => r.score >= 4).slice(0, max || 3).map(r => r.code);
+}
+
+function exactCode(t) {
+  const nums = t.match(/\b\d{1,4}\b/g) || [];
+  return nums.find(n => ACC()[n]) || '';
+}
+
+function ecrHtml(ex) {
+  return '<div class="ic-ecr"><span>' + esc(ex.libelle) + '</span><div><b>D</b>' + esc(ex.debit) + '</div><div><b>C</b>' + esc(ex.credit) + '</div></div>';
+}
+function accountCard(code, opts) {
+  const d = ACC()[code]; if (!d) return '';
+  const ex = !(opts && opts.noEx) && (d.exemples_ecritures || [])[0];
+  return '<div class="ic-card"><div class="ic-card-head">' + accTag(code) + '<strong>' + esc(d.libelle) + '</strong></div>' +
+    '<div class="ic-card-sub">' + esc([d.nature, d.sens].filter(Boolean).join(' · ')) + '</div>' +
+    (opts && opts.resume && d.contenu ? '<p>' + esc(short(d.contenu, 520)) + '</p>' : '') +
+    (ex ? ecrHtml(ex) : '') +
+    '<a class="ic-link" href="compte-detail.html?code=' + encodeURIComponent(code) + '" target="_blank" rel="noopener">Voir la fiche complète</a></div>';
+}
+function aiQr(q) { return CFG.aiMode === 'off' ? [] : [{ label: '💡 Expliquer en détail', ai: q }]; }
+
+function accountsReply(codes, text) {
+  return { html: '<p>Voici les comptes les plus proches de votre question :</p>' + codes.map(c => accountCard(c)).join(''), qr: aiQr(text) };
+}
+
+function accountSection(code, kind) {
+  const d = ACC()[code]; if (!d) return notFound();
+  const none = m => ({ html: '<p>' + esc(m) + '</p>' });
+  if (kind === 'resume') return { html: accountCard(code, { resume: true, noEx: true }) };
+  if (kind === 'fonct') {
+    const f = d.fonctionnement || {};
+    const lst = a => '<ul class="ic-ul">' + a.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>';
+    if (!(f.debit || []).length && !(f.credit || []).length) return none('Ce compte est un compte de regroupement : il n’a pas de fonctionnement propre. Consultez ses subdivisions.');
+    return { html: '<div class="ic-card"><div class="ic-card-head">' + accTag(code) + '<strong>Fonctionnement</strong></div>' +
+      ((f.debit || []).length ? '<p><strong>Au débit</strong></p>' + lst(f.debit) : '') +
+      ((f.credit || []).length ? '<p><strong>Au crédit</strong></p>' + lst(f.credit) : '') + '</div>' };
+  }
+  if (kind === 'ex') {
+    const ex = d.exemples_ecritures || [];
+    if (!ex.length) return none('Aucun exemple d’écriture n’est encore renseigné pour ce compte.');
+    return { html: '<div class="ic-card"><div class="ic-card-head">' + accTag(code) + '<strong>Exemples d’écritures</strong></div>' + ex.map(ecrHtml).join('') + '</div>' };
+  }
+  if (kind === 'lies') {
+    const l = d.comptes_lies || [];
+    if (!l.length) return none('Aucun compte lié n’est renseigné.');
+    return { html: '<div class="ic-card"><div class="ic-card-head"><strong>Comptes liés</strong></div><ul class="ic-ul">' +
+      l.map(c => '<li>' + accTag(c) + (ACC()[c] ? ' ' + esc(ACC()[c].libelle) : '') + '</li>').join('') + '</ul></div>' };
+  }
+  if (kind === 'excl') {
+    const e = d.exclusions;
+    if (!e || (!e.texte && !(e.comptes || []).length)) return none('Aucune exclusion n’est renseignée pour ce compte.');
+    return { html: '<div class="ic-card"><div class="ic-card-head"><strong>Exclusions</strong></div>' + (e.texte ? '<p>' + esc(e.texte) + '</p>' : '') +
+      ((e.comptes || []).length ? '<p><strong>À utiliser à la place :</strong></p><ul class="ic-ul">' + e.comptes.map(c => '<li>' + esc(c) + '</li>').join('') + '</ul>' : '') + '</div>' };
+  }
+  if (kind === 'subs') {
+    const s = Object.entries(d.subdivisions || {});
+    if (!s.length) return none('Ce compte n’a pas de subdivisions.');
+    return { html: '<div class="ic-card"><div class="ic-card-head"><strong>Subdivisions</strong></div><ul class="ic-ul">' +
+      s.map(([c, l]) => '<li>' + (ACC()[c] ? accTag(c) : '<span class="ic-ctag">' + esc(c) + '</span>') + ' ' + esc(l) + '</li>').join('') + '</ul></div>' };
+  }
+  if (kind === 'ctrl') {
+    const c = d.controle || [];
+    if (!c.length) return none('Aucun élément de contrôle n’est renseigné.');
+    return { html: '<div class="ic-card"><div class="ic-card-head"><strong>Éléments de contrôle</strong></div><ul class="ic-ul">' + c.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></div>' };
+  }
+  return notFound();
+}
+function sectionIntent(t) {
+  if (/\b(fonctionnement|mouvements?|debit|credit)\b/.test(t)) return 'fonct';
+  if (/\b(exemples?|ecritures?)\b/.test(t)) return 'ex';
+  if (/\b(lies|lie|comptes? associes?)\b/.test(t)) return 'lies';
+  if (/\b(exclusions?|exclu\w*)\b/.test(t)) return 'excl';
+  if (/\b(subdivisions?|sous comptes?)\b/.test(t)) return 'subs';
+  if (/\b(controles?|justificatifs?)\b/.test(t)) return 'ctrl';
+  if (/\b(resume|definition|role|c est quoi|explique\w*)\b/.test(t)) return 'resume';
+  return '';
+}
+
+// ═══ FISCALITÉ (Docs-context.js) ═══════════════════════════════
+const TAXES = [
+  { id: 'tva', title: 'TVA', re: /\b(tva|taxe sur la valeur ajoutee)\b/, get: () => CGI().TVA },
+  { id: 'is', title: 'Impôt sur les sociétés (IS)', re: /\b(is|impot sur les societes)\b/, get: () => CGI().IS },
+  { id: 'iba', title: 'Impôt sur les bénéfices d’affaires (IBA)', re: /\b(iba|benefices d affaires)\b/, get: () => CGI().IBA },
+  { id: 'ircm', title: 'Impôt sur le revenu des capitaux mobiliers (IRCM)', re: /\b(ircm|capitaux mobiliers)\b/, get: () => CGI().IRCM },
+  { id: 'irf', title: 'Impôt sur les revenus fonciers (IRF)', re: /\b(irf|revenus fonciers)\b/, get: () => CGI().IRF },
+  { id: 'tpvi', title: 'Taxe sur les plus-values immobilières (TPVI)', re: /\b(tpvi|plus values? immobilieres?)\b/, get: () => CGI().TPVI },
+  { id: 'its', title: 'Impôt sur les traitements et salaires (ITS)', re: /\b(its|traitements? et salaires?)\b/, get: () => CGI().ITS },
+  { id: 'aib', title: 'Acompte sur impôt assis sur les bénéfices (AIB)', re: /\b(aib|acompte sur impot)\b/, get: () => (CGI().retenues_source || {}).AIB },
+  { id: 'tfu', title: 'Taxe foncière unique (TFU)', re: /\b(tfu|taxe fonciere)\b/, get: () => CGI().TFU },
+  { id: 'tvm', title: 'Taxe sur les véhicules à moteur (TVM)', re: /\b(tvm|vehicules? a moteur)\b/, get: () => CGI().TVM },
+  { id: 'tps', title: 'Taxe professionnelle synthétique (TPS)', re: /\b(tps|taxe professionnelle synthetique)\b/, get: () => CGI().TPS },
+  { id: 'vps', title: 'Versement patronal sur salaires (VPS)', re: /\b(vps|versement patronal)\b/, get: () => CGI().VPS },
+  { id: 'patente', title: 'Contribution des patentes', re: /\bpatentes?\b/, get: () => (CGI().patentes_licences || {}).patentes },
+  { id: 'licence', title: 'Contribution des licences', re: /\blicences?\b/, get: () => (CGI().patentes_licences || {}).licences },
+  { id: 'tafa', title: 'Taxe sur les activités financières et assurances (TAFA)', re: /\b(tafa|activites financieres)\b/, get: () => CGI().TAFA },
+  { id: 'accises', title: 'Droits d’accises', re: /\baccises?\b/, get: () => CGI().droits_accises },
+  { id: 'enreg', title: 'Droits d’enregistrement', re: /\b(droits? d enregistrement|enregistrement des actes)\b/, get: () => CGI().droits_enregistrement },
+  { id: 'timbre', title: 'Droits de timbre', re: /\btimbres?\b/, get: () => CGI().droits_timbre },
+  { id: 'retenue', title: 'Retenues à la source', re: /\bretenues? a la source\b/, get: () => CGI().retenues_source }
+];
+const detectFiscal = t => TAXES.filter(x => x.re.test(t) && x.get());
+
+const SECTIONS = [
+  ['taux', 'Taux'], ['bareme_mensuel', 'Barème mensuel'], ['montants_annuels', 'Montants annuels'], ['tarifs', 'Tarifs'],
+  ['calcul', 'Calcul'], ['base_imposable', 'Base imposable'], ['minimum_perception', 'Minimum de perception'],
+  ['droits_fixes', 'Droits fixes'], ['droit_proportionnel', 'Droit proportionnel'],
+  ['declaration_paiement', 'Déclaration et paiement'], ['versement', 'Versement'], ['paiement', 'Paiement'],
+  ['penalites', 'Pénalités'], ['exonerations', 'Exonérations']
+];
+function rowHtml(x) {
+  if (x == null) return '';
+  if (typeof x !== 'object') return esc(x);
+  const v = Object.values(x).filter(a => a !== '' && a != null).map(a => String(a).replace(/\s+/g, ' '));
+  if (!v.length) return '';
+  return v.length > 1 ? '<strong>' + esc(v[0]) + '</strong> : ' + esc(v.slice(1).join(' — ')) : esc(v[0]);
+}
+function listHtml(v) {
+  if (v == null) return '';
+  if (typeof v === 'string') return '<p>' + esc(short(v, 420)) + '</p>';
+  if (Array.isArray(v)) return '<ul class="ic-ul">' + v.map(x => '<li>' + rowHtml(x) + '</li>').join('') + '</ul>';
+  return '';
+}
+function sectionsHtml(o, onlyEch) {
+  let h = '', first = true;
+  SECTIONS.forEach(([k, label]) => {
+    if (o[k] == null || typeof o[k] === 'object' && !Array.isArray(o[k])) return;
+    if (onlyEch && !/declaration_paiement|versement|paiement/.test(k)) return;
+    const n = Array.isArray(o[k]) ? ' (' + o[k].length + ')' : '';
+    h += '<details' + (first ? ' open' : '') + '><summary>' + esc(label + n) + '</summary>' + listHtml(o[k]) + '</details>';
+    first = false;
+  });
+  return h;
+}
+function taxCard(tax, echeancesOnly) {
+  const o = tax.get() || {};
+  let h = '<div class="ic-card"><div class="ic-card-head"><strong>' + esc(tax.title) + '</strong></div>';
+  const intro = o.definition || o.description || o.nom;
+  if (intro && !echeancesOnly) h += '<p>' + esc(short(intro, 330)) + '</p>';
+  let body = sectionsHtml(o, echeancesOnly);
+  if (!body) {   // objets composés (accises, retenues à la source…)
+    Object.entries(o).forEach(([k, v]) => {
+      if (v && typeof v === 'object' && !Array.isArray(v)) {
+        const inner = sectionsHtml(v);
+        if (inner || v.nom || v.description) h += '<p><strong>' + esc(v.nom || k.replace(/_/g, ' ')) + '</strong></p>' + (v.description && !v.nom ? '<p class="ic-muted">' + esc(short(v.description, 200)) + '</p>' : '') + (v.taux && typeof v.taux === 'string' ? '<p>' + esc(v.taux) + '</p>' : '') + inner;
+      }
+    });
+  }
+  h += body;
+  if (echeancesOnly && !body) h += '<p>Pas d’échéance détaillée pour cet impôt dans les données du site.</p>';
+  h += '<p class="ic-note">Source : CGI Bénin 2026. <a class="ic-link" href="fiscalite-cgi-benin.html" target="_blank" rel="noopener">Consulter les fiches CGI</a></p></div>';
+  return { html: h, qr: aiQr(tax.title) };
+}
+function listCard(title, arr) {
+  if (!arr || !arr.length) return notFound();
+  return { html: '<div class="ic-card"><div class="ic-card-head"><strong>' + esc(title) + '</strong></div>' + listHtml(arr) + '<p class="ic-note">Source : CGI Bénin 2026.</p></div>' };
+}
+function calendarCard() {
+  const rows = CGI().calendrier_fiscal;
+  if (!rows || !rows.length) return notFound();
+  return { html: '<div class="ic-card"><div class="ic-card-head"><strong>Calendrier fiscal annuel</strong></div><ul class="ic-ul">' +
+    rows.map(r => '<li><strong>' + esc(r.mois) + '</strong> : ' + esc(short(r.obligation, 230)) + (r.impots ? ' <span class="ic-muted">(' + esc(r.impots) + ')</span>' : '') + '</li>').join('') +
+    '</ul><p class="ic-note">Source : CGI Bénin 2026. Vérifiez les dates sur le site de la DGI avant toute déclaration.</p></div>',
+    qr: [{ label: 'TVA', say: 'échéances TVA' }, { label: 'IS / IBA', say: 'échéances IS' }, { label: 'ITS', say: 'échéances ITS' }] };
+}
+
+// ═══ CALCULATEURS ══════════════════════════════════════════════
+const rangeLabel = (lo, hi) => hi === Infinity ? 'Au-delà de ' + lo.toLocaleString('fr-FR').replace(/[\u202f\u00a0\s]/g, NB) : (lo === 0 ? '0' : (lo + 1).toLocaleString('fr-FR').replace(/[\u202f\u00a0\s]/g, NB)) + ' à ' + hi.toLocaleString('fr-FR').replace(/[\u202f\u00a0\s]/g, NB);
+function itsResult(base) {
+  let total = 0; const rows = [];
+  ITS_BAREME.forEach(([lo, hi, r]) => {
+    const part = Math.max(0, Math.min(base, hi) - lo);
+    if (part > 0) { const tx = part * r; total += tx; rows.push('<tr><td>' + rangeLabel(lo, hi) + '</td><td>' + Math.round(r * 100) + ' %</td><td>' + fmt(part) + '</td><td>' + fmt(tx) + '</td></tr>'); }
+  });
+  return { html: '<div class="ic-card"><div class="ic-card-head"><strong>ITS mensuel</strong></div><p>Base imposable : <strong>' + fmt(base) + '</strong></p>' +
+    '<table class="ic-tbl"><tr><th>Tranche</th><th>Taux</th><th>Part</th><th>ITS</th></tr>' + rows.join('') +
+    '<tr class="ic-total"><td colspan="3">ITS à retenir</td><td>' + fmt(total) + '</td></tr></table>' +
+    '<p>Versement patronal (VPS, 4 %) : <strong>' + fmt(base * VPS_RATE) + '</strong></p>' +
+    '<p class="ic-note">Calcul indicatif selon le barème progressif du CGI Bénin 2026 (art. 119 à 129). La base est le salaire imposable du mois après déduction des cotisations sociales. La redevance ORTB, le taux réduit de VPS de l’enseignement privé et les cas particuliers ne sont pas inclus.</p></div>',
+    qr: [{ label: 'Autre calcul ITS', act: 'its' }, { label: 'Fiche ITS', say: 'fiche ITS' }] };
+}
+function tvaResult(amount, ttc) {
+  let ht, tva, total;
+  if (ttc) { total = amount; ht = amount / (1 + TVA_RATE); tva = total - ht; } else { ht = amount; tva = ht * TVA_RATE; total = ht + tva; }
+  return { html: '<div class="ic-card"><div class="ic-card-head"><strong>TVA au taux normal (18 %)</strong></div>' +
+    '<table class="ic-tbl"><tr><td>Montant HT</td><td>' + fmt(ht) + '</td></tr><tr><td>TVA (18 %)</td><td>' + fmt(tva) + '</td></tr><tr class="ic-total"><td>Montant TTC</td><td>' + fmt(total) + '</td></tr></table>' +
+    '<p class="ic-note">Les exportations sont à 0 % et certaines opérations sont exonérées : voir la fiche TVA.</p></div>',
+    qr: [{ label: 'Autre calcul de TVA', act: 'tva' }, { label: 'Fiche TVA', say: 'fiche TVA' }] };
+}
+function aibKind(t) {
+  if (/\bifu\b/.test(t) && /\b(sans|non|pas)\b/.test(t)) return 'noifu';
+  if (/\b(service|services|prestations?)\b/.test(t)) return 'serv';
+  if (/\b(import\w*|achats?|marchandises?|fournitures?|travaux)\b/.test(t)) return 'std';
+  return '';
+}
+function aibResult(amount, kind) {
+  const k = AIB_RATES[kind];
+  return { html: '<div class="ic-card"><div class="ic-card-head"><strong>AIB</strong></div><p class="ic-muted">' + esc(k.label) + '</p>' +
+    '<table class="ic-tbl"><tr><td>Montant HT de l’opération</td><td>' + fmt(amount) + '</td></tr><tr><td>Taux</td><td>' + Math.round(k.rate * 100) + ' %</td></tr><tr class="ic-total"><td>AIB à retenir</td><td>' + fmt(amount * k.rate) + '</td></tr></table>' +
+    '<p class="ic-note">À reverser au plus tard le 10 du mois suivant ; imputable sur l’IS, l’IBA ou la TPS.</p></div>',
+    qr: [{ label: 'Autre calcul AIB', act: 'aib' }, { label: 'Fiche AIB', say: 'fiche AIB' }] };
+}
+const aibQr = () => [{ label: 'Importation ou achats (1 %)', say: 'importation ou achats' }, { label: 'Prestations de services (3 %)', say: 'prestations de services' }, { label: 'Fournisseur sans IFU (5 %)', say: 'fournisseur sans IFU' }];
+
+function startFlow(id) {
+  flow = { id, data: {} };
+  if (id === 'its') return { html: '<p>Quelle est la <strong>base imposable mensuelle</strong> du salarié (en FCFA) ? Exemple : <em>350000</em>.</p>' };
+  if (id === 'tva') return { html: '<p>Quel est le montant ? Écrivez <strong>TTC</strong> à la suite s’il est toutes taxes comprises, sinon je le prends hors taxe. Exemple : <em>250000</em> ou <em>118000 TTC</em>.</p>' };
+  return { html: '<p>Quel est le <strong>montant HT</strong> de l’opération (en FCFA) ?</p>' };
+}
+function startCalc(kind, text) {
+  const t = norm(text), amt = parseAmount(text);
+  if (amt == null) return startFlow(kind);
+  if (kind === 'its') return itsResult(amt);
+  if (kind === 'tva') return tvaResult(amt, /\bttc\b/.test(t));
+  const k = aibKind(t);
+  if (k) return aibResult(amt, k);
+  flow = { id: 'aib', data: { amount: amt } };
+  return { html: '<p>Montant retenu : <strong>' + fmt(amt) + '</strong>. De quelle opération s’agit-il ?</p>', qr: aibQr() };
+}
+function flowStep(text) {
+  const f = flow, t = norm(text), nw = t.split(' ').filter(Boolean).length;
+  if (/^(annuler|stop|quitter|laisse tomber)\b/.test(t)) { flow = null; return { html: '<p>D’accord, j’annule.</p>', qr: mainQr() }; }
+  if (f.id === 'acct') { flow = null; return accountReply(text); }
+  if (f.id === 'doc') { flow = null; return docReply(text); }
+  if (f.id === 'aib' && f.data.amount != null) {
+    const k = aibKind(t);
+    if (!k) { if (nw > 4) { flow = null; return null; } return { html: '<p>Choisissez le type d’opération :</p>', qr: aibQr() }; }
+    flow = null; return aibResult(f.data.amount, k);
+  }
+  const n = parseAmount(text);
+  if (n == null) {
+    if (nw > 3) { flow = null; return null; }
+    return { html: '<p>Je n’ai pas compris le montant. Écrivez par exemple <em>350000</em>, ou « annuler ».</p>' };
+  }
+  flow = null;
+  if (f.id === 'its') return itsResult(n);
+  if (f.id === 'tva') return tvaResult(n, /\bttc\b/.test(t));
+  const k = aibKind(t);
+  if (k) return aibResult(n, k);
+  flow = { id: 'aib', data: { amount: n } };
+  return { html: '<p>Montant retenu : <strong>' + fmt(n) + '</strong>. De quelle opération s’agit-il ?</p>', qr: aibQr() };
+}
+function detectCalc(t) {
+  if (/\b(its|salaires?|traitements?)\b/.test(t)) return 'its';
+  if (/\btva\b/.test(t)) return 'tva';
+  if (/\baib\b/.test(t)) return 'aib';
+  return '';
+}
+const wantsCalc = (t, amt) => (/\b(calcul\w*|simul\w*|combien)\b/.test(t) || (amt != null && amt >= 1000)) && !/\b(taux|quand|date|echeances?|declar\w*|penalites?|definition)\b/.test(t);
+
+// ═══ DOCUMENTS ═════════════════════════════════════════════════
+const DOC_STOP = new Set(['document', 'documents', 'modele', 'modeles', 'fichier', 'fichiers', 'telecharger', 'template', 'existe', 'avez', 'proposez', 'disponible', 'disponibles']);
+function docCard(d) {
+  const ext = String(d.extension || '').replace('.', '').toUpperCase();
+  return '<div class="ic-card"><div class="ic-card-head"><strong>' + esc(d.titre) + '</strong></div>' +
+    '<div class="ic-card-sub">' + esc([d.categorie, ext].filter(Boolean).join(' · ')) + '</div>' +
+    (d.prix ? '<div class="ic-price">' + fmt(d.prix) + '</div>' : '') +
+    '<a class="ic-link" href="documents.html?q=' + encodeURIComponent(d.titre) + '" target="_blank" rel="noopener">Voir dans la liste des documents</a></div>';
+}
+async function docPrompt() {
+  let qr = [];
+  try {
+    const cat = await loadCatalog(), n = {};
+    cat.forEach(d => { if (d.categorie) n[d.categorie] = (n[d.categorie] || 0) + 1; });
+    qr = Object.keys(n).sort((a, b) => n[b] - n[a]).slice(0, 6).map(c => ({ label: c, say: 'document ' + c }));
+  } catch (_) {}
+  flow = { id: 'doc', data: {} };
+  return { html: '<p>Quel document cherchez-vous ? Indiquez un mot-clé, par exemple <em>contrat de vente</em>, <em>bilan</em> ou <em>billet à ordre</em>.</p>', qr };
+}
+async function docReply(text) {
+  const raw = [...new Set(words(text).filter(w => !DOC_STOP.has(w)))];
+  if (!raw.length) return docPrompt();
+  let cat;
+  try { cat = await loadCatalog(); } catch (_) {
+    return { html: '<p>Le catalogue est momentanément indisponible. Vous pouvez le consulter directement : <a class="ic-link" href="documents.html" target="_blank" rel="noopener">page Documents</a>.</p>' };
+  }
+  const groups = raw.map(w => [stem(w)]);
+  const scored = cat.map(d => {
+    const tt = new Set(stems(d.titre)), cc = new Set(stems(d.categorie || ''));
+    let s = 0, hit = 0;
+    groups.forEach(g => { let h = 0; if (hasAny(tt, g)) { s += 3; h = 1; } if (hasAny(cc, g)) { s += 2; h = 1; } hit += h; });
+    return { d, s, hit };
+  }).filter(x => x.hit && (groups.length === 1 || x.hit / groups.length >= 0.6)).sort((a, b) => b.s - a.s).slice(0, 5);
+  if (!scored.length) return { html: '<p>Aucun modèle payant ne correspond à « ' + esc(raw.join(' ')) + ' ». Les textes officiels, guides et procédures gratuits sont dans la <a class="ic-link" href="documents.html" target="_blank" rel="noopener">page Documents</a>.</p>', qr: [{ label: 'Chercher autre chose', act: 'doc' }] };
+  return { html: '<p>Voici ce que j’ai trouvé :</p>' + scored.map(x => docCard(x.d)).join('') +
+    '<p><a class="ic-link" href="documents.html" target="_blank" rel="noopener">Parcourir tous les documents</a> (gratuits et payants)</p>' };
+}
+
+async function myDownloads() {
+  const s = getSession();
+  if (!s) return { html: '<p>Connectez-vous pour voir vos documents achetés et vos téléchargements restants.</p><p><a class="ic-link" href="' + esc(loginUrl()) + '">Se connecter</a></p>' };
+  let rows, cat = [];
+  try {
+    rows = await sbGet('document_purchases?select=document_id,downloads_remaining&user_id=eq.' + encodeURIComponent(s.user.id), s.access_token);
+    try { cat = await loadCatalog(); } catch (_) {}
+  } catch (_) {
+    return { html: '<p>Je ne peux pas lire vos achats pour le moment. Réessayez dans quelques minutes ou <a class="ic-link" href="contact.html" target="_blank" rel="noopener">contactez-nous</a>.</p>' };
+  }
+  const sum = {};
+  rows.forEach(r => { sum[r.document_id] = (sum[r.document_id] || 0) + (r.downloads_remaining || 0); });
+  const ids = Object.keys(sum);
+  if (!ids.length) return { html: '<p>Vous n’avez pas encore acheté de document.</p>', qr: [{ label: 'Trouver un document', act: 'doc' }] };
+  const title = id => (cat.find(d => d.id === id) || {}).titre || id;
+  ids.sort((a, b) => sum[b] - sum[a]);
+  return { html: '<div class="ic-card"><div class="ic-card-head"><strong>Vos documents achetés</strong></div><ul class="ic-ul">' +
+    ids.map(id => '<li><strong>' + esc(title(id)) + '</strong> : ' + (sum[id] > 0 ? sum[id] + ' téléchargement' + (sum[id] > 1 ? 's' : '') + ' restant' + (sum[id] > 1 ? 's' : '') : 'téléchargements utilisés, nouveau paiement nécessaire') + '</li>').join('') + '</ul></div>' };
+}
+
+// ═══ IA (limitée aux données du site) ══════════════════════════
+const isExplain = t => /\b(pourquoi|comment|expliqu\w*|difference|que se passe|peut on|puis je|dois je|est ce que|cas particulier|exemple concret)\b/.test(t);
+function aiContext(q) {
+  const parts = [], seen = new Set();
+  const codes = [pageCode()].concat(searchAccounts(q, 4)).filter(c => c && !seen.has(c) && seen.add(c));
+  codes.forEach(c => {
+    const d = ACC()[c]; const f = d.fonctionnement || {};
+    let s = '[' + c + '] ' + d.libelle + ' | ' + (d.nature || '') + ' | sens : ' + (d.sens || '');
+    if (d.contenu) s += '\nContenu : ' + short(d.contenu, 350);
+    if ((f.debit || []).length) s += '\nDébit : ' + f.debit.slice(0, 3).join(' ; ');
+    if ((f.credit || []).length) s += '\nCrédit : ' + f.credit.slice(0, 3).join(' ; ');
+    (d.exemples_ecritures || []).slice(0, 2).forEach(e => { s += '\nEx. : ' + e.libelle + ' → Débit ' + e.debit + ' / Crédit ' + e.credit; });
+    parts.push(s);
+  });
+  detectFiscal(norm(q)).slice(0, 2).forEach(x => parts.push('FISCALITÉ — ' + x.title + ' (CGI Bénin 2026) : ' + short(JSON.stringify(x.get()), 3200)));
+  return parts.join('\n\n').slice(0, 9000);
+}
+function aiSystem(ctx) {
+  return 'Tu es l’assistant du site InfoCompta (comptabilité OHADA et fiscalité du Bénin). Réponds en français, de façon concise et structurée, en FCFA uniquement.\n\n' +
+    'RÈGLES STRICTES\n1. Réponds UNIQUEMENT à partir du CONTEXTE ci-dessous. N’invente aucun taux, date, article ni numéro de compte.\n' +
+    '2. Si le contexte ne contient pas la réponse, écris exactement : « Je n’ai pas cette information dans les données d’InfoCompta. » puis oriente vers la page Contact ou la fiche concernée.\n' +
+    '3. Cite les comptes entre crochets, par exemple [401], et la source (plan OHADA InfoCompta ou CGI Bénin 2026).\n' +
+    '4. Termine par : « Information indicative : vérifiez dans le texte officiel. »\n\nCONTEXTE\n' + ctx;
+}
+async function askAI(text) {
+  if (CFG.aiMode === 'off') return notFound();
+  if (!aiAvailable()) return { html: '<p>Les explications détaillées sont réservées aux utilisateurs connectés. <a class="ic-link" href="' + esc(loginUrl()) + '">Se connecter</a></p><p>En attendant, voici ce que je peux faire directement :</p>', qr: mainQr() };
+  const used = Number(sessionStorage.getItem('ic_ai_n') || 0);
+  if (used >= CFG.aiMaxPerSession) return { html: '<p>Vous avez atteint la limite de questions détaillées pour cette session. Les autres fonctions restent disponibles.</p>', qr: mainQr() };
+  const ctx = aiContext(text);
+  if (!ctx) return notFound();
+  try { sessionStorage.setItem('ic_ai_n', String(used + 1)); } catch (_) {}
+  const msgs = hist.slice(-HIST_MAX).map(m => ({ role: m.role, content: m.content }));
+  if (!msgs.length || msgs[msgs.length - 1].role !== 'user') msgs.push({ role: 'user', content: text });
+  const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 30000);
+  try {
+    const s = getSession();
+    const resp = await fetch(CFG.aiEndpoint, {
+      method: 'POST', signal: ctl.signal,
+      headers: Object.assign({ 'Content-Type': 'application/json' }, s ? { Authorization: 'Bearer ' + s.access_token } : {}),
+      body: JSON.stringify({ system: aiSystem(ctx), messages: msgs })
+    });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
     const data = await resp.json();
-    let out = '';
-    if (Array.isArray(data.content)) data.content.forEach(function (b) { if (b.type === 'text') out += b.text; });
-    else if (typeof data.content === 'string') out = data.content;
-    return out ? A(out, { src: 'Base InfoCompta et assistant IA' }) : null;
-  } catch (e) { return null; }
+    let reply = '';
+    if (Array.isArray(data.content)) data.content.forEach(b => { if (b.type === 'text') reply += b.text; });
+    else if (typeof data.content === 'string') reply = data.content;
+    if (!reply) throw new Error('vide');
+    return { html: md(reply) + '<p class="ic-note">Réponse rédigée à partir des données d’InfoCompta, à titre indicatif.</p>' };
+  } catch (_) {
+    return { html: '<p>L’assistant d’explication ne répond pas pour le moment. Voici les informations directement disponibles :</p>' + (searchAccounts(text, 2).map(c => accountCard(c)).join('') || ''), qr: mainQr() };
+  } finally { clearTimeout(to); }
 }
 
-/* ───────── Interface ───────── */
-let open = false, busy = false, restored = false;
-const $ = function (id) { return document.getElementById(id); };
+// ═══ ROUTEUR ═══════════════════════════════════════════════════
+function mainQr() {
+  return [{ label: '🔎 Quel compte ?', act: 'acct' }, { label: '📁 Un document', act: 'doc' }, { label: '📅 Calendrier fiscal', act: 'cal' }, { label: '🧮 Calculer l’ITS', act: 'its' }];
+}
+function helpReply() {
+  return { html: '<p>Je peux vous aider à :</p><ul><li><strong>trouver un compte</strong> du plan OHADA pour une opération (« paiement du loyer »),</li><li><strong>trouver un document</strong> ou un modèle,</li><li>consulter les <strong>taux et échéances</strong> d’un impôt (TVA, IS, ITS…),</li><li><strong>calculer</strong> l’ITS, la TVA ou l’AIB,</li><li>voir vos <strong>téléchargements restants</strong>.</li></ul>', qr: mainQr() };
+}
+function notFound() {
+  return { html: '<p>Je n’ai pas trouvé de réponse précise dans les données d’InfoCompta. Reformulez avec un mot-clé (« loyer », « TVA », « bilan ») ou choisissez une fonction :</p>', qr: mainQr().concat([{ label: 'Nous contacter', say: 'contact' }]) };
+}
+function accountReply(text) {
+  const t = norm(text), ex = exactCode(t);
+  if (ex) return { html: accountCard(ex, { resume: true }), qr: aiQr(text) };
+  const res = searchAccounts(text, 3);
+  if (res.length) return accountsReply(res, text);
+  return { html: '<p>Je n’ai pas trouvé de compte correspondant. Essayez avec le nom de l’opération (« achat de marchandises », « salaire », « emprunt bancaire ») ou avec le numéro du compte.</p>', qr: mainQr() };
+}
 
-function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(HIST.slice(-MAX_STORED))); } catch (e) {} }
+async function route(text) {
+  const t = norm(text), nw = t.split(' ').filter(Boolean).length;
+  if (flow) { const r = flowStep(text); if (r) return r; }
 
-function addUser(text, persist) {
-  const box = $('icw-messages');
-  const d = document.createElement('div');
-  d.className = 'icw-msg user';
-  d.innerHTML = '<div class="icw-bubble"><p>' + esc(text) + '</p></div>';
-  box.appendChild(d); box.scrollTop = box.scrollHeight;
-  if (persist) { HIST.push({ r: 'u', t: text }); save(); }
+  if (nw <= 3 && /^(bonjour|bonsoir|salut|hello|coucou)/.test(t)) return { html: '<p>Bonjour ! Que puis-je faire pour vous ?</p>', qr: mainQr() };
+  if (nw <= 4 && /^(merci|ok|super|parfait|d accord)/.test(t)) return { html: '<p>Avec plaisir ! N’hésitez pas si vous avez une autre question.</p>' };
+  if (nw <= 6 && /\b(aide|menu|fonctions?|que sais tu faire|que peux tu faire)\b/.test(t)) return helpReply();
+  if (/^(contact|nous contacter|support)$/.test(t)) return { html: '<p>Vous pouvez nous écrire depuis la <a class="ic-link" href="contact.html" target="_blank" rel="noopener">page Contact</a>.</p>' };
+
+  if (pageCode()) { const sec = sectionIntent(t); if (sec) return accountSection(pageCode(), sec); }
+
+  if (/\b(mes (achats|telechargements|documents|commandes)|telechargements? restants?|combien de telechargements?)\b/.test(t)) return myDownloads();
+
+  const accountWords = /\b(compte|comptes|ecritures?|comptabilis\w*|enregistr\w*|journal|debiter|crediter|debit|credit)\b/.test(t);
+  const amt = parseAmount(text);
+  const calc = accountWords ? '' : detectCalc(t);
+  if (calc && wantsCalc(t, amt)) return startCalc(calc, text);
+
+  if (/\b(documents?|modeles?|fichiers?|telecharg\w*|templates?)\b/.test(t) && !/\bcompte\b/.test(t)) return docReply(text);
+
+  const taxes = accountWords ? [] : detectFiscal(t);
+  if (!accountWords && /\b(calendrier|echeances?|date limite|quand (payer|declarer|deposer)|delais?)\b/.test(t)) return taxes.length ? taxCard(taxes[0], true) : calendarCard();
+  if (taxes.length) return (isExplain(t) && aiAvailable()) ? askAI(text) : taxCard(taxes[0]);
+  if (!accountWords && /\b(penalites?|sanctions?|amendes?)\b/.test(t)) return listCard('Sanctions et pénalités', CGI().sanctions_generales);
+  if (!accountWords && /\b(recours|reclamation|contentieux)\b/.test(t)) return listCard('Recours du contribuable', CGI().recours);
+  if (!accountWords && /\b(controle fiscal|verification de comptabilite)\b/.test(t)) return listCard('Contrôle fiscal', (CGI().controle_impot || {}).types);
+
+  const ex = exactCode(t);
+  if (ex) return { html: accountCard(ex, { resume: true }), qr: aiQr(text) };
+  const res = searchAccounts(text, 3);
+  if (res.length && !(isExplain(t) && aiAvailable())) return accountsReply(res, text);
+  if (isExplain(t)) return askAI(text);
+  return notFound();
 }
-function addBot(ans, persist) {
-  const box = $('icw-messages');
-  const d = document.createElement('div');
-  d.className = 'icw-msg bot';
-  let html = '<div class="icw-bubble">' + format(ans.text) + '</div>';
-  if (ans.suggestions && ans.suggestions.length) {
-    html += '<div class="icw-follow">' + ans.suggestions.map(function (s) { return '<button type="button" class="icw-pill" data-ask="' + esc(s.ask) + '">' + esc(s.label) + '</button>'; }).join('') + '</div>';
-  }
-  if (ans.actions && ans.actions.length) {
-    html += '<div class="icw-follow">' + ans.actions.map(function (a) { return '<a class="icw-act" href="' + esc(a.href) + '"' + (/^compte-detail/.test(a.href) ? ' target="_blank" rel="noopener"' : '') + '>' + esc(a.label) + '</a>'; }).join('') + '</div>';
-  }
-  html += '<div class="icw-meta">' + (ans.src ? '<span>Source : ' + esc(ans.src) + '</span>' : '') +
-          '<button type="button" class="icw-copy" data-copy>' + SVG.copy + '<span>Copier</span></button></div>';
-  d.innerHTML = html;
-  d._plain = plain(ans.text);
-  box.appendChild(d); box.scrollTop = box.scrollHeight;
-  if (persist) { HIST.push({ r: 'b', t: ans.text, s: ans.src, a: ans.actions, g: ans.suggestions }); save(); }
+
+async function runAct(act) {
+  flow = null;
+  if (act === 'acct') { flow = { id: 'acct', data: {} }; return { html: '<p>Décrivez l’opération ou le compte recherché. Exemples : <em>paiement du loyer</em>, <em>achat de marchandises à crédit</em>, <em>avance au personnel</em>.</p>' }; }
+  if (act === 'doc') return docPrompt();
+  if (act === 'cal') return calendarCard();
+  if (act === 'its' || act === 'tva' || act === 'aib') return startFlow(act);
+  if (act === 'mine') return myDownloads();
+  return accountSection(pageCode(), act);
 }
-function showTyping() {
-  const box = $('icw-messages'); const d = document.createElement('div');
-  d.id = 'icw-typing'; d.className = 'icw-msg bot';
-  d.innerHTML = '<div class="icw-typing"><span></span><span></span><span></span></div>';
-  box.appendChild(d); box.scrollTop = box.scrollHeight;
-}
-function hideTyping() { const t = $('icw-typing'); if (t) t.remove(); }
-function toast(msg) {
-  const t = $('icw-toast'); if (!t) return;
-  t.textContent = msg; t.classList.add('show'); setTimeout(function () { t.classList.remove('show'); }, 1800);
-}
-function copyText(text, btn) {
-  const done = function () {
-    btn.classList.add('copied'); btn.innerHTML = SVG.check + '<span>Copié</span>'; toast('Réponse copiée');
-    setTimeout(function () { btn.classList.remove('copied'); btn.innerHTML = SVG.copy + '<span>Copier</span>'; }, 2000);
+
+// ── Copier ─────────────────────────────────────────────────────
+function icCopy(text, btn) {
+  const done = () => {
+    btn.classList.add('copied'); btn.innerHTML = SVG.check + '<span class="ic-copy-label">Copié</span>'; showToast('Réponse copiée');
+    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = SVG.copy + '<span class="ic-copy-label">Copier</span>'; }, 2200);
   };
-  if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(text).then(done).catch(function () { fallbackCopy(text, done); }); }
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
   else fallbackCopy(text, done);
 }
 function fallbackCopy(text, cb) {
   const ta = document.createElement('textarea');
   ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
   document.body.appendChild(ta); ta.focus(); ta.select();
-  try { document.execCommand('copy'); cb(); } catch (e) {}
+  try { document.execCommand('copy'); cb(); } catch (_) {}
   document.body.removeChild(ta);
 }
+function showToast(msg) {
+  const t = document.getElementById('ic-toast'); if (!t) return;
+  t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000);
+}
 
-async function send(forced) {
-  if (busy) return;
-  const input = $('icw-input');
-  const text = (forced != null ? forced : input.value).trim();
+// ── Construction du DOM ────────────────────────────────────────
+function buildWidget() {
+  const style = document.createElement('style'); style.textContent = STYLE; document.head.appendChild(style);
+  const code = pageCode(), d = code ? ACC()[code] : null;
+
+  const chips = code
+    ? [['resume', '📊 Résumé'], ['fonct', '🔁 Fonctionnement'], ['ex', '📝 Exemples d’écritures'], ['lies', '🔗 Comptes liés'], ['excl', '🚫 Exclusions'], ['subs', '🗂 Subdivisions'], ['ctrl', '✅ Contrôles'], ['acct', '🔎 Autre compte']]
+    : [['acct', '🔎 Quel compte ?'], ['doc', '📁 Trouver un document'], ['cal', '📅 Calendrier fiscal'], ['its', '🧮 Calculer l’ITS'], ['tva', '🧾 Calculer la TVA'], ['aib', '💼 Calculer l’AIB'], ['mine', '📥 Mes téléchargements']];
+  const chipsHTML = chips.map(c => '<button type="button" class="ic-chip" data-act="' + c[0] + '">' + c[1] + '</button>').join('');
+
+  const welcome = code
+    ? '<p>Bonjour ! Vous consultez la fiche du compte <strong>' + esc(code) + ' · ' + esc(d.libelle) + '</strong>.</p><p>Utilisez les boutons ci-dessus ou posez votre question.</p>'
+    : '<p>Bonjour ! Je connais le plan comptable OHADA, le CGI Bénin 2026 et le catalogue de documents InfoCompta.</p><p>Choisissez une fonction ci-dessus ou posez votre question.</p>';
+
+  const wrap = document.createElement('div');
+  wrap.innerHTML =
+    '<button id="ic-fab" type="button" aria-label="Ouvrir l’assistant InfoCompta"><div id="ic-notif"></div>' + SVG.bot + '</button>' +
+    '<div id="ic-panel" role="dialog" aria-label="Assistant InfoCompta">' +
+      '<div class="ic-header"><div class="ic-header-logo">' + SVG.logo + '</div>' +
+        '<div class="ic-header-info"><h3>Assistant InfoCompta</h3><p>Plan OHADA · CGI Bénin 2026</p></div>' +
+        '<div class="ic-header-btns"><button type="button" class="ic-hbtn" id="ic-clear-btn" title="Effacer la conversation" aria-label="Effacer la conversation">' + SVG.trash + '</button>' +
+        '<button type="button" class="ic-hbtn" id="ic-close-btn" title="Fermer" aria-label="Fermer">' + SVG.close + '</button></div></div>' +
+      '<div class="ic-chips" id="ic-chips">' + chipsHTML + '</div>' +
+      '<div class="ic-messages" id="ic-messages" aria-live="polite"><div class="ic-msg ai"><div class="ic-avatar">I</div><div class="ic-msg-body"><div class="ic-bubble">' + welcome + '</div></div></div></div>' +
+      '<div class="ic-input-area"><textarea id="ic-input" rows="1" maxlength="1000" aria-label="Votre question" placeholder="' + (code ? 'Une question sur le compte ' + esc(code) + ' ?' : 'Posez votre question comptable ou fiscale…') + '"></textarea>' +
+        '<button type="button" id="ic-send" aria-label="Envoyer">' + SVG.send + '</button></div>' +
+      '<div class="ic-footer">Réponses issues des données d’InfoCompta · à titre indicatif</div>' +
+    '</div><div id="ic-toast" role="status"></div>';
+  document.body.appendChild(wrap);
+
+  const $ = id => document.getElementById(id);
+  $('ic-fab').addEventListener('click', () => setOpen(!icOpen));
+  $('ic-close-btn').addEventListener('click', () => setOpen(false));
+  $('ic-clear-btn').addEventListener('click', clearHistory);
+  $('ic-send').addEventListener('click', () => sendText());
+  $('ic-input').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendText(); } });
+  $('ic-input').addEventListener('input', function () { this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 100) + 'px'; });
+  $('ic-chips').addEventListener('click', e => { const c = e.target.closest('.ic-chip'); if (c) sendAct(c.dataset.act, c.textContent.trim()); });
+  $('ic-messages').addEventListener('click', e => {
+    const b = e.target.closest('.ic-qr'); if (!b) return;
+    const box = b.closest('.ic-qrs'); if (box) box.remove();
+    if (b.dataset.act) sendAct(b.dataset.act, b.textContent.trim());
+    else if (b.dataset.ai) sendAI(b.dataset.ai);
+    else if (b.dataset.say) sendText(b.dataset.say);
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && icOpen) setOpen(false); });
+  setTimeout(() => { if (!icOpen) $('ic-notif').style.display = 'block'; }, 3000);
+}
+
+function setOpen(open) {
+  icOpen = open;
+  document.getElementById('ic-panel').classList.toggle('open', open);
+  document.getElementById('ic-notif').style.display = 'none';
+  if (open && !icRestored) {
+    icRestored = true;
+    if (hist.length) {
+      document.getElementById('ic-messages').innerHTML = '';
+      hist.forEach(m => { if (m.role === 'user') appendUser(m.content); else appendBot({ html: m.html || esc(m.content) }, true); });
+    }
+  }
+  if (open) setTimeout(() => document.getElementById('ic-input').focus(), 250);
+}
+function clearHistory() {
+  try { localStorage.removeItem(STORE_KEY); } catch (_) {}
+  hist = []; icRestored = true; flow = null;
+  document.getElementById('ic-messages').innerHTML = '';
+  appendBot({ html: '<p>Conversation effacée. Comment puis-je vous aider ?</p>', qr: mainQr() }, true);
+}
+
+// ── Messages ───────────────────────────────────────────────────
+function scrollDown() { const c = document.getElementById('ic-messages'); c.scrollTop = c.scrollHeight; }
+function appendUser(text) {
+  const d = document.createElement('div'); d.className = 'ic-msg user';
+  d.innerHTML = '<div class="ic-avatar">V</div><div class="ic-msg-body"><div class="ic-bubble">' + esc(text) + '</div></div>';
+  document.getElementById('ic-messages').appendChild(d); scrollDown();
+}
+function appendBot(reply, restoring) {
+  const d = document.createElement('div'); d.className = 'ic-msg ai';
+  const qr = reply.qr && !restoring ? '<div class="ic-qrs">' + reply.qr.map(q =>
+    '<button type="button" class="ic-qr"' + (q.act ? ' data-act="' + esc(q.act) + '"' : '') + (q.ai ? ' data-ai="' + esc(q.ai) + '"' : '') + (q.say ? ' data-say="' + esc(q.say) + '"' : '') + '>' + esc(q.label) + '</button>').join('') + '</div>' : '';
+  d.innerHTML = '<div class="ic-avatar">I</div><div class="ic-msg-body"><div class="ic-bubble">' + reply.html + '</div>' +
+    '<button type="button" class="ic-copy-btn" aria-label="Copier la réponse">' + SVG.copy + '<span class="ic-copy-label">Copier</span></button>' + qr + '</div>';
+  document.getElementById('ic-messages').appendChild(d);
+  const bubble = d.querySelector('.ic-bubble');
+  d.querySelector('.ic-copy-btn').addEventListener('click', function () { icCopy(bubble.innerText, this); });
+  scrollDown();
+  return bubble;
+}
+function showTyping() {
+  const d = document.createElement('div'); d.className = 'ic-msg ai'; d.id = 'ic-typing-row';
+  d.innerHTML = '<div class="ic-avatar">I</div><div class="ic-typing"><span></span><span></span><span></span></div>';
+  document.getElementById('ic-messages').appendChild(d); scrollDown();
+}
+const removeTyping = () => { const e = document.getElementById('ic-typing-row'); if (e) e.remove(); };
+
+// ── Envoi ──────────────────────────────────────────────────────
+async function process(userLabel, producer) {
+  if (icBusy) return;
+  icBusy = true;
+  const send = document.getElementById('ic-send'); send.disabled = true;
+  appendUser(userLabel);
+  hist.push({ role: 'user', content: userLabel });
+  showTyping();
+  let reply;
+  try { reply = await producer(); } catch (err) { console.error(err); reply = { html: '<p>Une erreur est survenue. Réessayez ou reformulez votre demande.</p>', qr: mainQr() }; }
+  removeTyping();
+  const bubble = appendBot(reply);
+  hist.push({ role: 'assistant', content: short(bubble.innerText, 700), html: reply.html });
+  if (hist.length > MAX_STORED) hist.splice(0, hist.length - MAX_STORED);
+  saveHist();
+  icBusy = false; send.disabled = false;
+  document.getElementById('ic-input').focus();
+}
+function sendText(preset) {
+  const input = document.getElementById('ic-input');
+  const text = (preset != null ? preset : input.value).trim();
   if (!text) return;
-  input.value = ''; input.style.height = 'auto';
-  addUser(text, true);
-  busy = true; $('icw-send').disabled = true; showTyping();
-  let ans;
-  try { const t0 = Date.now(); ans = await answer(text); const wait = 260 - (Date.now() - t0); if (wait > 0) await sleep(wait); }
-  catch (e) { ans = A('Une erreur est survenue. Réessayez dans un instant.'); }
-  hideTyping(); addBot(ans, true);
-  busy = false; $('icw-send').disabled = false; input.focus();
+  if (preset == null) { input.value = ''; input.style.height = 'auto'; }
+  process(text, () => route(text));
 }
+function sendAct(act, label) { process(label, () => runAct(act)); }
+function sendAI(q) { process('Expliquer en détail', () => askAI(q)); }
 
-function setOpen(v) {
-  open = v;
-  $('icw-panel').classList.toggle('open', v);
-  $('icw-fab').setAttribute('aria-expanded', String(v));
-  $('icw-dot').style.display = 'none';
-  try { sessionStorage.setItem('icw_seen', '1'); } catch (e) {}
-  if (v && !restored) {
-    restored = true;
-    HIST.forEach(function (m) {
-      if (m.r === 'u') addUser(m.t, false);
-      else addBot({ text: m.t, src: m.s, actions: m.a, suggestions: m.g }, false);
-    });
-  }
-  if (v) setTimeout(function () { $('icw-input').focus(); }, 220);
-}
-function clearAll() {
-  try { localStorage.removeItem(STORE_KEY); } catch (e) {}
-  HIST.length = 0; pending = null; restored = true;
-  $('icw-messages').innerHTML = '';
-  addBot(welcome(), false);
-}
-function welcome() {
-  if (_code && DATA[_code]) {
-    return A('Vous consultez le compte [' + _code + '] ' + DATA[_code].libelle + '. Je peux détailler son fonctionnement, donner des exemples d’écritures ou chercher un autre compte.');
-  }
-  return A('Je retrouve un compte du plan OHADA, un taux ou une échéance fiscale du Bénin, un modèle de document, et je calcule l’ITS, la TVA, l’AIB, l’IRF et la TPS.', { suggestions: starterSuggestions() });
-}
-function chipsHtml() {
-  const c = function (label, attr, val, cur) { return '<button type="button" class="icw-chip' + (cur ? ' is-current' : '') + '" data-' + attr + '="' + esc(val) + '">' + esc(label) + '</button>'; };
-  const common = c('Quel compte ?', 'fill', 'Quel compte pour ') + c('Document', 'fill', 'Je cherche un modèle de ') +
-    c('Calendrier fiscal', 'ask', 'calendrier fiscal') + c('Calculer l’ITS', 'ask', 'calculer ITS') +
-    c('Calculer la TVA', 'ask', 'calculer TVA') + c('Mes téléchargements', 'ask', 'mes téléchargements');
-  if (_code && DATA[_code]) {
-    return c('Ce compte', 'ask', 'explique le compte ' + _code, true) + c('Fonctionnement', 'ask', 'fonctionnement du compte ' + _code) +
-      c('Écritures', 'ask', 'exemples d’écritures du compte ' + _code) + c('Comptes liés', 'ask', 'comptes liés au compte ' + _code) +
-      c('Exclusions', 'ask', 'exclusions du compte ' + _code) + common;
-  }
-  return common;
-}
-
-function build() {
-  prepareData();
-  const st = document.createElement('style'); st.textContent = STYLE; document.head.appendChild(st);
-
-  const root = document.createElement('div'); root.className = 'icw-root';
-  root.innerHTML =
-    '<button id="icw-fab" type="button" aria-label="Ouvrir l’assistant InfoCompta" aria-expanded="false">' + SVG.chat + '<span id="icw-dot"></span></button>' +
-    '<div id="icw-panel" role="dialog" aria-label="Assistant InfoCompta">' +
-      '<div class="icw-head">' +
-        '<div class="icw-badge">IC</div>' +
-        '<div class="icw-title"><strong>Assistant InfoCompta</strong><span>Plan comptable et fiscalité du Bénin</span></div>' +
-        '<button type="button" class="icw-hbtn" id="icw-clear" title="Effacer la conversation" aria-label="Effacer la conversation">' + SVG.trash + '</button>' +
-        '<button type="button" class="icw-hbtn" id="icw-close" title="Fermer" aria-label="Fermer">' + SVG.close + '</button>' +
-      '</div>' +
-      '<div class="icw-chips" id="icw-chips">' + chipsHtml() + '</div>' +
-      '<div id="icw-messages" aria-live="polite"></div>' +
-      '<div class="icw-input-area">' +
-        '<textarea id="icw-input" rows="1" maxlength="600" placeholder="' + (_code ? 'Posez une question sur le compte ' + esc(_code) : 'Décrivez une opération, un impôt ou un document') + '"></textarea>' +
-        '<button type="button" id="icw-send" aria-label="Envoyer">' + SVG.send + '</button>' +
-      '</div>' +
-      '<div class="icw-foot">Informations indicatives. Vérifiez dans le CGI officiel.</div>' +
-    '</div>' +
-    '<div id="icw-toast"></div>';
-  document.body.appendChild(root);
-
-  addBot(welcome(), false);
-
-  $('icw-fab').addEventListener('click', function () { setOpen(!open); });
-  $('icw-close').addEventListener('click', function () { setOpen(false); });
-  $('icw-clear').addEventListener('click', clearAll);
-  $('icw-send').addEventListener('click', function () { send(); });
-  const input = $('icw-input');
-  input.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
-  input.addEventListener('input', function () { this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 100) + 'px'; });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) setOpen(false); });
-
-  const onPick = function (e) {
-    const b = e.target.closest('[data-ask],[data-fill],[data-copy]'); if (!b) return;
-    if (b.hasAttribute('data-copy')) { const msg = b.closest('.icw-msg'); if (msg && msg._plain != null) copyText(msg._plain, b); return; }
-    if (b.hasAttribute('data-ask')) { send(b.getAttribute('data-ask')); return; }
-    const inp = $('icw-input'); inp.value = b.getAttribute('data-fill'); inp.focus();
-  };
-  $('icw-chips').addEventListener('click', onPick);
-  $('icw-messages').addEventListener('click', onPick);
-
-  let seen = false; try { seen = sessionStorage.getItem('icw_seen') === '1'; } catch (e) {}
-  if (!seen) setTimeout(function () { if (!open) $('icw-dot').style.display = 'block'; }, 3000);
-
-  if (window.__ICW_TEST__) window.__ICW_TEST__.answer = answer;
-}
-
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', build);
-else build();
+// ── Init ───────────────────────────────────────────────────────
+if (window.IC_TEST) { window.__ic = { route, runAct, parseAmount, norm, searchAccounts, flowStep, getFlow: () => flow, setFlow: f => { flow = f; } }; return; }
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', buildWidget);
+else buildWidget();
 
 })();
