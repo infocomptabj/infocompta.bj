@@ -808,7 +808,7 @@ footer {
 
 /* ── CTA Banner ── */
 .cta-banner {
-  background: linear-gradient(172deg, var(--teal) 0%, #00085b 100%);
+  background: var(--header-bg);
   border-radius: var(--radius-md);
   padding: 3.5rem 3rem;
   display: flex;
