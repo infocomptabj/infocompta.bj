@@ -323,21 +323,49 @@ function parseAmount(text) {
 }
 
 // Mise en forme des réponses de l’IA (texte échappé avant tout)
+// Mise en forme des réponses de l’IA (texte échappé avant tout)
 function md(raw) {
   const pres = [];
-  const t0 = esc(raw).replace(/```[\w]*\n?([\s\S]*?)```/g, (_, c) => { pres.push(c.trim()); return '\u0000' + (pres.length - 1) + '\u0000'; });
-  const out = []; let inUl = false;
-  t0.split('\n').forEach(ln => {
+  // <br> écrits par l'IA → marqueur, restauré en vrai <br> à la fin
+  const src = String(raw).replace(/<br\s*\/?>/gi, '\u0001');
+  const t0 = esc(src).replace(/```[\w]*\n?([\s\S]*?)```/g, (_, c) => { pres.push(c.trim()); return '\u0000' + (pres.length - 1) + '\u0000'; });
+
+  const isRow = l => /^\s*\|.*\|\s*$/.test(l);
+  const isSep = l => /^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/.test(l);
+  const cells = l => l.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim());
+
+  const lines = t0.split('\n'), out = [];
+  let inUl = false;
+  for (let i = 0; i < lines.length; i++) {
+    const ln = lines[i];
+
+    // Tableau Markdown
+    if (isRow(ln)) {
+      if (inUl) { out.push('</ul>'); inUl = false; }
+      const block = [];
+      while (i < lines.length && isRow(lines[i])) block.push(lines[i++]);
+      i--;
+      let head = null, body = block.filter(l => !isSep(l));
+      if (block.length > 1 && isSep(block[1])) { head = cells(block[0]); body = block.slice(2).filter(l => !isSep(l)); }
+      let h = '<div class="ic-md-wrap"><table class="ic-md-tbl">';
+      if (head) h += '<tr>' + head.map(c => '<th>' + c + '</th>').join('') + '</tr>';
+      body.forEach(l => { h += '<tr>' + cells(l).map(c => '<td>' + c + '</td>').join('') + '</tr>'; });
+      out.push(h + '</table></div>');
+      continue;
+    }
+
     const m = ln.match(/^\s*(?:[-•*]|\d+\.)\s+(.*)$/);
     if (m) { if (!inUl) { out.push('<ul>'); inUl = true; } out.push('<li>' + m[1] + '</li>'); }
     else { if (inUl) { out.push('</ul>'); inUl = false; } out.push(ln + '<br>'); }
-  });
+  }
   if (inUl) out.push('</ul>');
+
   return out.join('')
     .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/(^|[^*])\*(?!\s)([^*]+?)\*/g, '$1<em>$2</em>')
     .replace(/(<br>)+$/, '')
+    .replace(/\u0001/g, '<br>')
     .replace(/\[(\d+[a-zA-Z0-9-]*)\]/g, (m, c) => ACC()[c] ? accTag(c) : m)
     .replace(/\u0000(\d+)\u0000/g, (_, i) => '<pre>' + pres[i] + '</pre>');
 }
