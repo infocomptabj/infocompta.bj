@@ -112,7 +112,7 @@ main { flex: 1 0 auto; }
 
 /* ═══════════ HEADER ═══════════ */
 header {
-  background: linear-gradient(90deg, #082a61, #071c3f 50.96%, #060f1f);
+  background: linear-gradient(270deg, #082a61, #071c3f 50.96%, #060f1f);
   padding: 0 3.5rem;
   position: sticky;
   top: 0;
