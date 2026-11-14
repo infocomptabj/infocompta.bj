@@ -72,7 +72,7 @@ const STYLE = `
 
   #ic-fab {
     position: fixed; bottom: 24px; right: 24px; z-index: 9998;
-    width: 56px; height: 56px; border-radius: 50%;
+    height: 56px; padding: 0 18px 0 12px; gap: 8px; border-radius: 28px;
     background: #fff; border: 2px solid var(--ic-accent);
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     box-shadow: 0 8px 28px rgba(0,8,91,.35);
@@ -85,6 +85,13 @@ const STYLE = `
   }
   #ic-fab svg { width: 24px; height: 24px; fill: #fff; }
   #ic-fab img { width: 32px; height: auto; }
+  .ic-fab-label { font-size: 14px; font-weight: 600; color: var(--ic-navy); white-space: nowrap; }
+    #ic-notif { animation: ic-pulse 1.8s infinite; }
+    @keyframes ic-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255,20,20,.6); }
+  70%  { box-shadow: 0 0 0 8px rgba(255,20,20,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,20,20,0); }
+}
   #ic-notif {
     position: absolute; top: -2px; right: -2px; width: 13px; height: 13px;
     border-radius: 50%; background: #FF1414; border: 2px solid #fff; display: none;
@@ -271,6 +278,7 @@ const STYLE = `
   @media (prefers-reduced-motion: reduce) {
     #ic-panel, #ic-fab, .ic-copy-btn .ic-copy-label { transition: none; }
     .ic-typing span { animation: none; }
+    #ic-notif { animation: none; }
   }
 `;
 
@@ -950,7 +958,7 @@ function buildWidget() {
 
   const wrap = document.createElement('div');
   wrap.innerHTML =
-    '<button id="ic-fab" type="button" aria-label="Ouvrir l’assistant InfoCompta"><div id="ic-notif"></div>' + LOGO_IMG + '</button>' +
+    '<button id="ic-fab" type="button" aria-label="Ouvrir l’assistant InfoCompta"><div id="ic-notif"></div>' + LOGO_IMG + '<span class="ic-fab-label">Assistant</span></button>' +
     '<div id="ic-panel" role="dialog" aria-label="Assistant InfoCompta">' +
       '<div class="ic-header"><div class="ic-header-logo">' + LOGO_IMG + '</div>' +
         '<div class="ic-header-info"><h3>Assistant InfoCompta</h3><p>Plan OHADA · CGI Bénin 2026</p></div>' +
