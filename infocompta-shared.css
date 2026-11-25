@@ -251,9 +251,9 @@ footer {
   font-family: 'Outfit', sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
-  color: var(--text-on-dark-muted);
+  color: rgb(0 0 0);
 }
-.footer-logo span { color: var(--orange-lt); }
+.footer-logo span { color: #03266f; }
 .footer-copy { font-size: 0.78rem; color: var(--text-on-dark-dim); letter-spacing: 0.04em; }
 .footer-links { display: flex; gap: 1.5rem; }
 .footer-links a { font-size: 0.78rem; color: var(--text-on-dark-dim); transition: color var(--transition); }
