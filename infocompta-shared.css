@@ -963,11 +963,16 @@ footer {
   position: fixed;
   top: 58px;
   left: 0; right: 0;
-  background: #FFFFFF;                          /* était var(--header-bg) */
-  border-top: 1px solid #E3E6EA;
+  max-height: calc(100vh - 58px);      /* ne dépasse jamais l'écran */
+  max-height: calc(100dvh - 58px);     /* version mobile précise (barre d'adresse) */
+  overflow-y: auto;                    /* permet de faire défiler le menu */
+  -webkit-overflow-scrolling: touch;
+  background: #FFFFFF;
+  border-top: 1px solid #0b2a5e;
   box-shadow: 0 12px 40px rgba(0,0,0,0.15);
   z-index: 199;
 }
+ 
 header nav.open ul li a {
   padding: 1rem 1.8rem;
   font-size: 0.85rem;
