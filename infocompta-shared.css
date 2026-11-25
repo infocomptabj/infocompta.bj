@@ -1222,7 +1222,7 @@ footer {
   gap: 0.4rem;
   font-size: 0.78rem;
   font-weight: 500;
-  color: var(--text-on-dark-muted);
+  color: rgb(0 0 0);
   letter-spacing: 0.07em;
   text-transform: uppercase;
   transition: color var(--transition);
