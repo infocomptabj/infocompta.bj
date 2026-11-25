@@ -113,7 +113,7 @@ main { flex: 1 0 auto; }
 
 /* ═══════════ HEADER ═══════════ */
 header {
-  background: #FFFFFF;              /* était var(--header-bg) */
+  background: #FFFFFF;
   padding: 0 3.5rem;
   position: sticky;
   top: 0;
@@ -122,19 +122,8 @@ header {
   align-items: center;
   justify-content: space-between;
   height: 66px;
-  box-shadow:
-    0 1px 0 #E3E6EA,                /* fine ligne grise sous le header */
-    0 2px 16px rgba(0,0,0,0.08);
-}
-
-header::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0;
-  bottom: -14px;
-  height: 14px;
-  background: linear-gradient(to bottom, #DCDFE3, transparent);  /* cendre clair qui s'estompe */
-  pointer-events: none;
+  box-shadow: #1039E2;
+  border-bottom: 2px solid #0b2a5e;   /* ligne bleue fine */
 }
 
 html.ic-authed header nav a[href="auth.html"] {
@@ -199,8 +188,6 @@ header nav ul li a {
 }
 header nav ul li a:hover  { color: #000000; background: #EEF0F3; }  /* fond cendre très clair au survol */
 header nav ul li a.active { color: #000000; font-weight: 700; }
-header nav ul li a:hover  { color: var(--text-on-dark); background: var(--surface-teal); }
-header nav ul li a.active { color: #ffffff; }
 
 /* Le CTA : seule sa couleur (et un petit écart) change */
 header nav ul li a.nav-cta {
