@@ -958,31 +958,68 @@ footer {
  .logo { padding: 3px 8px; }
 .logo img { height: 34px; }
   header nav { display: none; }
-  header nav.open {
-  display: block;
-  position: fixed;
-  top: 58px;
-  left: 0; right: 0;
-  max-height: calc(100vh - 58px);      /* ne dépasse jamais l'écran */
-  max-height: calc(100dvh - 58px);     /* version mobile précise (barre d'adresse) */
-  overflow-y: auto;                    /* permet de faire défiler le menu */
-  -webkit-overflow-scrolling: touch;
-  background: #FFFFFF;
-  border-top: 1px solid #0b2a5e;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-  z-index: 199;
+ header nav.open {
+    display: block;
+    position: fixed;
+    top: 58px;
+    left: 0; right: 0;
+    max-height: calc(100vh - 58px);
+    max-height: calc(100dvh - 58px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #FFFFFF;
+    border-top: 1px solid #0b2a5e;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    z-index: 199;
+  }
+
+  /* La liste : une colonne, chaque ligne sur toute la largeur */
+  header nav.open ul {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+  }
+  header nav.open ul li { width: 100%; }
+
+  /* Chaque lien = une ligne */
+  header nav.open ul li a {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.85rem;
+    border-radius: 0;
+    border-bottom: 1px solid #EEF0F3;
+    color: #000000;
+  }
+  header nav.open ul li a:hover,
+  header nav.open ul li a:active { background: #F2F4F6; color: #000000; }
+
+  /* Page en cours */
+  header nav.open ul li a.active {
+    font-weight: 700;
+    border-left: 4px solid #1039E2;
+    background: #F5F7FB;
+  }
+
+  /* Connexion : bouton en bas */
+  header nav.open ul li a.nav-cta {
+    margin: 0.8rem 1.5rem 1rem;
+    width: auto;
+    text-align: center;
+    border: none;
+    color: #FFFFFF;
+  }
+
+  .hamburger { display: flex; }
+  .container { padding: 0 1.2rem; }
+  .hero-sm { padding: 2.5rem 0; }
+  .hero-sm h1 { font-size: 1.6rem; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 1rem; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
 }
- 
-header nav.open ul li a {
-  padding: 0.8rem 1.8rem;;
-  font-size: 0.85rem;
-  border-radius: 0;
-  border-bottom: 1px solid #EEF0F3;             /* était rgba(255,255,255,0.05) */
-  display: block;
-  color: #000000;                               /* était var(--text-on-dark-muted) */
-}
-header nav.open ul li a:hover { color: #000000; background: #F2F4F6; }
-   
   .hamburger { display: flex; }
   .container { padding: 0 1.2rem; }
   .hero-sm { padding: 2.5rem 0; }
