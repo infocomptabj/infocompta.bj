@@ -1,5 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-//  chat-widget.js — InfoCompta (version 4.0)
+//  chat-widget.js — InfoCompta (version 4.1)
+//  4.1 : la conversation est conservée d’un compte à l’autre (séparateur
+//        « Compte XXX » à chaque changement de fiche) ; effacement manuel.
 //
 //  Fonctions (sans IA, réponses issues des données du site) :
 //   • Quel compte utiliser ?     → recherche dans comptes-data.js
@@ -86,12 +88,12 @@ const STYLE = `
   #ic-fab svg { width: 24px; height: 24px; fill: #fff; }
   #ic-fab img { width: 32px; height: auto; }
   .ic-fab-label { font-size: 14px; font-weight: 600; color: var(--ic-navy); white-space: nowrap; }
-    #ic-notif { animation: ic-pulse 1.8s infinite; }
-    @keyframes ic-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(255,20,20,.6); }
-  70%  { box-shadow: 0 0 0 8px rgba(255,20,20,0); }
-  100% { box-shadow: 0 0 0 0 rgba(255,20,20,0); }
-}
+  #ic-notif { animation: ic-pulse 1.8s infinite; }
+  @keyframes ic-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(255,20,20,.6); }
+    70%  { box-shadow: 0 0 0 8px rgba(255,20,20,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,20,20,0); }
+  }
   #ic-notif {
     position: absolute; top: -2px; right: -2px; width: 13px; height: 13px;
     border-radius: 50%; background: #FF1414; border: 2px solid #fff; display: none;
@@ -118,15 +120,10 @@ const STYLE = `
     background: linear-gradient(90deg, transparent, var(--ic-accent) 30%, #0815b3 60%, transparent);
   }
   .ic-header-logo {
-    width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
-    background: rgba(16,57,226,.18); border: 1px solid rgba(16,57,226,.45);
+    width: 40px; height: 40px; border-radius: 9px; flex-shrink: 0;
+    background: #fff; border: 1px solid var(--ic-border-lt);
     display: flex; align-items: center; justify-content: center;
   }
-  .ic-header-logo {
-  width: 40px; height: 40px; border-radius: 9px; flex-shrink: 0;
-  background: #fff; border: 1px solid var(--ic-border-lt);
-  display: flex; align-items: center; justify-content: center;
-}
   .ic-header-info { flex: 1; min-width: 0; }
   .ic-header-info h3 { font-family: 'Outfit', 'DM Sans', sans-serif; font-size: 15px; font-weight: 700; color: #fff; line-height: 1.2; margin: 0; }
   .ic-header-info p { font-size: 11px; color: rgba(255,255,255,.68); margin: 2px 0 0; }
@@ -179,6 +176,10 @@ const STYLE = `
   .ic-bubble ul { padding-left: 17px; margin: 5px 0; }
   .ic-bubble li { margin-bottom: 3px; }
   .ic-bubble pre { background: var(--ic-dark); color: #e2e8f0; border-radius: 7px; padding: 10px 12px; margin: 7px 0; overflow-x: auto; font-size: 12px; line-height: 1.6; }
+
+  .ic-ctx { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ic-muted); }
+  .ic-ctx::before, .ic-ctx::after { content: ''; flex: 1; height: 1px; background: var(--ic-border-lt); }
+  .ic-ctx .ic-ctag { font-size: 11.5px; }
 
   .ic-ctag {
     display: inline-block; font-family: 'Courier New', monospace; font-size: 12px; font-weight: 700;
@@ -291,7 +292,8 @@ const SVG = {
   bot:   '<svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM7 9h10v2H7V9zm6 5H7v-2h6v2zm4-6H7V6h10v2z"/></svg>',
   logo:  '<svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6L23 9 12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg>'
 };
-  // Logo InfoCompta (iC) en image data-URI : pas de conflit d'identifiants de dégradés
+
+// Logo InfoCompta (iC) en image data-URI : pas de conflit d'identifiants de dégradés
 const LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 385.75 344"><defs>' +
 '<linearGradient id="a" gradientUnits="userSpaceOnUse" x1="31.37" y1="22.42" x2="63.03" y2="73.14"><stop offset="0" stop-color="#FFD004"/><stop offset="1" stop-color="#EE8C02"/></linearGradient>' +
 '<linearGradient id="b" gradientUnits="userSpaceOnUse" x1="-9.23" y1="142.85" x2="95.65" y2="233.41"><stop offset="0" stop-color="#013DA5"/><stop offset="1" stop-color="#000F32"/></linearGradient>' +
@@ -359,7 +361,6 @@ function parseAmount(text) {
 }
 
 // Mise en forme des réponses de l’IA (texte échappé avant tout)
-// Mise en forme des réponses de l’IA (texte échappé avant tout)
 function md(raw) {
   const pres = [];
   // <br> écrits par l'IA → marqueur, restauré en vrai <br> à la fin
@@ -412,8 +413,8 @@ const accTag = c => '<a class="ic-ctag" href="compte-detail.html?code=' + encode
 
 // ── État ───────────────────────────────────────────────────────
 const PAGE_CODE = (new URLSearchParams(window.location.search).get('code') || '').trim();
-const STORE_KEY = 'infocompta_chat_v4_' + window.location.pathname + (PAGE_CODE ? '_' + PAGE_CODE : '');
-const MAX_STORED = 20;
+const STORE_KEY = 'infocompta_chat_v41';   // une seule conversation pour tout le site
+const MAX_STORED = 60;
 const HIST_MAX = 6;
 let icOpen = false, icBusy = false, icRestored = false;
 let hist = loadHist();
@@ -421,7 +422,26 @@ let flow = null;
 let catalogPromise = null;
 
 function loadHist() { try { const r = localStorage.getItem(STORE_KEY); return r ? JSON.parse(r) : []; } catch (_) { return []; } }
-function saveHist() { try { localStorage.setItem(STORE_KEY, JSON.stringify(hist.slice(-MAX_STORED))); } catch (_) {} }
+function saveHist() {
+  let h = hist.slice(-MAX_STORED);
+  for (let i = 0; i < 4; i++) {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(h)); return; }
+    catch (_) { h = h.slice(Math.ceil(h.length / 2)); }   // stockage plein : on garde la moitié la plus récente
+  }
+}
+// Ménage : anciennes conversations 4.0 (une par compte)
+try { Object.keys(localStorage).filter(k => k.indexOf('infocompta_chat_v4_') === 0).forEach(k => localStorage.removeItem(k)); } catch (_) {}
+const hasReal = () => hist.some(m => m.role === 'user' || m.role === 'assistant');
+
+// Sur une fiche compte : ajoute un séparateur « Compte XXX » si on a changé de compte
+function noteContext() {
+  const code = pageCode(); if (!code) return;
+  while (hist.length && hist[hist.length - 1].role === 'context') hist.pop();
+  let prev = null;
+  for (let i = hist.length - 1; i >= 0; i--) if (hist[i].role === 'context') { prev = hist[i]; break; }
+  if (!prev || prev.code !== code) hist.push({ role: 'context', code, label: ACC()[code].libelle });
+  saveHist();
+}
 const pageCode = () => (/compte-detail/.test(location.pathname) && ACC()[PAGE_CODE]) ? PAGE_CODE : '';
 
 function getSession() {
@@ -836,7 +856,7 @@ async function askAI(text) {
   const ctx = aiContext(text);
   if (!ctx) return notFound();
   try { sessionStorage.setItem('ic_ai_n', String(used + 1)); } catch (_) {}
-  const msgs = hist.slice(-HIST_MAX).map(m => ({ role: m.role, content: m.content }));
+  const msgs = hist.filter(m => m.role === 'user' || m.role === 'assistant').slice(-HIST_MAX).map(m => ({ role: m.role, content: m.content }));
   if (!msgs.length || msgs[msgs.length - 1].role !== 'user') msgs.push({ role: 'user', content: text });
   const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 30000);
   try {
@@ -944,6 +964,7 @@ function showToast(msg) {
 
 // ── Construction du DOM ────────────────────────────────────────
 function buildWidget() {
+  noteContext();
   const style = document.createElement('style'); style.textContent = STYLE; document.head.appendChild(style);
   const code = pageCode(), d = code ? ACC()[code] : null;
 
@@ -988,31 +1009,47 @@ function buildWidget() {
     else if (b.dataset.say) sendText(b.dataset.say);
   });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && icOpen) setOpen(false); });
+  // Si le panneau était ouvert avant le changement de page, on le rouvre (ordinateur uniquement)
+  try {
+    if (sessionStorage.getItem('ic_open') === '1' && hasReal() && window.matchMedia('(min-width: 768px)').matches) setOpen(true, true);
+  } catch (_) {}
   setTimeout(() => { if (!icOpen) $('ic-notif').style.display = 'block'; }, 3000);
 }
 
-function setOpen(open) {
+function setOpen(open, silent) {
   icOpen = open;
   document.getElementById('ic-panel').classList.toggle('open', open);
   document.getElementById('ic-notif').style.display = 'none';
+  try { sessionStorage.setItem('ic_open', open ? '1' : '0'); } catch (_) {}
   if (open && !icRestored) {
     icRestored = true;
-    if (hist.length) {
+    if (hasReal()) {
       document.getElementById('ic-messages').innerHTML = '';
-      hist.forEach(m => { if (m.role === 'user') appendUser(m.content); else appendBot({ html: m.html || esc(m.content) }, true); });
+      hist.forEach(m => {
+        if (m.role === 'user') appendUser(m.content);
+        else if (m.role === 'context') appendContext(m);
+        else appendBot({ html: m.html || esc(m.content) }, true);
+      });
     }
   }
-  if (open) setTimeout(() => document.getElementById('ic-input').focus(), 250);
+  if (open && !silent) setTimeout(() => document.getElementById('ic-input').focus(), 250);
 }
 function clearHistory() {
+  if (hasReal() && !window.confirm('Effacer toute la conversation ? Cette action est définitive.')) return;
   try { localStorage.removeItem(STORE_KEY); } catch (_) {}
   hist = []; icRestored = true; flow = null;
+  noteContext();
   document.getElementById('ic-messages').innerHTML = '';
-  appendBot({ html: '<p>Conversation effacée. Comment puis-je vous aider ?</p>', qr: mainQr() }, true);
+  appendBot({ html: '<p>Conversation effacée. Comment puis-je vous aider ?</p>', qr: mainQr() });
 }
 
 // ── Messages ───────────────────────────────────────────────────
 function scrollDown() { const c = document.getElementById('ic-messages'); c.scrollTop = c.scrollHeight; }
+function appendContext(m) {
+  const d = document.createElement('div'); d.className = 'ic-ctx';
+  d.innerHTML = 'Compte ' + accTag(m.code) + ' · ' + esc(m.label);
+  document.getElementById('ic-messages').appendChild(d); scrollDown();
+}
 function appendUser(text) {
   const d = document.createElement('div'); d.className = 'ic-msg user';
   d.innerHTML = '<div class="ic-avatar">V</div><div class="ic-msg-body"><div class="ic-bubble">' + esc(text) + '</div></div>';
@@ -1066,7 +1103,7 @@ function sendAct(act, label) { process(label, () => runAct(act)); }
 function sendAI(q) { process('Expliquer en détail', () => askAI(q)); }
 
 // ── Init ───────────────────────────────────────────────────────
-if (window.IC_TEST) { window.__ic = { route, runAct, parseAmount, norm, searchAccounts, flowStep, getFlow: () => flow, setFlow: f => { flow = f; } }; return; }
+if (window.IC_TEST) { window.__ic = { noteContext, getHist: () => hist, hasReal, route, runAct, parseAmount, norm, searchAccounts, flowStep, getFlow: () => flow, setFlow: f => { flow = f; } }; return; }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', buildWidget);
 else buildWidget();
 
