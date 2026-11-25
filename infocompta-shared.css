@@ -113,7 +113,7 @@ main { flex: 1 0 auto; }
 
 /* ═══════════ HEADER ═══════════ */
 header {
-  background: var(--header-bg);
+  background: #FFFFFF;              /* était var(--header-bg) */
   padding: 0 3.5rem;
   position: sticky;
   top: 0;
@@ -123,9 +123,20 @@ header {
   justify-content: space-between;
   height: 66px;
   box-shadow:
-    0 1px 0 var(--orange-line),
-    0 2px 24px rgba(0,0,0,0.28);
+    0 1px 0 #E3E6EA,                /* fine ligne grise sous le header */
+    0 2px 16px rgba(0,0,0,0.08);
 }
+
+header::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  bottom: -14px;
+  height: 14px;
+  background: linear-gradient(to bottom, #DCDFE3, transparent);  /* cendre clair qui s'estompe */
+  pointer-events: none;
+}
+
 html.ic-authed header nav a[href="auth.html"] {
   display: none;
 }
@@ -176,7 +187,7 @@ html.ic-authed .ic-profile-wrap {
 header ul { list-style: none; display: flex; align-items: center; gap: 0.1rem; }
 /* Style commun à TOUS les liens */
 header nav ul li a {
-  color: var(--text-on-dark-muted);
+  color: #000000;                   /* était var(--text-on-dark-muted) */
   font-size: 0.78rem;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -186,6 +197,8 @@ header nav ul li a {
   transition: color var(--transition), background var(--transition), transform var(--transition);
   display: block;
 }
+header nav ul li a:hover  { color: #000000; background: #EEF0F3; }  /* fond cendre très clair au survol */
+header nav ul li a.active { color: #000000; font-weight: 700; }
 header nav ul li a:hover  { color: var(--text-on-dark); background: var(--surface-teal); }
 header nav ul li a.active { color: #ffffff; }
 
@@ -217,7 +230,7 @@ header nav ul li a.nav-cta:hover {
   display: block;
   width: 24px;
   height: 1.5px;
-  background: rgba(255,255,255,0.85);
+  background: #000000;
   border-radius: 2px;
   /* transition: all → transition ciblée : "all" force le navigateur à
      surveiller/interpoler chaque propriété CSS de l'élément à chaque
@@ -958,31 +971,25 @@ footer {
 .logo img { height: 34px; }
   header nav { display: none; }
   header nav.open {
-    display: block;
-    position: fixed;
-    top: 58px;
-    left: 0; right: 0;
-    background: var(--header-bg);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
-    z-index: 199;
-  }
-  header nav.open ul { flex-direction: column; gap: 0; padding: 0.5rem 0; }
-  header nav.open ul li a {
-    padding: 1rem 1.8rem;
-    font-size: 0.85rem;
-    border-radius: 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    display: block;
-    color: var(--text-on-dark-muted);
-  }
-  header nav.open ul li a:hover { color: var(--text-on-dark); }
-  header nav.open ul li a.nav-cta {
-    margin: 0.7rem 1.2rem;
-    border-radius: var(--radius);
-    text-align: center;
-    color: var(--text-on-dark);
-  }
+  display: block;
+  position: fixed;
+  top: 58px;
+  left: 0; right: 0;
+  background: #FFFFFF;                          /* était var(--header-bg) */
+  border-top: 1px solid #E3E6EA;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+  z-index: 199;
+}
+header nav.open ul li a {
+  padding: 1rem 1.8rem;
+  font-size: 0.85rem;
+  border-radius: 0;
+  border-bottom: 1px solid #EEF0F3;             /* était rgba(255,255,255,0.05) */
+  display: block;
+  color: #000000;                               /* était var(--text-on-dark-muted) */
+}
+header nav.open ul li a:hover { color: #000000; background: #F2F4F6; }
+   
   .hamburger { display: flex; }
   .container { padding: 0 1.2rem; }
   .hero-sm { padding: 2.5rem 0; }
