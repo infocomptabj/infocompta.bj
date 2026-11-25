@@ -2,15 +2,18 @@ name: Garder Supabase actif
 
 on:
   schedule:
-    - cron: '0 8 */3 * *'
+    - cron: '17 */6 * * *'   # 4 fois par jour
   workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Interroger Supabase
+      - name: Interroger Supabase (2 requêtes)
         run: |
-          curl --fail --silent --show-error \
-            "https://lmivfisdmuqbspvmvdzh.supabase.co/rest/v1/documents_public?select=id&limit=1" \
-            -H "apikey: sb_publishable_kCfhrFPVec2MkCl0xe4N-w_QXHgc0Gp"
+          for i in 1 2; do
+            curl --fail --silent --show-error \
+              "https://lmivfisdmuqbspvmvdzh.supabase.co/rest/v1/documents_public?select=id&limit=1" \
+              -H "apikey: sb_publishable_kCfhrFPVec2MkCl0xe4N-w_QXHgc0Gp" > /dev/null
+            sleep 5
+          done
