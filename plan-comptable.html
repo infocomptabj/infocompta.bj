@@ -50,7 +50,16 @@
     <p>Référentiel SYSCOHADA révisé</p>
   </div>
 </section>
-
+<div class="doc-toolbar">
+  <div class="container doc-wide">
+    <div class="doc-search-wrap">
+      <span class="doc-search-icon">🔍</span>
+      <input class="doc-search" type="text" id="docSearch"
+        placeholder="Trouver un document…"
+        oninput="filterDocs()">
+    </div>
+  </div>
+</div>
 <div class="pc-toolbar">
   <div class="container">
     <input class="pc-search" type="text" id="search" placeholder="🔍  Rechercher code ou libellé…" oninput="filterLines(this.value)">
