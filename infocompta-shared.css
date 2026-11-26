@@ -3043,6 +3043,15 @@ footer {
 }
 
 /* ── 14.2 Sommaire : pastilles des 6 livres ── */
+.cgi-toc {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 1.3rem 0 1.3rem;
+  margin-top: 0;
+  position: sticky;
+  top: 66px;
+  z-index: 150;
+}
 .cgi-toc .container {
   max-width: 1240px;
 }
