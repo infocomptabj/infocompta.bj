@@ -26,11 +26,11 @@
      [08] OFFRES (offres.html) + fenêtre de paiement (modal)
      [09] CONNEXION / INSCRIPTION (auth.html)
      [10] QUIZ (quiz.html)
-     [11] PLAN COMPTABLE            (réservé — collez ici)
-     [12] DÉTAIL D'UN COMPTE        (réservé — collez ici)
-     [13] DOCUMENTS (documents.html) (réservé — collez ici)
-     [14] FICHES FISCALES           (réservé — collez ici)
-     [15] CHAT (chat-widget)        (réservé — collez ici)
+     [11] PLAN COMPTABLE (plan-comptable.html)
+     [12] DÉTAIL D'UN COMPTE (compte-detail.html)
+     [13] DOCUMENTS (documents.html) : catégories, cartes, achat
+     [14] FISCALITÉ CGI (fiscalite-cgi-benin.html)
+     [15] CHAT — Assistant InfoCompta (chat-widget.js)
      [16] CONTACT / AUTRES PAGES    (réservé — collez ici)
 ═══════════════════════════════════════════════════════════════════ */
 
@@ -48,6 +48,7 @@
   /* ── Polices ── */
   --font-display: 'Outfit', sans-serif;   /* titres, boutons, logo, chiffres */
   --font-body:    'DM Sans', sans-serif;  /* texte courant, formulaires */
+  --font-serif:   'Cormorant Garamond', serif;  /* titres de documents / plan comptable (⚠ police non chargée : remplacée par la serif du navigateur) */
 
   /* ── Bleu nuit (couleur primaire — header/nav/) ── */
   --teal:        #0b0e34;
@@ -2275,39 +2276,1138 @@ footer {
 
 /* ═══════════════════════════════════════════════════════════════════
    [11] PLAN COMPTABLE (plan-comptable.html)
-   → Aucun CSS correspondant dans le fichier fourni.
-   Collez ici les styles de cette page (liste des classes, recherche, etc.)
+   Les styles de l'ancien widget IA (.ic-header, .ic-bubble…) qui se
+   trouvaient dans cette page ne sont PAS repris : ils sont remplacés
+   par le chat actuel, voir [15].
 ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 11.1 Barre d'outils : recherche + onglets de classes ── */
+.pc-toolbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.85rem 0;
+  position: sticky;
+  top: 66px;
+  z-index: 90;
+  box-shadow: 0 2px 8px rgba(15,31,53,0.04);
+}
+.pc-toolbar .container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.pc-search {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius);
+  outline: none;
+  width: 280px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.pc-search:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(196,147,58,0.1);
+}
+.pc-search::placeholder { color: var(--muted); }
+
+.class-tabs { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.class-tabs .tab {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 0.8rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.class-tabs .tab:hover  { border-color: var(--gold); color: var(--gold); }
+.class-tabs .tab.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+/* ── 11.2 Lignes du plan comptable ── */
+.pc-lines { padding: 1.5rem 0 4rem; }
+.line {
+  display: grid;
+  grid-template-columns: 110px 1fr 28px;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.3rem 0.75rem;
+  border-left: 2px solid transparent;
+  transition: background 0.12s, border-color 0.12s;
+  border-radius: 0 3px 3px 0;
+}
+.line:hover { background: var(--surface); border-left-color: var(--gold); }
+.line.hidden { display: none; }
+
+/* Bouton « i » (apparaît au survol) */
+.info-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px;
+  font-size: 0.75rem; border-radius: 50%;
+  background: transparent; border: 1.5px solid var(--border);
+  color: var(--muted); text-decoration: none;
+  opacity: 0; transition: opacity 0.15s, background 0.15s, color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.line:hover .info-btn { opacity: 1; }
+.info-btn:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+/* Niveaux : 1 = classe, 2 = sous-classe, 3 = compte, 4/5 = subdivisions */
+.line[data-level="1"] { margin-top: 2rem; padding-top: 0.65rem; padding-bottom: 0.65rem; border-top: 1px solid var(--border); }
+.line[data-level="1"] .lcode  { font-family: var(--font-serif); font-size: 1.1rem; font-weight: 700; color: var(--navy) !important; }
+.line[data-level="1"] .llabel { font-family: var(--font-serif); font-size: 1rem; font-weight: 700; color: var(--navy) !important; text-transform: uppercase; letter-spacing: 0.06em; }
+.line[data-level="2"] { margin-top: 0.8rem; }
+.line[data-level="2"] .lcode  { font-size: 0.88rem; font-weight: 600; color: var(--navy); }
+.line[data-level="2"] .llabel { font-size: 0.85rem; font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: 0.04em; }
+.line[data-level="3"] .lcode  { font-size: 0.83rem; color: var(--gold); font-weight: 600; }
+.line[data-level="3"] .llabel { font-size: 0.83rem; color: var(--text); }
+.line[data-level="4"] { padding-left: 1.2rem; }
+.line[data-level="4"] .lcode  { font-size: 0.78rem; color: var(--muted) !important; }
+.line[data-level="4"] .llabel { font-size: 0.78rem; color: #555; }
+.line[data-level="5"] { padding-left: 2.4rem; }
+.line[data-level="5"] .lcode  { font-size: 0.74rem; color: #bbb !important; }
+.line[data-level="5"] .llabel { font-size: 0.74rem; color: #888; }
+.lcode  { text-align: right; color: var(--muted); }
+.llabel { color: var(--text); }
+.count-bar { font-size: 0.75rem; color: var(--muted); text-align: right; margin-top: 2rem; letter-spacing: 0.05em; }
+.pc-lines mark { background: rgba(196,147,58,0.18); color: var(--gold); padding: 0 1px; border-radius: 2px; }  /* surlignage de la recherche */
+
+/* ── 11.3 Plan comptable : tablette / mobile ── */
+@media (max-width: 1023px) {
+  .pc-toolbar { top: 58px !important; }
+  .pc-toolbar .container { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+  .pc-search  { width: 100% !important; }
+  .class-tabs { gap: 0.2rem; flex-wrap: wrap; }
+  .class-tabs .tab  { font-size: 0.62rem; padding: 0.2rem 0.5rem; }
+  .line { grid-template-columns: 75px 1fr 20px; gap: 0.3rem; padding: 0.2rem 0.3rem; }
+  .pc-lines { padding: 1rem 0 3rem; }
+}
 
 
 /* ═══════════════════════════════════════════════════════════════════
    [12] DÉTAIL D'UN COMPTE (compte-detail.html)
-   → Aucun CSS correspondant dans le fichier fourni.
 ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 12.1 Mise en page ── */
+.detail-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 2rem;
+  padding: 2.5rem 0 5rem;
+  align-items: start;
+}
+.detail-layout .sidebar {
+  position: sticky; top: 80px;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+
+/* ── 12.2 Colonne de gauche : informations ── */
+.meta-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.6rem;
+}
+.meta-card h4 {
+  font-family: var(--font-body);
+  font-size: 0.7rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 0.8rem;
+}
+.meta-row { display: flex; flex-direction: column; gap: 0.65rem; }
+.meta-item { font-size: 0.82rem; }
+.meta-item .meta-key { color: var(--muted); font-size: 0.72rem; display: block; margin-bottom: 0.1rem; }
+.meta-item .meta-val { color: var(--text); font-weight: 500; }
+
+/* Badges sens débit / crédit */
+.badge-sens {
+  display: inline-block; font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.06em; padding: 0.2rem 0.6rem;
+  border-radius: 3px; text-transform: uppercase;
+}
+.badge-D  { background: rgba(15,31,53,0.08);   color: var(--navy); }
+.badge-C  { background: var(--gold-pale);        color: var(--gold); }
+.badge-DC { background: rgba(100,100,100,0.08);  color: #555; }
+
+/* Boutons de navigation */
+.nav-buttons { display: flex; flex-direction: column; gap: 0.5rem; }
+.nav-btn {
+  display: block; text-align: center;
+  font-size: 0.78rem; font-weight: 500;
+  padding: 0.55rem 1rem; border-radius: var(--radius);
+  text-decoration: none; transition: all 0.15s;
+  border: 1.5px solid var(--border); color: var(--muted);
+}
+.nav-btn:hover { border-color: var(--navy); color: var(--navy); background: rgba(15,31,53,0.04); }
+.nav-btn.primary { background: var(--navy); color: #fff; border-color: var(--navy); }
+.nav-btn.primary:hover { background: var(--navy-lt); }
+
+/* Tags : comptes liés / références */
+.comptes-lies-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+.compte-tag {
+  display: inline-block; font-size: 0.72rem; font-weight: 600;
+  font-family: 'Courier New', monospace;
+  padding: 0.15rem 0.5rem; border-radius: 3px;
+  background: var(--cream); border: 1px solid var(--border);
+  color: var(--navy); text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+.compte-tag:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+.ref-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.3rem; }
+.ref-tag {
+  font-size: 0.75rem; font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  background: rgba(15,31,53,0.06); color: var(--navy);
+  border-radius: 3px; border: 1px solid rgba(15,31,53,0.12);
+}
+
+/* ── 12.3 Contenu principal ── */
+.detail-content { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.content-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.content-section-header {
+  display: flex; align-items: center; gap: 0.8rem;
+  padding: 1rem 1.6rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--cream);
+}
+.content-section-header .icon { font-size: 1rem; }
+.content-section-header h3 {
+  font-family: var(--font-body);
+  font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--navy);
+}
+.content-section-body { padding: 1.4rem 1.6rem; }
+.content-section-body p    { font-size: 0.9rem; line-height: 1.75; color: #333; }
+.content-section-body ul   { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.4rem; }
+.content-section-body ul li {
+  font-size: 0.83rem; color: #333;
+  padding: 0.4rem 0.7rem;
+  background: var(--cream); border-radius: 3px;
+  border-left: 3px solid var(--border); line-height: 1.5;
+}
+
+/* Grille Débit / Crédit */
+.dc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.dc-col-title {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.4rem 0.8rem; border-radius: 3px; margin-bottom: 0.7rem;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.dc-title-debit  { background: rgba(15,31,53,0.07);  color: var(--navy); }
+.dc-title-credit { background: var(--gold-pale);      color: var(--gold); }
+.dc-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.dc-col ul li {
+  font-size: 0.83rem; color: #333;
+  padding: 0.45rem 0.7rem;
+  background: var(--cream); border-radius: 3px;
+  border-left: 3px solid var(--border); line-height: 1.5;
+}
+.dc-col.debit  ul li { border-left-color: var(--navy); }
+.dc-col.credit ul li { border-left-color: var(--gold); }
+
+/* Exemples d'écritures */
+.ecriture-list { display: flex; flex-direction: column; gap: 1rem; }
+.ecriture-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.ecriture-libelle {
+  font-size: 0.82rem; font-weight: 600; color: var(--navy);
+  padding: 0.6rem 1rem;
+  background: var(--cream); border-bottom: 1px solid var(--border);
+}
+.ecriture-rows { display: grid; grid-template-columns: 1fr 1fr; }
+.ecriture-debit, .ecriture-credit { padding: 0.65rem 1rem; font-size: 0.82rem; line-height: 1.5; }
+.ecriture-debit  { border-right: 1px solid var(--border); background: rgba(15,31,53,0.03); }
+.ecriture-credit { background: rgba(16,57,226,0.04); }
+.ecriture-side-label {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; margin-bottom: 0.3rem; display: block;
+}
+.ecriture-debit  .ecriture-side-label { color: var(--navy); }
+.ecriture-credit .ecriture-side-label { color: var(--gold); }
+.ecriture-compte { color: #333; }
+
+/* État vide (compte introuvable) */
+.no-data { text-align: center; padding: 4rem 2rem; color: var(--muted); }
+.no-data .no-data-icon { font-size: 3rem; margin-bottom: 1rem; }
+.no-data h2 { color: var(--muted); font-size: 1.3rem; margin-bottom: 0.5rem; }
+.no-data p  { font-size: 0.88rem; }
+
+/* ── 12.4 Détail d'un compte : tablette / mobile ── */
+@media (max-width: 1023px) {
+  .detail-layout { grid-template-columns: 1fr !important; gap: 1rem; padding: 1.2rem 0 3rem; }
+  .detail-layout .sidebar { position: static !important; }
+}
+@media (max-width: 840px) { .dc-grid { grid-template-columns: 1fr; } }
+@media (max-width: 600px) {
+  .ecriture-rows { grid-template-columns: 1fr; }
+  .ecriture-debit { border-right: none; border-bottom: 1px solid var(--border); }
+}
 
 
 /* ═══════════════════════════════════════════════════════════════════
    [13] DOCUMENTS (documents.html)
-   → Aucun CSS correspondant dans le fichier fourni
-     (sidebar de filtres, cartes de documents, boutons Payer/Télécharger…).
 ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 13.1 Barre de recherche ── */
+.doc-toolbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+  position: sticky;
+  top: 66px;
+  z-index: 50;
+  box-shadow: 0 2px 8px rgba(15,31,53,0.04);
+}
+.doc-toolbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.doc-wide { max-width: 1280px; }
+.doc-search-wrap { position: relative; }
+.doc-search-icon {
+  position: absolute; left: 1.2rem; top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; opacity: 0.6;
+}
+.doc-search {
+  width: 100%;
+  max-width: none;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.85rem 1.4rem 0.85rem 3rem;
+  border-radius: 30px;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.doc-search:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(196,147,58,0.1);
+}
+
+/* ── 13.2 Mise en page : colonne de catégories + contenu ── */
+.doc-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+.doc-content { min-width: 0; scroll-margin-top: 140px; }
+.result-line { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.2rem; }
+.result-line strong { color: var(--navy); }
+
+/* ── 13.3 Colonne de catégories (sidebar) ── */
+.doc-sidebar {
+  position: sticky;
+  top: 150px;
+  max-height: calc(100vh - 170px);
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1.5px solid var(--border-lt);
+  border-radius: var(--radius-md);
+  padding: 0.6rem;
+}
+.side-toggle { display: none; }   /* bouton « Catégories » : visible uniquement sur mobile */
+.side-item {
+  display: flex; justify-content: space-between; align-items: center; gap: 0.6rem;
+  width: 100%; text-align: left;
+  background: transparent; border: none; border-left: 3px solid transparent;
+  padding: 0.6rem 0.8rem;
+  font-family: var(--font-body); font-size: 0.85rem; font-weight: 500;
+  color: var(--text); cursor: pointer;
+  border-radius: var(--radius);
+  transition: background var(--transition);
+}
+.side-item:hover { background: var(--cream); }
+.side-item.active {
+  background: var(--orange-pale);
+  border-left-color: var(--orange-lt);
+  color: var(--navy);
+  font-weight: 700;
+}
+.side-count {
+  font-size: 0.72rem; color: var(--muted);
+  background: var(--cream); padding: 1px 8px;
+  border-radius: 20px; flex-shrink: 0;
+}
+.side-item.active .side-count { background: #fff; color: var(--navy); }
+.side-group { font-weight: 700; }
+.side-group .side-label { flex: 1; text-align: left; }
+.side-arrow {
+  display: inline-block; width: 1rem;
+  font-size: 0.7rem; color: var(--muted);
+  transition: transform 0.2s ease;
+}
+.side-group.open .side-arrow { transform: rotate(90deg); }
+.side-subs {
+  display: none;
+  margin: 0 0 0.4rem 1rem;
+  padding-left: 0.4rem;
+  border-left: 1px solid var(--border-lt);
+}
+.side-subs.open { display: block; }
+.side-sub { font-size: 0.82rem; padding: 0.45rem 0.7rem; }
+
+/* ── 13.4 Grille et cartes de documents ── */
+.doc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1.2rem;
+}
+.doc-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+.doc-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--gold-line);
+}
+.doc-card.hidden { display: none; }
+
+/* Liseré de couleur selon la catégorie */
+.doc-stripe { height: 3px; flex-shrink: 0; }
+.stripe-officiel  { background: linear-gradient(90deg, #1a2e4a, #2a4265); }
+.stripe-fiscal    { background: linear-gradient(90deg, var(--gold), var(--gold-lt)); }
+.stripe-guide     { background: linear-gradient(90deg, #2d7a4f, #4caf74); }
+.stripe-modele    { background: linear-gradient(90deg, #6D28D9, #9f6fea); }
+.stripe-procedure { background: linear-gradient(90deg, #2563eb, #60a5fa); }
+
+.doc-body { padding: 1.3rem 1.3rem 1rem; flex: 1; }
+.doc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+.doc-icon-wrap {
+  width: 38px; height: 38px;
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.icon-officiel  { background: rgba(15,31,53,0.08); }
+.icon-fiscal    { background: rgba(196,147,58,0.12); }
+.icon-guide     { background: rgba(45,122,79,0.1); }
+.icon-modele    { background: rgba(109,40,217,0.1); }
+.icon-procedure { background: rgba(37,99,235,0.1); }
+
+/* Étiquette de catégorie */
+.doc-tag {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.tag-officiel  { background: rgba(15,31,53,0.08); color: var(--navy); }
+.tag-fiscal    { background: rgba(196,147,58,0.12); color: var(--gold); }
+.tag-guide     { background: rgba(45,122,79,0.1); color: #2d7a4f; }
+.tag-modele    { background: rgba(109,40,217,0.1); color: #6D28D9; }
+.tag-procedure { background: rgba(37,99,235,0.1); color: #2563eb; }
+
+/* Badge de prix (plus utilisé depuis que le prix est dans le bouton) */
+.doc-price-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(196,147,58,0.12);
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.doc-title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+.doc-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 0.8rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.doc-meta-row {
+  display: flex;
+  gap: 0.8rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  align-items: center;
+}
+.doc-footer {
+  padding: 0.9rem 1.3rem;
+  border-top: 1px solid var(--border-lt);
+  background: var(--cream);
+}
+
+/* ── 13.5 Bouton Télécharger / Payer ── */
+.btn-dl {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.btn-dl:hover { background: var(--navy-lt); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(15,31,53,0.2); }
+.btn-dl.btn-dl-payant { background: #00085b; }
+.btn-dl.btn-dl-payant:hover { background: var(--navy-lt); }
+.btn-dl.btn-dl-gratuit { background: #045a30; }
+.btn-dl.btn-dl-gratuit:hover { background: #256b44; }
+.btn-dl[disabled] { opacity: .65; cursor: wait; }
+
+/* ── 13.6 Titres de groupe, « Afficher plus », résultats vides ── */
+.group-title {
+  grid-column: 1/-1;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin: 1.6rem 0 .2rem;
+  padding-bottom: .4rem;
+  border-bottom: 1px solid var(--border);
+}
+.group-title:first-child { margin-top: 0; }
+.btn-more {
+  display: block;
+  margin: 2rem auto 0;
+  background: transparent;
+  border: 1.5px solid var(--navy);
+  color: var(--navy);
+  padding: .65rem 1.6rem;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.btn-more:hover { background: var(--navy); color: #fff; }
+
+/* (scopé à .doc-wide pour ne pas casser .empty-state du quiz) */
+.doc-wide .empty-state { text-align: center; padding: 4rem 2rem; color: var(--muted); display: none; }
+.doc-wide .empty-state.visible { display: block; }
+.doc-wide .empty-state .empty-icon { font-size: 2.5rem; opacity: 0.4; margin-bottom: 0.8rem; }
+.doc-wide .empty-state h3 { font-size: 1.2rem; margin-bottom: 0.4rem; }
+.doc-wide .empty-state p  { font-size: 0.9rem; }
+
+/* ── 13.7 « Proposer un document » ── */
+.section-sep {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 3rem 0 1.5rem;
+}
+.section-sep h2 {
+  font-size: 1.4rem;
+  white-space: nowrap;
+}
+.section-sep::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.upload-zone {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-md);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition);
+}
+.upload-zone:hover { border-color: var(--gold); background: rgba(196,147,58,0.02); }
+.upload-zone .upload-icon { font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.6; }
+.upload-zone p { font-size: 0.87rem; color: var(--muted); }
+
+/* ── 13.8 Message flottant (toast) et fenêtre de confirmation d'achat ── */
+#icToast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translate(-50%, 20px);
+  background: var(--navy);
+  color: #fff;
+  padding: .8rem 1.2rem;
+  border-radius: var(--radius);
+  font-size: .85rem;
+  line-height: 1.5;
+  max-width: min(92vw, 460px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s, transform .25s;
+  z-index: 300;
+}
+#icToast.show { opacity: 1; transform: translate(-50%, 0); }
+#icToast.err  { background: #b42318; }
+
+.ic-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,31,53,.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 400;
+}
+.ic-modal-box {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding: 1.6rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: var(--shadow-md);
+}
+.ic-modal-box h3 { font-size: 1.1rem; margin-bottom: .6rem; }
+.ic-modal-box p  { font-size: .88rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.2rem; }
+.ic-modal-actions { display: flex; gap: .6rem; justify-content: flex-end; flex-wrap: wrap; }
+.ic-btn-ghost {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--muted);
+  padding: .55rem 1.1rem;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: .76rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ── 13.9 Ancienne barre de statistiques (n'est plus dans le HTML — à supprimer si inutile) ── */
+.stats-bar {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.2rem 0 0.6rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-lt);
+}
+.stats-bar .stat-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.stats-bar .stat-num {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #00085b;
+  line-height: 1;
+}
+.stats-bar .stat-lbl { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.05em; }
+.stats-bar .stat-divider { width: 1px; height: 36px; background: var(--border); }
+
+/* ── 13.10 Documents : tablette / mobile ── */
+@media (max-width: 1023px) {
+  .doc-toolbar { top: 58px; padding: 0.7rem 0; }
+  .doc-toolbar-inner { flex-direction: column; gap: 0.6rem; }
+  .doc-search { max-width: 100%; }
+  .stats-bar { flex-wrap: wrap; gap: 0.6rem 1.5rem; }
+  .stats-bar .stat-divider { display: none; }
+  .doc-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .doc-layout { grid-template-columns: 1fr; gap: 1rem; }
+  .doc-sidebar {
+    position: static; max-height: none; overflow: visible;
+    padding: 0; border: none; background: transparent;
+  }
+  .side-toggle {
+    display: flex; justify-content: space-between; align-items: center;
+    width: 100%; padding: 0.75rem 1rem;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-family: var(--font-body); font-size: 0.85rem; font-weight: 600;
+    color: var(--navy); cursor: pointer;
+  }
+  .side-list {
+    display: none; margin-top: 0.5rem; padding: 0.5rem;
+    max-height: 60vh; overflow-y: auto;
+    background: var(--surface);
+    border: 1.5px solid var(--border-lt);
+    border-radius: var(--radius-md);
+  }
+  .doc-sidebar.open .side-list { display: block; }
+}
+@media (max-width: 600px) {
+  .doc-grid { grid-template-columns: 1fr; }
+}
 
 
 /* ═══════════════════════════════════════════════════════════════════
-   [14] FICHES FISCALES (fiches CGI)
-   → Aucun CSS correspondant dans le fichier fourni
-     (sommaire latéral, contenu des fiches…).
+   [14] FICHES FISCALES — Fiscalité CGI (fiscalite-cgi-benin.html)
 ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 14.1 Barre de recherche + chiffres clés du bandeau ── */
+.cgi-search-wrap { max-width: 560px; margin: 2.2rem auto 0; position: relative; }
+.cgi-search-wrap input {
+  width: 100%;
+  max-width: 300px;
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.87rem;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.cgi-search-wrap input::placeholder { color: var(--muted); }
+.cgi-search-wrap input:focus { border-color: var(--orange-lt); background: rgba(255,255,255,0.12); }
+
+.cgi-hero-stats {
+  display: flex;
+  gap: 2.2rem;
+  justify-content: center;
+  margin-top: 1.8rem;
+  flex-wrap: wrap;
+}
+.cgi-hero-stat { text-align: center; }
+.cgi-hero-stat-value {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--text-on-dark);
+  line-height: 1;
+}
+.cgi-hero-stat-value span { color: var(--orange-lt); }
+.cgi-hero-stat-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-on-dark-muted);
+  margin-top: 4px;
+}
+
+/* ── 14.2 Sommaire : pastilles des 6 livres ── */
+.cgi-toc {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 1.1rem 0;
+  position: sticky;
+  top: 66px;
+  z-index: 150;
+}
+.cgi-toc-inner {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.cgi-toc-inner::-webkit-scrollbar { display: none; }
+.cgi-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 30px;
+  padding: 0.5rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--navy);
+  transition: background var(--transition), border-color var(--transition), transform var(--transition);
+}
+.cgi-chip:hover { background: var(--orange-pale); border-color: var(--orange-line); transform: translateY(-1px); }
+.cgi-chip-icon { color: var(--orange); font-size: 0.85rem; }
+.cgi-chip-count {
+  background: var(--teal);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 20px;
+}
+
+/* ── 14.3 Sections « Livre » ── */
+.cgi-livre { padding: 3.6rem 0; }
+.cgi-livre:nth-child(even) { background: var(--cream); }
+.cgi-livre-header p { color: var(--muted); font-size: 0.9rem; max-width: 640px; }
+.cgi-livre.is-hidden { display: none; }
+
+/* ── 14.4 Grille et cartes des fiches ── */
+.cgi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.cgi-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.4rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+.cgi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--orange);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.cgi-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--orange-line); }
+.cgi-card:hover::before { transform: scaleX(1); }
+.cgi-card.is-hidden { display: none; }
+.cgi-card-num {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--orange);
+  text-transform: uppercase;
+}
+.cgi-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.3;
+}
+.cgi-card-art {
+  font-size: 0.76rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+.cgi-card-art-muted { font-style: italic; opacity: 0.75; }
+.cgi-card-go {
+  margin-top: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--teal);
+  transition: gap var(--transition), color var(--transition);
+}
+.cgi-card:hover .cgi-card-go { color: var(--orange); }
+
+/* ── 14.5 Recherche sans résultat ── */
+.cgi-empty {
+  display: none;
+  text-align: center;
+  padding: 5rem 1rem;
+}
+.cgi-empty.is-visible { display: block; }
+.cgi-empty h3 { color: var(--navy); margin-bottom: 0.5rem; }
+.cgi-empty p { color: var(--muted); font-size: 0.9rem; }
+
+/* ── 14.6 Bandeau d'information (mots-clés) ── */
+.cgi-router-note {
+  background: var(--orange-pale);
+  border: 1px solid var(--orange-line);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.83rem;
+  color: #0a1a5c;
+  margin: 0 0 2.2rem;
+}
+.cgi-router-note strong { color: var(--navy); }
+
+/* ── 14.7 Fiscalité CGI : tablette / mobile ── */
+@media (max-width: 1023px) {
+  .cgi-toc { top: 58px; }
+  .cgi-hero-stats { gap: 1.3rem; }
+  .cgi-grid { grid-template-columns: 1fr; }
+}
 
 
 /* ═══════════════════════════════════════════════════════════════════
-   [15] CHAT (chat-widget)
-   → Aucun CSS correspondant dans le fichier fourni
-     (bulle flottante, fenêtre de conversation, messages…).
+   [15] CHAT — Assistant InfoCompta (chat-widget.js)
+   Ce CSS est une COPIE de la constante STYLE de chat-widget.js.
+   Pour n'avoir qu'une seule source : dans chat-widget.js, supprimez la
+   constante STYLE et la ligne
+     const style = document.createElement('style'); style.textContent = STYLE; document.head.appendChild(style);
+   Les couleurs du chat sont définies dans le 1er bloc (--ic-*).
 ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 15.1 Couleurs et police du chat ── */
+#ic-fab, #ic-panel, #ic-toast {
+  --ic-navy: #00085B;
+  --ic-dark: #0b0e34;
+  --ic-accent: #1039E2;
+  --ic-accent-dk: #0612b3;
+  --ic-accent-pale: #E7EBFC;
+  --ic-border: #A2B5CB;
+  --ic-border-lt: #D5DEE9;
+  --ic-cream: #F5F7FB;
+  --ic-text: #00085B;
+  --ic-text-md: #1A237A;
+  --ic-muted: #6B7A96;
+  --ic-ok: #2d7a4f;
+  font-family: var(--font-body), 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ── 15.2 Bouton flottant ── */
+#ic-fab {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9998;
+  height: 56px; padding: 0 18px 0 12px; gap: 8px; border-radius: 28px;
+  background: #fff; border: 2px solid var(--ic-accent);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 28px rgba(0,8,91,.35);
+  transition: transform .2s, box-shadow .2s, background .2s;
+}
+#ic-fab:hover { transform: translateY(-2px); background: var(--ic-accent-pale); box-shadow: 0 12px 34px rgba(0,8,91,.45); }
+#ic-fab:focus-visible, .ic-hbtn:focus-visible, .ic-chip:focus-visible, .ic-qr:focus-visible,
+#ic-send:focus-visible, #ic-input:focus-visible, .ic-copy-btn:focus-visible {
+  outline: 2px solid var(--ic-accent); outline-offset: 2px;
+}
+#ic-fab svg { width: 24px; height: 24px; fill: #fff; }
+#ic-fab img { width: 32px; height: auto; }
+.ic-fab-label { font-size: 14px; font-weight: 600; color: var(--ic-navy); white-space: nowrap; }
+#ic-notif { animation: ic-pulse 1.8s infinite; }
+@keyframes ic-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255,20,20,.6); }
+  70%  { box-shadow: 0 0 0 8px rgba(255,20,20,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,20,20,0); }
+}
+#ic-notif {
+  position: absolute; top: -2px; right: -2px; width: 13px; height: 13px;
+  border-radius: 50%; background: #FF1414; border: 2px solid #fff; display: none;
+}
+
+/* ── 15.3 Fenêtre de conversation ── */
+#ic-panel {
+  position: fixed; bottom: 92px; right: 24px; z-index: 9997;
+  width: min(400px, calc(100vw - 32px));
+  height: min(620px, calc(100vh - 116px));
+  background: #fff; border: 1px solid var(--ic-border-lt); border-radius: 12px;
+  box-shadow: 0 18px 60px rgba(0,8,91,.28);
+  display: flex; flex-direction: column; overflow: hidden;
+  opacity: 0; pointer-events: none; transform: translateY(12px);
+  transition: opacity .2s, transform .2s;
+}
+#ic-panel.open { opacity: 1; pointer-events: all; transform: translateY(0); }
+
+/* En-tête */
+.ic-header {
+  position: relative; background: var(--ic-dark); padding: 13px 14px;
+  display: flex; align-items: center; gap: 11px; flex-shrink: 0;
+}
+.ic-header::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ic-accent) 30%, #0815b3 60%, transparent);
+}
+.ic-header-logo {
+  width: 40px; height: 40px; border-radius: 9px; flex-shrink: 0;
+  background: #fff; border: 1px solid var(--ic-border-lt);
+  display: flex; align-items: center; justify-content: center;
+}
+.ic-header-info { flex: 1; min-width: 0; }
+.ic-header-info h3 { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #fff; line-height: 1.2; margin: 0; }
+.ic-header-info p { font-size: 11px; color: rgba(255,255,255,.68); margin: 2px 0 0; }
+.ic-header-btns { display: flex; gap: 6px; }
+.ic-hbtn {
+  background: rgba(255,255,255,.1); border: none; color: rgba(255,255,255,.8);
+  cursor: pointer; width: 30px; height: 30px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center; transition: background .18s;
+}
+.ic-hbtn:hover { background: rgba(255,255,255,.22); color: #fff; }
+
+/* Boutons rapides (chips) */
+.ic-chips {
+  padding: 9px 12px; background: var(--ic-cream); border-bottom: 1px solid var(--ic-border-lt);
+  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; flex-shrink: 0;
+}
+.ic-chips::-webkit-scrollbar { display: none; }
+.ic-chip {
+  flex-shrink: 0; padding: 5px 12px; background: #fff; border: 1px solid var(--ic-border);
+  border-radius: 20px; font-size: 12px; font-weight: 500; color: var(--ic-navy);
+  cursor: pointer; white-space: nowrap; font-family: inherit;
+  transition: background .18s, color .18s, border-color .18s;
+}
+.ic-chip:hover { background: var(--ic-navy); color: #fff; border-color: var(--ic-navy); }
+
+/* ── 15.4 Messages ── */
+.ic-messages {
+  flex: 1; overflow-y: auto; padding: 14px 13px; display: flex; flex-direction: column;
+  gap: 12px; scroll-behavior: smooth; background: var(--ic-cream);
+}
+.ic-messages::-webkit-scrollbar { width: 4px; }
+.ic-messages::-webkit-scrollbar-thumb { background: var(--ic-border); border-radius: 4px; }
+
+.ic-msg { display: flex; gap: 8px; }
+.ic-msg.user { flex-direction: row-reverse; }
+.ic-avatar {
+  width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0; align-self: flex-end;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 13px; font-weight: 700;
+}
+.ic-msg.ai .ic-avatar { background: var(--ic-dark); color: #fff; }
+.ic-msg.user .ic-avatar { background: var(--ic-accent); color: #fff; }
+.ic-msg-body { display: flex; flex-direction: column; gap: 5px; max-width: 90%; min-width: 0; }
+.ic-msg.user .ic-msg-body { align-items: flex-end; max-width: 82%; }
+
+.ic-bubble { padding: 10px 13px; border-radius: 10px; font-size: 13.5px; line-height: 1.6; word-break: break-word; }
+.ic-msg.ai .ic-bubble { background: #fff; color: var(--ic-text); border: 1px solid var(--ic-border-lt); border-bottom-left-radius: 3px; }
+.ic-msg.user .ic-bubble { background: var(--ic-navy); color: #fff; border-bottom-right-radius: 3px; }
+.ic-bubble p { margin: 0 0 6px; }
+.ic-bubble p:last-child { margin-bottom: 0; }
+.ic-bubble strong { font-weight: 700; }
+.ic-bubble ul { padding-left: 17px; margin: 5px 0; }
+.ic-bubble li { margin-bottom: 3px; }
+.ic-bubble pre { background: var(--ic-dark); color: #e2e8f0; border-radius: 7px; padding: 10px 12px; margin: 7px 0; overflow-x: auto; font-size: 12px; line-height: 1.6; }
+
+/* Séparateur « Compte XXX » */
+.ic-ctx { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ic-muted); }
+.ic-ctx::before, .ic-ctx::after { content: ''; flex: 1; height: 1px; background: var(--ic-border-lt); }
+.ic-ctx .ic-ctag { font-size: 11.5px; }
+
+/* Tags de compte et liens */
+.ic-ctag {
+  display: inline-block; font-family: 'Courier New', monospace; font-size: 12px; font-weight: 700;
+  padding: 1px 7px; background: var(--ic-accent-pale); border: 1px solid rgba(16,57,226,.28);
+  border-radius: 4px; color: var(--ic-accent); text-decoration: none;
+}
+.ic-ctag:hover { background: var(--ic-accent); color: #fff; }
+.ic-link { color: var(--ic-accent); font-weight: 600; font-size: 12.5px; text-decoration: none; }
+.ic-link:hover { text-decoration: underline; }
+
+/* ── 15.5 Cartes de réponse (compte, impôt, document, calcul) ── */
+.ic-card {
+  background: var(--ic-cream); border: 1px solid var(--ic-border-lt); border-left: 3px solid var(--ic-accent);
+  border-radius: 8px; padding: 10px 12px; margin: 8px 0 0;
+}
+.ic-card:first-child { margin-top: 0; }
+.ic-card-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.ic-card-head strong { font-family: var(--font-display); font-size: 14px; color: var(--ic-navy); }
+.ic-card-sub { font-size: 12px; color: var(--ic-muted); margin: 2px 0 6px; }
+.ic-price { font-weight: 700; color: var(--ic-navy); margin-bottom: 4px; }
+.ic-ecr { background: #fff; border: 1px solid var(--ic-border-lt); border-radius: 6px; padding: 7px 9px; margin: 6px 0; font-size: 12.5px; }
+.ic-ecr > span { display: block; font-weight: 600; margin-bottom: 3px; }
+.ic-ecr b { display: inline-block; width: 16px; color: var(--ic-accent); }
+.ic-ul { padding-left: 16px; margin: 4px 0 2px; }
+.ic-ul li { margin-bottom: 3px; font-size: 12.8px; }
+.ic-muted { color: var(--ic-muted); }
+
+.ic-card details { margin: 6px 0 0; }
+.ic-card summary { cursor: pointer; font-weight: 600; font-size: 12.8px; color: var(--ic-text-md); }
+.ic-card summary:hover { color: var(--ic-accent); }
+
+/* Tableaux (calculateurs) */
+.ic-tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 6px 0; }
+.ic-tbl th, .ic-tbl td { padding: 4px 6px; border-bottom: 1px solid var(--ic-border-lt); text-align: right; }
+.ic-tbl th:first-child, .ic-tbl td:first-child { text-align: left; }
+.ic-tbl th { font-weight: 600; color: var(--ic-text-md); }
+.ic-tbl tr.ic-total td { font-weight: 700; color: var(--ic-navy); border-bottom: 2px solid var(--ic-navy); }
+.ic-note { font-size: 11.5px; color: var(--ic-muted); margin-top: 6px; line-height: 1.5; }
+.ic-md-wrap { overflow-x: auto; margin: 6px 0; }
+.ic-md-tbl { border-collapse: collapse; font-size: 12.5px; width: 100%; }
+.ic-md-tbl th, .ic-md-tbl td { border: 1px solid var(--ic-border-lt); padding: 5px 7px; text-align: left; vertical-align: top; }
+.ic-md-tbl th { background: var(--ic-accent-pale); color: var(--ic-text-md); font-weight: 600; }
+
+/* ── 15.6 Réponses rapides, bouton Copier, animation « en train d'écrire » ── */
+.ic-qrs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.ic-qr {
+  background: #fff; border: 1px solid var(--ic-accent); color: var(--ic-accent);
+  border-radius: 18px; padding: 5px 12px; font-size: 12.5px; font-weight: 500;
+  cursor: pointer; font-family: inherit; transition: background .18s, color .18s;
+}
+.ic-qr:hover { background: var(--ic-accent); color: #fff; }
+
+.ic-copy-btn {
+  display: inline-flex; align-items: center; background: none; border: none;
+  color: var(--ic-muted); cursor: pointer; font-size: 11.5px; padding: 2px 3px;
+  border-radius: 5px; font-family: inherit; align-self: flex-start;
+}
+.ic-copy-btn svg { width: 13px; height: 13px; fill: currentColor; }
+.ic-copy-btn .ic-copy-label { max-width: 0; overflow: hidden; white-space: nowrap; transition: max-width .2s, margin-left .2s; }
+.ic-copy-btn:hover, .ic-copy-btn:focus-visible { color: var(--ic-accent); }
+.ic-copy-btn:hover .ic-copy-label, .ic-copy-btn:focus-visible .ic-copy-label, .ic-copy-btn.copied .ic-copy-label { max-width: 50px; margin-left: 4px; }
+.ic-copy-btn.copied { color: var(--ic-ok) !important; }
+
+.ic-typing { display: flex; gap: 4px; padding: 11px 13px; background: #fff; border: 1px solid var(--ic-border-lt); border-radius: 10px; border-bottom-left-radius: 3px; width: fit-content; }
+.ic-typing span { width: 6px; height: 6px; background: var(--ic-accent); border-radius: 50%; animation: ic-bounce .9s infinite; }
+.ic-typing span:nth-child(2) { animation-delay: .15s; }
+.ic-typing span:nth-child(3) { animation-delay: .3s; }
+@keyframes ic-bounce { 0%,80%,100% { transform: translateY(0); } 40% { transform: translateY(-6px); } }
+
+/* ── 15.7 Zone de saisie, pied, message « Copié » ── */
+.ic-input-area { padding: 10px 12px; background: #fff; border-top: 1px solid var(--ic-border-lt); display: flex; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+#ic-input {
+  flex: 1; border: 1.5px solid var(--ic-border); border-radius: 6px; padding: 9px 12px;
+  font-family: inherit; font-size: 13.5px; color: var(--ic-text); resize: none; outline: none;
+  max-height: 100px; line-height: 1.5; background: #fff; transition: border-color .18s, box-shadow .18s;
+}
+#ic-input:focus { border-color: var(--ic-accent); box-shadow: 0 0 0 3px rgba(16,57,226,.12); }
+#ic-input::placeholder { color: var(--ic-muted); }
+#ic-send {
+  width: 40px; height: 40px; flex-shrink: 0; border-radius: 6px; background: var(--ic-accent-dk);
+  border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .18s, transform .18s;
+}
+#ic-send:hover { background: var(--ic-accent); transform: translateY(-1px); }
+#ic-send:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+#ic-send svg { width: 16px; height: 16px; fill: #fff; }
+
+.ic-footer { text-align: center; font-size: 10.5px; color: var(--ic-muted); padding: 5px 8px 7px; background: #fff; flex-shrink: 0; }
+
+#ic-toast {
+  position: fixed; bottom: 96px; right: 28px; z-index: 99999; background: var(--ic-navy); color: #fff;
+  padding: 8px 14px; border-radius: 6px; font-size: 12.5px;
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+#ic-toast.show { opacity: 1; }
+
+/* ── 15.8 Chat : mobile et accessibilité ── */
+@media (max-width: 480px) {
+  #ic-panel { right: 8px; left: 8px; width: auto; bottom: 80px; height: calc(100dvh - 100px); }
+  #ic-fab { bottom: 16px; right: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #ic-panel, #ic-fab, .ic-copy-btn .ic-copy-label { transition: none; }
+  .ic-typing span { animation: none; }
+  #ic-notif { animation: none; }
+}
 
 
 /* ═══════════════════════════════════════════════════════════════════
    [16] CONTACT / AUTRES PAGES
-   → Aucun CSS correspondant dans le fichier fourni.
+   → Pas de CSS fourni pour contact.html, confidentialite.html, etc.
+   (a-propos, offres, accueil, quiz et connexion sont dans [06] à [10])
 ═══════════════════════════════════════════════════════════════════ */
