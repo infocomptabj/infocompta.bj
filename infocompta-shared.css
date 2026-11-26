@@ -2977,7 +2977,7 @@ footer {
 .cgi-search-wrap { max-width: 560px; margin: 2.2rem auto 0; position: relative; }
 .cgi-search-wrap input {
   width: 100%;
-  max-width: 300px;
+  max-width: 100px;
   background: var(--cream);
   border: 1.5px solid var(--border);
   color: var(--text);
