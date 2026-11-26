@@ -1,10 +1,422 @@
 /* ═══════════════════════════════════════════════════════════
-   Quiz OHADA supplémentaires – InfoCompta
-   À charger APRÈS le script principal de quiz.html :
-   <script src="quiz-ohada.js"></script>
+   InfoCompta – Quiz (quiz.js)
+   Contient : 1) l'anti-scintillement d'authentification
+              2) les données des quiz (anciens + OHADA)
+              3) la logique d'affichage et de navigation
+   Pour ajouter un quiz : ajouter un objet dans le tableau QUIZZES.
 ═══════════════════════════════════════════════════════════ */
+
+/* 1. Indique tôt que l'utilisateur est connecté (évite le scintillement du header) */
 (function () {
-  var NEW_QUIZZES = [
+  try {
+    var raw = localStorage.getItem('sb-lmivfisdmuqbspvmvdzh-auth-token');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (!parsed.expires_at || parsed.expires_at * 1000 > Date.now()) {
+        document.documentElement.classList.add('ic-authed');
+      }
+    }
+  } catch (e) {}
+})();
+
+/* 2. Données */
+var QUIZZES = [
+ {
+  "id": "pc-bases",
+  "theme": "plan",
+  "themeLabel": "Plan Comptable OHADA",
+  "icon": "📋",
+  "title": "Les bases du SYSCOHADA",
+  "desc": "Maîtrisez la structure des 9 classes du plan comptable OHADA révisé.",
+  "level": "debutant",
+  "questions": [
+   {
+    "q": "Combien de classes comporte le plan comptable OHADA (SYSCOHADA révisé) ?",
+    "opts": [
+     "7 classes",
+     "8 classes",
+     "9 classes",
+     "10 classes"
+    ],
+    "answer": 2,
+    "expl": "Le SYSCOHADA révisé comporte <strong>9 classes</strong> : classes 1 à 8 pour les comptes de bilan et de résultat, et la classe 9 pour la comptabilité analytique."
+   },
+   {
+    "q": "Dans quelle classe du SYSCOHADA se trouvent les capitaux propres ?",
+    "opts": [
+     "Classe 1",
+     "Classe 2",
+     "Classe 3",
+     "Classe 4"
+    ],
+    "answer": 0,
+    "expl": "La <strong>Classe 1 : Comptes de ressources durables</strong> regroupe les capitaux propres, les dettes financières et les provisions pour risques."
+   },
+   {
+    "q": "Le compte 401 dans le SYSCOHADA correspond à :",
+    "opts": [
+     "Clients",
+     "Fournisseurs",
+     "Banques",
+     "Personnel"
+    ],
+    "answer": 1,
+    "expl": "Le compte <strong>401 : Fournisseurs</strong> enregistre les dettes envers les fournisseurs de biens et services. Les clients sont en classe 4 également mais au compte 411."
+   },
+   {
+    "q": "Quelle classe regroupe les comptes de trésorerie ?",
+    "opts": [
+     "Classe 4",
+     "Classe 5",
+     "Classe 6",
+     "Classe 7"
+    ],
+    "answer": 1,
+    "expl": "La <strong>Classe 5 : Comptes de trésorerie</strong> regroupe les disponibilités : caisse (571), banques (521), chèques postaux (531), etc."
+   },
+   {
+    "q": "Le résultat net de l'exercice est la différence entre :",
+    "opts": [
+     "Actif et Passif",
+     "Produits (classe 7) et Charges (classe 6)",
+     "Capitaux propres et Dettes",
+     "Immobilisations et Stocks"
+    ],
+    "answer": 1,
+    "expl": "Le résultat net = <strong>Produits (classe 7) − Charges (classe 6)</strong>. Un résultat positif est un bénéfice, négatif une perte."
+   }
+  ]
+ },
+ {
+  "id": "pc-avance",
+  "theme": "plan",
+  "themeLabel": "Plan Comptable OHADA",
+  "icon": "📊",
+  "title": "Comptes spécifiques OHADA",
+  "desc": "Approfondissez votre connaissance des comptes particuliers du SYSCOHADA.",
+  "level": "avance",
+  "questions": [
+   {
+    "q": "Le compte 211 « Terrains » appartient à quelle classe ?",
+    "opts": [
+     "Classe 1",
+     "Classe 2",
+     "Classe 3",
+     "Classe 5"
+    ],
+    "answer": 1,
+    "expl": "Le compte <strong>211 : Terrains</strong> est en <strong>Classe 2 : Comptes d'actif immobilisé</strong>. La classe 2 regroupe toutes les immobilisations (corporelles, incorporelles et financières)."
+   },
+   {
+    "q": "Quel compte enregistre les amortissements des immobilisations corporelles ?",
+    "opts": [
+     "Compte 28x",
+     "Compte 29x",
+     "Compte 39x",
+     "Compte 49x"
+    ],
+    "answer": 0,
+    "expl": "Les <strong>comptes 28x</strong> enregistrent les amortissements des immobilisations. Ex : 2812 pour l'amortissement des matériels et outillages. Les 29x sont pour les dépréciations d'immobilisations."
+   },
+   {
+    "q": "Le compte 6011 correspond à :",
+    "opts": [
+     "Achats de marchandises",
+     "Achats de matières premières",
+     "Variation de stocks",
+     "Frais de transport"
+    ],
+    "answer": 1,
+    "expl": "Le compte <strong>6011 : Achats de matières premières</strong> enregistre les achats destinés à la production. Le 6010 est pour les achats de marchandises revendues en l'état."
+   },
+   {
+    "q": "Dans le SYSCOHADA, le compte 701 enregistre :",
+    "opts": [
+     "Ventes de marchandises",
+     "Ventes de produits finis",
+     "Prestations de services",
+     "Produits accessoires"
+    ],
+    "answer": 1,
+    "expl": "Le compte <strong>701 : Ventes de produits finis</strong> enregistre les ventes de produits issus de la fabrication. Le 700 est pour les ventes de marchandises, le 706 pour les prestations de services."
+   },
+   {
+    "q": "Quel est le solde normal du compte Fournisseurs (401) ?",
+    "opts": [
+     "Débiteur",
+     "Créditeur",
+     "Il n'a pas de solde normal",
+     "Nul en fin d'exercice"
+    ],
+    "answer": 1,
+    "expl": "Le compte <strong>401 : Fournisseurs</strong> a un solde normalement <strong>créditeur</strong>, car il représente une dette envers le fournisseur. Il est débité lors du paiement et crédité lors de la réception de la facture."
+   }
+  ]
+ },
+ {
+  "id": "fisc-tva",
+  "theme": "fiscalite",
+  "themeLabel": "Fiscalité CGI Bénin",
+  "icon": "🏛️",
+  "title": "TVA au Bénin",
+  "desc": "Taux, exonérations et mécanismes de la TVA selon le CGI béninois.",
+  "level": "intermediaire",
+  "questions": [
+   {
+    "q": "Quel est le taux normal de la TVA au Bénin ?",
+    "opts": [
+     "15%",
+     "16%",
+     "18%",
+     "20%"
+    ],
+    "answer": 2,
+    "expl": "Le taux normal de la <strong>TVA au Bénin est de 18%</strong> selon le Code Général des Impôts (CGI) béninois. C'est le taux applicable à la majorité des opérations imposables."
+   },
+   {
+    "q": "Lequel de ces produits est exonéré de TVA au Bénin ?",
+    "opts": [
+     "Matériaux de construction",
+     "Produits pétroliers",
+     "Médicaments et produits pharmaceutiques",
+     "Équipements informatiques"
+    ],
+    "answer": 2,
+    "expl": "Les <strong>médicaments et produits pharmaceutiques</strong> sont exonérés de TVA au Bénin. Cette exonération vise à rendre les soins de santé accessibles à tous."
+   },
+   {
+    "q": "La TVA collectée par une entreprise est comptabilisée au :",
+    "opts": [
+     "Compte 4451 : TVA facturée",
+     "Compte 4452 : TVA récupérable",
+     "Compte 4454 : TVA due",
+     "Compte 6551 : Taxes"
+    ],
+    "answer": 0,
+    "expl": "La <strong>TVA collectée (facturée)</strong> sur les ventes est enregistrée au <strong>compte 4451 : TVA facturée sur ventes</strong>. C'est une dette envers l'État, donc un compte créditeur."
+   },
+   {
+    "q": "Quelle est la périodicité de déclaration de la TVA pour les entreprises relevant du régime réel normal au Bénin ?",
+    "opts": [
+     "Annuelle",
+     "Trimestrielle",
+     "Mensuelle",
+     "Semestrielle"
+    ],
+    "answer": 2,
+    "expl": "Les entreprises du régime réel normal effectuent une déclaration de TVA <strong>mensuelle</strong>, à déposer avant le 15 du mois suivant, accompagnée du paiement correspondant."
+   },
+   {
+    "q": "Le droit à déduction de la TVA ne s'applique pas aux :",
+    "opts": [
+     "Achats de matières premières",
+     "Frais de transport de marchandises",
+     "Dépenses de logement et restauration des dirigeants",
+     "Acquisitions de matériel de production"
+    ],
+    "answer": 2,
+    "expl": "Les <strong>dépenses de logement, de restauration et de réception</strong> sont exclues du droit à déduction de TVA au Bénin, car elles sont considérées comme des dépenses à caractère personnel."
+   }
+  ]
+ },
+ {
+  "id": "fisc-is",
+  "theme": "fiscalite",
+  "themeLabel": "Fiscalité CGI Bénin",
+  "icon": "📑",
+  "title": "Impôt sur les Sociétés",
+  "desc": "Taux, assiette et obligations déclaratives de l'IS au Bénin.",
+  "level": "avance",
+  "questions": [
+   {
+    "q": "Quel est le taux de l'Impôt sur les Sociétés (IS) au Bénin ?",
+    "opts": [
+     "25%",
+     "28%",
+     "30%",
+     "35%"
+    ],
+    "answer": 2,
+    "expl": "Le taux de l'<strong>Impôt sur les Sociétés au Bénin est de 30%</strong> selon le CGI. Ce taux s'applique sur le bénéfice imposable de l'exercice."
+   },
+   {
+    "q": "La contribution des patentes au Bénin est calculée sur la base de :",
+    "opts": [
+     "Le chiffre d'affaires uniquement",
+     "La valeur locative des locaux professionnels",
+     "Le bénéfice net",
+     "Le capital social"
+    ],
+    "answer": 1,
+    "expl": "La <strong>contribution des patentes</strong> est assise sur la <strong>valeur locative des locaux professionnels</strong>. C'est un impôt local dû par toute personne exerçant une activité commerciale ou industrielle."
+   },
+   {
+    "q": "L'acompte d'IS au Bénin est payé :",
+    "opts": [
+     "En une seule fois en fin d'année",
+     "En 3 versements trimestriels",
+     "En 12 mensualités",
+     "En 2 versements semestriels"
+    ],
+    "answer": 1,
+    "expl": "L'acompte d'IS est versé en <strong>3 fractions trimestrielles</strong> (avril, juillet, octobre), chacune égale à 1/3 de l'impôt de l'exercice précédent. Le solde est réglé lors du dépôt de la déclaration annuelle."
+   },
+   {
+    "q": "Quelle charge n'est PAS déductible de l'assiette de l'IS au Bénin ?",
+    "opts": [
+     "Salaires versés aux employés",
+     "Intérêts des emprunts bancaires",
+     "Amendes et pénalités fiscales",
+     "Dotations aux amortissements"
+    ],
+    "answer": 2,
+    "expl": "Les <strong>amendes, pénalités et majorations fiscales</strong> ne sont pas déductibles du résultat imposable. Elles ne constituent pas des charges d'exploitation normales mais des sanctions."
+   },
+   {
+    "q": "Le minimum de perception de l'IS au Bénin s'applique lorsque :",
+    "opts": [
+     "L'entreprise réalise un bénéfice",
+     "L'entreprise est déficitaire ou son IS calculé est inférieur au minimum",
+     "L'entreprise est en liquidation",
+     "Le chiffre d'affaires dépasse 1 milliard de FCFA"
+    ],
+    "answer": 1,
+    "expl": "Le <strong>minimum de perception</strong> garantit un impôt minimum même en cas de déficit ou de faible bénéfice. Il est calculé sur le chiffre d'affaires et l'entreprise paie le montant le plus élevé entre l'IS calculé et le minimum."
+   }
+  ]
+ },
+ {
+  "id": "ecr-bases",
+  "theme": "ecritures",
+  "themeLabel": "Écritures Comptables",
+  "icon": "✍️",
+  "title": "Écritures de base",
+  "desc": "Passez les écritures courantes : achats, ventes, règlements.",
+  "level": "debutant",
+  "questions": [
+   {
+    "q": "Lors d'un achat de marchandises à crédit (HT : 500 000 FCFA, TVA 18%), on crédite :",
+    "opts": [
+     "Le compte 601 : Achats de marchandises",
+     "Le compte 4011 : Fournisseurs",
+     "Le compte 5211 : Banque",
+     "Le compte 4451 : TVA collectée"
+    ],
+    "answer": 1,
+    "expl": "À l'achat à crédit, on <strong>débite</strong> le compte 601 (achat) et 4452 (TVA déductible), et on <strong>crédite le compte 4011 : Fournisseurs</strong> pour le montant TTC (590 000 FCFA)."
+   },
+   {
+    "q": "Lors du règlement d'un fournisseur par virement bancaire, on :",
+    "opts": [
+     "Débite 4011 Fournisseurs / Crédite 5211 Banque",
+     "Débite 5211 Banque / Crédite 4011 Fournisseurs",
+     "Débite 601 Achats / Crédite 5211 Banque",
+     "Débite 4011 Fournisseurs / Crédite 401 Fournisseurs"
+    ],
+    "answer": 0,
+    "expl": "Le règlement d'un fournisseur <strong>diminue la dette</strong> (débit 4011) et <strong>diminue la banque</strong> (crédit 5211). Principe : on débite ce qui diminue au passif et crédite ce qui diminue à l'actif."
+   },
+   {
+    "q": "La vente de marchandises en espèces (HT 200 000 FCFA, TVA 18%) génère une écriture avec :",
+    "opts": [
+     "Débit 5711 Caisse 236 000 / Crédit 7011 Ventes 200 000 et 4451 TVA 36 000",
+     "Débit 7011 Ventes / Crédit 5711 Caisse",
+     "Débit 4111 Clients / Crédit 7011 Ventes",
+     "Débit 5711 Caisse / Crédit 6011 Achats"
+    ],
+    "answer": 0,
+    "expl": "La vente en espèces : <strong>Débit 5711 Caisse 236 000</strong> (encaissement TTC) / <strong>Crédit 7011 Ventes 200 000</strong> (produit HT) et <strong>Crédit 4451 TVA collectée 36 000</strong> (TVA due à l'État)."
+   },
+   {
+    "q": "L'écriture de dotation aux amortissements d'un équipement se traduit par :",
+    "opts": [
+     "Débit 681 Dotations / Crédit 28x Amortissements",
+     "Débit 28x Amortissements / Crédit 681 Dotations",
+     "Débit 21x Immobilisations / Crédit 681 Dotations",
+     "Débit 681 Dotations / Crédit 21x Immobilisations"
+    ],
+    "answer": 0,
+    "expl": "<strong>Débit 681 : Dotations aux amortissements</strong> (charge) / <strong>Crédit 28x - Amortissements</strong> (compte de correction à l'actif). L'immobilisation reste au bilan à sa valeur brute, la dépréciation est portée dans le compte d'amortissement."
+   },
+   {
+    "q": "Quelle est la règle fondamentale de la partie double en comptabilité ?",
+    "opts": [
+     "Toute recette doit être compensée par une dépense",
+     "Le total des débits doit toujours égaler le total des crédits",
+     "Tout actif doit être financé par un passif de même montant",
+     "Les charges doivent toujours être inférieures aux produits"
+    ],
+    "answer": 1,
+    "expl": "La <strong>partie double</strong> stipule que pour toute opération, le <strong>total des débits = total des crédits</strong>. C'est le principe fondateur de la comptabilité en partie double, garantissant l'équilibre permanent du bilan."
+   }
+  ]
+ },
+ {
+  "id": "doc-pieces",
+  "theme": "documents",
+  "themeLabel": "Documents & Pièces",
+  "icon": "📁",
+  "title": "Pièces justificatives",
+  "desc": "Identifiez et maîtrisez les documents obligatoires en comptabilité OHADA.",
+  "level": "debutant",
+  "questions": [
+   {
+    "q": "Quel document est obligatoire pour enregistrer un achat en comptabilité ?",
+    "opts": [
+     "Un bon de commande",
+     "Une facture fournisseur",
+     "Un devis",
+     "Un bon de livraison"
+    ],
+    "answer": 1,
+    "expl": "La <strong>facture fournisseur</strong> est la pièce justificative obligatoire pour enregistrer un achat. Elle doit mentionner : identité des parties, date, désignation, prix HT, TVA et total TTC."
+   },
+   {
+    "q": "Les états financiers annuels obligatoires selon le SYSCOHADA comprennent :",
+    "opts": [
+     "Bilan + Compte de résultat uniquement",
+     "Bilan + Compte de résultat + TAFIRE + Notes annexes",
+     "Bilan + Tableau des flux de trésorerie",
+     "Compte de résultat + Tableau de bord"
+    ],
+    "answer": 1,
+    "expl": "Le SYSCOHADA impose 4 états financiers : <strong>Bilan, Compte de résultat, TAFIRE</strong> (Tableau Financier des Ressources et Emplois) et <strong>Notes annexes</strong>. Le système normal comprend aussi l'État supplémentaire statistique (ESS)."
+   },
+   {
+    "q": "La durée légale de conservation des documents comptables au Bénin est de :",
+    "opts": [
+     "3 ans",
+     "5 ans",
+     "7 ans",
+     "10 ans"
+    ],
+    "answer": 3,
+    "expl": "Les livres comptables et documents justificatifs doivent être conservés pendant <strong>10 ans</strong> selon le droit OHADA (Acte Uniforme relatif au droit commercial général)."
+   },
+   {
+    "q": "Le Grand Livre est :",
+    "opts": [
+     "Un registre légal obligatoire listant toutes les opérations par date",
+     "Un registre regroupant tous les comptes avec leurs mouvements débits/crédits",
+     "Un document récapitulant uniquement les soldes de fin d'exercice",
+     "Un livre réservé aux grandes entreprises"
+    ],
+    "answer": 1,
+    "expl": "Le <strong>Grand Livre</strong> est un registre obligatoire qui regroupe <strong>tous les comptes</strong> de l'entreprise avec le détail de leurs mouvements (débits et crédits). Il permet de suivre l'historique de chaque compte."
+   },
+   {
+    "q": "Une note de débit envoyée par un client signifie :",
+    "opts": [
+     "Le client demande une réduction de prix sur une facture",
+     "Le client réclame le remboursement d'un trop-perçu",
+     "Le client informe d'un retard de livraison",
+     "Le client confirme la réception de marchandises"
+    ],
+    "answer": 1,
+    "expl": "Une <strong>note de débit</strong> (ou avis de débit) émise par un client signifie qu'il <strong>réclame un remboursement</strong> ou une correction - par exemple suite à un retour de marchandises défectueuses ou une erreur de facturation."
+   }
+  ]
+ },
  {
   "id": "ohada-cadre",
   "theme": "plan",
@@ -1843,9 +2255,302 @@
   ]
  }
 ];
-  NEW_QUIZZES.forEach(function (n) {
-    if (!QUIZZES.some(function (q) { return q.id === n.id; })) QUIZZES.push(n);
+
+/* ══════════════════════════════════════════════
+   LOGIQUE DU QUIZ
+══════════════════════════════════════════════ */
+var LEVELS = { debutant: 'Débutant', intermediaire: 'Intermédiaire', avance: 'Avancé' };
+var LETTERS = ['A', 'B', 'C', 'D'];
+var STORE_KEY = 'ic-quiz-best';
+
+var state = { theme: 'all', level: 'all' };
+var currentQuiz = null;
+var currentQ = 0;
+var answers = [];
+
+function $(id) { return document.getElementById(id); }
+
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
   });
-  var active = document.querySelector('.filter-btn.active');
-  renderCards(active ? active.dataset.theme : 'all');
-})();
+}
+
+/* ── Meilleurs scores (localStorage, facultatif) ── */
+function loadBest() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (e) { return {}; }
+}
+function saveBest(id, pct) {
+  try {
+    var b = loadBest();
+    if (b[id] === undefined || pct > b[id]) { b[id] = pct; localStorage.setItem(STORE_KEY, JSON.stringify(b)); }
+  } catch (e) {}
+}
+
+/* ── Statistiques d'en-tête et compteurs de filtres ── */
+function renderStats() {
+  var total = QUIZZES.reduce(function (n, q) { return n + q.questions.length; }, 0);
+  if ($('statQuizzes')) $('statQuizzes').textContent = QUIZZES.length;
+  if ($('statQuestions')) $('statQuestions').textContent = total;
+
+  document.querySelectorAll('#filterBar .filter-btn').forEach(function (b) {
+    var t = b.dataset.theme;
+    var n = t === 'all' ? QUIZZES.length : QUIZZES.filter(function (q) { return q.theme === t; }).length;
+    var span = b.querySelector('.filter-count');
+    if (!span) { span = document.createElement('span'); span.className = 'filter-count'; b.appendChild(span); }
+    span.textContent = n;
+  });
+}
+
+/* ── Cartes ── */
+function renderCards() {
+  var grid = $('quizGrid');
+  var best = loadBest();
+  var list = QUIZZES.filter(function (q) {
+    return (state.theme === 'all' || q.theme === state.theme) &&
+           (state.level === 'all' || q.level === state.level);
+  });
+
+  if (!list.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🗂️</div><p>Aucun quiz ne correspond à ce filtre pour l’instant.</p></div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(function (quiz) {
+    var b = best[quiz.id];
+    var bestHtml = b !== undefined ? '<span class="best-badge">🏆 ' + b + '%</span>' : '';
+    return '' +
+      '<article class="quiz-card" data-theme="' + quiz.theme + '" data-id="' + quiz.id + '" tabindex="0" role="button" aria-label="Ouvrir le quiz ' + esc(quiz.title) + '">' +
+        '<div class="quiz-card-top">' +
+          '<div class="quiz-card-icon" aria-hidden="true">' + quiz.icon + '</div>' +
+          '<div class="quiz-card-theme">' + esc(quiz.themeLabel) + '</div>' +
+          '<h3 class="quiz-card-title">' + esc(quiz.title) + '</h3>' +
+        '</div>' +
+        '<div class="quiz-card-body">' +
+          '<p class="quiz-card-desc">' + esc(quiz.desc) + '</p>' +
+          '<div class="quiz-card-meta">' +
+            '<span class="meta-q">❓ ' + quiz.questions.length + ' questions</span>' +
+            '<span class="level-badge level-' + quiz.level + '">' + LEVELS[quiz.level] + '</span>' +
+            bestHtml +
+          '</div>' +
+          '<button class="btn-start" type="button">Commencer →</button>' +
+        '</div>' +
+      '</article>';
+  }).join('');
+}
+
+/* ── Ouverture / fermeture ── */
+function openQuiz(id) {
+  currentQuiz = QUIZZES.filter(function (q) { return q.id === id; })[0];
+  if (!currentQuiz) return;
+  currentQ = 0;
+  answers = new Array(currentQuiz.questions.length).fill(null);
+
+  $('modalTheme').textContent = currentQuiz.themeLabel;
+  $('modalTitle').textContent = currentQuiz.icon + '  ' + currentQuiz.title;
+  $('quizPanel').setAttribute('data-theme', currentQuiz.theme);
+  $('viewQuestion').style.display = 'block';
+  $('viewResults').style.display = 'none';
+  $('quizModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderQuestion();
+}
+
+function closeQuiz() {
+  $('quizModal').classList.remove('open');
+  document.body.style.overflow = '';
+  currentQuiz = null;
+  renderCards();
+}
+
+/* ── Question ── */
+function renderQuestion() {
+  var q = currentQuiz.questions[currentQ];
+  var total = currentQuiz.questions.length;
+
+  $('qCounter').textContent = 'Question ' + (currentQ + 1) + ' / ' + total;
+  $('qText').textContent = q.q;
+  $('progressFill').style.width = (currentQ / total * 100) + '%';
+
+  var expl = $('qExplanation');
+  expl.className = 'quiz-explanation';
+  expl.innerHTML = '';
+
+  var btn = $('btnNext');
+  btn.disabled = true;
+  btn.textContent = 'Suivant →';
+
+  $('qOptions').innerHTML = q.opts.map(function (opt, i) {
+    return '<button type="button" class="quiz-option" data-idx="' + i + '">' +
+             '<span class="opt-letter">' + LETTERS[i] + '</span>' +
+             '<span class="opt-text">' + esc(opt) + '</span>' +
+           '</button>';
+  }).join('');
+
+  $('quizPanel').scrollTop = 0;
+}
+
+function selectOption(idx) {
+  var q = currentQuiz.questions[currentQ];
+  var opts = document.querySelectorAll('#qOptions .quiz-option');
+  if (!opts.length || opts[0].classList.contains('disabled')) return;
+
+  answers[currentQ] = idx;
+  opts.forEach(function (o) { o.classList.add('disabled'); o.disabled = true; });
+  opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+  if (idx !== q.answer) opts[q.answer].classList.add('correct');
+
+  var expl = $('qExplanation');
+  var ok = idx === q.answer;
+  expl.className = 'quiz-explanation show ' + (ok ? 'is-ok' : 'is-ko');
+  expl.innerHTML = '<div class="expl-head">' + (ok ? '✅ Bonne réponse !' : '❌ Pas tout à fait') + '</div>' + q.expl;
+
+  var last = currentQ === currentQuiz.questions.length - 1;
+  var btn = $('btnNext');
+  btn.disabled = false;
+  btn.textContent = last ? 'Voir les résultats →' : 'Suivant →';
+  btn.focus();
+}
+
+function nextQuestion() {
+  if (currentQ < currentQuiz.questions.length - 1) {
+    currentQ++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+/* ── Résultats ── */
+function showResults() {
+  var total = currentQuiz.questions.length;
+  var score = answers.filter(function (a, i) { return a === currentQuiz.questions[i].answer; }).length;
+  var pct = Math.round(score / total * 100);
+  saveBest(currentQuiz.id, pct);
+
+  $('progressFill').style.width = '100%';
+  $('viewQuestion').style.display = 'none';
+  $('viewResults').style.display = 'block';
+
+  $('resScore').textContent = score;
+  $('resTotal').textContent = '/ ' + total + '  ·  ' + pct + '%';
+
+  var title, msg, cls;
+  if (pct >= 80) { title = 'Excellent !'; msg = 'Vous maîtrisez très bien ce sujet. Continuez ainsi !'; cls = 'great'; }
+  else if (pct >= 60) { title = 'Bien joué !'; msg = 'Bonne maîtrise globale. Quelques points à revoir.'; cls = 'good'; }
+  else if (pct >= 40) { title = 'À retravailler'; msg = 'Des lacunes existent. Relisez les explications ci-dessous et recommencez.'; cls = 'mid'; }
+  else { title = 'Insuffisant'; msg = 'Ce sujet nécessite une révision approfondie. Courage !'; cls = 'low'; }
+
+  $('resCircle').className = 'result-score-circle ' + cls;
+  $('resTitle').textContent = title;
+  $('resMsg').textContent = msg;
+
+  $('resCorrections').innerHTML = currentQuiz.questions.map(function (q, i) {
+    var chosen = answers[i];
+    var ok = chosen === q.answer;
+    return '' +
+      '<div class="correction-item ' + (ok ? 'ok' : 'nok') + '">' +
+        '<div class="ci-q">' + (ok ? '✅' : '❌') + ' Q' + (i + 1) + '. ' + esc(q.q) + '</div>' +
+        '<div class="ci-a">' +
+          (!ok && chosen !== null ? 'Votre réponse : <span class="bad">' + LETTERS[chosen] + '. ' + esc(q.opts[chosen]) + '</span><br>' : '') +
+          'Bonne réponse : <span class="good">' + LETTERS[q.answer] + '. ' + esc(q.opts[q.answer]) + '</span>' +
+        '</div>' +
+      '</div>';
+  }).join('');
+
+  $('quizPanel').scrollTop = 0;
+}
+
+function restartQuiz() { if (currentQuiz) openQuiz(currentQuiz.id); }
+
+/* ══════════════════════════════════════════════
+   ÉVÉNEMENTS (après chargement du DOM)
+══════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function () {
+
+  renderStats();
+  renderCards();
+
+  /* Filtres thème */
+  $('filterBar').addEventListener('click', function (e) {
+    var btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('#filterBar .filter-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    state.theme = btn.dataset.theme;
+    renderCards();
+  });
+
+  /* Filtres niveau */
+  $('levelBar').addEventListener('click', function (e) {
+    var btn = e.target.closest('.level-btn');
+    if (!btn) return;
+    document.querySelectorAll('#levelBar .level-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    state.level = btn.dataset.level;
+    renderCards();
+  });
+
+  /* Clic / clavier sur une carte */
+  $('quizGrid').addEventListener('click', function (e) {
+    var card = e.target.closest('.quiz-card');
+    if (card) openQuiz(card.dataset.id);
+  });
+  $('quizGrid').addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var card = e.target.closest('.quiz-card');
+    if (card) { e.preventDefault(); openQuiz(card.dataset.id); }
+  });
+
+  /* Modal */
+  $('qOptions').addEventListener('click', function (e) {
+    var opt = e.target.closest('.quiz-option');
+    if (opt) selectOption(parseInt(opt.dataset.idx, 10));
+  });
+  $('btnNext').addEventListener('click', nextQuestion);
+  $('btnClose').addEventListener('click', closeQuiz);
+  $('btnCloseResults').addEventListener('click', closeQuiz);
+  $('btnRestart').addEventListener('click', restartQuiz);
+  $('quizModal').addEventListener('click', function (e) { if (e.target === this) closeQuiz(); });
+
+  /* Raccourcis clavier : A-D ou 1-4 pour répondre, Entrée pour continuer, Échap pour fermer */
+  document.addEventListener('keydown', function (e) {
+    if (!currentQuiz || !$('quizModal').classList.contains('open')) return;
+    if (e.key === 'Escape') { closeQuiz(); return; }
+    if ($('viewQuestion').style.display === 'none') return;
+    var k = e.key.toLowerCase();
+    var map = { a: 0, b: 1, c: 2, d: 3, '1': 0, '2': 1, '3': 2, '4': 3 };
+    if (map[k] !== undefined && map[k] < currentQuiz.questions[currentQ].opts.length) { selectOption(map[k]); return; }
+    if ((e.key === 'Enter' || e.key === 'ArrowRight') && !$('btnNext').disabled) { e.preventDefault(); nextQuestion(); }
+  });
+
+  /* Menu hamburger */
+  var btn = $('hamburgerBtn'), nav = $('mainNav');
+  if (btn && nav) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var o = nav.classList.toggle('open');
+      btn.classList.toggle('open', o);
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { nav.classList.remove('open'); btn.classList.remove('open'); });
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        nav.classList.remove('open'); btn.classList.remove('open');
+      }
+    });
+  }
+
+  /* Apparition progressive */
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('visible'); obs.unobserve(en.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(function (el) { obs.observe(el); });
+  } else {
+    document.querySelectorAll('.fade-in').forEach(function (el) { el.classList.add('visible'); });
+  }
+});
