@@ -3026,11 +3026,9 @@ footer {
 }
 .cgi-toc-inner {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.6rem;
-  overflow-x: auto;
-  scrollbar-width: none;
 }
-.cgi-toc-inner::-webkit-scrollbar { display: none; }
 .cgi-chip {
   display: inline-flex;
   align-items: center;
