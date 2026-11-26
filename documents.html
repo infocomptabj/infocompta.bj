@@ -587,28 +587,6 @@ const RECORD_PURCHASE_URL = SUPABASE_URL + '/functions/v1/record-purchase';
 const DOWNLOAD_URL        = SUPABASE_URL + '/functions/v1/download-document';
 const PAGE_SIZE = 30;
 
-/* ═══ STYLES AJOUTÉS (catalogue payant, fenêtre d'achat, messages) ═══ */
-(function () {
-  const s = document.createElement('style');
-  s.textContent = `
-.group-title{grid-column:1/-1;font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--navy);margin:1.6rem 0 .2rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);}
-.group-title:first-child{margin-top:0;}
-.btn-more{display:block;margin:2rem auto 0;background:transparent;border:1.5px solid var(--navy);color:var(--navy);padding:.65rem 1.6rem;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;}
-.btn-more:hover{background:var(--navy);color:#fff;}
-.btn-dl[disabled]{opacity:.65;cursor:wait;}
-#icToast{position:fixed;left:50%;bottom:1.5rem;transform:translate(-50%,20px);background:var(--navy);color:#fff;padding:.8rem 1.2rem;border-radius:var(--radius);font-size:.85rem;line-height:1.5;max-width:min(92vw,460px);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:300;}
-#icToast.show{opacity:1;transform:translate(-50%,0);}
-#icToast.err{background:#b42318;}
-.ic-modal{position:fixed;inset:0;background:rgba(15,31,53,.55);display:flex;align-items:center;justify-content:center;padding:1rem;z-index:400;}
-.ic-modal-box{background:var(--surface);border-radius:var(--radius-md);padding:1.6rem;max-width:420px;width:100%;box-shadow:var(--shadow-md);}
-.ic-modal-box h3{font-size:1.1rem;margin-bottom:.6rem;}
-.ic-modal-box p{font-size:.88rem;color:var(--muted);line-height:1.6;margin-bottom:1.2rem;}
-.ic-modal-actions{display:flex;gap:.6rem;justify-content:flex-end;flex-wrap:wrap;}
-.ic-btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);padding:.55rem 1.1rem;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:.76rem;font-weight:600;cursor:pointer;}
-`;
-  document.head.appendChild(s);
-})();
-
 /* ═══ OUTILS ═══ */
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
