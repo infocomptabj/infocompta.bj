@@ -3185,7 +3185,7 @@ footer {
 
 /* ── 14.7 Fiscalité CGI : tablette / mobile ── */
 @media (max-width: 1023px) {
-  .cgi-toc { top: 58px; }
+  .cgi-toc { top: 48px; }
   .cgi-hero-stats { gap: 1.3rem; }
   .cgi-grid { grid-template-columns: 1fr; }
 }
