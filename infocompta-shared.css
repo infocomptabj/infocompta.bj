@@ -3043,31 +3043,29 @@ footer {
 }
 
 /* ── 14.2 Sommaire : pastilles des 6 livres ── */
-.cgi-toc {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 1.1rem 0;
-  position: sticky;
-  top: 66px;
-  z-index: 150;
+.cgi-toc .container {
+  max-width: 1240px;
 }
 .cgi-toc-inner {
   display: flex;
-  gap: 0.6rem;
-  overflow-x: auto;
-  scrollbar-width: none;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  overflow: visible;
+  justify-content: space-between;
 }
-.cgi-toc-inner::-webkit-scrollbar { display: none; }
 .cgi-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  flex-shrink: 0;
+  justify-content: center;
+  gap: 0.4rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
   background: var(--cream);
   border: 1.5px solid var(--border);
   border-radius: 30px;
-  padding: 0.5rem 1rem;
-  font-size: 0.78rem;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.74rem;
   font-weight: 600;
   color: var(--navy);
   transition: background var(--transition), border-color var(--transition), transform var(--transition);
