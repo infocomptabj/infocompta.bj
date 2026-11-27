@@ -308,7 +308,7 @@ ${renderContent(s.contenu)}
 
 <header>
   <a href="index.html" class="logo">
-  <img src="images/logo-infocompta.png" alt="InfoCompta.bj — Comptabilité, Fiscalité, Gestion">
+  <img src="/images/logo-infocompta.png" alt="InfoCompta.bj — Comptabilité, Fiscalité, Gestion">
 </a>
   <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">
     <span></span><span></span><span></span>
