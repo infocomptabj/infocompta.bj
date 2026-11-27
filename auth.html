@@ -51,7 +51,7 @@
 
     /* ── Panneau gauche ── */
     .side-left {
-      background: var(--panel);
+      background: none;
       border-right: 1px solid #e3e6ea;
       padding: 32px 28px;
       display: flex;
@@ -60,31 +60,30 @@
     }
     .side-left .logo img { max-width: 100%; height: auto; max-height: 90px; display: block; }
     .banner {
-      background: var(--brand);
-      color: #fff;
-      border-radius: 4px;
-      padding: 24px 20px 20px;
+      background: none;
+      color: var(--text);
+      padding: 0;
     }
     .banner-label {
       font-size: 11px; font-weight: 600; letter-spacing: .12em;
-      text-transform: uppercase; color: rgba(255,255,255,.75); margin-bottom: 14px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
     }
     .banner h2 { font-size: 26px; line-height: 1.12; font-weight: 700; }
-    .banner h2 em { font-style: italic; color: var(--accent-2); }
-    .banner-text { margin-top: 12px; font-size: 13px; line-height: 1.55; color: rgba(255,255,255,.85); }
+    .banner h2 em { font-style: italic; color: var(--brand); }
+    .banner-text { margin-top: 12px; font-size: 13px; line-height: 1.55; color: var(--muted); }
     .feats { margin-top: 20px; display: grid; gap: 10px; }
     .feat {
       display: flex; align-items: center; gap: 12px;
       padding: 10px 12px; border-radius: 4px;
-      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      background: none; border: 1px solid var(--border);
     }
     .feat-icon {
       flex: none; width: 32px; height: 32px; border-radius: 4px;
-      background: rgba(255,255,255,.16);
+      background: none; border: 1px solid var(--border);
       display: flex; align-items: center; justify-content: center; font-size: 15px;
     }
     .feat strong { display: block; font-size: 12.5px; font-weight: 600; }
-    .feat span { display: block; font-size: 11px; color: rgba(255,255,255,.72); margin-top: 2px; }
+    .feat span { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
 
     /* ── Panneau droit ── */
     .side-right { padding: 32px 30px; display: flex; flex-direction: column; justify-content: center; }
