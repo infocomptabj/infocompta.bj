@@ -3,274 +3,329 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connexion/Inscription</title>
+  <title>Connexion – InfoCompta</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Outfit + DM Sans — cohérence avec le design system -->
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="infocompta-shared.css">
+  <style>
+    /* Couleurs : modifiez ces variables pour adapter à votre charte */
+    :root {
+      --brand: #0f6b6b;
+      --brand-dark: #0b5252;
+      --accent-1: #1a8f4a;
+      --accent-2: #f2c200;
+      --accent-3: #d62828;
+      --bg: #f3f4f8;
+      --card: #ffffff;
+      --panel: #f7f7f7;
+      --text: #1f2933;
+      --muted: #6b7785;
+      --border: #cfd6dd;
+      --info-bg: #d9eef7;
+      --info-text: #1d5a73;
+      --err: #b42318;
+      --ok: #1a7f37;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px 16px;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 1000px;
+      background: var(--card);
+      border: 1px solid #e3e6ea;
+      border-radius: 6px;
+      box-shadow: 0 6px 24px rgba(20, 30, 50, .12);
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      overflow: hidden;
+    }
+
+    /* ── Panneau gauche ── */
+    .side-left {
+      background: var(--panel);
+      border-right: 1px solid #e3e6ea;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .side-left .logo img { max-width: 100%; height: auto; max-height: 90px; display: block; }
+    .banner {
+      background: var(--brand);
+      color: #fff;
+      border-radius: 4px;
+      padding: 24px 20px 20px;
+    }
+    .banner-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: rgba(255,255,255,.75); margin-bottom: 14px;
+    }
+    .banner h2 { font-size: 26px; line-height: 1.12; font-weight: 700; }
+    .banner h2 em { font-style: italic; color: var(--accent-2); }
+    .banner-text { margin-top: 12px; font-size: 13px; line-height: 1.55; color: rgba(255,255,255,.85); }
+    .feats { margin-top: 20px; display: grid; gap: 10px; }
+    .feat {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px; border-radius: 4px;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+    }
+    .feat-icon {
+      flex: none; width: 32px; height: 32px; border-radius: 4px;
+      background: rgba(255,255,255,.16);
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
+    }
+    .feat strong { display: block; font-size: 12.5px; font-weight: 600; }
+    .feat span { display: block; font-size: 11px; color: rgba(255,255,255,.72); margin-top: 2px; }
+
+    /* ── Panneau droit ── */
+    .side-right { padding: 32px 30px; display: flex; flex-direction: column; justify-content: center; }
+    .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+    .tab-btn {
+      background: none; border: 0; cursor: pointer;
+      padding: 8px 14px; font: inherit; font-weight: 500; color: var(--muted);
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .tab-btn.active { color: var(--brand); border-bottom-color: var(--brand); }
+    .tab-btn:focus-visible, .btn:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--brand); outline-offset: 2px;
+    }
+
+    .notice {
+      background: var(--info-bg); color: var(--info-text);
+      border: 1px solid #bddfee; padding: 10px 12px;
+      font-size: 12.5px; line-height: 1.45; margin-bottom: 18px;
+    }
+    .msg-box { display: none; padding: 10px 12px; margin-bottom: 16px; font-size: 13px; border: 1px solid; }
+    .msg-box.error { color: var(--err); background: #fdecea; border-color: #f5c2bd; }
+    .msg-box.success { color: var(--ok); background: #e6f4ea; border-color: #b9dfc3; }
+
+    .field { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .field label { font-size: 12.5px; color: var(--text); }
+    .field.stack { grid-template-columns: 1fr; gap: 4px; }
+    input[type=text], input[type=email], input[type=password], input[type=tel], select {
+      width: 100%; height: 36px; padding: 0 10px;
+      border: 1px solid var(--border); border-radius: 3px;
+      font: inherit; background: #fff; color: var(--text);
+    }
+    input:focus, select:focus { border-color: var(--brand); }
+    .pass-wrap { position: relative; }
+    .pass-wrap input { padding-right: 38px; }
+    .pass-toggle {
+      position: absolute; right: 0; top: 0; height: 36px; width: 36px;
+      background: none; border: 0; cursor: pointer; color: var(--muted);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pass-toggle svg { width: 16px; height: 16px; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .remember { display: flex; align-items: center; gap: 8px; font-size: 12.5px; margin: 0 0 14px 120px; }
+    .indent { margin-left: 120px; }
+
+    .btn {
+      width: 100%; height: 38px; border: 0; border-radius: 3px; cursor: pointer;
+      background: var(--brand); color: #fff; font: inherit; font-weight: 500;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn:hover { background: var(--brand-dark); }
+    .btn:disabled { opacity: .65; cursor: not-allowed; }
+    .btn.secondary { background: #fff; color: var(--text); border: 1px solid var(--border); }
+    .btn.secondary:hover { background: #f1f3f5; }
+    .spinner {
+      display: none; width: 14px; height: 14px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2s; } }
+
+    .link { color: var(--brand); text-decoration: none; cursor: pointer; font-size: 12.5px; }
+    .link:hover { text-decoration: underline; }
+    .forgot { margin: 14px 0 0 120px; }
+    .sep { height: 1px; background: var(--border); margin: 22px 0 16px; }
+    .alt-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 12.5px; }
+    .alt-row .outline {
+      border: 1px solid var(--border); border-radius: 3px; padding: 7px 12px;
+      background: #fff; color: var(--text); text-decoration: none; font-size: 12.5px;
+    }
+    .alt-row .outline:hover { background: #f1f3f5; }
+    .small { font-size: 12px; color: var(--muted); margin-top: 12px; line-height: 1.45; }
+    .strength-bar { height: 4px; background: #e5e8eb; border-radius: 2px; overflow: hidden; margin-top: 2px; }
+    #strengthFill { height: 100%; width: 0; transition: width .2s, background .2s; }
+    .strength-label { font-size: 11.5px; color: var(--muted); min-height: 16px; margin: 4px 0 12px; }
+    .check { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; margin: 4px 0 14px; }
+    .check input { margin-top: 2px; }
+    h1.form-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+    .form-sub { color: var(--muted); font-size: 13px; margin-bottom: 18px; }
+
+    @media (max-width: 760px) {
+      .login-card { grid-template-columns: 1fr; }
+      .side-left { border-right: 0; border-bottom: 1px solid #e3e6ea; padding: 22px; gap: 18px; }
+      .side-right { padding: 24px 20px; }
+      .field { grid-template-columns: 1fr; gap: 4px; }
+      .remember, .forgot, .indent { margin-left: 0; }
+      .row-2 { grid-template-columns: 1fr; gap: 0; }
+    }
+  </style>
 </head>
-<body class="auth-page">
+<body>
 
-<!-- ═══════════ HEADER ═══════════ -->
-<header>
-<a href="index.html" class="logo">
-  <img src="images/logo-infocompta.png" alt="InfoCompta.bj — Comptabilité, Fiscalité, Gestion">
-</a>
-  <a href="index.html" class="header-back">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M19 12H5M12 19l-7-7 7-7"/>
-    </svg>
-    Retour à l'accueil
-  </a>
-</header>
+<main class="login-card">
 
-<!-- ═══════════ CONTENU PRINCIPAL ═══════════ -->
-<main class="auth-main">
-
-  <!-- ── Panneau gauche (présentation) ── -->
-  <div class="auth-left">
-    <p class="auth-label">Plateforme comptable OHADA</p>
-    <h2>Votre espace<br><em>comptable sécurisé</em></h2>
-    <p>Connectez-vous pour accéder à vos documents, votre plan comptable et tous vos outils InfoCompta.</p>
-
-    <div class="auth-features">
-      <div class="auth-feat">
-        <div class="feat-icon">📋</div>
-        <div class="feat-text">
-          <strong>Plan Comptable OHADA complet</strong>
-          <span>9 classes, recherche instantanée</span>
-        </div>
-      </div>
-      <div class="auth-feat">
-        <div class="feat-icon">📁</div>
-        <div class="feat-text">
-          <strong>Gestion de documents</strong>
-          <span>Factures, rapports, pièces comptables</span>
-        </div>
-      </div>
-      <div class="auth-feat">
-        <div class="feat-icon">🔒</div>
-        <div class="feat-text">
-          <strong>Données chiffrées et sécurisées</strong>
-          <span>Accès personnel uniquement</span>
-        </div>
-      </div>
-      <div class="auth-feat">
-        <div class="feat-icon">🤖</div>
-        <div class="feat-text">
-          <strong>Assistant comptable IA</strong>
-          <span>Réponses instantanées 24h/24</span>
-        </div>
+  <!-- ── Gauche : logo + bandeau ── -->
+  <section class="side-left">
+    <a href="index.html" class="logo">
+      <img src="images/logo-infocompta.png" alt="InfoCompta.bj — Comptabilité, Fiscalité, Gestion">
+    </a>
+    <div class="banner">
+      <p class="banner-label">Plateforme comptable OHADA</p>
+      <h2>Votre espace<br><em>comptable sécurisé</em></h2>
+      <p class="banner-text">Connectez-vous pour accéder à vos documents, votre plan comptable et tous vos outils InfoCompta.</p>
+      <div class="feats">
+        <div class="feat"><div class="feat-icon">📋</div><div><strong>Plan Comptable OHADA complet</strong><span>9 classes, recherche instantanée</span></div></div>
+        <div class="feat"><div class="feat-icon">📁</div><div><strong>Gestion de documents</strong><span>Factures, rapports, pièces comptables</span></div></div>
+        <div class="feat"><div class="feat-icon">🔒</div><div><strong>Données chiffrées et sécurisées</strong><span>Accès personnel uniquement</span></div></div>
+        <div class="feat"><div class="feat-icon">🤖</div><div><strong>Assistant comptable IA</strong><span>Réponses instantanées 24h/24</span></div></div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- ── Panneau droit (formulaires) ── -->
-  <div class="auth-right">
-    <div class="auth-box">
+  <!-- ── Droite : formulaires ── -->
+  <section class="side-right">
 
-      <!-- Onglets -->
-      <div class="tabs">
-        <button class="tab-btn active" id="tabLogin"    onclick="switchTab('login')">Connexion</button>
-        <button class="tab-btn"        id="tabRegister" onclick="switchTab('register')">Inscription</button>
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Connexion</button>
+      <button class="tab-btn" id="tabRegister" onclick="switchTab('register')">Inscription</button>
+    </div>
+
+    <div class="msg-box" id="msgBox" role="alert"></div>
+
+    <!-- CONNEXION -->
+    <div id="formLogin">
+      <div class="notice">Connectez-vous avec votre adresse email pour accéder à vos documents et à vos outils InfoCompta.</div>
+
+      <div class="field">
+        <label for="loginEmail">Adresse email</label>
+        <input type="email" id="loginEmail" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="loginPass">Mot de passe</label>
+        <div class="pass-wrap">
+          <input type="password" id="loginPass" autocomplete="current-password">
+          <button type="button" class="pass-toggle" onclick="togglePass('loginPass', this)" tabindex="-1" aria-label="Afficher le mot de passe">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
       </div>
 
-      <!-- Message succès / erreur -->
-      <div class="msg-box" id="msgBox"></div>
+      <label class="remember"><input type="checkbox" id="loginRemember"> Mémoriser mes informations</label>
 
-      <!-- ─── FORMULAIRE CONNEXION ─── -->
-      <div id="formLogin">
-        <h2 class="form-title">Bon retour</h2>
-        <p class="form-sub">Connectez-vous à votre compte InfoCompta</p>
-
-        <div class="form-group">
-          <label for="loginEmail">Adresse email</label>
-          <input type="email" id="loginEmail" placeholder="vous@exemple.com" autocomplete="email">
-        </div>
-
-        <div class="form-group">
-          <label for="loginPass">Mot de passe</label>
-          <div class="pass-wrap">
-            <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
-            <button type="button" class="pass-toggle" onclick="togglePass('loginPass', this)" tabindex="-1">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
-              </svg>
-            </button>
-          </div>
-          <div class="forgot-row">
-            <a onclick="switchTab('forgot')">Mot de passe oublié ?</a>
-          </div>
-        </div>
-
-        <button class="btn-auth" id="btnLogin" onclick="doLogin()">
+      <div class="indent">
+        <button class="btn" id="btnLogin" onclick="doLogin()">
           <span class="spinner" id="spinnerLogin"></span>
           Se connecter
         </button>
-        <p class="cgu">En vous connectant, vous acceptez nos <a href="#">conditions d'utilisation</a>.</p>
       </div>
+      <div class="forgot"><a class="link" onclick="switchTab('forgot')">Mot de passe oublié ?</a></div>
 
-      <!-- ─── FORMULAIRE INSCRIPTION ─── -->
-      <div id="formRegister" style="display:none;">
-        <h2 class="form-title">Créer un compte</h2>
-        <p class="form-sub">Rejoignez InfoCompta gratuitement</p>
-
-        <div class="reg-notice">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-          Après inscription, vous recevrez un <strong>lien d'activation</strong> dans votre boîte mail.
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label for="regPrenom">Prénom *</label>
-            <input type="text" id="regPrenom" placeholder="Jean" autocomplete="given-name">
-          </div>
-          <div class="form-group">
-            <label for="regNom">Nom *</label>
-            <input type="text" id="regNom" placeholder="Dupont" autocomplete="family-name">
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label for="regEmail">Email *</label>
-            <input type="email" id="regEmail" placeholder="vous@exemple.com" autocomplete="email">
-          </div>
-          <div class="form-group">
-            <label for="regPhone">Téléphone <span class="opt-label">(optionnel)</span></label>
-            <input type="tel" id="regPhone" placeholder="+229 01 00 00 00" autocomplete="tel">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="regPays">Pays *</label>
-          <select id="regPays" autocomplete="country">
-            <option value="">— Sélectionnez votre pays —</option>
-            <option value="BJ" selected>🇧🇯 Bénin</option>
-            <option value="TG">🇹🇬 Togo</option>
-            <option value="CI">🇨🇮 Côte d'Ivoire</option>
-            <option value="SN">🇸🇳 Sénégal</option>
-            <option value="CM">🇨🇲 Cameroun</option>
-            <option value="BF">🇧🇫 Burkina Faso</option>
-            <option value="ML">🇲🇱 Mali</option>
-            <option value="NE">🇳🇪 Niger</option>
-            <option value="GN">🇬🇳 Guinée</option>
-            <option value="GA">🇬🇦 Gabon</option>
-            <option value="CG">🇨🇬 Congo</option>
-            <option value="CD">🇨🇩 RD Congo</option>
-            <option value="OTHER">🌍 Autre pays OHADA</option>
-          </select>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label for="regPass">Mot de passe *</label>
-            <div class="pass-wrap">
-              <input type="password" id="regPass" placeholder="Min. 8 caractères"
-                     oninput="checkStrength(this.value)" autocomplete="new-password">
-              <button type="button" class="pass-toggle" onclick="togglePass('regPass', this)" tabindex="-1">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                  <circle cx="12" cy="12" r="3"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="regPassConfirm">Confirmer *</label>
-            <div class="pass-wrap">
-              <input type="password" id="regPassConfirm" placeholder="Répétez" autocomplete="new-password">
-              <button type="button" class="pass-toggle" onclick="togglePass('regPassConfirm', this)" tabindex="-1">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                  <circle cx="12" cy="12" r="3"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Indicateur de force -->
-        <div class="strength-wrap">
-          <div class="strength-bar">
-            <div class="strength-fill" id="strengthFill"></div>
-          </div>
-          <p class="strength-label" id="strengthLabel"></p>
-        </div>
-
-        <!-- Checkbox CGU -->
-        <div class="form-group cgu-check">
-          <label class="checkbox-label">
-            <input type="checkbox" id="regCgu">
-            <span class="checkmark"></span>
-            <span>J'accepte la <a href="confidentialite.html">politique de confidentialité</a> *</span>
-          </label>
-        </div>
-
-        <button class="btn-auth" id="btnRegister" onclick="doRegister()">
-          <span class="spinner" id="spinnerRegister"></span>
-          Créer mon compte
-        </button>
-        <p class="reg-secure">🔒 Vos données sont <strong>chiffrées</strong>. Accès uniquement après validation e-mail.</p>
+      <div class="sep"></div>
+      <div class="alt-row">
+        <span>Pas encore de compte ?</span>
+        <a class="outline" href="#" onclick="switchTab('register'); return false;">Créer un compte</a>
       </div>
+      <p class="small">En vous connectant, vous acceptez notre <a class="link" href="confidentialite.html">politique de confidentialité</a>.</p>
+      <p class="small"><a class="link" href="index.html">← Retour à l'accueil</a></p>
+    </div>
 
-      <!-- ─── FORMULAIRE MOT DE PASSE OUBLIÉ ─── -->
-      <div id="formForgot" style="display:none;">
-        <h2 class="form-title">Réinitialiser</h2>
-        <p class="form-sub">Entrez votre email pour recevoir un lien de réinitialisation</p>
+    <!-- INSCRIPTION -->
+    <div id="formRegister" style="display:none;">
+      <div class="notice">Après l'inscription, vous recevrez un <strong>lien d'activation</strong> dans votre boîte mail.</div>
 
-        <div class="form-group">
-          <label for="forgotEmail">Adresse email</label>
-          <input type="email" id="forgotEmail" placeholder="vous@exemple.com">
-        </div>
-
-        <button class="btn-auth" id="btnForgot" onclick="doForgot()">
-          <span class="spinner" id="spinnerForgot"></span>
-          Envoyer le lien
-        </button>
-
-        <div class="sep">ou</div>
-
-        <button class="btn-auth secondary" onclick="switchTab('login')">
-          Retour à la connexion
-        </button>
+      <div class="row-2">
+        <div class="field stack"><label for="regPrenom">Prénom *</label><input type="text" id="regPrenom" autocomplete="given-name"></div>
+        <div class="field stack"><label for="regNom">Nom *</label><input type="text" id="regNom" autocomplete="family-name"></div>
       </div>
+      <div class="row-2">
+        <div class="field stack"><label for="regEmail">Email *</label><input type="email" id="regEmail" autocomplete="email"></div>
+        <div class="field stack"><label for="regPhone">Téléphone (optionnel)</label><input type="tel" id="regPhone" placeholder="+229 01 00 00 00" autocomplete="tel"></div>
+      </div>
+      <div class="field stack">
+        <label for="regPays">Pays *</label>
+        <select id="regPays">
+          <option value="">— Sélectionnez votre pays —</option>
+          <option value="BJ" selected>🇧🇯 Bénin</option>
+          <option value="TG">🇹🇬 Togo</option>
+          <option value="CI">🇨🇮 Côte d'Ivoire</option>
+          <option value="SN">🇸🇳 Sénégal</option>
+          <option value="CM">🇨🇲 Cameroun</option>
+          <option value="BF">🇧🇫 Burkina Faso</option>
+          <option value="ML">🇲🇱 Mali</option>
+          <option value="NE">🇳🇪 Niger</option>
+          <option value="GN">🇬🇳 Guinée</option>
+          <option value="GA">🇬🇦 Gabon</option>
+          <option value="CG">🇨🇬 Congo</option>
+          <option value="CD">🇨🇩 RD Congo</option>
+          <option value="OTHER">🌍 Autre pays OHADA</option>
+        </select>
+      </div>
+      <div class="row-2">
+        <div class="field stack">
+          <label for="regPass">Mot de passe *</label>
+          <div class="pass-wrap">
+            <input type="password" id="regPass" placeholder="Min. 8 caractères" oninput="checkStrength(this.value)" autocomplete="new-password">
+            <button type="button" class="pass-toggle" onclick="togglePass('regPass', this)" tabindex="-1" aria-label="Afficher le mot de passe">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="field stack">
+          <label for="regPassConfirm">Confirmer *</label>
+          <div class="pass-wrap">
+            <input type="password" id="regPassConfirm" placeholder="Répétez" autocomplete="new-password">
+            <button type="button" class="pass-toggle" onclick="togglePass('regPassConfirm', this)" tabindex="-1" aria-label="Afficher le mot de passe">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="strength-bar"><div id="strengthFill"></div></div>
+      <p class="strength-label" id="strengthLabel"></p>
 
-    </div><!-- /.auth-box -->
-  </div><!-- /.auth-right -->
+      <label class="check">
+        <input type="checkbox" id="regCgu">
+        <span>J'accepte la <a class="link" href="confidentialite.html">politique de confidentialité</a> *</span>
+      </label>
 
+      <button class="btn" id="btnRegister" onclick="doRegister()">
+        <span class="spinner" id="spinnerRegister"></span>
+        Créer mon compte
+      </button>
+      <p class="small">🔒 Vos données sont chiffrées. Accès uniquement après validation de l'email.</p>
+    </div>
+
+    <!-- MOT DE PASSE OUBLIÉ -->
+    <div id="formForgot" style="display:none;">
+      <h1 class="form-title">Réinitialiser le mot de passe</h1>
+      <p class="form-sub">Entrez votre email pour recevoir un lien de réinitialisation.</p>
+      <div class="field stack"><label for="forgotEmail">Adresse email</label><input type="email" id="forgotEmail" autocomplete="email"></div>
+      <button class="btn" id="btnForgot" onclick="doForgot()">
+        <span class="spinner" id="spinnerForgot"></span>
+        Envoyer le lien
+      </button>
+      <div class="sep"></div>
+      <button class="btn secondary" onclick="switchTab('login')">Retour à la connexion</button>
+    </div>
+
+  </section>
 </main>
 
-<!-- ═══════════ FOOTER ═══════════ -->
-  <!-- ── FOOTER ── -->
-<footer>
-  <div class="footer-top">
-    <div class="footer-brand">
-      <div class="footer-logo">Info<span>Compta</span></div>
-      <p>Plan comptable OHADA, gestion documentaire et assistant IA pour la fiscalité béninoise.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Navigation</h4>
-      <a href="index.html">Accueil</a>
-      <a href="plan-comptable.html">Plan Comptable</a>
-      <a href="offres.html">Nos offres</a>
-      <a href="a-propos.html">À propos</a>
-    </div>
-    <div class="footer-col">
-      <h4>Contact</h4>
-      <a href="contact.html">Nous écrire</a>
-      <a href="confidentialite.html">Confidentialité</a>
-    </div>
-  </div>
-  <div class="footer-bottom">&copy; 2026 InfoCompta. Tous droits réservés.</div>
-</footer>
-<!-- ═══════════ SCRIPTS ═══════════ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
   /* ── Supabase ── */
@@ -278,24 +333,16 @@
   const SUPABASE_KEY = 'sb_publishable_kCfhrFPVec2MkCl0xe4N-w_QXHgc0Gp';
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  /* ── Toggle visibilité mot de passe ── */
+  const EYE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+  const EYE_OFF = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+
   function togglePass(id, btn) {
     const input = document.getElementById(id);
     const show = input.type === 'password';
     input.type = show ? 'text' : 'password';
-    btn.innerHTML = show
-      ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-           <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
-           <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-           <line x1="1" y1="1" x2="23" y2="23"/>
-         </svg>`
-      : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-           <circle cx="12" cy="12" r="3"/>
-         </svg>`;
+    btn.innerHTML = show ? EYE_OFF : EYE;
   }
 
-  /* ── Bascule entre onglets ── */
   function switchTab(tab) {
     ['login', 'register', 'forgot'].forEach(t => {
       const key = 'form' + t.charAt(0).toUpperCase() + t.slice(1);
@@ -306,50 +353,44 @@
     hideMsg();
   }
 
-  /* ── Messages ── */
   function showMsg(text, type) {
     const b = document.getElementById('msgBox');
     b.textContent = text;
     b.className = 'msg-box ' + type;
     b.style.display = 'block';
   }
-  function hideMsg() {
-    document.getElementById('msgBox').style.display = 'none';
-  }
+  function hideMsg() { document.getElementById('msgBox').style.display = 'none'; }
 
-  /* ── État chargement ── */
   function setLoading(btnId, spinnerId, state) {
     document.getElementById(btnId).disabled = state;
     document.getElementById(spinnerId).style.display = state ? 'block' : 'none';
   }
 
-  /* ── Force du mot de passe ── */
   function checkStrength(val) {
     let score = 0;
-    if (val.length >= 8)           score++;
-    if (/[A-Z]/.test(val))         score++;
-    if (/[0-9]/.test(val))         score++;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
     if (/[^A-Za-z0-9]/.test(val)) score++;
     const cfg = [
-      { w: '0%',   c: 'transparent',  t: '' },
-      { w: '25%',  c: '#c0392b',      t: 'Très faible' },
-      { w: '50%',  c: '#e67e22',      t: 'Faible' },
-      { w: '75%',  c: '#f1c40f',      t: 'Moyen' },
-      { w: '100%', c: '#639922',      t: 'Fort' }   /* vert --success */
+      { w: '0%',   c: 'transparent', t: '' },
+      { w: '25%',  c: '#c0392b', t: 'Très faible' },
+      { w: '50%',  c: '#e67e22', t: 'Faible' },
+      { w: '75%',  c: '#f1c40f', t: 'Moyen' },
+      { w: '100%', c: '#639922', t: 'Fort' }
     ];
     const c = val ? (cfg[score] || cfg[1]) : cfg[0];
     const fill = document.getElementById('strengthFill');
-    fill.style.width      = c.w;
+    fill.style.width = c.w;
     fill.style.background = c.c;
     document.getElementById('strengthLabel').textContent = c.t;
   }
 
-  /* ── Connexion ── */
   async function doLogin() {
     const email = document.getElementById('loginEmail').value.trim();
     const pass  = document.getElementById('loginPass').value;
-    if (!email || !pass)          return showMsg('Veuillez remplir tous les champs.', 'error');
-    if (!email.includes('@'))     return showMsg('Adresse email invalide.', 'error');
+    if (!email || !pass)      return showMsg('Veuillez remplir tous les champs.', 'error');
+    if (!email.includes('@')) return showMsg('Adresse email invalide.', 'error');
     hideMsg();
     setLoading('btnLogin', 'spinnerLogin', true);
     try {
@@ -363,7 +404,6 @@
     setLoading('btnLogin', 'spinnerLogin', false);
   }
 
-  /* ── Inscription ── */
   async function doRegister() {
     const prenom  = document.getElementById('regPrenom').value.trim();
     const nom     = document.getElementById('regNom').value.trim();
@@ -389,12 +429,11 @@
       if (error) throw error;
       showMsg('Compte créé ! Vérifiez votre email pour confirmer votre inscription.', 'success');
     } catch (e) {
-      showMsg(e.message || 'Erreur lors de l\'inscription.', 'error');
+      showMsg(e.message || "Erreur lors de l'inscription.", 'error');
     }
     setLoading('btnRegister', 'spinnerRegister', false);
   }
 
-  /* ── Mot de passe oublié ── */
   async function doForgot() {
     const email = document.getElementById('forgotEmail').value.trim();
     if (!email) return showMsg('Veuillez entrer votre adresse email.', 'error');
@@ -405,10 +444,17 @@
       if (error) throw error;
       showMsg('Email envoyé ! Vérifiez votre boîte de réception.', 'success');
     } catch {
-      showMsg('Impossible d\'envoyer l\'email. Vérifiez l\'adresse.', 'error');
+      showMsg("Impossible d'envoyer l'email. Vérifiez l'adresse.", 'error');
     }
     setLoading('btnForgot', 'spinnerForgot', false);
   }
+
+  /* Entrée = valider le formulaire visible */
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    if (document.getElementById('formLogin').style.display !== 'none') doLogin();
+    else if (document.getElementById('formForgot').style.display !== 'none') doForgot();
+  });
 </script>
 </body>
 </html>
